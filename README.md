@@ -20,7 +20,7 @@
                 <a href="#home" class="hover:text-red-600 transition">Home</a>
                 <a href="#products" class="hover:text-red-600 transition">Products</a>
                 <a href="#about" class="hover:text-red-600 transition">About Us</a>
-                <a href="https://wa.me/91XXXXXXXXXX" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Order Now</a>
+                <a href="https://wa.me/918050389261" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Order Now</a>
             </div>
         </div>
     </nav>
@@ -31,7 +31,7 @@
             <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-200">Ahmedabad's leading wholesale supplier for Marriage Combos, Buffet Plates, and Food Containers.</p>
             <div class="flex flex-col md:flex-row justify-center gap-4">
                 <a href="#products" class="bg-white text-red-600 px-8 py-3 rounded-full font-bold text-lg hover:bg-gray-100 transition">View Products</a>
-                <a href="https://wa.me/91XXXXXXXXXX" class="bg-green-500 text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-green-600 transition"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
+                <a href="https://wa.me/918050389261" class="bg-green-500 text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-green-600 transition"><i class="fab fa-whatsapp"></i> Chat on WhatsApp</a>
             </div>
         </div>
     </header>
@@ -45,7 +45,7 @@
                     <img src="https://images.unsplash.com/photo-1591085686350-798c0f9faa7f?auto=format&fit=crop&q=80&w=400" alt="Plates" class="w-full h-48 object-cover rounded-xl mb-4">
                     <h3 class="text-xl font-bold mb-2">13" Buffer Plates</h3>
                     <p class="text-gray-600 mb-4">Premium quality heavy-duty plates for big events and catering.</p>
-                    <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20know%20price%20of%2013-inch%20Buffer%20Plates" class="text-red-600 font-bold hover:underline">Get Price →</a>
+                    <a href="https://wa.me/918050389261?text=I%20want%20to%20know%20price%20of%2013-inch%20Buffer%20Plates" class="text-red-600 font-bold hover:underline">Get Price →</a>
                 </div>
 
                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
@@ -53,14 +53,14 @@
                     <h3 class="text-xl font-bold mb-2">Marriage Combo Offer</h3>
                     <h4 class="text-red-600 font-bold mb-2">Best Seller!</h4>
                     <p class="text-gray-600 mb-4">Full set including plates, spoons, and cups for large gatherings.</p>
-                    <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20know%20about%20Marriage%20Combo" class="text-red-600 font-bold hover:underline">Get Price →</a>
+                    <a href="https://wa.me/918050389261?text=I%20want%20to%20know%20about%20Marriage%20Combo" class="text-red-600 font-bold hover:underline">Get Price →</a>
                 </div>
 
                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
                     <img src="https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&q=80&w=400" alt="Cups" class="w-full h-48 object-cover rounded-xl mb-4">
                     <h3 class="text-xl font-bold mb-2">Disposable Cups & Foils</h3>
                     <p class="text-gray-600 mb-4">Hygienic cups and premium silver foils for food packing.</p>
-                    <a href="https://wa.me/91XXXXXXXXXX?text=I%20want%20to%20inquire%20about%20Cups%20and%20Foils" class="text-red-600 font-bold hover:underline">Get Price →</a>
+                    <a href="https://wa.me/918050389261?text=I%20want%20to%20inquire%20about%20Cups%20and%20Foils" class="text-red-600 font-bold hover:underline">Get Price →</a>
                 </div>
 
             </div>
@@ -76,8 +76,8 @@
             <div class="text-center md:text-right">
                 <p class="mb-4">Quick Contact:</p>
                 <div class="flex justify-center md:justify-end space-x-6 text-3xl">
-                    <a href="https://wa.me/91XXXXXXXXXX" class="text-green-500 hover:text-green-400"><i class="fab fa-whatsapp"></i></a>
-                    <a href="tel:+91XXXXXXXXXX" class="text-blue-500 hover:text-blue-400"><i class="fas fa-phone"></i></a>
+                    <a href="https://wa.me/918050389261" class="text-green-500 hover:text-green-400"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+918050389261" class="text-blue-500 hover:text-blue-400"><i class="fas fa-phone"></i></a>
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
                 <a href="#home" class="hover:text-red-600">Home</a>
                 <a href="#products" class="hover:text-red-600">Products</a>
                 <a href="#about" class="hover:text-red-600">About</a>
-                <a href="tel:+91XXXXXXXXXX" class="hover:text-red-600"><i class="fa fa-phone"></i> Call</a>
+                <a href="tel:+918050389261" class="hover:text-red-600"><i class="fa fa-phone"></i> Call</a>
             </div>
 
             <div class="relative cursor-pointer" onclick="toggleCart()">
@@ -123,7 +123,7 @@
         <p class="text-lg mb-8">Ahmedabad's Largest Supplier of Disposable Plates & Marriage Combos</p>
         <div class="flex justify-center gap-4">
             <a href="#products" class="bg-white text-red-600 px-6 py-2 rounded-lg font-bold">Shop Now</a>
-            <a href="https://wa.me/91XXXXXXXXXX" class="bg-green-500 text-white px-6 py-2 rounded-lg font-bold"><i class="fab fa-whatsapp"></i> Chat</a>
+            <a href="https://wa.me/918050389261" class="bg-green-500 text-white px-6 py-2 rounded-lg font-bold"><i class="fab fa-whatsapp"></i> Chat</a>
         </div>
     </section>
 
@@ -200,7 +200,7 @@
 
     <script>
         let cart = [];
-        let number = "91XXXXXXXXXX"; // APNA NUMBER YAHAN DALEN
+        let number = "918050389261"; // APNA NUMBER YAHAN DALEN
 
         function addToCart(name) {
             cart.push(name);
@@ -325,7 +325,7 @@
         
         // AI Logic (Simple Brain)
         let msg = input.value.toLowerCase();
-        let reply = "Mujhe samajh nahi aaya, par aap 91XXXXXXXXXX par call karke puch sakte hain!";
+        let reply = "Mujhe samajh nahi aaya, par aap 918050389261 par call karke puch sakte hain!";
         
         if(msg.includes("rate") || msg.includes("price")) reply = "Hamare wholesale rates market se sabse saste hain. Catalog ke liye WhatsApp karein!";
         if(msg.includes("address") || msg.includes("kahan")) reply = "Hum Ahmedabad, Gujarat mein hain. Poora address WhatsApp par mil jayega.";
