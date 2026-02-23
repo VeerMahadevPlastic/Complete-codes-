@@ -1,0 +1,218 @@
+{
+  "kind": "build_request",
+  "title": "Add shopping cart system and expand product catalog with hero section",
+  "projectName": "VM Wholesale Hub",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-7",
+      "text": "Implement a shopping cart icon with count badge in the navigation bar that displays the number of items in the cart and opens a cart modal when clicked",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "<div class=\"relative cursor-pointer\" onclick=\"toggleCart()\">",
+          "<span id=\"cart-qty\" class=\"cart-count\">0</span>"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Cart icon appears in the navigation bar with a red count badge positioned top-right",
+        "Badge displays '0' initially and updates when items are added",
+        "Clicking the cart icon opens the cart modal"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Create a cart modal that slides in from the right side with a list of added items, remove buttons for each item, and a WhatsApp checkout button that sends the cart contents as a pre-filled message to https://wa.me/91XXXXXXXXXX",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "<div id=\"cart-modal\" class=\"fixed inset-0 bg-black bg-opacity-50 hidden z-[60] flex justify-end\">",
+          "window.location.href = https://wa.me/${number}?text=${encodeURIComponent(message)};"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Modal appears as a right-side panel with white background and full height",
+        "Cart items are listed with product names and individual remove buttons",
+        "WhatsApp checkout button displays 'Order Now via WhatsApp' with WhatsApp icon",
+        "Clicking checkout constructs a message 'Hi Veer Mahadev Plastic, I want to order: [item1], [item2]...' and opens WhatsApp",
+        "Empty cart shows appropriate message and prevents checkout"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Expand the product catalog to include four products with images, descriptions, and 'Add to Cart' buttons: 13\" Buffer Plate (Heavy Premium Quality), Marriage Combo (Full Set Plates+Spoons), Food Containers (Leak-proof All Sizes), and Premium Silver Foil (72 Meters Roll)",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "<h3 class=\"font-bold text-gray-800\">13\" Buffer Plate</h3>",
+          "<h3 class=\"font-bold text-gray-800\">Marriage Combo</h3>",
+          "<h3 class=\"font-bold text-gray-800\">Food Containers</h3>",
+          "<h3 class=\"font-bold text-gray-800\">Premium Silver Foil</h3>"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Four product cards displayed in a responsive grid (2 columns mobile, 4 columns desktop)",
+        "Each card shows product image, title, description, wholesale price label, and add button",
+        "Add button has a plus icon and adds the product to cart on click",
+        "Cards have hover scale effect (scale 1.03) with smooth transition"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Create a hero section with a dark overlay background image, large heading 'Premium Quality Disposable Items' with gradient text effect (red to yellow), descriptive subtitle about being Ahmedabad's leading wholesale supplier, and two prominent CTA buttons: 'View Products' (white background, red text) and 'Chat on WhatsApp' (green background)",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "<header id=\"home\" class=\"hero-bg h-[80vh] flex items-center justify-center text-center text-white px-4\">",
+          ".gradient-text { background: linear-gradient(90deg, #ff4d4d, #f9cb28);",
+          "background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1605888969139-42ecc48f029a"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Hero section is 80vh tall with centered content",
+        "Background has dark overlay (60% opacity) over a decorative image",
+        "Main heading uses gradient text from red (#ff4d4d) to yellow (#f9cb28)",
+        "Subtitle mentions 'Marriage Combos, Buffet Plates, and Food Containers'",
+        "Two CTA buttons are prominently displayed with proper styling and hover effects",
+        "'View Products' button scrolls to products section",
+        "'Chat on WhatsApp' button opens WhatsApp link"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Create an additional simplified product showcase section with three product cards (13\" Buffer Plates, Marriage Combo Offer with 'Best Seller!' badge, Disposable Cups & Foils) that link directly to WhatsApp with pre-filled inquiry messages using https://wa.me/91XXXXXXXXXX",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "<h2 class=\"text-3xl font-bold mb-12\">Our Best-Selling Products</h2>",
+          "<h4 class=\"text-red-600 font-bold mb-2\">Best Seller!</h4>",
+          "href=\"https://wa.me/918050389261?text=I%20want%20to%20know%20price%20of%2013-inch%20Buffer%20Plates\""
+        ]
+      },
+      "acceptanceCriteria": [
+        "Section displays three product cards in a responsive grid (1 column mobile, 3 columns desktop)",
+        "Each card has rounded corners, shadow effects, and hover lift animation",
+        "Marriage Combo card includes a red 'Best Seller!' badge",
+        "Each card has a 'Get Price →' link that opens WhatsApp with product-specific pre-filled message",
+        "Pre-filled messages: '13-inch Buffer Plates' inquiry, 'Marriage Combo' inquiry, 'Cups and Foils' inquiry"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Update the footer to include business address 'Pillar No. 74, Near Rabari Colony, Ahmedabad, Gujarat', GST registration mention, and quick contact icons for WhatsApp and phone linking to https://wa.me/91XXXXXXXXXX and tel:+91XXXXXXXXXX",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "<p class=\"text-gray-400\">Pillar No. 74, Near Rabari Colony, Ahmedabad, Gujarat.<br>GST Registered Trusted Supplier.</p>",
+          "<a href=\"https://wa.me/918050389261\" class=\"text-green-500 hover:text-green-400\"><i class=\"fab fa-whatsapp\"></i></a>"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Footer has dark background (bg-gray-900) with white text",
+        "Left side displays business name, address, and GST registration status",
+        "Right side shows 'Quick Contact' section with large WhatsApp and phone icons",
+        "WhatsApp icon is green and links to WhatsApp",
+        "Phone icon is blue and links to phone dialer",
+        "Footer includes copyright notice at bottom"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Replace the existing single-product showcase with the expanded cart-enabled product catalog while maintaining the Marriage Full Combo Pack as the featured hero product with the uploaded product image (Gemini_Generated_Image_snu28bsnu28bsnu2.png)",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Uploaded product image is used for the Marriage Full Combo card",
+        "Product catalog section replaces or coexists with existing showcase",
+        "All cart functionality is integrated with add-to-cart buttons",
+        "Layout remains responsive and maintains brand styling"
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Add navigation menu items for Home, Products, and About sections with smooth scroll behavior and hover effects changing text color to red-600",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ],
+        "quotes": [
+          "<a href=\"#home\" class=\"hover:text-red-600 transition\">Home</a>",
+          "<a href=\"#products\" class=\"hover:text-red-600 transition\">Products</a>",
+          "<a href=\"#about\" class=\"hover:text-red-600 transition\">About Us</a>"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigation includes Home, Products, and About links",
+        "Links use hash navigation (#home, #products, #about)",
+        "Hover effect changes text color to red-600 with smooth transition",
+        "Links are hidden on mobile, visible on medium+ screens"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Render the uploaded product image (Gemini_Generated_Image_snu28bsnu28bsnu2.png) as a static asset in frontend/public/assets/generated and use it for the Marriage Full Combo Pack product display",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-current"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Uploaded image is saved to frontend/public/assets/generated/combo-box.png",
+        "Image is displayed in the Marriage Combo product card",
+        "Image maintains aspect ratio and fits card layout properly"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify backend/main.mo as no backend functionality is required",
+    "Do not edit immutable frontend paths: useInternetIdentity.ts, useInternetIdentity.tsx, useActor.ts, main.tsx, components/ui/*",
+    "Maintain Poppins font family and existing Tailwind styling conventions",
+    "Replace placeholder phone number 918050389261 with actual number +918050389261 throughout",
+    "Keep red-600 as primary brand color and gray-50 as background color",
+    "Preserve existing chatbot functionality and styling"
+  ],
+  "nonGoals": [
+    "Backend data persistence or API integration",
+    "User authentication or login system",
+    "Payment processing beyond WhatsApp order forwarding",
+    "Real inventory management or stock tracking",
+    "Multiple language support",
+    "Admin dashboard or content management system"
+  ],
+  "imageRequirements": {
+    "required": [
+      "Product photo of disposable plate stack on white background, professional product photography style (buffer-plates.dim_400x400.png)",
+      "Assorted food containers in various sizes arranged neatly, clean product shot (food-containers.dim_400x400.png)",
+      "Silver aluminum foil roll product image on white background (silver-foil.dim_400x400.png)",
+      "Stack of disposable cups with foil containers, professional product photography (cups-foils.dim_400x400.png)",
+      "Warm decorative background with bokeh lights and draped curtains for hero section (hero-bg.dim_2070x1200.jpg)"
+    ],
+    "edits": [
+      "Add 'Veer Mahadev Plastic Wholesale Shopping Center' logo overlay in top-right corner with white background badge (Gemini_Generated_Image_snu28bsnu28bsnu2.png > combo-box.dim_800x800.png)"
+    ]
+  }
+}
