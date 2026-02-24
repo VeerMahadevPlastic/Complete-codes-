@@ -1,1 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Veer Mahadev Plastic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <nav class="bg-white shadow sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="font-bold text-xl text-red-600">VEER MAHADEV <span class="text-gray-800">PLASTIC</span></a>
+            <a href="index.html#products" class="text-sm font-semibold text-red-600 hover:underline">← Back to Products</a>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid md:grid-cols-2 gap-8 bg-white rounded-2xl shadow p-5 md:p-8">
+            <div>
+                <img id="main-image" src="" alt="Product image" class="w-full h-[380px] object-cover rounded-xl border" />
+                <div id="thumbnail-row" class="grid grid-cols-4 gap-3 mt-4"></div>
+            </div>
+
+            <div>
+                <h1 id="product-name" class="text-3xl font-extrabold text-gray-900"></h1>
+                <p id="product-type" class="mt-2 text-red-600 font-semibold"></p>
+                <p id="product-description" class="mt-4 text-gray-600"></p>
+
+                <div class="mt-6 overflow-hidden border rounded-xl">
+                    <table class="w-full text-sm">
+                        <tbody id="spec-table" class="divide-y"></tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a id="whatsapp-order" href="#" target="_blank" class="bg-green-600 text-white px-5 py-3 rounded-lg font-bold hover:bg-green-700 transition">
+                        <i class="fab fa-whatsapp"></i> Enquire on WhatsApp
+                    </a>
+                    <a href="index.html#products" class="bg-gray-200 px-5 py-3 rounded-lg font-bold hover:bg-gray-300 transition">View More Products</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const WHATSAPP_NUMBER = '918050389261';
+
+        const PRODUCTS = {
+            'buffer-plate': {
+                name: '13" Buffer Plates',
+                type: 'Heavy-Duty Disposable Plate',
+                description: 'Catering aur marriage events ke liye strong aur premium finish wali buffet plate.',
+                specs: {
+                    'Size': '13 inch',
+                    'Weight': 'Approx. 28-32 gm each',
+                    'Material': 'Food-grade plastic',
+                    'One Pack Quantity': '50 plates',
+                    'Color Options': 'White / Silver',
+                    'Use Case': 'Wedding, Party, Buffet Service'
+                },
+                images: [
+                    'https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1527744591463-f0a4d6ea2344?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'marriage-combo': {
+                name: 'Special Marriage Combo',
+                type: 'Combo Set (Plate + Bowl + Spoon)',
+                description: 'Shaadi aur bulk event service ke liye complete disposable combo set.',
+                specs: {
+                    'Size': 'Standard Combo',
+                    'Weight': 'Mixed as per item',
+                    'Material': 'Food-grade plastic',
+                    'One Pack Quantity': '25 complete combo sets',
+                    'Color Options': 'White / Printed',
+                    'Use Case': 'Marriage, Catering, Community Events'
+                },
+                images: [
+                    'https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1555243896-c709bfa0b564?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'disposable-cups': {
+                name: 'Disposable Cups',
+                type: 'Ripple/Plain Disposable Cups',
+                description: 'Tea, coffee, juice ya cold drink serving ke liye hygienic cups.',
+                specs: {
+                    'Size': '90 ml, 150 ml, 200 ml',
+                    'Weight': 'As per size',
+                    'Material': 'Food-safe plastic / paper options',
+                    'One Pack Quantity': '100 cups',
+                    'Color Options': 'White / Brown / Printed',
+                    'Use Case': 'Office, Events, Takeaway'
+                },
+                images: [
+                    'https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'three-compartment': {
+                name: '3 Compartment Plate',
+                type: 'Compartment Serving Plate',
+                description: 'Multi-item serving ke liye section-wise neat presentation wali plate.',
+                specs: {
+                    'Size': '11 - 12 inch',
+                    'Weight': 'Approx. 25-30 gm each',
+                    'Material': 'Food-grade plastic',
+                    'One Pack Quantity': '50 plates',
+                    'Color Options': 'White / Off-white',
+                    'Use Case': 'Wedding, Buffet, Mess Service'
+                },
+                images: [
+                    'https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1464306076886-da185f6a9d05?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'foil-container': {
+                name: 'Foil Container',
+                type: 'Aluminium Foil Food Container',
+                description: 'Takeaway, packing aur oven-safe food transport ke liye durable container.',
+                specs: {
+                    'Size': '250 ml to 1000 ml',
+                    'Weight': 'As per size',
+                    'Material': 'Aluminium Foil',
+                    'One Pack Quantity': '100 containers',
+                    'Color Options': 'Silver',
+                    'Use Case': 'Packing, Delivery, Catering'
+                },
+                images: [
+                    'https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1528712306091-ed0763094c98?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'all-items-set': {
+                name: 'All Items Set',
+                type: 'Complete Disposable Kit',
+                description: 'Cup, bowl, plate aur spoon ka all-in-one ready set for bulk use.',
+                specs: {
+                    'Size': 'Mixed kit sizes',
+                    'Weight': 'Mixed as per item',
+                    'Material': 'Food-grade disposable mix',
+                    'One Pack Quantity': '25 complete sets',
+                    'Color Options': 'Standard white combo',
+                    'Use Case': 'Event package, Outdoor catering'
+                },
+                images: [
+                    'https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?q=80&w=1200&auto=format&fit=crop'
+                ]
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('id') || 'buffer-plate';
+        const product = PRODUCTS[productId] || PRODUCTS['buffer-plate'];
+
+        const mainImage = document.getElementById('main-image');
+        const thumbnailRow = document.getElementById('thumbnail-row');
+        const specTable = document.getElementById('spec-table');
+
+        document.getElementById('product-name').textContent = product.name;
+        document.getElementById('product-type').textContent = product.type;
+        document.getElementById('product-description').textContent = product.description;
+
+        mainImage.src = product.images[0];
+
+        product.images.forEach((imgSrc, index) => {
+            const thumb = document.createElement('button');
+            thumb.className = `border rounded-lg overflow-hidden ${index === 0 ? 'ring-2 ring-red-500' : ''}`;
+            thumb.innerHTML = `<img src="${imgSrc}" alt="${product.name} image ${index + 1}" class="w-full h-20 object-cover">`;
+            thumb.addEventListener('click', () => {
+                mainImage.src = imgSrc;
+                document.querySelectorAll('#thumbnail-row button').forEach(btn => btn.classList.remove('ring-2', 'ring-red-500'));
+                thumb.classList.add('ring-2', 'ring-red-500');
+            });
+            thumbnailRow.appendChild(thumb);
+        });
+
+        Object.entries(product.specs).forEach(([key, value]) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td class="font-semibold p-3 bg-gray-50">${key}</td><td class="p-3">${value}</td>`;
+            specTable.appendChild(row);
+        });
+
+        const message = `Namaste! Mujhe ${product.name} ke rates aur bulk order details chahiye.`;
+        document.getElementById('whatsapp-order').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    </script>
+</body>
+</html>
 
