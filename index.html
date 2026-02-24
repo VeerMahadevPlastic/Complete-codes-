@@ -1,927 +1,530 @@
-/workspace/Complete-codes-$ /bin/bash -lc 'git status --short && ls'
-admin.html
-all_filles_summary.json
-build_request.json
-images
-index.html
-products.json
-/workspace/Complete-codes-$ /bin/bash -lc 'cat products.json'
-
-/workspace/Complete-codes-$ /bin/bash -lc 'nl -ba index.html | sed -n '"'"'90,220p'"'"''
-90	                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-    91	                </a>
-    92	            </div>
-    93	        </div>
-    94	    </header>
-    95	
-    96	    <!-- ==================== PRODUCTS SECTION ==================== -->
-    97	    <section id="products" class="py-20 bg-white">
-    98	        <div class="container mx-auto px-6 text-center">
-    99	            <h2 class="text-3xl font-bold mb-12">Our Best-Selling Products</h2>
-   100	            
-   101	            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-   102	                
-   103	                <!-- Product 1: Buffer Plates -->
-   104	                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-   105	                    <img src="https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="13 Inch Buffer Plates" class="w-full h-48 object-cover rounded-xl mb-4">
-   106	                    <h3 class="text-xl font-bold mb-2">13" Buffer Plates</h3>
-   107	                    <p class="text-gray-600 mb-4">Premium quality heavy-duty plates for big events and catering.</p>
-   108	                    <button onclick="addToCart('13 Inch Buffer Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-   109	                </div>
-   110	
-   111	                <!-- Product 2: Marriage Combo -->
-   112	               <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-   113	                    <img src=https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=400" alt="Specail Marriage Combo" class="w-full h-48 object-cover rounded-xl mb-4">
-   114	                    <h3 class="text-xl font-bold mb-2">Specail Marriage Combo</h3>
-   115	                    <p class="text-gray-600 mb-4">Premium quality Marriage Combo plates&Bowl big events and catering.</p>
-   116	                    <button onclick="addToCart('Specail Marriage Combo')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-   117	
-   118	               </div>
-   119	
-   120	                <!-- Product 3: Cups -->
-   121	                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-   122	                    <img src="https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-   123	                    <h3 class="text-xl font-bold mb-2">Disposable Cups</h3>
-   124	                    <p class="text-gray-600 mb-4">Hygienic cups.</p>
-   125	                    <button onclick="addToCart('Disposable Cups')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-   126	                
-   127	                </div>
-   128	                
-   129	                <!-- Product 4: 3 Comapertment Plate -->
-   130	                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-   131	                    <img src="https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="3 Comapertment Plate " class="w-full h-48 object-cover rounded-xl mb-4">
-   132	                    <h3 class="text-xl font-bold mb-2">3 Comapertment Plate</h3>
-   133	                    <p class="text-gray-600 mb-4">Shaadi season ke liye best serving solution! 🍽️ Humari high-quality 3-compartment plates.</p>
-   134	                    <button onclick="addToCart('3 Comapertment Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-   135	               
-   136	                </div>
-   137	
-   138	                  <!-- Product 5: Foil Container -->
-   139	                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-   140	                    <img src="https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-   141	                    <h3 class="text-xl font-bold mb-2">Foil Container</h3>
-   142	                    <p class="text-gray-600 mb-4">Foil Container Availble All Size.</p>
-   143	                    <button onclick="addToCart('Foil Container')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-   144	
-   145	                </div>
-   146	
-   147	                 <!-- Product 6: All Items Set -->
-   148	                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-   149	                    <img src="https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-   150	                    <h3 class="text-xl font-bold mb-2">All Items Set </h3>
-   151	                    <p class="text-gray-600 mb-4">Hygienic cups,Bowl,Plates,Spoon.</p>
-   152	                    <button onclick="addToCart('All Items Set ')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-   153	
-   154	                </div>
-   155	                
-   156	                </section>
-   157	
-   158	
-   159	    <!-- ==================== ABOUT SECTION ==================== -->
-   160	    <section id="about" class="bg-gray-800 text-white py-16 px-4">
-   161	        <div class="container mx-auto text-center">
-   162	            <h2 class="text-3xl font-bold mb-4">About Veer Mahadev Plastic</h2>
-   163	            <p class="max-w-2xl mx-auto text-gray-400">
-   164	                Ahmedabad, Gujarat mein hum sabse bade wholesale supplier hain disposables ke. 
-   165	                Aap humein call karke ya WhatsApp karke bulk rates mangwa sakte hain. 
-   166	                GST Registered aur Trusted Supplier.
-   167	            </p>
-   168	            <div class="mt-8 flex justify-center gap-6 text-2xl">
-   169	                <a href="https://wa.me/918050389261" class="text-green-400 hover:text-green-300"><i class="fab fa-whatsapp"></i></a>
-   170	                <a href="tel:+918050389261" class="text-blue-400 hover:text-blue-300"><i class="fas fa-phone"></i></a>
-   171	            </div>
-   172	        </div>
-   173	    </section>
-   174	
-   175	    <!-- ==================== CART MODAL ==================== -->
-   176	    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[60] flex justify-end">
-   177	        <div class="bg-white w-full md:w-96 h-full p-6 shadow-2xl">
-   178	            <div class="flex justify-between items-center border-b pb-4 mb-4">
-   179	                <h2 class="text-2xl font-bold">🛒 Your Cart</h2>
-   180	                <button onclick="toggleCart()" class="text-3xl text-gray-600 hover:text-black">&times;</button>
-   181	            </div>
-   182	            
-   183	            <div id="cart-items" class="space-y-4 mb-10 overflow-y-auto h-[60vh]">
-   184	                <p class="text-gray-500 text-center">Your cart is empty</p>
-   185	            </div>
-   186	            
-   187	            <button onclick="checkoutWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition">
-   188	                <i class="fab fa-whatsapp"></i> Order Now via WhatsApp
-   189	            </button>
-   190	        </div>
-   191	    </div>
-   192	
-   193	    <!-- ==================== SINGLE CHAT WIDGET (NO DUPLICATES) ==================== -->
-   194	    <div id="chat-bubble" onclick="toggleChatWindow()" class="fixed bottom-5 right-5 bg-red-600 text-white p-4 rounded-full shadow-2xl cursor-pointer z-[100] w-16 h-16 flex items-center justify-center border-4 border-white">
-   195	        <i class="fa fa-comment-dots text-2xl"></i>
-   196	    </div>
-   197	
-   198	    <div id="chat-window" class="fixed bottom-24 right-5 w-80 bg-white shadow-2xl rounded-2xl hidden z-[100] border-2 border-red-600">
-   199	        <!-- Chat Header -->
-   200	        <div class="bg-red-600 text-white p-4 rounded-t-2xl font-bold flex justify-between items-center">
-   201	            <div class="flex items-center gap-2">
-   202	                <i class="fas fa-headset"></i>
-   203	                <span>VM Support</span>
-   204	            </div>
-   205	            <button onclick="toggleChatWindow()" class="text-2xl hover:text-gray-200">&times;</button>
-   206	        </div>
-   207	
-   208	        <!-- Chat Body -->
-   209	        <div id="chat-body" class="p-4 h-64 overflow-y-auto text-sm space-y-3 bg-gray-50">
-   210	            <div class="bg-white p-3 rounded-lg border-l-4 border-red-500">
-   211	                <p><b>Ram Ram! 🙏</b></p>
-   212	                <p class="text-gray-600 text-xs mt-1">Veer Mahadev Plastic ke support team. Aapko kya chahiye?</p>
-   213	            </div>
-   214	        </div>
-   215	
-   216	        <!-- Chat Input -->
-   217	        <div class="p-3 bg-white border-t-2 border-gray-200 flex gap-2 rounded-b-2xl">
-   218	            <input 
-   219	                id="user-input" 
-   220	                type="text"
-/workspace/Complete-codes-$ /bin/bash -lc 'python - <<'"'"'PY'"'"'
-from pathlib import Path
-p=Path('"'"'index.html'"'"')
-s=p.read_text()
-repls={
-"<div class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2\">\n                    <img src=\"https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"13 Inch Buffer Plates\" class=\"w-full h-48 object-cover rounded-xl mb-4\">":"<div onclick=\"openProduct('"'"'buffer-plate'"'"')\" class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer\">\n                    <img src=\"https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"13 Inch Buffer Plates\" class=\"w-full h-48 object-cover rounded-xl mb-4\">",
-"<button onclick=\"addToCart('"'"'13 Inch Buffer Plate'"'"')\" class=\"text-red-600 font-bold hover:underline\">Add to Cart →</button>":"<button onclick=\"event.stopPropagation(); openProduct('"'"'buffer-plate'"'"')\" class=\"text-red-600 font-bold hover:underline\">View Details →</button>",
-"<div class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2\">\n                    <img src=https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=400\" alt=\"Specail Marriage Combo\" class=\"w-full h-48 object-cover rounded-xl mb-4\">":"<div onclick=\"openProduct('"'"'marriage-combo'"'"')\" class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer\">\n                    <img src=https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=400\" alt=\"Specail Marriage Combo\" class=\"w-full h-48 object-cover rounded-xl mb-4\">",
-"<button onclick=\"addToCart('"'"'Specail Marriage Combo'"'"')\" class=\"text-red-600 font-bold hover:underline\">Add to Cart →</button>":"<button onclick=\"event.stopPropagation(); openProduct('"'"'marriage-combo'"'"')\" class=\"text-red-600 font-bold hover:underline\">View Details →</button>",
-"<div class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2\">\n                    <img src=\"https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"Disposable Cups \" class=\"w-full h-48 object-cover rounded-xl mb-4\">":"<div onclick=\"openProduct('"'"'disposable-cups'"'"')\" class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer\">\n                    <img src=\"https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"Disposable Cups \" class=\"w-full h-48 object-cover rounded-xl mb-4\">",
-"<button onclick=\"addToCart('"'"'Disposable Cups'"'"')\" class=\"text-red-600 font-bold hover:underline\">Add to Cart →</button>":"<button onclick=\"event.stopPropagation(); openProduct('"'"'disposable-cups'"'"')\" class=\"text-red-600 font-bold hover:underline\">View Details →</button>",
-"<div class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2\">\n                    <img src=\"https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"3 Comapertment Plate \" class=\"w-full h-48 object-cover rounded-xl mb-4\">":"<div onclick=\"openProduct('"'"'three-compartment'"'"')\" class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer\">\n                    <img src=\"https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"3 Comapertment Plate \" class=\"w-full h-48 object-cover rounded-xl mb-4\">",
-"<button onclick=\"addToCart('"'"'3 Comapertment Plate'"'"')\" class=\"text-red-600 font-bold hover:underline\">Add to Cart →</button>":"<button onclick=\"event.stopPropagation(); openProduct('"'"'three-compartment'"'"')\" class=\"text-red-600 font-bold hover:underline\">View Details →</button>",
-"<div class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2\">\n                    <img src=\"https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"Disposable Cups \" class=\"w-full h-48 object-cover rounded-xl mb-4\">":"<div onclick=\"openProduct('"'"'foil-container'"'"')\" class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer\">\n                    <img src=\"https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"Disposable Cups \" class=\"w-full h-48 object-cover rounded-xl mb-4\">",
-"<button onclick=\"addToCart('"'"'Foil Container'"'"')\" class=\"text-red-600 font-bold hover:underline\">Add to Cart →</button>":"<button onclick=\"event.stopPropagation(); openProduct('"'"'foil-container'"'"')\" class=\"text-red-600 font-bold hover:underline\">View Details →</button>",
-"<div class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2\">\n                    <img src=\"https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"Disposable Cups \" class=\"w-full h-48 object-cover rounded-xl mb-4\">":"<div onclick=\"openProduct('"'"'all-items-set'"'"')\" class=\"bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer\">\n                    <img src=\"https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=400\" alt=\"Disposable Cups \" class=\"w-full h-48 object-cover rounded-xl mb-4\">",
-"<button onclick=\"addToCart('"'"'All Items Set '"'"')\" class=\"text-red-600 font-bold hover:underline\">Add to Cart →</button>":"<button onclick=\"event.stopPropagation(); openProduct('"'"'all-items-set'"'"')\" class=\"text-red-600 font-bold hover:underline\">View Details →</button>",
-}
-for o,n in repls.items():
-    if o in s:
-        s=s.replace(o,n,1)
-    else:
-        print('"'"'missing'"'"',o[:70])
-
-marker="function checkoutWhatsApp() {"
-insert="function openProduct(productId) {\n            window.location.href = `product.html?id=${encodeURIComponent(productId)}`;\n        }\n\n        "
-if insert not in s:
-    s=s.replace(marker,insert+marker,1)
-
-p.write_text(s)
-print('"'"'done'"'"')
-PY'
-done
-/workspace/Complete-codes-$ /bin/bash -lc 'cat > product.html <<'"'"'HTML'"'"'
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Details | Veer Mahadev Plastic</title>
+    <title>Veer Mahadev Plastic | Ahmedabad's Best Wholesale Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .gradient-text { 
+            background: linear-gradient(90deg, #ff4d4d, #f9cb28); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        .hero-bg { 
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url(https://i.postimg.cc/pXSCyWZX/BACKGROUND-IMAGE.png);
+            background-size: cover; 
+            background-position: center; 
+        }
+        .cart-count { 
+            position: absolute; 
+            top: -8px; 
+            right: -8px; 
+            background: red; 
+            color: white; 
+            border-radius: 50%; 
+            padding: 2px 6px; 
+            font-size: 12px; 
+            font-weight: bold;
+        }
+        .product-card:hover { 
+            transform: scale(1.03); 
+            transition: 0.3s; 
+        }
+        #chat-bubble {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-    <nav class="bg-white shadow sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="font-bold text-xl text-red-600">VEER MAHADEV <span class="text-gray-800">PLASTIC</span></a>
-            <a href="index.html#products" class="text-sm font-semibold text-red-600 hover:underline">← Back to Products</a>
+<body class="bg-gray-50 font-sans leading-normal tracking-normal">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+         <div class="flex flex-col items-start">
+                <div class="text-2xl font-bold text-red-600">VEER MAHADEV <span class="text-gray-800">PLASTIC</span></div>
+                <div class="flex items-center gap-4 mt-2 text-lg">
+                    <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:text-pink-700 transition" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer" class="text-red-600 hover:text-red-700 transition" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex space-x-8 font-medium">
+                <a href="#home" class="hover:text-red-600 transition">Home</a>
+                <a href="#products" class="hover:text-red-600 transition">Products</a>
+                <a href="#about" class="hover:text-red-600 transition">About Us</a>
+                <a href="https://wa.me/918050389261" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Order Now</a>
+            </div>
+
+            <!-- Cart Icon for Mobile -->
+            <div class="relative cursor-pointer md:hidden" onclick="toggleCart()">
+                <i class="fa fa-shopping-cart text-2xl text-gray-700"></i>
+                <span id="cart-qty" class="cart-count">0</span>
+            </div>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-4 py-8">
-        <div class="grid md:grid-cols-2 gap-8 bg-white rounded-2xl shadow p-5 md:p-8">
-            <div>
-                <img id="main-image" src="" alt="Product image" class="w-full h-[380px] object-cover rounded-xl border" />
-                <div id="thumbnail-row" class="grid grid-cols-4 gap-3 mt-4"></div>
+    <!-- ==================== HERO SECTION ==================== -->
+    <header id="home" class="hero-bg h-[80vh] flex items-center justify-center text-center text-white px-4">
+        <div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4">
+                Premium Quality <span class="gradient-text">Disposable Items</span>
+            </h1>
+            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto text-gray-200">
+                Ahmedabad's leading wholesale supplier for Marriage Combos, Buffet Plates, and Food Containers.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#products" class="bg-white text-red-600 px-8 py-3 rounded-full font-bold text-lg hover:bg-gray-100 transition">
+                    View Products
+                </a>
+                <a href="https://wa.me/918050389261" class="bg-green-500 text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-green-600 transition">
+                    <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                </a>
             </div>
+        </div>
+    </header>
 
-            <div>
-                <h1 id="product-name" class="text-3xl font-extrabold text-gray-900"></h1>
-                <p id="product-type" class="mt-2 text-red-600 font-semibold"></p>
-                <p id="product-description" class="mt-4 text-gray-600"></p>
-
-                <div class="mt-6 overflow-hidden border rounded-xl">
-                    <table class="w-full text-sm">
-                        <tbody id="spec-table" class="divide-y"></tbody>
-                    </table>
+    <!-- ==================== PRODUCTS SECTION ==================== -->
+    <section id="products" class="py-20 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-12">Our Best-Selling Products</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                
+                <!-- Product 1: Buffer Plates -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="13 Inch Buffer Plates" class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">13" Buffer Plates</h3>
+                    <p class="text-gray-600 mb-4">Premium quality heavy-duty plates for big events and catering.</p>
+                    <button onclick="addToCart('13 Inch Buffer Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
                 </div>
 
-                <div class="mt-6 flex flex-wrap gap-3">
-                    <a id="whatsapp-order" href="#" target="_blank" class="bg-green-600 text-white px-5 py-3 rounded-lg font-bold hover:bg-green-700 transition">
-                        <i class="fab fa-whatsapp"></i> Enquire on WhatsApp
+                <!-- Product 2: Marriage Combo -->
+               <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src=https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=400" alt="Specail Marriage Combo" class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">Specail Marriage Combo</h3>
+                    <p class="text-gray-600 mb-4">Premium quality Marriage Combo plates&Bowl big events and catering.</p>
+                    <button onclick="addToCart('Specail Marriage Combo')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+
+               </div>
+
+                <!-- Product 3: Cups -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">Disposable Cups</h3>
+                    <p class="text-gray-600 mb-4">Hygienic cups.</p>
+                    <button onclick="addToCart('Disposable Cups')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+                
+                </div>
+                
+                <!-- Product 4: 3 Comapertment Plate -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="3 Comapertment Plate " class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">3 Comapertment Plate</h3>
+                    <p class="text-gray-600 mb-4">Shaadi season ke liye best serving solution! 🍽️ Humari high-quality 3-compartment plates.</p>
+                    <button onclick="addToCart('3 Comapertment Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+               
+                </div>
+
+                  <!-- Product 5: Foil Container -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">Foil Container</h3>
+                    <p class="text-gray-600 mb-4">Foil Container Availble All Size.</p>
+                    <button onclick="addToCart('Foil Container')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+
+                </div>
+
+                 <!-- Product 6: All Items Set -->
+                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">All Items Set </h3>
+                    <p class="text-gray-600 mb-4">Hygienic cups,Bowl,Plates,Spoon.</p>
+                    <button onclick="addToCart('All Items Set ')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+
+                </div>
+
+                <!-- Product 7: 3Compartment Squar Plate -->
+                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/y8hNLzPD/3-COMPARTMENT-SQUARE.png?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">3Compartment Squar Plate </h3>
+                    <p class="text-gray-600 mb-4">3Compartment Squar Plate For Multiple Delicious Dishes .</p>
+                    <button onclick="addToCart('3Compartment Squar Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+
+                </div>
+               
+                <!-- Product 8:Disposable Cups 100Ml -->
+                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/5tx2Gk7r/CHAI-CUPS-100-ML.png?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">Disposable Cups 100Ml </h3>
+                    <p class="text-gray-600 mb-4">Premium Disposable Cups 100 ML | 50 PCS Pack Retail & Wholesale Available.</p>
+                    <button onclick="addToCart('Disposable Cups 100 ML')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+
+                </div>
+                
+                <!-- Product 9:Disposable Spoons -->
+                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/MHj6VkHV/SPOON-PACKET-OF-50-PCS.png?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">Disposable Spoons  </h3>
+                    <p class="text-gray-600 mb-4">Premium Disposable Spoons  | 50 PCS Pack Retail & Wholesale Available.</p>
+                    <button onclick="addToCart('Disposable Spoons ')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+
+                </div>
+
+                <!-- Product 10:Disposable Round Bowl -->
+                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/NMwJcS2r/BOWL-240ML.png?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">Disposable Round Bowl 240Ml</h3>
+                    <p class="text-gray-600 mb-4">Premium Disposable Round Bowl 240Ml | 25 PCS Pack Retail & Wholesale Available.</p>
+                    <button onclick="addToCart('Disposable Round Bowl 240ml ')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+                     
+                </div>
+
+                <!-- Product 11: Tissue Paper-->
+                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                    <img src="https://i.postimg.cc/ydYRcywr/tisue-paper.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
+                    <h3 class="text-xl font-bold mb-2">Tissue Paper</h3>
+                    <p class="text-gray-600 mb-4">Tissue Paper Eco Friendly | Pack Retail & Wholesale Available.</p>
+                    <button onclick="addToCart('Tissue Paper Eco Friendly')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+               
+                 </div>
+                 
+                 </section>
+
+
+    <!-- ==================== ABOUT SECTION ==================== -->
+    <section id="about" class="bg-gray-800 text-white py-16 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-4">About Veer Mahadev Plastic</h2>
+            <p class="max-w-2xl mx-auto text-gray-400">
+               We are wholesale supplier of disposables in Ahmedabad, Gujarat.
+                You can call or WhatsApp us for bulk rates.
+                GST Registered and Trusted Supplier.
+            </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CART MODAL ==================== -->
+    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-[60] flex justify-end">
+        <div class="bg-white w-full md:w-96 h-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b pb-4 mb-4">
+                <h2 class="text-2xl font-bold">🛒 Your Cart</h2>
+                <button onclick="toggleCart()" class="text-3xl text-gray-600 hover:text-black">&times;</button>
+            </div>
+            
+            <div id="cart-items" class="space-y-4 mb-10 overflow-y-auto h-[60vh]">
+                <p class="text-gray-500 text-center">Your cart is empty</p>
+            </div>
+            
+            <button onclick="checkoutWhatsApp()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition">
+                <i class="fab fa-whatsapp"></i> Order Now via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== SINGLE CHAT WIDGET (NO DUPLICATES) ==================== -->
+    <div id="chat-bubble" onclick="toggleChatWindow()" class="fixed bottom-5 right-5 bg-red-600 text-white p-4 rounded-full shadow-2xl cursor-pointer z-[100] w-16 h-16 flex items-center justify-center border-4 border-white">
+        <i class="fa fa-comment-dots text-2xl"></i>
+    </div>
+
+    <div id="chat-window" class="fixed bottom-24 right-5 w-80 bg-white shadow-2xl rounded-2xl hidden z-[100] border-2 border-red-600">
+        <!-- Chat Header -->
+        <div class="bg-red-600 text-white p-4 rounded-t-2xl font-bold flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-headset"></i>
+                <span>VM Support</span>
+            </div>
+            <button onclick="toggleChatWindow()" class="text-2xl hover:text-gray-200">&times;</button>
+        </div>
+
+        <!-- Chat Body -->
+        <div id="chat-body" class="p-4 h-64 overflow-y-auto text-sm space-y-3 bg-gray-50">
+            <div class="bg-white p-3 rounded-lg border-l-4 border-red-500">
+                <p><b>Ram Ram! 🙏</b></p>
+                <p class="text-gray-600 text-xs mt-1">Veer Mahadev Plastic ke support team. Aapko kya chahiye?</p>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-3 bg-white border-t-2 border-gray-200 flex gap-2 rounded-b-2xl">
+            <input 
+                id="user-input" 
+                type="text" 
+                placeholder="Type your message..." 
+                class="flex-1 p-2 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+            >
+            <button onclick="sendChatMessage()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                <i class="fa fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <!-- Left Section -->
+            <div class="text-center md:text-left">
+                <h3 class="text-2xl font-bold text-red-500 mb-4">Veer Mahadev Plastic</h3>
+                <p class="text-gray-400 mb-4">
+                    Pillar No. 74, Near Rabari Colony,<br>
+                    Ahmedabad, Gujarat 380025<br>
+                    GST Registered Trusted Supplier
+                </p>
+                <p class="text-gray-500 text-sm">Since 2022 - Serving 10,000+ Customers</p>
+
+                <!-- Compact Map -->
+                <div class="mt-4 bg-gray-800 p-3 rounded-xl border border-gray-700 max-w-md mx-auto md:mx-0">
+                    <p class="text-xs text-gray-300 mb-2 font-semibold tracking-wide">Visit Our Shop</p>
+                    <div class="rounded-lg overflow-hidden shadow-md border border-gray-700">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.514752653242!2d72.6379061!3d23.0048647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e872d2f71fefb%3A0xf3248d09e89dd0dc!2sVeer%20Mahadev%20Plastic!5e0!3m2!1sen!2sin!4v1771899875011!5m2!1sen!2sin"
+                            width="100%"
+                            height="160"
+                            style="border:0;"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Veer Mahadev Plastic Location">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="text-center md:text-right">
+                <p class="font-bold mb-4">Quick Contact:</p>
+                <div class="flex justify-center md:justify-end space-x-6 text-3xl mb-4">
+                    <a href="https://wa.me/918050389261" class="text-green-500 hover:text-green-400 transition" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
                     </a>
-                    <a href="index.html#products" class="bg-gray-200 px-5 py-3 rounded-lg font-bold hover:bg-gray-300 transition">View More Products</a>
+                    <a href="tel:+918050389261" class="text-blue-500 hover:text-blue-400 transition" title="Call">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                </div>
+                <span class="inline-block bg-gray-800 border border-gray-700 px-3 py-1 rounded-lg">📱 +91 8050389261</p>
+                <div class="mt-4 flex flex-col gap-2 text-xs text-gray-300 md:items-end">
+                    <span class="inline-block bg-gray-800 border border-gray-700 px-3 py-1 rounded-lg">GST Certified: 24BLLPL0402N1Z6</span>
+                    <span class="inline-block bg-gray-800 border border-gray-700 px-3 py-1 rounded-lg">MSME Registered: UDYAM-GJ-01-0532946</span>
+                    <span class="inline-block bg-gray-800 border border-gray-700 px-3 py-1 rounded-lg">E-MAIL ID:VEERMAHADEVPLASTIC@GMAIL.COM</span>
                 </div>
             </div>
         </div>
-    </main>
 
+        <!-- Bottom Section -->
+        <div class="mt-10 border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
+            <p>&copy; 2026 Veer Mahadev Plastic. All Rights Reserved.</p>
+            <p class="mt-2">Made with ❤️ for Ahmedabad Business</p>
+        </div>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-        const WHATSAPP_NUMBER = '"'"'918050389261'"'"';
+        // ========== CONFIGURATION ==========
+        const WHATSAPP_NUMBER = "918050389261";  // ✅ +91 8050389261
 
-        const PRODUCTS = {
-            '"'"'buffer-plate'"'"': {
-                name: '"'"'13" Buffer Plates'"'"',
-                type: '"'"'Heavy-Duty Disposable Plate'"'"',
-                description: '"'"'Catering aur marriage events ke liye strong aur premium finish wali buffet plate.'"'"',
-                specs: {
-                    '"'"'Size'"'"': '"'"'13 inch'"'"',
-                    '"'"'Weight'"'"': '"'"'Approx. 28-32 gm each'"'"',
-                    '"'"'Material'"'"': '"'"'Food-grade plastic'"'"',
-                    '"'"'One Pack Quantity'"'"': '"'"'50 plates'"'"',
-                    '"'"'Color Options'"'"': '"'"'White / Silver'"'"',
-                    '"'"'Use Case'"'"': '"'"'Wedding, Party, Buffet Service'"'"'
-                },
-                images: [
-                    '"'"'https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=900'"'"',
-                    '"'"'https://images.unsplash.com/photo-1527744591463-f0a4d6ea2344?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=1200&auto=format&fit=crop'"'"'
-                ]
-            },
-            '"'"'marriage-combo'"'"': {
-                name: '"'"'Special Marriage Combo'"'"',
-                type: '"'"'Combo Set (Plate + Bowl + Spoon)'"'"',
-                description: '"'"'Shaadi aur bulk event service ke liye complete disposable combo set.'"'"',
-                specs: {
-                    '"'"'Size'"'"': '"'"'Standard Combo'"'"',
-                    '"'"'Weight'"'"': '"'"'Mixed as per item'"'"',
-                    '"'"'Material'"'"': '"'"'Food-grade plastic'"'"',
-                    '"'"'One Pack Quantity'"'"': '"'"'25 complete combo sets'"'"',
-                    '"'"'Color Options'"'"': '"'"'White / Printed'"'"',
-                    '"'"'Use Case'"'"': '"'"'Marriage, Catering, Community Events'"'"'
-                },
-                images: [
-                    '"'"'https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=900'"'"',
-                    '"'"'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1555243896-c709bfa0b564?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=1200&auto=format&fit=crop'"'"'
-                ]
-            },
-            '"'"'disposable-cups'"'"': {
-                name: '"'"'Disposable Cups'"'"',
-                type: '"'"'Ripple/Plain Disposable Cups'"'"',
-                description: '"'"'Tea, coffee, juice ya cold drink serving ke liye hygienic cups.'"'"',
-                specs: {
-                    '"'"'Size'"'"': '"'"'90 ml, 150 ml, 200 ml'"'"',
-                    '"'"'Weight'"'"': '"'"'As per size'"'"',
-                    '"'"'Material'"'"': '"'"'Food-safe plastic / paper options'"'"',
-                    '"'"'One Pack Quantity'"'"': '"'"'100 cups'"'"',
-                    '"'"'Color Options'"'"': '"'"'White / Brown / Printed'"'"',
-                    '"'"'Use Case'"'"': '"'"'Office, Events, Takeaway'"'"'
-                },
-                images: [
-                    '"'"'https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=900'"'"',
-                    '"'"'https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200&auto=format&fit=crop'"'"'
-                ]
-            },
-            '"'"'three-compartment'"'"': {
-                name: '"'"'3 Compartment Plate'"'"',
-                type: '"'"'Compartment Serving Plate'"'"',
-                description: '"'"'Multi-item serving ke liye section-wise neat presentation wali plate.'"'"',
-                specs: {
-                    '"'"'Size'"'"': '"'"'11 - 12 inch'"'"',
-                    '"'"'Weight'"'"': '"'"'Approx. 25-30 gm each'"'"',
-                    '"'"'Material'"'"': '"'"'Food-grade plastic'"'"',
-                    '"'"'One Pack Quantity'"'"': '"'"'50 plates'"'"',
-                    '"'"'Color Options'"'"': '"'"'White / Off-white'"'"',
-                    '"'"'Use Case'"'"': '"'"'Wedding, Buffet, Mess Service'"'"'
-                },
-                images: [
-                    '"'"'https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=900'"'"',
-                    '"'"'https://images.unsplash.com/photo-1464306076886-da185f6a9d05?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop'"'"'
-                ]
-            },
-            '"'"'foil-container'"'"': {
-                name: '"'"'Foil Container'"'"',
-                type: '"'"'Aluminium Foil Food Container'"'"',
-                description: '"'"'Takeaway, packing aur oven-safe food transport ke liye durable container.'"'"',
-                specs: {
-                    '"'"'Size'"'"': '"'"'250 ml to 1000 ml'"'"',
-                    '"'"'Weight'"'"': '"'"'As per size'"'"',
-                    '"'"'Material'"'"': '"'"'Aluminium Foil'"'"',
-                    '"'"'One Pack Quantity'"'"': '"'"'100 containers'"'"',
-                    '"'"'Color Options'"'"': '"'"'Silver'"'"',
-                    '"'"'Use Case'"'"': '"'"'Packing, Delivery, Catering'"'"'
-                },
-                images: [
-                    '"'"'https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=900'"'"',
-                    '"'"'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1528712306091-ed0763094c98?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=1200&auto=format&fit=crop'"'"'
-                ]
-            },
-            '"'"'all-items-set'"'"': {
-                name: '"'"'All Items Set'"'"',
-                type: '"'"'Complete Disposable Kit'"'"',
-                description: '"'"'Cup, bowl, plate aur spoon ka all-in-one ready set for bulk use.'"'"',
-                specs: {
-                    '"'"'Size'"'"': '"'"'Mixed kit sizes'"'"',
-                    '"'"'Weight'"'"': '"'"'Mixed as per item'"'"',
-                    '"'"'Material'"'"': '"'"'Food-grade disposable mix'"'"',
-                    '"'"'One Pack Quantity'"'"': '"'"'25 complete sets'"'"',
-                    '"'"'Color Options'"'"': '"'"'Standard white combo'"'"',
-                    '"'"'Use Case'"'"': '"'"'Event package, Outdoor catering'"'"'
-                },
-                images: [
-                    '"'"'https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=900'"'"',
-                    '"'"'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=1200&auto=format&fit=crop'"'"',
-                    '"'"'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?q=80&w=1200&auto=format&fit=crop'"'"'
-                ]
+        // ========== CART FUNCTIONALITY ==========
+        let cart = [];
+
+        function addToCart(productName) {
+            cart.push(productName);
+            document.getElementById('cart-qty').innerText = cart.length;
+            
+            // Update cart items display
+            updateCartDisplay();
+            
+            // Show notification
+            showNotification(`✅ ${productName} cart mein add ho gaya!`);
+        }
+
+        function updateCartDisplay() {
+            const cartItemsDiv = document.getElementById('cart-items');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty</p>';
+                return;
             }
-        };
 
-        const params = new URLSearchParams(window.location.search);
-        const productId = params.get('"'"'id'"'"') || '"'"'buffer-plate'"'"';
-        const product = PRODUCTS[productId] || PRODUCTS['"'"'buffer-plate'"'"'];
-
-        const mainImage = document.getElementById('"'"'main-image'"'"');
-        const thumbnailRow = document.getElementById('"'"'thumbnail-row'"'"');
-        const specTable = document.getElementById('"'"'spec-table'"'"');
-
-        document.getElementById('"'"'product-name'"'"').textContent = product.name;
-        document.getElementById('"'"'product-type'"'"').textContent = product.type;
-        document.getElementById('"'"'product-description'"'"').textContent = product.description;
-
-        mainImage.src = product.images[0];
-
-        product.images.forEach((imgSrc, index) => {
-            const thumb = document.createElement('"'"'button'"'"');
-            thumb.className = `border rounded-lg overflow-hidden ${index === 0 ? '"'"'ring-2 ring-red-500'"'"' : '"'"''"'"'}`;
-            thumb.innerHTML = `<img src="${imgSrc}" alt="${product.name} image ${index + 1}" class="w-full h-20 object-cover">`;
-            thumb.addEventListener('"'"'click'"'"', () => {
-                mainImage.src = imgSrc;
-                document.querySelectorAll('"'"'#thumbnail-row button'"'"').forEach(btn => btn.classList.remove('"'"'ring-2'"'"', '"'"'ring-red-500'"'"'));
-                thumb.classList.add('"'"'ring-2'"'"', '"'"'ring-red-500'"'"');
+            let itemsHTML = '<div class="space-y-2">';
+            cart.forEach((item, index) => {
+                itemsHTML += `
+                    <div class="flex justify-between items-center border-b pb-2 hover:bg-gray-50 p-2 rounded">
+                        <span class="text-gray-700">${index + 1}. ${item}</span>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 font-bold">
+                            ✕ Remove
+                        </button>
+                    </div>
+                `;
             });
-            thumbnailRow.appendChild(thumb);
+            itemsHTML += '</div>';
+            cartItemsDiv.innerHTML = itemsHTML;
+        }
+
+        function removeFromCart(index) {
+            const removed = cart.splice(index, 1)[0];
+            document.getElementById('cart-qty').innerText = cart.length;
+            updateCartDisplay();
+            showNotification(`🗑️ ${removed} remove ho gaya!`);
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            updateCartDisplay();
+            modal.classList.toggle('hidden');
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                showNotification('❌ Cart khaali hai!');
+                return;
+            }
+
+            let message = "🛍️ *Veer Mahadev Plastic Order*\n\n";
+            message += "Mujhe ye items order karne hain:\n\n";
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item}\n`;
+            });
+            message += "\n💰 Mujhe wholesale rates chahiye.\n";
+            message += "📞 Please contact me for quotation.";
+
+            const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        // ========== CHAT FUNCTIONALITY ==========
+        function toggleChatWindow() {
+            const chatWindow = document.getElementById('chat-window');
+            const chatBubble = document.getElementById('chat-bubble');
+            
+            chatWindow.classList.toggle('hidden');
+            
+            if (!chatWindow.classList.contains('hidden')) {
+                setTimeout(() => {
+                    document.getElementById('user-input').focus();
+                }, 100);
+            }
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('user-input');
+            const chatBody = document.getElementById('chat-body');
+            const userMessage = input.value.trim();
+
+            if (!userMessage) return;
+
+            // Add user message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'flex justify-end';
+            userMsgDiv.innerHTML = `
+                <div class="bg-red-500 text-white p-3 rounded-lg max-w-[80%] shadow-sm">
+                    ${userMessage}
+                </div>
+            `;
+            chatBody.appendChild(userMsgDiv);
+            input.value = '';
+
+            // Show typing indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'flex justify-start';
+            typingDiv.innerHTML = `
+                <div class="bg-gray-300 text-gray-700 p-3 rounded-lg">
+                    <span class="inline-block w-2 h-2 bg-gray-700 rounded-full animate-bounce" style="animation-delay: 0s"></span>
+                    <span class="inline-block w-2 h-2 bg-gray-700 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                    <span class="inline-block w-2 h-2 bg-gray-700 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+                </div>
+            `;
+            chatBody.appendChild(typingDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // Generate AI response
+            setTimeout(() => {
+                const typingElement = document.getElementById('typing-indicator');
+                if (typingElement) typingElement.remove();
+
+                let reply = generateBotReply(userMessage);
+                
+                const botMsgDiv = document.createElement('div');
+                botMsgDiv.className = 'flex justify-start';
+                botMsgDiv.innerHTML = `
+                    <div class="bg-white p-3 rounded-lg border-l-4 border-red-500 shadow-sm max-w-[80%]">
+                        ${reply}
+                    </div>
+                `;
+                chatBody.appendChild(botMsgDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+
+        function generateBotReply(userMessage) {
+            const msg = userMessage.toLowerCase();
+
+            if (msg.includes('hello') || msg.includes('hi') || msg.includes('namaste') || msg.includes('hii')) {
+                return '👋 Ram Ram! Veer Mahadev Plastic mein swagat hai! <br>Aapko kya chahiye?';
+            }
+            else if (msg.includes('rate') || msg.includes('price') || msg.includes('bhav') || msg.includes('cost')) {
+                return '💰 Hmare wholesale rates market se sabse saste hain! <br>WhatsApp par message karo detailed catalog ke liye. 📱 <br><a href="https://wa.me/918050389261" target="_blank" class="text-red-600 font-bold">WhatsApp karo →</a>';
+            }
+            else if (msg.includes('address') || msg.includes('location') || msg.includes('kahan') || msg.includes('where')) {
+                return '📍 Pillar No. 74, Near Rabari Colony, Ahmedabad, Gujarat 380025 <br><br>Google Maps par search karo: "Veer Mahadev Plastic Ahmedabad"';
+            }
+            else if (msg.includes('plate') || msg.includes('cup') || msg.includes('foil') || msg.includes('combo')) {
+                return '✅ Hamare paas hai: <br>• 13" Buffer Plates <br>• Marriage Combo <br>• Disposable Cups & Foils <br><br>Aur bhi items chahiye? WhatsApp karo! 📲';
+            }
+            else if (msg.includes('order') || msg.includes('bulk') || msg.includes('quantity')) {
+                return '🛍️ Wholesale orders ke liye directly contact karo! <br><a href="https://wa.me/918050389261" target="_blank" class="text-red-600 font-bold">📞 Click here for WhatsApp</a> <br>ya call karo: +91 8050389261';
+            }
+            else if (msg.includes('thank') || msg.includes('thanks') || msg.includes('dhanyavaad')) {
+                return '🙏 Swagat hai! Aapka order wait kar rahe hain! 💚';
+            }
+            else {
+                return '🤔 Interesting! <br>Iska detailed answer WhatsApp par de sakta hoon. <br><a href="https://wa.me/918050389261" target="_blank" class="text-red-600 font-bold">Chat karein →</a>';
+            }
+        }
+
+        // Handle Enter key in chat
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && document.getElementById('user-input') === document.activeElement) {
+                event.preventDefault();
+                sendChatMessage();
+            }
         });
 
-        Object.entries(product.specs).forEach(([key, value]) => {
-            const row = document.createElement('"'"'tr'"'"');
-            row.innerHTML = `<td class="font-semibold p-3 bg-gray-50">${key}</td><td class="p-3">${value}</td>`;
-            specTable.appendChild(row);
-        });
+        // ========== NOTIFICATION FUNCTION ==========
+        function showNotification(message) {
+            // Create notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-5 right-5 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg z-[99] animate-bounce';
+            notification.textContent = message;
+            document.body.appendChild(notification);
 
-        const message = `Namaste! Mujhe ${product.name} ke rates aur bulk order details chahiye.`;
-        document.getElementById('"'"'whatsapp-order'"'"').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
     </script>
+
+        </div>
+    </div>
+</footer>
 </body>
 </html>
-HTML'
-/workspace/Complete-codes-$ /bin/bash -lc 'rg -n "openProduct|View Details|cursor-pointer" index.html | sed -n '"'"'1,120p'"'"''
-69:            <div class="relative cursor-pointer md:hidden" onclick="toggleCart()">
-104:                <div onclick="openProduct('buffer-plate')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-108:                    <button onclick="event.stopPropagation(); openProduct('buffer-plate')" class="text-red-600 font-bold hover:underline">View Details →</button>
-112:               <div onclick="openProduct('marriage-combo')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-116:                    <button onclick="event.stopPropagation(); openProduct('marriage-combo')" class="text-red-600 font-bold hover:underline">View Details →</button>
-121:                <div onclick="openProduct('disposable-cups')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-125:                    <button onclick="event.stopPropagation(); openProduct('disposable-cups')" class="text-red-600 font-bold hover:underline">View Details →</button>
-130:                <div onclick="openProduct('three-compartment')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-134:                    <button onclick="event.stopPropagation(); openProduct('three-compartment')" class="text-red-600 font-bold hover:underline">View Details →</button>
-139:                <div onclick="openProduct('foil-container')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-143:                    <button onclick="event.stopPropagation(); openProduct('foil-container')" class="text-red-600 font-bold hover:underline">View Details →</button>
-148:                 <div onclick="openProduct('all-items-set')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-152:                    <button onclick="event.stopPropagation(); openProduct('all-items-set')" class="text-red-600 font-bold hover:underline">View Details →</button>
-194:    <div id="chat-bubble" onclick="toggleChatWindow()" class="fixed bottom-5 right-5 bg-red-600 text-white p-4 rounded-full shadow-2xl cursor-pointer z-[100] w-16 h-16 flex items-center justify-center border-4 border-white">
-341:        function openProduct(productId) {
-/workspace/Complete-codes-$ /bin/bash -lc 'python3 -m http.server 4173 --directory /workspace/Complete-codes-'
-Serving HTTP on 0.0.0.0 port 4173 (http://0.0.0.0:4173/) ...
-172.31.7.116 - - [24/Feb/2026 16:48:45] "GET /index.html HTTP/1.1" 200 -
-172.31.7.116 - - [24/Feb/2026 16:48:45] "GET /images/hero-bg.png HTTP/1.1" 200 -
-172.31.7.116 - - [24/Feb/2026 16:48:47] "GET /product.html?id=buffer-plate HTTP/1.1" 200 -
-^C
-Keyboard interrupt received, exiting.
-/workspace/Complete-codes-$ /bin/bash -lc 'git status --short && git diff -- index.html product.html | sed -n '"'"'1,220p'"'"''
-M index.html
-?? product.html
-diff --git a/index.html b/index.html
-index 6b396db..63b8752 100644
---- a/index.html
-+++ b/index.html
-@@ -101,55 +101,55 @@
-             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                 
-                 <!-- Product 1: Buffer Plates -->
--                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-+                <div onclick="openProduct('buffer-plate')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-                     <img src="https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="13 Inch Buffer Plates" class="w-full h-48 object-cover rounded-xl mb-4">
-                     <h3 class="text-xl font-bold mb-2">13" Buffer Plates</h3>
-                     <p class="text-gray-600 mb-4">Premium quality heavy-duty plates for big events and catering.</p>
--                    <button onclick="addToCart('13 Inch Buffer Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-+                    <button onclick="event.stopPropagation(); openProduct('buffer-plate')" class="text-red-600 font-bold hover:underline">View Details →</button>
-                 </div>
- 
-                 <!-- Product 2: Marriage Combo -->
--               <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-+               <div onclick="openProduct('marriage-combo')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-                     <img src=https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=400" alt="Specail Marriage Combo" class="w-full h-48 object-cover rounded-xl mb-4">
-                     <h3 class="text-xl font-bold mb-2">Specail Marriage Combo</h3>
-                     <p class="text-gray-600 mb-4">Premium quality Marriage Combo plates&Bowl big events and catering.</p>
--                    <button onclick="addToCart('Specail Marriage Combo')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-+                    <button onclick="event.stopPropagation(); openProduct('marriage-combo')" class="text-red-600 font-bold hover:underline">View Details →</button>
- 
-                </div>
- 
-                 <!-- Product 3: Cups -->
--                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-+                <div onclick="openProduct('disposable-cups')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-                     <img src="https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-                     <h3 class="text-xl font-bold mb-2">Disposable Cups</h3>
-                     <p class="text-gray-600 mb-4">Hygienic cups.</p>
--                    <button onclick="addToCart('Disposable Cups')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-+                    <button onclick="event.stopPropagation(); openProduct('disposable-cups')" class="text-red-600 font-bold hover:underline">View Details →</button>
-                 
-                 </div>
-                 
-                 <!-- Product 4: 3 Comapertment Plate -->
--                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-+                <div onclick="openProduct('three-compartment')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-                     <img src="https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="3 Comapertment Plate " class="w-full h-48 object-cover rounded-xl mb-4">
-                     <h3 class="text-xl font-bold mb-2">3 Comapertment Plate</h3>
-                     <p class="text-gray-600 mb-4">Shaadi season ke liye best serving solution! 🍽️ Humari high-quality 3-compartment plates.</p>
--                    <button onclick="addToCart('3 Comapertment Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-+                    <button onclick="event.stopPropagation(); openProduct('three-compartment')" class="text-red-600 font-bold hover:underline">View Details →</button>
-                
-                 </div>
- 
-                   <!-- Product 5: Foil Container -->
--                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-+                <div onclick="openProduct('foil-container')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-                     <img src="https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-                     <h3 class="text-xl font-bold mb-2">Foil Container</h3>
-                     <p class="text-gray-600 mb-4">Foil Container Availble All Size.</p>
--                    <button onclick="addToCart('Foil Container')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-+                    <button onclick="event.stopPropagation(); openProduct('foil-container')" class="text-red-600 font-bold hover:underline">View Details →</button>
- 
-                 </div>
- 
-                  <!-- Product 6: All Items Set -->
--                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-+                 <div onclick="openProduct('all-items-set')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-                     <img src="https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-                     <h3 class="text-xl font-bold mb-2">All Items Set </h3>
-                     <p class="text-gray-600 mb-4">Hygienic cups,Bowl,Plates,Spoon.</p>
--                    <button onclick="addToCart('All Items Set ')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-+                    <button onclick="event.stopPropagation(); openProduct('all-items-set')" class="text-red-600 font-bold hover:underline">View Details →</button>
- 
-                 </div>
-                 
-@@ -338,6 +338,10 @@
-             modal.classList.toggle('hidden');
-         }
- 
-+        function openProduct(productId) {
-+            window.location.href = `product.html?id=${encodeURIComponent(productId)}`;
-+        }
-+
-         function checkoutWhatsApp() {
-             if (cart.length === 0) {
-                 showNotification('❌ Cart khaali hai!');
-/workspace/Complete-codes-$ /bin/bash -lc 'git add index.html product.html && git commit -m "Add product detail page with multi-image gallery" && git rev-parse --short HEAD'
-[work 0b5f517] Add product detail page with multi-image gallery
- 2 files changed, 218 insertions(+), 12 deletions(-)
- create mode 100644 product.html
-0b5f517
-/workspace/Complete-codes-$ /bin/bash -lc 'nl -ba index.html | sed -n '"'"'100,170p;332,350p'"'"''
-100	            
-   101	            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-   102	                
-   103	                <!-- Product 1: Buffer Plates -->
-   104	                <div onclick="openProduct('buffer-plate')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-   105	                    <img src="https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="13 Inch Buffer Plates" class="w-full h-48 object-cover rounded-xl mb-4">
-   106	                    <h3 class="text-xl font-bold mb-2">13" Buffer Plates</h3>
-   107	                    <p class="text-gray-600 mb-4">Premium quality heavy-duty plates for big events and catering.</p>
-   108	                    <button onclick="event.stopPropagation(); openProduct('buffer-plate')" class="text-red-600 font-bold hover:underline">View Details →</button>
-   109	                </div>
-   110	
-   111	                <!-- Product 2: Marriage Combo -->
-   112	               <div onclick="openProduct('marriage-combo')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-   113	                    <img src=https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=400" alt="Specail Marriage Combo" class="w-full h-48 object-cover rounded-xl mb-4">
-   114	                    <h3 class="text-xl font-bold mb-2">Specail Marriage Combo</h3>
-   115	                    <p class="text-gray-600 mb-4">Premium quality Marriage Combo plates&Bowl big events and catering.</p>
-   116	                    <button onclick="event.stopPropagation(); openProduct('marriage-combo')" class="text-red-600 font-bold hover:underline">View Details →</button>
-   117	
-   118	               </div>
-   119	
-   120	                <!-- Product 3: Cups -->
-   121	                <div onclick="openProduct('disposable-cups')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-   122	                    <img src="https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-   123	                    <h3 class="text-xl font-bold mb-2">Disposable Cups</h3>
-   124	                    <p class="text-gray-600 mb-4">Hygienic cups.</p>
-   125	                    <button onclick="event.stopPropagation(); openProduct('disposable-cups')" class="text-red-600 font-bold hover:underline">View Details →</button>
-   126	                
-   127	                </div>
-   128	                
-   129	                <!-- Product 4: 3 Comapertment Plate -->
-   130	                <div onclick="openProduct('three-compartment')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-   131	                    <img src="https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="3 Comapertment Plate " class="w-full h-48 object-cover rounded-xl mb-4">
-   132	                    <h3 class="text-xl font-bold mb-2">3 Comapertment Plate</h3>
-   133	                    <p class="text-gray-600 mb-4">Shaadi season ke liye best serving solution! 🍽️ Humari high-quality 3-compartment plates.</p>
-   134	                    <button onclick="event.stopPropagation(); openProduct('three-compartment')" class="text-red-600 font-bold hover:underline">View Details →</button>
-   135	               
-   136	                </div>
-   137	
-   138	                  <!-- Product 5: Foil Container -->
-   139	                <div onclick="openProduct('foil-container')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-   140	                    <img src="https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-   141	                    <h3 class="text-xl font-bold mb-2">Foil Container</h3>
-   142	                    <p class="text-gray-600 mb-4">Foil Container Availble All Size.</p>
-   143	                    <button onclick="event.stopPropagation(); openProduct('foil-container')" class="text-red-600 font-bold hover:underline">View Details →</button>
-   144	
-   145	                </div>
-   146	
-   147	                 <!-- Product 6: All Items Set -->
-   148	                 <div onclick="openProduct('all-items-set')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
-   149	                    <img src="https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-   150	                    <h3 class="text-xl font-bold mb-2">All Items Set </h3>
-   151	                    <p class="text-gray-600 mb-4">Hygienic cups,Bowl,Plates,Spoon.</p>
-   152	                    <button onclick="event.stopPropagation(); openProduct('all-items-set')" class="text-red-600 font-bold hover:underline">View Details →</button>
-   153	
-   154	                </div>
-   155	                
-   156	                </section>
-   157	
-   158	
-   159	    <!-- ==================== ABOUT SECTION ==================== -->
-   160	    <section id="about" class="bg-gray-800 text-white py-16 px-4">
-   161	        <div class="container mx-auto text-center">
-   162	            <h2 class="text-3xl font-bold mb-4">About Veer Mahadev Plastic</h2>
-   163	            <p class="max-w-2xl mx-auto text-gray-400">
-   164	                Ahmedabad, Gujarat mein hum sabse bade wholesale supplier hain disposables ke. 
-   165	                Aap humein call karke ya WhatsApp karke bulk rates mangwa sakte hain. 
-   166	                GST Registered aur Trusted Supplier.
-   167	            </p>
-   168	            <div class="mt-8 flex justify-center gap-6 text-2xl">
-   169	                <a href="https://wa.me/918050389261" class="text-green-400 hover:text-green-300"><i class="fab fa-whatsapp"></i></a>
-   170	                <a href="tel:+918050389261" class="text-blue-400 hover:text-blue-300"><i class="fas fa-phone"></i></a>
-   332	            showNotification(`🗑️ ${removed} remove ho gaya!`);
-   333	        }
-   334	
-   335	        function toggleCart() {
-   336	            const modal = document.getElementById('cart-modal');
-   337	            updateCartDisplay();
-   338	            modal.classList.toggle('hidden');
-   339	        }
-   340	
-   341	        function openProduct(productId) {
-   342	            window.location.href = `product.html?id=${encodeURIComponent(productId)}`;
-   343	        }
-   344	
-   345	        function checkoutWhatsApp() {
-   346	            if (cart.length === 0) {
-   347	                showNotification('❌ Cart khaali hai!');
-   348	                return;
-   349	            }
-   350
-/workspace/Complete-codes-$ /bin/bash -lc 'nl -ba product.html | sed -n '"'"'1,260p'"'"''
-1	<!DOCTYPE html>
-     2	<html lang="en">
-     3	<head>
-     4	    <meta charset="UTF-8">
-     5	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     6	    <title>Product Details | Veer Mahadev Plastic</title>
-     7	    <script src="https://cdn.tailwindcss.com"></script>
-     8	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-     9	</head>
-    10	<body class="bg-gray-100 text-gray-800">
-    11	    <nav class="bg-white shadow sticky top-0 z-50">
-    12	        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-    13	            <a href="index.html" class="font-bold text-xl text-red-600">VEER MAHADEV <span class="text-gray-800">PLASTIC</span></a>
-    14	            <a href="index.html#products" class="text-sm font-semibold text-red-600 hover:underline">← Back to Products</a>
-    15	        </div>
-    16	    </nav>
-    17	
-    18	    <main class="max-w-6xl mx-auto px-4 py-8">
-    19	        <div class="grid md:grid-cols-2 gap-8 bg-white rounded-2xl shadow p-5 md:p-8">
-    20	            <div>
-    21	                <img id="main-image" src="" alt="Product image" class="w-full h-[380px] object-cover rounded-xl border" />
-    22	                <div id="thumbnail-row" class="grid grid-cols-4 gap-3 mt-4"></div>
-    23	            </div>
-    24	
-    25	            <div>
-    26	                <h1 id="product-name" class="text-3xl font-extrabold text-gray-900"></h1>
-    27	                <p id="product-type" class="mt-2 text-red-600 font-semibold"></p>
-    28	                <p id="product-description" class="mt-4 text-gray-600"></p>
-    29	
-    30	                <div class="mt-6 overflow-hidden border rounded-xl">
-    31	                    <table class="w-full text-sm">
-    32	                        <tbody id="spec-table" class="divide-y"></tbody>
-    33	                    </table>
-    34	                </div>
-    35	
-    36	                <div class="mt-6 flex flex-wrap gap-3">
-    37	                    <a id="whatsapp-order" href="#" target="_blank" class="bg-green-600 text-white px-5 py-3 rounded-lg font-bold hover:bg-green-700 transition">
-    38	                        <i class="fab fa-whatsapp"></i> Enquire on WhatsApp
-    39	                    </a>
-    40	                    <a href="index.html#products" class="bg-gray-200 px-5 py-3 rounded-lg font-bold hover:bg-gray-300 transition">View More Products</a>
-    41	                </div>
-    42	            </div>
-    43	        </div>
-    44	    </main>
-    45	
-    46	    <script>
-    47	        const WHATSAPP_NUMBER = '918050389261';
-    48	
-    49	        const PRODUCTS = {
-    50	            'buffer-plate': {
-    51	                name: '13" Buffer Plates',
-    52	                type: 'Heavy-Duty Disposable Plate',
-    53	                description: 'Catering aur marriage events ke liye strong aur premium finish wali buffet plate.',
-    54	                specs: {
-    55	                    'Size': '13 inch',
-    56	                    'Weight': 'Approx. 28-32 gm each',
-    57	                    'Material': 'Food-grade plastic',
-    58	                    'One Pack Quantity': '50 plates',
-    59	                    'Color Options': 'White / Silver',
-    60	                    'Use Case': 'Wedding, Party, Buffet Service'
-    61	                },
-    62	                images: [
-    63	                    'https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=900',
-    64	                    'https://images.unsplash.com/photo-1527744591463-f0a4d6ea2344?q=80&w=1200&auto=format&fit=crop',
-    65	                    'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=1200&auto=format&fit=crop',
-    66	                    'https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=1200&auto=format&fit=crop'
-    67	                ]
-    68	            },
-    69	            'marriage-combo': {
-    70	                name: 'Special Marriage Combo',
-    71	                type: 'Combo Set (Plate + Bowl + Spoon)',
-    72	                description: 'Shaadi aur bulk event service ke liye complete disposable combo set.',
-    73	                specs: {
-    74	                    'Size': 'Standard Combo',
-    75	                    'Weight': 'Mixed as per item',
-    76	                    'Material': 'Food-grade plastic',
-    77	                    'One Pack Quantity': '25 complete combo sets',
-    78	                    'Color Options': 'White / Printed',
-    79	                    'Use Case': 'Marriage, Catering, Community Events'
-    80	                },
-    81	                images: [
-    82	                    'https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=900',
-    83	                    'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1200&auto=format&fit=crop',
-    84	                    'https://images.unsplash.com/photo-1555243896-c709bfa0b564?q=80&w=1200&auto=format&fit=crop',
-    85	                    'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=1200&auto=format&fit=crop'
-    86	                ]
-    87	            },
-    88	            'disposable-cups': {
-    89	                name: 'Disposable Cups',
-    90	                type: 'Ripple/Plain Disposable Cups',
-    91	                description: 'Tea, coffee, juice ya cold drink serving ke liye hygienic cups.',
-    92	                specs: {
-    93	                    'Size': '90 ml, 150 ml, 200 ml',
-    94	                    'Weight': 'As per size',
-    95	                    'Material': 'Food-safe plastic / paper options',
-    96	                    'One Pack Quantity': '100 cups',
-    97	                    'Color Options': 'White / Brown / Printed',
-    98	                    'Use Case': 'Office, Events, Takeaway'
-    99	                },
-   100	                images: [
-   101	                    'https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=900',
-   102	                    'https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?q=80&w=1200&auto=format&fit=crop',
-   103	                    'https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=1200&auto=format&fit=crop',
-   104	                    'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200&auto=format&fit=crop'
-   105	                ]
-   106	            },
-   107	            'three-compartment': {
-   108	                name: '3 Compartment Plate',
-   109	                type: 'Compartment Serving Plate',
-   110	                description: 'Multi-item serving ke liye section-wise neat presentation wali plate.',
-   111	                specs: {
-   112	                    'Size': '11 - 12 inch',
-   113	                    'Weight': 'Approx. 25-30 gm each',
-   114	                    'Material': 'Food-grade plastic',
-   115	                    'One Pack Quantity': '50 plates',
-   116	                    'Color Options': 'White / Off-white',
-   117	                    'Use Case': 'Wedding, Buffet, Mess Service'
-   118	                },
-   119	                images: [
-   120	                    'https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=900',
-   121	                    'https://images.unsplash.com/photo-1464306076886-da185f6a9d05?q=80&w=1200&auto=format&fit=crop',
-   122	                    'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop',
-   123	                    'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop'
-   124	                ]
-   125	            },
-   126	            'foil-container': {
-   127	                name: 'Foil Container',
-   128	                type: 'Aluminium Foil Food Container',
-   129	                description: 'Takeaway, packing aur oven-safe food transport ke liye durable container.',
-   130	                specs: {
-   131	                    'Size': '250 ml to 1000 ml',
-   132	                    'Weight': 'As per size',
-   133	                    'Material': 'Aluminium Foil',
-   134	                    'One Pack Quantity': '100 containers',
-   135	                    'Color Options': 'Silver',
-   136	                    'Use Case': 'Packing, Delivery, Catering'
-   137	                },
-   138	                images: [
-   139	                    'https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=900',
-   140	                    'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1200&auto=format&fit=crop',
-   141	                    'https://images.unsplash.com/photo-1528712306091-ed0763094c98?q=80&w=1200&auto=format&fit=crop',
-   142	                    'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=1200&auto=format&fit=crop'
-   143	                ]
-   144	            },
-   145	            'all-items-set': {
-   146	                name: 'All Items Set',
-   147	                type: 'Complete Disposable Kit',
-   148	                description: 'Cup, bowl, plate aur spoon ka all-in-one ready set for bulk use.',
-   149	                specs: {
-   150	                    'Size': 'Mixed kit sizes',
-   151	                    'Weight': 'Mixed as per item',
-   152	                    'Material': 'Food-grade disposable mix',
-   153	                    'One Pack Quantity': '25 complete sets',
-   154	                    'Color Options': 'Standard white combo',
-   155	                    'Use Case': 'Event package, Outdoor catering'
-   156	                },
-   157	                images: [
-   158	                    'https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=900',
-   159	                    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200&auto=format&fit=crop',
-   160	                    'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=1200&auto=format&fit=crop',
-   161	                    'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?q=80&w=1200&auto=format&fit=crop'
-   162	                ]
-   163	            }
-   164	        };
-   165	
-   166	        const params = new URLSearchParams(window.location.search);
-   167	        const productId = params.get('id') || 'buffer-plate';
-   168	        const product = PRODUCTS[productId] || PRODUCTS['buffer-plate'];
-   169	
-   170	        const mainImage = document.getElementById('main-image');
-   171	        const thumbnailRow = document.getElementById('thumbnail-row');
-   172	        const specTable = document.getElementById('spec-table');
-   173	
-   174	        document.getElementById('product-name').textContent = product.name;
-   175	        document.getElementById('product-type').textContent = product.type;
-   176	        document.getElementById('product-description').textContent = product.description;
-   177	
-   178	        mainImage.src = product.images[0];
-   179	
-   180	        product.images.forEach((imgSrc, index) => {
-   181	            const thumb = document.createElement('button');
-   182	            thumb.className = `border rounded-lg overflow-hidden ${index === 0 ? 'ring-2 ring-red-500' : ''}`;
-   183	            thumb.innerHTML = `<img src="${imgSrc}" alt="${product.name} image ${index + 1}" class="w-full h-20 object-cover">`;
-   184	            thumb.addEventListener('click', () => {
-   185	                mainImage.src = imgSrc;
-   186	                document.querySelectorAll('#thumbnail-row button').forEach(btn => btn.classList.remove('ring-2', 'ring-red-500'));
-   187	                thumb.classList.add('ring-2', 'ring-red-500');
-   188	            });
-   189	            thumbnailRow.appendChild(thumb);
-   190	        });
-   191	
-   192	        Object.entries(product.specs).forEach(([key, value]) => {
-   193	            const row = document.createElement('tr');
-   194	            row.innerHTML = `<td class="font-semibold p-3 bg-gray-50">${key}</td><td class="p-3">${value}</td>`;
-   195	            specTable.appendChild(row);
-   196	        });
-   197	
-   198	        const message = `Namaste! Mujhe ${product.name} ke rates aur bulk order details chahiye.`;
-   199	        document.getElementById('whatsapp-order').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-   200	    </script>
-   201	</body>
-   202	</html>
-/workspace/Complete-codes-$ /bin/bash -lc 'nl -ba product.html | sed -n '"'"'46,110p'"'"''
-46	    <script>
-    47	        const WHATSAPP_NUMBER = '918050389261';
-    48	
-    49	        const PRODUCTS = {
-    50	            'buffer-plate': {
-    51	                name: '13" Buffer Plates',
-    52	                type: 'Heavy-Duty Disposable Plate',
-    53	                description: 'Catering aur marriage events ke liye strong aur premium finish wali buffet plate.',
-    54	                specs: {
-    55	                    'Size': '13 inch',
-    56	                    'Weight': 'Approx. 28-32 gm each',
-    57	                    'Material': 'Food-grade plastic',
-    58	                    'One Pack Quantity': '50 plates',
-    59	                    'Color Options': 'White / Silver',
-    60	                    'Use Case': 'Wedding, Party, Buffet Service'
-    61	                },
-    62	                images: [
-    63	                    'https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=900',
-    64	                    'https://images.unsplash.com/photo-1527744591463-f0a4d6ea2344?q=80&w=1200&auto=format&fit=crop',
-    65	                    'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=1200&auto=format&fit=crop',
-    66	                    'https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=1200&auto=format&fit=crop'
-    67	                ]
-    68	            },
-    69	            'marriage-combo': {
-    70	                name: 'Special Marriage Combo',
-    71	                type: 'Combo Set (Plate + Bowl + Spoon)',
-    72	                description: 'Shaadi aur bulk event service ke liye complete disposable combo set.',
-    73	                specs: {
-    74	                    'Size': 'Standard Combo',
-    75	                    'Weight': 'Mixed as per item',
-    76	                    'Material': 'Food-grade plastic',
-    77	                    'One Pack Quantity': '25 complete combo sets',
-    78	                    'Color Options': 'White / Printed',
-    79	                    'Use Case': 'Marriage, Catering, Community Events'
-    80	                },
-    81	                images: [
-    82	                    'https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=900',
-    83	                    'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1200&auto=format&fit=crop',
-    84	                    'https://images.unsplash.com/photo-1555243896-c709bfa0b564?q=80&w=1200&auto=format&fit=crop',
-    85	                    'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=1200&auto=format&fit=crop'
-    86	                ]
-    87	            },
-    88	            'disposable-cups': {
-    89	                name: 'Disposable Cups',
-    90	                type: 'Ripple/Plain Disposable Cups',
-    91	                description: 'Tea, coffee, juice ya cold drink serving ke liye hygienic cups.',
-    92	                specs: {
-    93	                    'Size': '90 ml, 150 ml, 200 ml',
-    94	                    'Weight': 'As per size',
-    95	                    'Material': 'Food-safe plastic / paper options',
-    96	                    'One Pack Quantity': '100 cups',
-    97	                    'Color Options': 'White / Brown / Printed',
-    98	                    'Use Case': 'Office, Events, Takeaway'
-    99	                },
-   100	                images: [
-   101	                    'https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=900',
-   102	                    'https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?q=80&w=1200&auto=format&fit=crop',
-   103	                    'https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=1200&auto=format&fit=crop',
-   104	                    'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200&auto=format&fit=crop'
-   105	                ]
-   106	            },
-   107	            'three-compartment': {
-   108	                name: '3 Compartment Plate',
-   109	                type: 'Compartment Serving Plate',
-   110	                description: 'Multi-item serving ke liye section-wise neat presentation wali plate.',
-/workspace/Complete-codes-$ /bin/bash -lc 'nl -ba product.html | sed -n '"'"'110,210p'"'"''
-110	                description: 'Multi-item serving ke liye section-wise neat presentation wali plate.',
-   111	                specs: {
-   112	                    'Size': '11 - 12 inch',
-   113	                    'Weight': 'Approx. 25-30 gm each',
-   114	                    'Material': 'Food-grade plastic',
-   115	                    'One Pack Quantity': '50 plates',
-   116	                    'Color Options': 'White / Off-white',
-   117	                    'Use Case': 'Wedding, Buffet, Mess Service'
-   118	                },
-   119	                images: [
-   120	                    'https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=900',
-   121	                    'https://images.unsplash.com/photo-1464306076886-da185f6a9d05?q=80&w=1200&auto=format&fit=crop',
-   122	                    'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop',
-   123	                    'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop'
-   124	                ]
-   125	            },
-   126	            'foil-container': {
-   127	                name: 'Foil Container',
-   128	                type: 'Aluminium Foil Food Container',
-   129	                description: 'Takeaway, packing aur oven-safe food transport ke liye durable container.',
-   130	                specs: {
-   131	                    'Size': '250 ml to 1000 ml',
-   132	                    'Weight': 'As per size',
-   133	                    'Material': 'Aluminium Foil',
-   134	                    'One Pack Quantity': '100 containers',
-   135	                    'Color Options': 'Silver',
-   136	                    'Use Case': 'Packing, Delivery, Catering'
-   137	                },
-   138	                images: [
-   139	                    'https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=900',
-   140	                    'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1200&auto=format&fit=crop',
-   141	                    'https://images.unsplash.com/photo-1528712306091-ed0763094c98?q=80&w=1200&auto=format&fit=crop',
-   142	                    'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=1200&auto=format&fit=crop'
-   143	                ]
-   144	            },
-   145	            'all-items-set': {
-   146	                name: 'All Items Set',
-   147	                type: 'Complete Disposable Kit',
-   148	                description: 'Cup, bowl, plate aur spoon ka all-in-one ready set for bulk use.',
-   149	                specs: {
-   150	                    'Size': 'Mixed kit sizes',
-   151	                    'Weight': 'Mixed as per item',
-   152	                    'Material': 'Food-grade disposable mix',
-   153	                    'One Pack Quantity': '25 complete sets',
-   154	                    'Color Options': 'Standard white combo',
-   155	                    'Use Case': 'Event package, Outdoor catering'
-   156	                },
-   157	                images: [
-   158	                    'https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=900',
-   159	                    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200&auto=format&fit=crop',
-   160	                    'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=1200&auto=format&fit=crop',
-   161	                    'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?q=80&w=1200&auto=format&fit=crop'
-   162	                ]
-   163	            }
-   164	        };
-   165	
-   166	        const params = new URLSearchParams(window.location.search);
-   167	        const productId = params.get('id') || 'buffer-plate';
-   168	        const product = PRODUCTS[productId] || PRODUCTS['buffer-plate'];
-   169	
-   170	        const mainImage = document.getElementById('main-image');
-   171	        const thumbnailRow = document.getElementById('thumbnail-row');
-   172	        const specTable = document.getElementById('spec-table');
-   173	
-   174	        document.getElementById('product-name').textContent = product.name;
-   175	        document.getElementById('product-type').textContent = product.type;
-   176	        document.getElementById('product-description').textContent = product.description;
-   177	
-   178	        mainImage.src = product.images[0];
-   179	
-   180	        product.images.forEach((imgSrc, index) => {
-   181	            const thumb = document.createElement('button');
-   182	            thumb.className = `border rounded-lg overflow-hidden ${index === 0 ? 'ring-2 ring-red-500' : ''}`;
-   183	            thum
