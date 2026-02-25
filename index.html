@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -155,6 +154,62 @@
                 </div>
                 
                 </section>
+
+    <!-- ==================== PRODUCT DETAILS (SAME PAGE, NO 404) ==================== -->
+    <section id="product-details" class="py-16 bg-gray-100 hidden">
+        <div class="container mx-auto px-6">
+            <div class="bg-white rounded-2xl shadow-lg p-5 md:p-8">
+                <div class="flex items-center justify-between gap-3 mb-5">
+                    <h2 class="text-2xl md:text-3xl font-bold">Product Details</h2>
+                    <button onclick="closeProductDetails()" class="text-sm bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg font-semibold">Close ✕</button>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <img id="detail-main-image" src="" alt="Product image" class="w-full h-[360px] object-cover rounded-xl border" />
+                        <div id="detail-thumbnail-row" class="grid grid-cols-4 gap-3 mt-4"></div>
+                    </div>
+
+                    <div>
+                        <h3 id="detail-product-name" class="text-3xl font-extrabold text-gray-900"></h3>
+                        <p id="detail-product-type" class="mt-2 text-red-600 font-semibold"></p>
+                        <p id="detail-product-description" class="mt-4 text-gray-600"></p>
+
+                        <div class="mt-6 overflow-hidden border rounded-xl">
+                            <table class="w-full text-sm">
+                                <tbody id="detail-spec-table" class="divide-y"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-6 flex items-center gap-3">
+                            <label for="detail-qty" class="font-semibold text-sm">Quantity:</label>
+                            <select id="detail-qty" class="border rounded-lg px-3 py-2">
+                                <option value="1">1 Pack</option>
+                                <option value="2">2 Pack</option>
+                                <option value="5">5 Pack</option>
+                                <option value="10">10 Pack</option>
+                            </select>
+                        </div>
+
+                        <div class="mt-6 flex flex-wrap gap-3">
+                            <button id="detail-add-to-cart" class="bg-red-600 text-white px-5 py-3 rounded-lg font-bold hover:bg-red-700 transition">
+                                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <a id="detail-order-now" href="#" target="_blank" class="bg-green-600 text-white px-5 py-3 rounded-lg font-bold hover:bg-green-700 transition">
+                                <i class="fab fa-whatsapp"></i> Order Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10">
+                    <h4 class="text-xl font-bold mb-2">Related Products</h4>
+                    <p class="text-sm text-gray-500 mb-4">Scroll down karke aur products dekhiye.</p>
+                    <div id="detail-related-products" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
     <!-- ==================== ABOUT SECTION ==================== -->
@@ -339,8 +394,236 @@
             modal.classList.toggle('hidden');
         }
 
+        const CART_KEY = 'vm_cart';
+        const PRODUCT_DATA = {
+            'buffer-plate': {
+                name: '13" Buffer Plates',
+                type: 'Heavy-Duty Disposable Plate',
+                description: 'Catering aur marriage events ke liye strong aur premium finish wali buffet plate.',
+                specs: {
+                    'Size': '13 inch',
+                    'Weight': 'Approx. 28-32 gm each',
+                    'Material': 'Food-grade plastic',
+                    'One Pack Quantity': '50 plates',
+                    'Color Options': 'White / Silver',
+                    'Use Case': 'Wedding, Party, Buffet Service'
+                },
+                images: [
+                    'https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1527744591463-f0a4d6ea2344?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'marriage-combo': {
+                name: 'Special Marriage Combo',
+                type: 'Combo Set (Plate + Bowl + Spoon)',
+                description: 'Shaadi aur bulk event service ke liye complete disposable combo set.',
+                specs: {
+                    'Size': 'Standard Combo',
+                    'Weight': 'Mixed as per item',
+                    'Material': 'Food-grade plastic',
+                    'One Pack Quantity': '25 complete combo sets',
+                    'Color Options': 'White / Printed',
+                    'Use Case': 'Marriage, Catering, Community Events'
+                },
+                images: [
+                    'https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1555243896-c709bfa0b564?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'disposable-cups': {
+                name: 'Disposable Cups',
+                type: 'Ripple/Plain Disposable Cups',
+                description: 'Tea, coffee, juice ya cold drink serving ke liye hygienic cups.',
+                specs: {
+                    'Size': '90 ml, 150 ml, 200 ml',
+                    'Weight': 'As per size',
+                    'Material': 'Food-safe plastic / paper options',
+                    'One Pack Quantity': '100 cups',
+                    'Color Options': 'White / Brown / Printed',
+                    'Use Case': 'Office, Events, Takeaway'
+                },
+                images: [
+                    'https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1498804103079-a6351b050096?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'three-compartment': {
+                name: '3 Compartment Plate',
+                type: 'Compartment Serving Plate',
+                description: 'Multi-item serving ke liye section-wise neat presentation wali plate.',
+                specs: {
+                    'Size': '11 - 12 inch',
+                    'Weight': 'Approx. 25-30 gm each',
+                    'Material': 'Food-grade plastic',
+                    'One Pack Quantity': '50 plates',
+                    'Color Options': 'White / Off-white',
+                    'Use Case': 'Wedding, Buffet, Mess Service'
+                },
+                images: [
+                    'https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1464306076886-da185f6a9d05?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'foil-container': {
+                name: 'Foil Container',
+                type: 'Aluminium Foil Food Container',
+                description: 'Takeaway, packing aur oven-safe food transport ke liye durable container.',
+                specs: {
+                    'Size': '250 ml to 1000 ml',
+                    'Weight': 'As per size',
+                    'Material': 'Aluminium Foil',
+                    'One Pack Quantity': '100 containers',
+                    'Color Options': 'Silver',
+                    'Use Case': 'Packing, Delivery, Catering'
+                },
+                images: [
+                    'https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1528712306091-ed0763094c98?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=1200&auto=format&fit=crop'
+                ]
+            },
+            'all-items-set': {
+                name: 'All Items Set',
+                type: 'Complete Disposable Kit',
+                description: 'Cup, bowl, plate aur spoon ka all-in-one ready set for bulk use.',
+                specs: {
+                    'Size': 'Mixed kit sizes',
+                    'Weight': 'Mixed as per item',
+                    'Material': 'Food-grade disposable mix',
+                    'One Pack Quantity': '25 complete sets',
+                    'Color Options': 'Standard white combo',
+                    'Use Case': 'Event package, Outdoor catering'
+                },
+                images: [
+                    'https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=900',
+                    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=1200&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?q=80&w=1200&auto=format&fit=crop'
+                ]
+            }
+        };
+
+        function getStoredCart() {
+            return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+        }
+
+        function syncCartFromStorage() {
+            const saved = getStoredCart();
+            if (saved.length > 0) {
+                cart = [];
+                saved.forEach(item => {
+                    const qty = Number(item.qty || 1);
+                    for (let i = 0; i < qty; i += 1) {
+                        cart.push(item.name || item);
+                    }
+                });
+                document.getElementById('cart-qty').innerText = cart.length;
+            }
+        }
+
+        function setStoredCartByNames() {
+            const grouped = {};
+            cart.forEach(name => {
+                grouped[name] = (grouped[name] || 0) + 1;
+            });
+            const payload = Object.entries(grouped).map(([name, qty]) => ({ name, qty }));
+            localStorage.setItem(CART_KEY, JSON.stringify(payload));
+        }
+
+        function buildRelatedProducts(currentId) {
+            const wrap = document.getElementById('detail-related-products');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+            Object.entries(PRODUCT_DATA)
+                .filter(([id]) => id !== currentId)
+                .forEach(([id, data]) => {
+                    const card = document.createElement('article');
+                    card.className = 'bg-gray-50 border rounded-xl p-4 hover:shadow-md transition cursor-pointer';
+                    card.innerHTML = `
+                        <img src="${data.images[0]}" alt="${data.name}" class="w-full h-36 object-cover rounded-lg mb-3" />
+                        <h3 class="font-bold">${data.name}</h3>
+                        <p class="text-xs text-gray-500 mb-2">${data.type}</p>
+                        <button class="text-red-600 font-semibold text-sm hover:underline">View Details →</button>
+                    `;
+                    card.addEventListener('click', () => openProduct(id));
+                    wrap.appendChild(card);
+                });
+        }
+
+        function closeProductDetails() {
+            const section = document.getElementById('product-details');
+            section.classList.add('hidden');
+            const url = new URL(window.location.href);
+            url.searchParams.delete('product');
+            window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+        }
+
         function openProduct(productId) {
-            window.location.href = `product.html?id=${encodeURIComponent(productId)}`;
+            const product = PRODUCT_DATA[productId] || PRODUCT_DATA['buffer-plate'];
+            const selectedId = PRODUCT_DATA[productId] ? productId : 'buffer-plate';
+            const section = document.getElementById('product-details');
+            const mainImage = document.getElementById('detail-main-image');
+            const thumbRow = document.getElementById('detail-thumbnail-row');
+            const specTable = document.getElementById('detail-spec-table');
+
+            document.getElementById('detail-product-name').textContent = product.name;
+            document.getElementById('detail-product-type').textContent = product.type;
+            document.getElementById('detail-product-description').textContent = product.description;
+            mainImage.src = product.images[0];
+            thumbRow.innerHTML = '';
+            specTable.innerHTML = '';
+
+            product.images.forEach((imgSrc, index) => {
+                const thumb = document.createElement('button');
+                thumb.className = `border rounded-lg overflow-hidden ${index === 0 ? 'ring-2 ring-red-500' : ''}`;
+                thumb.innerHTML = `<img src="${imgSrc}" alt="${product.name} image ${index + 1}" class="w-full h-20 object-cover">`;
+                thumb.addEventListener('click', () => {
+                    mainImage.src = imgSrc;
+                    document.querySelectorAll('#detail-thumbnail-row button').forEach(btn => btn.classList.remove('ring-2', 'ring-red-500'));
+                    thumb.classList.add('ring-2', 'ring-red-500');
+                });
+                thumbRow.appendChild(thumb);
+            });
+
+            Object.entries(product.specs).forEach(([key, value]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td class="font-semibold p-3 bg-gray-50">${key}</td><td class="p-3">${value}</td>`;
+                specTable.appendChild(row);
+            });
+
+            document.getElementById('detail-add-to-cart').onclick = () => {
+                const qty = Number(document.getElementById('detail-qty').value);
+                for (let i = 0; i < qty; i += 1) {
+                    cart.push(product.name);
+                }
+                document.getElementById('cart-qty').innerText = cart.length;
+                setStoredCartByNames();
+                showNotification(`✅ ${product.name} (${qty} pack) cart mein add ho gaya!`);
+            };
+
+            const orderBtn = document.getElementById('detail-order-now');
+            orderBtn.onclick = () => {
+                const qty = Number(document.getElementById('detail-qty').value);
+                const message = `Namaste! Mujhe ${product.name} ke ${qty} pack order karne hain. Please wholesale rate bhejiye.`;
+                orderBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            };
+
+            buildRelatedProducts(selectedId);
+            section.classList.remove('hidden');
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            const url = new URL(window.location.href);
+            url.searchParams.set('product', selectedId);
+            window.history.replaceState({}, '', `${url.pathname}${url.search}#product-details`);
         }
 
         function checkoutWhatsApp() {
@@ -484,6 +767,12 @@
                 }
             });
         });
+
+        syncCartFromStorage();
+        const selectedProductId = new URLSearchParams(window.location.search).get('product');
+        if (selectedProductId) {
+            openProduct(selectedProductId);
+        }
     </script>
 
         </div>
