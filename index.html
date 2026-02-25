@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Veer Mahadev Plastic | Wholesale E-commerce</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -10,7 +10,6 @@
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
-  <!-- Amazon-style top strip -->
   <div class="bg-red-900 text-white text-xs sm:text-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
       <p>Welcome to Veer Mahadev Plastic - Wholesale Disposable Supplier</p>
@@ -18,7 +17,6 @@
     </div>
   </div>
 
-  <!-- Main header -->
   <header class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
       <div class="flex flex-wrap lg:flex-nowrap items-center gap-3">
@@ -32,17 +30,20 @@
 
         <div class="flex-1 w-full lg:w-auto">
           <div class="flex items-center rounded-md border border-red-200 overflow-hidden bg-white">
-            <select class="hidden sm:block text-sm border-r border-red-100 px-3 py-2.5 bg-red-50 text-gray-700 outline-none">
-              <option>All Categories</option>
-              <option>Disposable Cups</option>
-              <option>Plates</option>
-              <option>Containers</option>
+            <select id="searchCategory" class="hidden sm:block text-sm border-r border-red-100 px-3 py-2.5 bg-red-50 text-gray-700 outline-none">
+              <option value="All">All Categories</option>
+              <option value="Disposable Cups">Disposable Cups</option>
+              <option value="Plates">Plates</option>
+              <option value="Containers">Containers</option>
             </select>
-            <input type="text" placeholder="Search products (visual search bar)" class="flex-1 px-3 py-2.5 text-sm outline-none" aria-label="Search" />
-            <button class="px-4 py-2.5 bg-red-700 hover:bg-red-800 text-white text-sm font-semibold">Search</button>
+            <input id="searchInput" type="text" placeholder="Search products by name, category, pack size" class="flex-1 px-3 py-2.5 text-sm outline-none" aria-label="Search products" />
+            <button id="searchBtn" class="px-4 py-2.5 bg-red-700 hover:bg-red-800 text-white text-sm font-semibold">Search</button>
           </div>
-        </div> <a href="https://wa.me/918050389261" target="_blank" rel="noopener noreferrer" class="min-w-max px-4 py-2.5 rounded-md bg-green-600 hover:bg-green-700 text-white text-sm font-bold">Wholesale WhatsApp</a>
+        </div>
+
+        <a href="https://wa.me/918050389261" target="_blank" rel="noopener noreferrer" class="min-w-max px-4 py-2.5 rounded-md bg-green-600 hover:bg-green-700 text-white text-sm font-bold">Wholesale WhatsApp</a>
       </div>
+
       <nav class="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-gray-700">
         <a href="#home" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Home</a>
         <a href="#categories" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Categories</a>
@@ -53,7 +54,6 @@
     </div>
   </header>
 
-  <!-- Hero -->
   <section id="home" class="relative">
     <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=80" alt="Marriage themed hero background" class="absolute inset-0 w-full h-full object-cover" />
     <div class="absolute inset-0 bg-gradient-to-r from-red-950/90 via-red-900/75 to-red-700/60"></div>
@@ -69,7 +69,6 @@
   </section>
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- Category filters -->
     <section id="categories" class="mb-8">
       <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
         <h2 class="text-2xl sm:text-3xl font-extrabold">Shop by Category</h2>
@@ -77,15 +76,18 @@
       </div>
       <div id="categoryButtons" class="flex flex-wrap gap-2"></div>
     </section>
-    <!-- Product grid -->
+
     <section id="products">
-      <div class="mb-4 flex items-center justify-between">
+      <div class="mb-4 flex items-center justify-between gap-2">
         <h3 class="text-xl font-bold">Wholesale Product Catalog</h3>
-        <p id="productCount" class="text-sm text-gray-600"></p>
+        <div class="text-right">
+          <p id="productCount" class="text-sm text-gray-600"></p>
+          <p id="searchStatus" class="text-xs text-red-700 font-semibold"></p>
+        </div>
       </div>
       <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
     </section>
- <!-- Why us -->
+
     <section id="why-us" class="mt-14">
       <h3 class="text-2xl font-extrabold mb-5">Why Choose Veer Mahadev Plastic?</h3>
       <div class="grid md:grid-cols-3 gap-4">
@@ -93,16 +95,38 @@
           <p class="font-bold text-red-700 mb-1">Reliable Wholesale Pricing</p>
           <p class="text-sm text-gray-600">Competitive rates designed for retailers, caterers, and event suppliers.</p>
         </div>
-           <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm">
+        <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm">
           <p class="font-bold text-red-700 mb-1">Hygienic & Quality Focus</p>
           <p class="text-sm text-gray-600">Consistent material quality and practical pack sizes for business needs.</p>
-                <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm">
+        </div>
+        <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm">
           <p class="font-bold text-red-700 mb-1">Fast WhatsApp Ordering</p>
           <p class="text-sm text-gray-600">One click inquiry with pre-filled product details to speed up responses.</p>
         </div>
       </div>
     </section>
   </main>
+
+  <section id="productDetailModal" class="fixed inset-0 z-[100] hidden">
+    <div id="productDetailOverlay" class="absolute inset-0 bg-black/50"></div>
+    <div class="relative mx-auto mt-10 w-[92%] max-w-3xl rounded-xl bg-white shadow-2xl">
+      <div class="flex items-center justify-between border-b border-gray-100 p-4">
+        <h4 class="text-lg font-extrabold text-red-700">Product Details</h4>
+        <button id="closeDetailModal" class="rounded-md bg-gray-100 px-3 py-1.5 text-sm font-semibold hover:bg-gray-200">Close</button>
+      </div>
+      <div class="grid gap-4 p-4 md:grid-cols-2 md:p-6">
+        <img id="detailImage" src="" alt="Product image" class="h-64 w-full rounded-lg object-cover border border-red-100" />
+        <div>
+          <p id="detailCategory" class="inline-flex rounded bg-red-50 px-2 py-1 text-xs font-semibold text-red-700"></p>
+          <h5 id="detailName" class="mt-2 text-2xl font-extrabold"></h5>
+          <p id="detailPack" class="mt-2 text-sm text-gray-600"></p>
+          <p id="detailPrice" class="mt-2 text-lg font-extrabold text-red-700"></p>
+          <p id="detailDescription" class="mt-3 text-sm leading-6 text-gray-700"></p>
+          <a id="detailWhatsappBtn" href="#" target="_blank" rel="noopener noreferrer" class="mt-5 inline-flex w-full justify-center rounded-md bg-green-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-green-700">Order on WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <footer id="footer" class="bg-white border-t border-red-100 mt-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid md:grid-cols-3 gap-8 text-sm">
@@ -120,42 +144,70 @@
         <a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer" class="text-red-700 font-semibold hover:text-red-800">Visit YouTube Channel (@veermahadevplastic)</a>
       </div>
     </div>
-       </footer>
+  </footer>
 
   <script>
     const WHATSAPP_NUMBER = '918050389261';
 
     const products = [
-      { name: '4-Compartment Plate', pack: '25 Pcs Pack', price: '₹210', category: 'Plates', image: 'https://via.placeholder.com/300' },
-      { name: '5-Compartment Plate', pack: '25 Pcs Pack', price: '₹245', category: 'Plates', image: 'https://via.placeholder.com/300' },
-      { name: 'Round Buffet Plate', pack: '50 Pcs Pack', price: '₹320', category: 'Plates', image: 'https://via.placeholder.com/300' },
-      { name: 'Heavy Duty Party Plate', pack: '50 Pcs Pack', price: '₹295', category: 'Plates', image: 'https://via.placeholder.com/300' },
-      { name: 'Square Dinner Plate', pack: '25 Pcs Pack', price: '₹260', category: 'Plates', image: 'https://via.placeholder.com/300' },
-      { name: 'Marriage Special Plate', pack: '25 Pcs Pack', price: '₹280', category: 'Plates', image: 'https://via.placeholder.com/300' },
-      { name: 'Tea Cup 150ml', pack: '100 Pcs Pack', price: '₹145', category: 'Disposable Cups', image: 'https://via.placeholder.com/300' },
-      { name: 'Coffee Cup 200ml', pack: '100 Pcs Pack', price: '₹170', category: 'Disposable Cups', image: 'https://via.placeholder.com/300' },
-      { name: 'Ripple Cup 250ml', pack: '50 Pcs Pack', price: '₹190', category: 'Disposable Cups', image: 'https://via.placeholder.com/300' },
-      { name: 'Lassi Cup 300ml', pack: '100 Pcs Pack', price: '₹240', category: 'Disposable Cups', image: 'https://via.placeholder.com/300' },
-      { name: 'Juice Cup 200ml', pack: '100 Pcs Pack', price: '₹160', category: 'Disposable Cups', image: 'https://via.placeholder.com/300' },
-      { name: 'Premium Hot Cup 180ml', pack: '100 Pcs Pack', price: '₹185', category: 'Disposable Cups', image: 'https://via.placeholder.com/300' },
-      { name: 'Food Container 500ml', pack: '25 Pcs Pack', price: '₹180', category: 'Containers', image: 'https://via.placeholder.com/300' },
-      { name: 'Rectangular Container 750ml', pack: '25 Pcs Pack', price: '₹230', category: 'Containers', image: 'https://via.placeholder.com/300' },
-      { name: 'Meal Box Container', pack: '50 Pcs Pack', price: '₹395', category: 'Containers', image: 'https://via.placeholder.com/300' },
-      { name: 'Snack Container Mini', pack: '50 Pcs Pack', price: '₹155', category: 'Containers', image: 'https://via.placeholder.com/300' },
-      { name: 'Microwave Container 650ml', pack: '25 Pcs Pack', price: '₹275', category: 'Containers', image: 'https://via.placeholder.com/300' },
-      { name: 'Leak-proof Container 1000ml', pack: '25 Pcs Pack', price: '₹340', category: 'Containers', image: 'https://via.placeholder.com/300' }
+      { name: '4-Compartment Plate', pack: '25 Pcs Pack', price: '₹210', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Heavy-duty multi-compartment serving plate ideal for weddings and catered events.' },
+      { name: '5-Compartment Plate', pack: '25 Pcs Pack', price: '₹245', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Premium section plate for complete meal serving with neat food separation.' },
+      { name: 'Round Buffet Plate', pack: '50 Pcs Pack', price: '₹320', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Classic buffet plate for large events and banquet-style setups.' },
+      { name: 'Heavy Duty Party Plate', pack: '50 Pcs Pack', price: '₹295', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Strong and durable plate that supports heavy menu combinations.' },
+      { name: 'Square Dinner Plate', pack: '25 Pcs Pack', price: '₹260', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Modern square design to elevate premium event presentations.' },
+      { name: 'Marriage Special Plate', pack: '25 Pcs Pack', price: '₹280', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Elegant wedding-focused disposable plate for high-traffic celebrations.' },
+      { name: 'Tea Cup 150ml', pack: '100 Pcs Pack', price: '₹145', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Lightweight and hygienic cups suitable for tea service and stalls.' },
+      { name: 'Coffee Cup 200ml', pack: '100 Pcs Pack', price: '₹170', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Reliable hot beverage cup with practical volume for coffee servings.' },
+      { name: 'Ripple Cup 250ml', pack: '50 Pcs Pack', price: '₹190', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Stylish ripple texture cup offering better grip and premium appearance.' },
+      { name: 'Lassi Cup 300ml', pack: '100 Pcs Pack', price: '₹240', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Large-capacity cup suitable for lassi, shakes, and cold beverages.' },
+      { name: 'Juice Cup 200ml', pack: '100 Pcs Pack', price: '₹160', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Transparent utility cup great for juices and welcome drinks.' },
+      { name: 'Premium Hot Cup 180ml', pack: '100 Pcs Pack', price: '₹185', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Insulated cup structure suitable for warm drink service.' },
+      { name: 'Food Container 500ml', pack: '25 Pcs Pack', price: '₹180', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Compact takeaway container for curries, sabzi, and meal portions.' },
+      { name: 'Rectangular Container 750ml', pack: '25 Pcs Pack', price: '₹230', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Spacious rectangular shape for organized and convenient food packing.' },
+      { name: 'Meal Box Container', pack: '50 Pcs Pack', price: '₹395', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Bulk meal box option designed for catering and tiffin distribution.' },
+      { name: 'Snack Container Mini', pack: '50 Pcs Pack', price: '₹155', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Mini container for snack servings and small takeaway portions.' },
+      { name: 'Microwave Container 650ml', pack: '25 Pcs Pack', price: '₹275', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Microwave-friendly container for practical home delivery usage.' },
+      { name: 'Leak-proof Container 1000ml', pack: '25 Pcs Pack', price: '₹340', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Large, secure, leak-resistant container for gravies and full meals.' }
     ];
 
     const categories = ['All', 'Disposable Cups', 'Plates', 'Containers'];
     let activeCategory = 'All';
+    let searchQuery = '';
 
     const categoryButtons = document.getElementById('categoryButtons');
     const productGrid = document.getElementById('productGrid');
     const productCount = document.getElementById('productCount');
+    const searchStatus = document.getElementById('searchStatus');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchCategory = document.getElementById('searchCategory');
+
+    const productDetailModal = document.getElementById('productDetailModal');
+    const closeDetailModal = document.getElementById('closeDetailModal');
+    const productDetailOverlay = document.getElementById('productDetailOverlay');
+    const detailImage = document.getElementById('detailImage');
+    const detailCategory = document.getElementById('detailCategory');
+    const detailName = document.getElementById('detailName');
+    const detailPack = document.getElementById('detailPack');
+    const detailPrice = document.getElementById('detailPrice');
+    const detailDescription = document.getElementById('detailDescription');
+    const detailWhatsappBtn = document.getElementById('detailWhatsappBtn');
 
     function getWhatsappLink(productName) {
       const message = `Hi Veer Mahadev Plastic, I want to inquire about ${productName} shown on your website.`;
       return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    }
+
+    function getFilteredProducts() {
+      const normalizedQuery = searchQuery.trim().toLowerCase();
+
+      return products.filter((product) => {
+        const byCategoryButtons = activeCategory === 'All' || product.category === activeCategory;
+        const bySearchCategory = searchCategory.value === 'All' || product.category === searchCategory.value;
+        const haystack = `${product.name} ${product.category} ${product.pack} ${product.price}`.toLowerCase();
+        const byQuery = !normalizedQuery || haystack.includes(normalizedQuery);
+        return byCategoryButtons && bySearchCategory && byQuery;
+      });
     }
 
     function renderCategories() {
@@ -174,14 +226,42 @@
           renderCategories();
           renderProducts();
         });
-           });
+      });
+    }
+
+    function openProductDetail(index) {
+      const product = getFilteredProducts()[index];
+      if (!product) return;
+
+      detailImage.src = product.image;
+      detailImage.alt = product.name;
+      detailCategory.textContent = product.category;
+      detailName.textContent = product.name;
+      detailPack.textContent = `Pack Size: ${product.pack}`;
+      detailPrice.textContent = `Wholesale Price: ${product.price}`;
+      detailDescription.textContent = product.description;
+      detailWhatsappBtn.href = getWhatsappLink(product.name);
+
+      productDetailModal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeProductDetail() {
+      productDetailModal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
     }
 
     function renderProducts() {
-      const filtered = activeCategory === 'All' ? products : products.filter((p) => p.category === activeCategory);
+      const filtered = getFilteredProducts();
       productCount.textContent = `${filtered.length} product(s) showing`;
+      searchStatus.textContent = searchQuery.trim() ? `Search: "${searchQuery.trim()}"` : '';
 
-      productGrid.innerHTML = filtered.map((product) => `
+      if (filtered.length === 0) {
+        productGrid.innerHTML = '<div class="col-span-full rounded-lg border border-red-100 bg-white p-8 text-center text-gray-600">No products found. Try a different search keyword.</div>';
+        return;
+      }
+
+      productGrid.innerHTML = filtered.map((product, index) => `
         <article class="bg-white rounded-xl border border-red-100 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition">
           <img src="${product.image}" alt="${product.name}" class="w-full h-44 object-cover" />
           <div class="p-4">
@@ -189,17 +269,38 @@
             <h4 class="font-bold text-lg leading-snug">${product.name}</h4>
             <p class="text-sm text-gray-600 mt-1">${product.pack}</p>
             <p class="text-red-700 font-extrabold mt-3">Wholesale Price: ${product.price}</p>
-            <a href="${getWhatsappLink(product.name)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex w-full justify-center items-center rounded-md bg-green-600 hover:bg-green-700 text-white font-bold text-sm px-4 py-2.5">
-              Order on WhatsApp
-            </a>
+            <div class="mt-4 grid grid-cols-1 gap-2">
+              <button data-index="${index}" class="detail-btn inline-flex w-full justify-center items-center rounded-md border border-red-600 text-red-700 hover:bg-red-50 font-bold text-sm px-4 py-2.5">View Product Details</button>
+              <a href="${getWhatsappLink(product.name)}" target="_blank" rel="noopener noreferrer" class="inline-flex w-full justify-center items-center rounded-md bg-green-600 hover:bg-green-700 text-white font-bold text-sm px-4 py-2.5">Order on WhatsApp</a>
+            </div>
           </div>
         </article>
       `).join('');
+
+      document.querySelectorAll('.detail-btn').forEach((button) => {
+        button.addEventListener('click', () => openProductDetail(Number(button.dataset.index)));
+      });
     }
+
+    function runSearch() {
+      searchQuery = searchInput.value;
+      renderProducts();
+    }
+
+    searchBtn.addEventListener('click', runSearch);
+    searchInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') runSearch();
+    });
+    searchCategory.addEventListener('change', renderProducts);
+
+    closeDetailModal.addEventListener('click', closeProductDetail);
+    productDetailOverlay.addEventListener('click', closeProductDetail);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeProductDetail();
+    });
 
     renderCategories();
     renderProducts();
   </script>
 </body>
 </html>
-        </div>
