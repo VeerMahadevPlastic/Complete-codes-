@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,7 @@
             -webkit-text-fill-color: transparent; 
         }
         .hero-bg { 
-            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url(https://i.postimg.cc/pXSCyWZX/BACKGROUND_IMAGE.png);
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('images/hero-bg.png'); 
             background-size: cover; 
             background-position: center; 
         }
@@ -46,7 +47,7 @@
     <!-- ==================== NAVBAR ==================== -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-         <div class="flex flex-col items-start">
+            <div class="flex flex-col items-start">
                 <div class="text-2xl font-bold text-red-600">VEER MAHADEV <span class="text-gray-800">PLASTIC</span></div>
                 <div class="flex items-center gap-4 mt-2 text-lg">
                     <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:text-pink-700 transition" aria-label="Instagram">
@@ -101,104 +102,59 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 
                 <!-- Product 1: Buffer Plates -->
-                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                <div onclick="openProduct('buffer-plate')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
                     <img src="https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="13 Inch Buffer Plates" class="w-full h-48 object-cover rounded-xl mb-4">
                     <h3 class="text-xl font-bold mb-2">13" Buffer Plates</h3>
                     <p class="text-gray-600 mb-4">Premium quality heavy-duty plates for big events and catering.</p>
-                    <button onclick="addToCart('13 Inch Buffer Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+                    <button onclick="event.stopPropagation(); openProduct('buffer-plate')" class="text-red-600 font-bold hover:underline">View Details →</button>
                 </div>
 
                 <!-- Product 2: Marriage Combo -->
-               <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+               <div onclick="openProduct('marriage-combo')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
                     <img src=https://i.postimg.cc/TYpfWkRh/marraige-combo-jpg.png?auto=format&fit=crop&q=80&w=400" alt="Specail Marriage Combo" class="w-full h-48 object-cover rounded-xl mb-4">
                     <h3 class="text-xl font-bold mb-2">Specail Marriage Combo</h3>
                     <p class="text-gray-600 mb-4">Premium quality Marriage Combo plates&Bowl big events and catering.</p>
-                    <button onclick="addToCart('Specail Marriage Combo')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+                    <button onclick="event.stopPropagation(); openProduct('marriage-combo')" class="text-red-600 font-bold hover:underline">View Details →</button>
 
                </div>
 
                 <!-- Product 3: Cups -->
-                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                <div onclick="openProduct('disposable-cups')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
                     <img src="https://i.postimg.cc/yYksSfV8/ripple-glass.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
                     <h3 class="text-xl font-bold mb-2">Disposable Cups</h3>
                     <p class="text-gray-600 mb-4">Hygienic cups.</p>
-                    <button onclick="addToCart('Disposable Cups')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+                    <button onclick="event.stopPropagation(); openProduct('disposable-cups')" class="text-red-600 font-bold hover:underline">View Details →</button>
                 
                 </div>
                 
                 <!-- Product 4: 3 Comapertment Plate -->
-                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                <div onclick="openProduct('three-compartment')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
                     <img src="https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg?auto=format&fit=crop&q=80&w=400" alt="3 Comapertment Plate " class="w-full h-48 object-cover rounded-xl mb-4">
                     <h3 class="text-xl font-bold mb-2">3 Comapertment Plate</h3>
                     <p class="text-gray-600 mb-4">Shaadi season ke liye best serving solution! 🍽️ Humari high-quality 3-compartment plates.</p>
-                    <button onclick="addToCart('3 Comapertment Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+                    <button onclick="event.stopPropagation(); openProduct('three-compartment')" class="text-red-600 font-bold hover:underline">View Details →</button>
                
                 </div>
 
                   <!-- Product 5: Foil Container -->
-                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                <div onclick="openProduct('foil-container')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
                     <img src="https://i.postimg.cc/1X8MxyYQ/Whats-App-Image-2026-02-23-at-6-07-24-PM.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
                     <h3 class="text-xl font-bold mb-2">Foil Container</h3>
                     <p class="text-gray-600 mb-4">Foil Container Availble All Size.</p>
-                    <button onclick="addToCart('Foil Container')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+                    <button onclick="event.stopPropagation(); openProduct('foil-container')" class="text-red-600 font-bold hover:underline">View Details →</button>
 
                 </div>
 
                  <!-- Product 6: All Items Set -->
-                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
+                 <div onclick="openProduct('all-items-set')" class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2 cursor-pointer">
                     <img src="https://i.postimg.cc/cJ6ctx0N/all-items-set.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
                     <h3 class="text-xl font-bold mb-2">All Items Set </h3>
                     <p class="text-gray-600 mb-4">Hygienic cups,Bowl,Plates,Spoon.</p>
-                    <button onclick="addToCart('All Items Set ')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-
-                </div>
-
-                <!-- Product 7: 3Compartment Squar Plate -->
-                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-                    <img src="https://i.postimg.cc/y8hNLzPD/3-COMPARTMENT-SQUARE.png?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-                    <h3 class="text-xl font-bold mb-2">3Compartment Squar Plate </h3>
-                    <p class="text-gray-600 mb-4">3Compartment Squar Plate For Multiple Delicious Dishes .</p>
-                    <button onclick="addToCart('3Compartment Squar Plate')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-
-                </div>
-               
-                <!-- Product 8:Disposable Cups 100Ml -->
-                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-                    <img src="https://i.postimg.cc/5tx2Gk7r/CHAI-CUPS-100-ML.png?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-                    <h3 class="text-xl font-bold mb-2">Disposable Cups 100Ml </h3>
-                    <p class="text-gray-600 mb-4">Premium Disposable Cups 100 ML | 50 PCS Pack Retail & Wholesale Available.</p>
-                    <button onclick="addToCart('Disposable Cups 100 ML')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
+                    <button onclick="event.stopPropagation(); openProduct('all-items-set')" class="text-red-600 font-bold hover:underline">View Details →</button>
 
                 </div>
                 
-                <!-- Product 9:Disposable Spoons -->
-                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-                    <img src="https://i.postimg.cc/MHj6VkHV/SPOON-PACKET-OF-50-PCS.png?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-                    <h3 class="text-xl font-bold mb-2">Disposable Spoons  </h3>
-                    <p class="text-gray-600 mb-4">Premium Disposable Spoons  | 50 PCS Pack Retail & Wholesale Available.</p>
-                    <button onclick="addToCart('Disposable Spoons ')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-
-                </div>
-
-                <!-- Product 10:Disposable Round Bowl -->
-                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-                    <img src="https://i.postimg.cc/NMwJcS2r/BOWL-240ML.png?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-                    <h3 class="text-xl font-bold mb-2">Disposable Round Bowl 240Ml</h3>
-                    <p class="text-gray-600 mb-4">Premium Disposable Round Bowl 240Ml | 25 PCS Pack Retail & Wholesale Available.</p>
-                    <button onclick="addToCart('Disposable Round Bowl 240ml ')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-                     
-                </div>
-
-                <!-- Product 11: Tissue Paper-->
-                 <div class="bg-gray-50 p-6 rounded-2xl shadow-sm hover:shadow-xl transition transform hover:-translate-y-2">
-                    <img src="https://i.postimg.cc/ydYRcywr/tisue-paper.jpg?auto=format&fit=crop&q=80&w=400" alt="Disposable Cups " class="w-full h-48 object-cover rounded-xl mb-4">
-                    <h3 class="text-xl font-bold mb-2">Tissue Paper</h3>
-                    <p class="text-gray-600 mb-4">Tissue Paper Eco Friendly | Pack Retail & Wholesale Available.</p>
-                    <button onclick="addToCart('Tissue Paper Eco Friendly')" class="text-red-600 font-bold hover:underline">Add to Cart →</button>
-               
-                 </div>
-                 
-                 </section>
+                </section>
 
 
     <!-- ==================== ABOUT SECTION ==================== -->
@@ -206,10 +162,13 @@
         <div class="container mx-auto text-center">
             <h2 class="text-3xl font-bold mb-4">About Veer Mahadev Plastic</h2>
             <p class="max-w-2xl mx-auto text-gray-400">
-               We are wholesale supplier of disposables in Ahmedabad, Gujarat.
-                You can call or WhatsApp us for bulk rates.
-                GST Registered and Trusted Supplier.
+                Ahmedabad, Gujarat mein hum sabse bade wholesale supplier hain disposables ke. 
+                Aap humein call karke ya WhatsApp karke bulk rates mangwa sakte hain. 
+                GST Registered aur Trusted Supplier.
             </p>
+            <div class="mt-8 flex justify-center gap-6 text-2xl">
+                <a href="https://wa.me/918050389261" class="text-green-400 hover:text-green-300"><i class="fab fa-whatsapp"></i></a>
+                <a href="tel:+918050389261" class="text-blue-400 hover:text-blue-300"><i class="fas fa-phone"></i></a>
             </div>
         </div>
     </section>
@@ -286,7 +245,8 @@
                 <div class="mt-4 bg-gray-800 p-3 rounded-xl border border-gray-700 max-w-md mx-auto md:mx-0">
                     <p class="text-xs text-gray-300 mb-2 font-semibold tracking-wide">Visit Our Shop</p>
                     <div class="rounded-lg overflow-hidden shadow-md border border-gray-700">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.514752653242!2d72.6379061!3d23.0048647!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e872d2f71fefb%3A0xf3248d09e89dd0dc!2sVeer%20Mahadev%20Plastic!5e0!3m2!1sen!2sin!4v1771899875011!5m2!1sen!2sin"
+                        <iframe
+                            src="https://share.google/laCLU1mUYuOBXIXk6"
                             width="100%"
                             height="160"
                             style="border:0;"
@@ -309,11 +269,10 @@
                         <i class="fas fa-phone"></i>
                     </a>
                 </div>
-                <span class="inline-block bg-gray-800 border border-gray-700 px-3 py-1 rounded-lg">📱 +91 8050389261</p>
+                <p class="text-gray-500 text-sm">📱 +91 8050389261</p>
                 <div class="mt-4 flex flex-col gap-2 text-xs text-gray-300 md:items-end">
                     <span class="inline-block bg-gray-800 border border-gray-700 px-3 py-1 rounded-lg">GST Certified: 24BLLPL0402N1Z6</span>
                     <span class="inline-block bg-gray-800 border border-gray-700 px-3 py-1 rounded-lg">MSME Registered: UDYAM-GJ-01-0532946</span>
-                    <span class="inline-block bg-gray-800 border border-gray-700 px-3 py-1 rounded-lg">E-MAIL ID:VEERMAHADEVPLASTIC@GMAIL.COM</span>
                 </div>
             </div>
         </div>
@@ -378,6 +337,10 @@
             const modal = document.getElementById('cart-modal');
             updateCartDisplay();
             modal.classList.toggle('hidden');
+        }
+
+        function openProduct(productId) {
+            window.location.href = `product.html?id=${encodeURIComponent(productId)}`;
         }
 
         function checkoutWhatsApp() {
