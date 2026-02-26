@@ -138,6 +138,29 @@
     </div>
   </section>
 
+  <!-- AI Bot -->
+  <div id="aiBotWidget" class="fixed bottom-4 right-4 z-[120]">
+    <button id="aiBotToggle" class="h-14 w-14 rounded-full bg-red-700 text-white shadow-xl hover:bg-red-800" aria-label="Open AI Bot">
+      🤖
+    </button>
+    <div id="aiBotPanel" class="hidden mt-3 w-[92vw] max-w-sm overflow-hidden rounded-xl border border-red-100 bg-white shadow-2xl">
+      <div class="flex items-center justify-between bg-red-700 px-4 py-3 text-white">
+        <p class="font-bold">Veer AI Assistant</p>
+        <button id="aiBotClose" class="rounded bg-white/20 px-2 py-1 text-xs">Close</button>
+      </div>
+      <div id="aiBotMessages" class="h-72 space-y-3 overflow-y-auto p-3 text-sm">
+        <div class="rounded-lg bg-red-50 p-2 text-gray-800">Namaste! Main Veer AI Bot hu. Aap product, pack size, best offers, ya WhatsApp order ke baare me pooch sakte ho.</div>
+      </div>
+      <div class="border-t border-gray-100 p-3">
+        <div class="flex gap-2">
+          <input id="aiBotInput" type="text" placeholder="Type your question..." class="w-full rounded-md border border-red-200 px-3 py-2 text-sm outline-none" />
+          <button id="aiBotSend" class="rounded-md bg-red-700 px-3 py-2 text-sm font-semibold text-white">Send</button>
+        </div>
+        <a href="https://wa.me/918050389261" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-xs font-bold text-white hover:bg-green-700">Talk to Human on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
   <footer id="footer" class="bg-white border-t border-red-100 mt-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid md:grid-cols-3 gap-8 text-sm">
       <div>
@@ -224,6 +247,14 @@
     const detailDescription = document.getElementById('detailDescription');
     const detailWhatsappBtn = document.getElementById('detailWhatsappBtn');
 
+    const aiBotToggle = document.getElementById('aiBotToggle');
+    const aiBotPanel = document.getElementById('aiBotPanel');
+    const aiBotClose = document.getElementById('aiBotClose');
+    const aiBotMessages = document.getElementById('aiBotMessages');
+    const aiBotInput = document.getElementById('aiBotInput');
+    const aiBotSend = document.getElementById('aiBotSend');
+
+
     function getWhatsappLink(productName) {
       const message = `Hi Veer Mahadev Plastic, I want to inquire about ${productName} shown on your website.`;
       return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -239,6 +270,36 @@
         const byQuery = !normalizedQuery || haystack.includes(normalizedQuery);
         return byCategoryButtons && bySearchCategory && byQuery;
       });
+    }
+
+
+    function appendBotMessage(text, role = 'bot') {
+      const bubble = document.createElement('div');
+      bubble.className = role === 'user'
+        ? 'ml-auto max-w-[85%] rounded-lg bg-red-700 p-2 text-white'
+        : 'max-w-[85%] rounded-lg bg-red-50 p-2 text-gray-800';
+      bubble.textContent = text;
+      aiBotMessages.appendChild(bubble);
+      aiBotMessages.scrollTop = aiBotMessages.scrollHeight;
+    }
+
+    function getAiReply(input) {
+      const q = input.toLowerCase();
+      if (q.includes('price') || q.includes('rate')) return 'Price ke liye aap product select karke WhatsApp par inquiry bhejiye. Best wholesale quote turant milega.';
+      if (q.includes('best offer') || q.includes('combo')) return 'Best Offer For The Day category me combo packs available hain. Aap "combo" search karke dekh sakte ho.';
+      if (q.includes('cup')) return 'Disposable Cups category me Tea Cup, Coffee Cup, Lassi Cup aur aur bhi options available hain.';
+      if (q.includes('plate')) return 'Plates category me 4-Compartment, Buffet, Dinner aur Value packs available hain.';
+      if (q.includes('container')) return 'Containers me food, microwave aur leak-proof options mil jayenge bulk pack ke saath.';
+      if (q.includes('whatsapp') || q.includes('order')) return 'Har product card me "Order on WhatsApp" button diya gaya hai. Usse direct inquiry send ho jayegi.';
+      return 'Main aapki help ke liye hu. Aap category, combo offer, pack size, ya order process ke baare me pooch sakte ho.';
+    }
+
+    function sendAiMessage() {
+      const userText = aiBotInput.value.trim();
+      if (!userText) return;
+      appendBotMessage(userText, 'user');
+      aiBotInput.value = '';
+      setTimeout(() => appendBotMessage(getAiReply(userText)), 250);
     }
 
     function renderCategories() {
@@ -328,6 +389,14 @@
     productDetailOverlay.addEventListener('click', closeProductDetail);
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeProductDetail();
+    });
+
+
+    aiBotToggle.addEventListener('click', () => aiBotPanel.classList.toggle('hidden'));
+    aiBotClose.addEventListener('click', () => aiBotPanel.classList.add('hidden'));
+    aiBotSend.addEventListener('click', sendAiMessage);
+    aiBotInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') sendAiMessage();
     });
 
     renderCategories();
