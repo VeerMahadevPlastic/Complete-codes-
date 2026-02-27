@@ -140,8 +140,8 @@
     <div class="relative mx-auto mt-20 w-[92%] max-w-md rounded-xl bg-white p-5 shadow-2xl">
       <div class="flex items-center justify-between mb-3"><h4 class="text-xl font-bold text-red-700">Login Required</h4><button id="closeLoginModal" class="text-sm bg-gray-100 px-3 py-1 rounded">Close</button></div>
       <p class="text-sm text-gray-600 mb-3">Order karne ke liye email login jaruri hai.</p>
-      <input id="loginEmail" type="email" placeholder="Enter email" value="owner@veermahadev.in" class="w-full border rounded px-3 py-2 mb-2" />
-      <input id="loginPassword" type="password" placeholder="Enter password" value="Mr.karankumar_7" class="w-full border rounded px-3 py-2 mb-3" />
+      <input id="loginEmail" type="email" placeholder="Enter email" class="w-full border rounded px-3 py-2 mb-2" />
+      <input id="loginPassword" type="password" placeholder="Enter password" class="w-full border rounded px-3 py-2 mb-3" />
       <button id="loginSubmitBtn" class="w-full bg-red-700 text-white rounded px-4 py-2 font-semibold">Login</button>
       <p id="loginError" class="text-xs text-red-700 mt-2"></p>
     </div>
@@ -223,8 +223,18 @@
     let pendingOrderProduct = null;
     let currentUser = null;
     let firestoreProducts = [];
+    let productsMode = 'firestore';
 
-    const getAllProducts = () => [...baseProducts, ...firestoreProducts];
+    const getLocalProducts = () => {
+      try {
+        return JSON.parse(localStorage.getItem('vmLocalProducts') || '[]');
+      } catch {
+        return [];
+      }
+    };
+    const saveLocalProducts = (items) => localStorage.setItem('vmLocalProducts', JSON.stringify(items));
+
+    const getAllProducts = () => [...baseProducts, ...(productsMode === 'firestore' ? firestoreProducts : getLocalProducts())];
 
     const categoryButtons = document.getElementById('categoryButtons');
     const productGrid = document.getElementById('productGrid');
@@ -265,6 +275,14 @@
     const aiBotMessages = document.getElementById('aiBotMessages');
     const aiBotInput = document.getElementById('aiBotInput');
     const aiBotSend = document.getElementById('aiBotSend');
+
+    const getFallbackUser = () => {
+      try {
+        return JSON.parse(localStorage.getItem('vmFallbackUser') || 'null');
+      } catch {
+        return null;
+      }
+    };
 
     const isLoggedIn = () => !!currentUser;
     const isOwner = () => currentUser?.email === OWNER_EMAIL;
@@ -368,13 +386,27 @@
     function runSearch() { searchQuery = searchInput.value; renderProducts(); }
 
     function renderAdminProducts() {
-      adminProductList.innerHTML = firestoreProducts.map((p) => `<div class="flex justify-between items-center rounded border p-2 text-sm"><span>${p.name} (${p.category})</span><button data-remove="${p.id}" class="text-red-700 font-semibold">Delete</button></div>`).join('') || '<p class="text-sm text-gray-500">No cloud products yet.</p>';
+      const sourceItems = productsMode === 'firestore'
+        ? firestoreProducts
+        : getLocalProducts().map((item, index) => ({ ...item, id: String(index) }));
+
+      adminProductList.innerHTML = sourceItems.map((p) => `<div class="flex justify-between items-center rounded border p-2 text-sm"><span>${p.name} (${p.category})</span><button data-remove="${p.id}" class="text-red-700 font-semibold">Delete</button></div>`).join('') || '<p class="text-sm text-gray-500">No custom products yet.</p>';
+
       adminProductList.querySelectorAll('button[data-remove]').forEach((btn) => btn.addEventListener('click', async () => {
-        try {
-          await deleteDoc(doc(db, 'products', btn.dataset.remove));
-        } catch (err) {
-          alert('Delete failed: ' + (err.message || err));
+        if (productsMode === 'firestore') {
+          try {
+            await deleteDoc(doc(db, 'products', btn.dataset.remove));
+          } catch (err) {
+            alert('Delete failed: ' + (err.message || err));
+          }
+          return;
         }
+
+        const localItems = getLocalProducts();
+        localItems.splice(Number(btn.dataset.remove), 1);
+        saveLocalProducts(localItems);
+        renderAdminProducts();
+        renderProducts();
       }));
     }
 
@@ -412,7 +444,12 @@
 
     userAuthBtn.addEventListener('click', async () => {
       if (isLoggedIn()) {
-        await signOut(auth);
+        if (currentUser?.uid) {
+          await signOut(auth);
+        }
+        localStorage.removeItem('vmFallbackUser');
+        currentUser = null;
+        updateAuthUI();
       } else {
         openLogin();
       }
@@ -425,24 +462,37 @@
       loginError.textContent = '';
       try {
         await signInWithEmailAndPassword(auth, email, pass);
-        closeLogin();
-        if (pendingOrderProduct) {
-          const p = pendingOrderProduct;
-          pendingOrderProduct = null;
-          completeOrderFlow(p);
-        }
       } catch (err) {
-        if (email === OWNER_EMAIL && pass === OWNER_PASSWORD) {
-          loginError.textContent = 'Firebase me same owner email/password create karna hoga. Please set this password in Firebase Auth: Mr.karankumar_7';
-        } else {
+        const code = err?.code || '';
+        const useFallback = ['auth/configuration-not-found', 'auth/operation-not-allowed', 'auth/network-request-failed'].includes(code);
+
+        if (!useFallback) {
           loginError.textContent = err.message || 'Login failed';
+          return;
         }
+
+        if (email === OWNER_EMAIL && pass !== OWNER_PASSWORD) {
+          loginError.textContent = 'Owner password incorrect.';
+          return;
+        }
+
+        const fallbackUser = { email, isFallback: true };
+        localStorage.setItem('vmFallbackUser', JSON.stringify(fallbackUser));
+        currentUser = fallbackUser;
+      }
+
+      closeLogin();
+      updateAuthUI();
+      if (pendingOrderProduct) {
+        const p = pendingOrderProduct;
+        pendingOrderProduct = null;
+        completeOrderFlow(p);
       }
     });
     closeLoginModal.addEventListener('click', closeLogin);
 
     onAuthStateChanged(auth, (user) => {
-      currentUser = user;
+      currentUser = user || getFallbackUser();
       updateAuthUI();
     });
 
@@ -462,7 +512,15 @@
       const description = document.getElementById('adminDescription').value.trim() || 'Custom product added by owner.';
       if (!name || !pack) return;
       try {
-        await addDoc(collection(db, 'products'), { name, pack, price, category, image, description, createdAt: serverTimestamp() });
+        if (productsMode === 'firestore') {
+          await addDoc(collection(db, 'products'), { name, pack, price, category, image, description, createdAt: serverTimestamp() });
+        } else {
+          const localItems = getLocalProducts();
+          localItems.push({ name, pack, price, category, image, description });
+          saveLocalProducts(localItems);
+          renderProducts();
+          renderAdminProducts();
+        }
         ['adminName','adminPack','adminPrice','adminDescription'].forEach((id) => document.getElementById(id).value = '');
         document.getElementById('adminImage').value = 'https://via.placeholder.com/300';
       } catch (err) {
@@ -479,11 +537,15 @@
     const productsRef = collection(db, 'products');
     const productsQuery = query(productsRef, orderBy('createdAt', 'desc'));
     onSnapshot(productsQuery, (snapshot) => {
+      productsMode = 'firestore';
       firestoreProducts = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
       renderProducts();
       renderAdminProducts();
     }, (err) => {
+      productsMode = 'local';
       console.error('Firestore listener error:', err);
+      renderProducts();
+      renderAdminProducts();
     });
 
     // init
