@@ -29,6 +29,22 @@
         <div>
           <p class="font-extrabold text-red-700 leading-tight text-lg">VEER MAHADEV PLASTIC</p>
           <p class="text-xs text-gray-500">Premium Disposable Products</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
       </a>
       <div class="flex-1">
@@ -36,6 +52,13 @@
       </div>
       <button id="userAuthBtn" class="px-4 py-2 rounded-md bg-red-700 text-white text-sm font-bold">Login</button>
       <button id="adminOpenBtn" class="hidden px-4 py-2 rounded-md bg-black text-white text-sm">Admin Panel</button>
+
+
+
+
+
+
+
     </div>
   </header>
 
@@ -45,6 +68,11 @@
     <div class="mt-8 flex justify-center gap-4">
       <a href="#products" class="bg-white text-red-700 px-6 py-3 rounded-md font-bold">View Catalog</a>
       <button onclick="window.gateOrder('Inquiry from Home')" class="border border-white px-6 py-3 rounded-md font-bold">WhatsApp Now</button>
+
+
+
+
+
     </div>
   </section>
 
@@ -53,6 +81,7 @@
       <span class="mx-10">🔥 SPECIAL MARRIAGE COMBO AVAILABLE 🔥</span>
       <span class="mx-10">🚚 WHOLESALE DELIVERY ALL OVER AHMEDABAD</span>
       <span class="mx-10">📞 CALL: +91 80503 89261</span>
+
     </div>
   </div>
 
@@ -60,6 +89,50 @@
     <h2 class="text-2xl font-bold mb-6">Product Catalog</h2>
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <p class="text-gray-500">Loading products...</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
   </main>
 
@@ -71,6 +144,7 @@
       <button id="loginSubmitBtn" class="w-full bg-red-700 text-white py-2 rounded font-bold">Sign In</button>
       <p id="loginError" class="text-red-600 text-sm mt-2"></p>
       <button onclick="document.getElementById('loginModal').classList.add('hidden')" class="w-full mt-2 text-gray-500 text-sm">Cancel</button>
+
     </div>
   </div>
 
@@ -79,6 +153,13 @@
       <div class="flex justify-between items-center mb-4">
         <h4 class="text-xl font-bold">Admin: Add New Product</h4>
         <button onclick="document.getElementById('adminModal').classList.add('hidden')" class="text-gray-500">Close</button>
+
+
+
+
+
+
+
       </div>
       <div class="grid grid-cols-1 gap-3">
         <input id="adminName" placeholder="Product Name" class="border p-2 rounded" />
@@ -128,6 +209,272 @@
       if(auth.currentUser?.email === OWNER_EMAIL) renderAdminList(products);
     });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     function renderProducts(items) {
       const grid = document.getElementById('productGrid');
       grid.innerHTML = items.map(p => `
@@ -141,6 +488,7 @@
         </div>
       `).join('');
     }
+
 
     // Admin List
     function renderAdminList(items) {
@@ -197,6 +545,9 @@
     };
 
     document.getElementById('adminOpenBtn').onclick = () => document.getElementById('adminModal').classList.remove('hidden');
+
+
+
   </script>
 </body>
 </html>
