@@ -138,19 +138,24 @@
     </div>
   </section>
 
-  <!-- AI Bot -->
-    <div id="chat-bubble" onclick="toggleChatWindow()" class="fixed bottom-5 right-5 bg-red-600 text-white p-4 rounded-full shadow-2xl cursor-pointer z-[100] w-16 h-16 flex items-center justify-center border-4 border-white">
-        <i class="fa fa-comment-dots text-2xl"></i>
-    </div>
-
-    <div id="chat-window" class="fixed bottom-24 right-5 w-80 bg-white shadow-2xl rounded-2xl hidden z-[100] border-2 border-red-600">
-        <!-- Chat Header -->
-       <div id="aiBotWidget" class="fixed bottom-4 right-4 z-[120]"> 
-         <button id="aiBotToggle" class="h-14 w-14 rounded-full bg-red-700 text-white shadow-xl hover:bg-red-800" aria-label="Open AI Bot"> 
-           🤖 </button> 
-         <div id="aiBotPanel" class="hidden mt-3 w-[92vw] max-w-sm overflow-hidden rounded-xl border border-red-100 bg-white shadow-2xl">
-           <div class="flex items-center justify-between bg-red-700 px-4 py-3 text-white"> <p class="font-bold">Veer AI Assistant</p> 
-             <button id="aiBotClose" class="rounded bg-white/20 px-2 py-1 text-xs">Close</button> </div>
+ <!-- AI Bot -->
+  <div id="aiBotWidget" class="fixed bottom-4 right-4 z-[120]">
+    <button id="aiBotToggle" class="h-14 w-14 rounded-full bg-red-700 text-white shadow-xl hover:bg-red-800" aria-label="Open AI Bot">
+      🤖
+    </button>
+    <div id="aiBotPanel" class="hidden mt-3 w-[92vw] max-w-sm overflow-hidden rounded-xl border border-red-100 bg-white shadow-2xl">
+      <div class="flex items-center justify-between bg-red-700 px-4 py-3 text-white">
+        <p class="font-bold">Veer AI Assistant</p>
+        <button id="aiBotClose" class="rounded bg-white/20 px-2 py-1 text-xs">Close</button>
+      </div>
+      <div id="aiBotMessages" class="h-72 space-y-3 overflow-y-auto p-3 text-sm">
+        <div class="rounded-lg bg-red-50 p-2 text-gray-800">Namaste! Main Veer AI Bot hu. Aap product, pack size, best offers, ya WhatsApp order ke baare me pooch sakte ho.</div>
+      </div>
+      <div class="border-t border-gray-100 p-3">
+        <div class="flex gap-2">
+          <input id="aiBotInput" type="text" placeholder="Type your question..." class="w-full rounded-md border border-red-200 px-3 py-2 text-sm outline-none" />
+          <button id="aiBotSend" class="rounded-md bg-red-700 px-3 py-2 text-sm font-semibold text-white">Send</button>
+        </div>
         <a href="https://wa.me/918050389261" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-xs font-bold text-white hover:bg-green-700">Talk to Human on WhatsApp</a>
       </div>
     </div>
