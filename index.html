@@ -378,73 +378,140 @@
     }
 
     // listeners
-    searchBtn.addEventListener('click', runSearch);
-    searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') runSearch(); });
-    searchCategory.addEventListener('change', renderProducts);
+   <script type="module">
+  // Firebase SDKs Import
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    closeDetailModal.addEventListener('click', closeProductDetail);
-    productDetailOverlay.addEventListener('click', closeProductDetail);
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeProductDetail(); });
+  // 1. Aapka Firebase Config (Yahan Add Ho Gaya)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAGfZVese3tqFf_Uw_pJUQbSR5p6sohRmo",
+    authDomain: "veermahadev--codes.firebaseapp.com",
+    projectId: "veermahadev--codes",
+    storageBucket: "veermahadev--codes.firebasestorage.app",
+    messagingSenderId: "380308449387",
+    appId: "1:380308449387:web:964942c3eb82a4c742292e",
+    measurementId: "G-R2DHXNS9TF"
+  };
 
-    document.querySelectorAll('.order-now-global').forEach((btn) => btn.addEventListener('click', () => gateOrder('products from homepage')));
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-    userAuthBtn.addEventListener('click', () => {
-      if (isLoggedIn()) {
-        localStorage.removeItem('vmUser');
-        updateAuthUI();
-      } else {
-        openLogin();
-      }
-    });
+  // Constants
+  const WHATSAPP_NUMBER = '918050389261';
+  const OWNER_EMAIL = 'admin@veermahadev.shop'; // Is email se login karne par hi Admin Panel dikhega
 
-    loginSubmitBtn.addEventListener('click', () => {
-      const email = loginEmail.value.trim();
-      const pass = loginPassword.value.trim();
-      if (!email || !pass) { loginError.textContent = 'Email and password required.'; return; }
-      localStorage.setItem('vmUser', JSON.stringify({ email }));
-      closeLogin();
-      updateAuthUI();
-      if (pendingOrderProduct) {
-        const p = pendingOrderProduct;
-        pendingOrderProduct = null;
-        completeOrderFlow(p);
-      }
-    });
-    closeLoginModal.addEventListener('click', closeLogin);
+  let allProducts = [];
+  let activeCategory = 'All';
+  let searchQuery = '';
+  let pendingOrderProduct = null;
 
-    adminOpenBtn.addEventListener('click', () => {
-      if (!isOwner()) return;
-      adminModal.classList.remove('hidden');
-      renderAdminProducts();
-    });
-    closeAdminModal.addEventListener('click', () => adminModal.classList.add('hidden'));
-
-    adminAddProduct.addEventListener('click', () => {
-      const name = document.getElementById('adminName').value.trim();
-      const pack = document.getElementById('adminPack').value.trim();
-      const price = document.getElementById('adminPrice').value.trim();
-      const category = document.getElementById('adminCategory').value;
-      const image = document.getElementById('adminImage').value.trim() || 'https://via.placeholder.com/300';
-      const description = document.getElementById('adminDescription').value.trim() || 'Custom product added by owner.';
-      if (!name || !pack) return;
-      const all = getSavedProducts();
-      all.push({ name, pack, price, category, image, description });
-      saveCustomProducts(all);
-      renderAdminProducts();
-      renderProducts();
-      ['adminName','adminPack','adminPrice','adminDescription'].forEach((id) => document.getElementById(id).value = '');
-      document.getElementById('adminImage').value = 'https://via.placeholder.com/300';
-    });
-
-    aiBotToggle.addEventListener('click', () => aiBotPanel.classList.toggle('hidden'));
-    aiBotClose.addEventListener('click', () => aiBotPanel.classList.add('hidden'));
-    aiBotSend.addEventListener('click', sendAiMessage);
-    aiBotInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') sendAiMessage(); });
-
-    // init
-    updateAuthUI();
-    renderCategories();
+  // 2. Real-time Database Sync (Firestore se Products lana)
+  onSnapshot(collection(db, "products"), (snapshot) => {
+    allProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     renderProducts();
+    if (auth.currentUser?.email === OWNER_EMAIL) renderAdminProducts();
+  });
+
+  // 3. Auth State Change (Login/Logout detect karna)
+  onAuthStateChanged(auth, (user) => {
+    const userAuthBtn = document.getElementById('userAuthBtn');
+    const adminOpenBtn = document.getElementById('adminOpenBtn');
+    
+    if (user) {
+      userAuthBtn.textContent = `Logout (${user.email})`;
+      adminOpenBtn.classList.toggle('hidden', user.email !== OWNER_EMAIL);
+    } else {
+      userAuthBtn.textContent = 'Login';
+      adminOpenBtn.classList.add('hidden');
+    }
+  });
+
+  // --- Functions ---
+
+  // Login Function
+  window.handleLogin = async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPassword').value.trim();
+    const loginError = document.getElementById('loginError');
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+      document.getElementById('loginModal').classList.add('hidden');
+      if (pendingOrderProduct) {
+        completeOrderFlow(pendingOrderProduct);
+        pendingOrderProduct = null;
+      }
+    } catch (error) {
+      loginError.textContent = "Login Fail: Check Email/Password";
+    }
+  };
+
+  // Add Product to Firestore
+  window.addNewProduct = async () => {
+    const name = document.getElementById('adminName').value.trim();
+    const pack = document.getElementById('adminPack').value.trim();
+    const price = document.getElementById('adminPrice').value.trim();
+    const category = document.getElementById('adminCategory').value;
+    const image = document.getElementById('adminImage').value.trim() || 'https://via.placeholder.com/300';
+    const description = document.getElementById('adminDescription').value.trim();
+
+    if (!name || !pack) return alert("Name and Pack size are required!");
+
+    try {
+      await addDoc(collection(db, "products"), { name, pack, price, category, image, description, createdAt: new Date() });
+      alert("Product Added to Cloud!");
+      // Clear inputs
+      ['adminName','adminPack','adminPrice','adminDescription'].forEach(id => document.getElementById(id).value = '');
+    } catch (e) {
+      alert("Error adding product: " + e.message);
+    }
+  };
+
+  // Delete Product from Firestore
+  window.deleteProduct = async (id) => {
+    if(confirm("Are you sure?")) {
+      await deleteDoc(doc(db, "products", id));
+    }
+  };
+
+  // Render Functions (Logic same as before but using allProducts from Firebase)
+  function renderProducts() {
+    const filtered = allProducts.filter(p => {
+      const matchCat = activeCategory === 'All' || p.category === activeCategory;
+      const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchCat && matchSearch;
+    });
+
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = filtered.map((p) => `
+      <article class="bg-white rounded-xl border border-red-100 overflow-hidden shadow-sm p-4">
+        <img src="${p.image}" class="w-full h-44 object-cover rounded-md" />
+        <h4 class="font-bold mt-2">${p.name}</h4>
+        <p class="text-sm text-gray-500">${p.pack}</p>
+        <p class="text-red-700 font-bold">${p.price}</p>
+        <button onclick="gateOrder('${p.name}')" class="w-full bg-green-600 text-white mt-3 py-2 rounded-md font-bold">Order on WhatsApp</button>
+      </article>
+    `).join('');
+  }
+
+  window.gateOrder = (productName) => {
+    if (!auth.currentUser) {
+      pendingOrderProduct = productName;
+      document.getElementById('loginModal').classList.remove('hidden');
+      return;
+    }
+    const msg = `Namaste Veer Mahadev Plastic, I want to order: ${productName}`;
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+  };
+
+  // UI Event Listeners
+  document.getElementById('loginSubmitBtn').onclick = window.handleLogin;
+  document.getElementById('adminAddProduct').onclick = window.addNewProduct;
+  document.getElementById('userAuthBtn').onclick = () => auth.currentUser ? signOut(auth) : document.getElementById('loginModal').classList.remove('hidden');
+  
   </script>
 </body>
 </html>
