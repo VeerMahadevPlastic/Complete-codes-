@@ -12,7 +12,7 @@
 <body class="bg-gray-50 text-gray-900">
   <div class="bg-red-900 text-white text-xs sm:text-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
-      <p>Welcome to Veer Mahadev Plastic - Wholesale Disposable Supplier</p>
+      <p>Welcome to Veer Mahadev - Wholesale Disposable Supplier</p>
       <div class="flex items-center gap-3">
         <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 underline hover:text-red-100" aria-label="Instagram">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm8.5 1.5h-8.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5a4.25 4.25 0 0 0-4.25-4.25ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-2a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"/></svg>
@@ -32,7 +32,7 @@
         <a href="#" class="flex items-center gap-3 min-w-max">
           <div class="h-11 w-11 rounded-full bg-red-700 text-white font-extrabold grid place-content-center">VM</div>
           <div>
-            <p class="font-extrabold text-red-700 leading-tight text-base sm:text-lg">VEER MAHADEV PLASTIC</p>
+            <p class="font-extrabold text-red-700 leading-tight text-base sm:text-lg">VEER MAHADEV </p>
             <p class="text-xs text-gray-500">Premium Disposable Products</p>
           </div>
         </a>
@@ -89,7 +89,7 @@
 
     <section id="products">
       <div class="mb-4 flex items-center justify-between gap-2">
-        <h3 class="text-xl font-bold">Wholesale Product Catalog</h3>
+        <h3 class="text-xl font-bold"> Product Catalog</h3>
         <div class="text-right">
           <p id="productCount" class="text-sm text-gray-600"></p>
           <p id="searchStatus" class="text-xs text-red-700 font-semibold"></p>
@@ -139,15 +139,42 @@
   </section>
 
   <!-- AI Bot -->
-  <div id="aiBotWidget" class="fixed bottom-4 right-4 z-[120]">
-    <button id="aiBotToggle" class="h-14 w-14 rounded-full bg-red-700 text-white shadow-xl hover:bg-red-800" aria-label="Open AI Bot">
-      🤖
-    </button>
-    <div id="aiBotPanel" class="hidden mt-3 w-[92vw] max-w-sm overflow-hidden rounded-xl border border-red-100 bg-white shadow-2xl">
-      <div class="flex items-center justify-between bg-red-700 px-4 py-3 text-white">
-        <p class="font-bold">Veer AI Assistant</p>
-        <button id="aiBotClose" class="rounded bg-white/20 px-2 py-1 text-xs">Close</button>
-      </div>
+ ================== -->
+    <div id="chat-bubble" onclick="toggleChatWindow()" class="fixed bottom-5 right-5 bg-red-600 text-white p-4 rounded-full shadow-2xl cursor-pointer z-[100] w-16 h-16 flex items-center justify-center border-4 border-white">
+        <i class="fa fa-comment-dots text-2xl"></i>
+    </div>
+
+    <div id="chat-window" class="fixed bottom-24 right-5 w-80 bg-white shadow-2xl rounded-2xl hidden z-[100] border-2 border-red-600">
+        <!-- Chat Header -->
+        <div class="bg-red-600 text-white p-4 rounded-t-2xl font-bold flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-headset"></i>
+                <span>VM Support</span>
+            </div>
+            <button onclick="toggleChatWindow()" class="text-2xl hover:text-gray-200">&times;</button>
+        </div>
+
+        <!-- Chat Body -->
+        <div id="chat-body" class="p-4 h-64 overflow-y-auto text-sm space-y-3 bg-gray-50">
+            <div class="bg-white p-3 rounded-lg border-l-4 border-red-500">
+                <p><b>Ram Ram! 🙏</b></p>
+                <p class="text-gray-600 text-xs mt-1">Veer Mahadev Plastic ke support team. Aapko kya chahiye?</p>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-3 bg-white border-t-2 border-gray-200 flex gap-2 rounded-b-2xl">
+            <input 
+                id="user-input" 
+                type="text" 
+                placeholder="Type your message..." 
+                class="flex-1 p-2 outline-none border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+            >
+            <button onclick="sendChatMessage()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                <i class="fa fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
       <div id="aiBotMessages" class="h-72 space-y-3 overflow-y-auto p-3 text-sm">
         <div class="rounded-lg bg-red-50 p-2 text-gray-800">Namaste! Main Veer AI Bot hu. Aap product, pack size, best offers, ya WhatsApp order ke baare me pooch sakte ho.</div>
       </div>
