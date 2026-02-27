@@ -29,23 +29,7 @@
         <div>
           <p class="font-extrabold text-red-700 leading-tight text-lg">VEER MAHADEV PLASTIC</p>
           <p class="text-xs text-gray-500">Premium Disposable Products</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        </div>
+      </div>
       </a>
       <div class="flex-1">
         <input id="searchInput" type="text" placeholder="Search products..." class="w-full border rounded-md px-3 py-2 text-sm" />
@@ -53,13 +37,7 @@
       <button id="userAuthBtn" class="px-4 py-2 rounded-md bg-red-700 text-white text-sm font-bold">Login</button>
       <button id="adminOpenBtn" class="hidden px-4 py-2 rounded-md bg-black text-white text-sm">Admin Panel</button>
 
-
-
-
-
-
-
-    </div>
+ </div>
   </header>
 
   <section class="relative bg-red-900 text-white py-20 px-4 text-center">
@@ -69,11 +47,7 @@
       <a href="#products" class="bg-white text-red-700 px-6 py-3 rounded-md font-bold">View Catalog</a>
       <button onclick="window.gateOrder('Inquiry from Home')" class="border border-white px-6 py-3 rounded-md font-bold">WhatsApp Now</button>
 
-
-
-
-
-    </div>
+  </div>
   </section>
 
   <div class="bg-yellow-400 py-2 overflow-hidden border-y-2 border-red-600">
@@ -89,49 +63,6 @@
     <h2 class="text-2xl font-bold mb-6">Product Catalog</h2>
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <p class="text-gray-500">Loading products...</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </div>
   </main>
@@ -153,12 +84,6 @@
       <div class="flex justify-between items-center mb-4">
         <h4 class="text-xl font-bold">Admin: Add New Product</h4>
         <button onclick="document.getElementById('adminModal').classList.add('hidden')" class="text-gray-500">Close</button>
-
-
-
-
-
-
 
       </div>
       <div class="grid grid-cols-1 gap-3">
@@ -208,272 +133,6 @@
       renderProducts(products);
       if(auth.currentUser?.email === OWNER_EMAIL) renderAdminList(products);
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     function renderProducts(items) {
       const grid = document.getElementById('productGrid');
@@ -545,8 +204,6 @@
     };
 
     document.getElementById('adminOpenBtn').onclick = () => document.getElementById('adminModal').classList.remove('hidden');
-
-
 
   </script>
 </body>
