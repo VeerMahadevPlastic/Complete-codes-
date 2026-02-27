@@ -218,7 +218,6 @@
     ];
 
     const categories = ['All', 'Disposable Cups', 'Plates', 'Containers', 'Best Offer For The Day'];
----SPLIT---
     let activeCategory = 'All';
     let searchQuery = '';
     let pendingOrderProduct = null;
@@ -439,7 +438,6 @@
           loginError.textContent = err.message || 'Login failed';
         }
       }
----SPLIT---
     });
     closeLoginModal.addEventListener('click', closeLogin);
 
