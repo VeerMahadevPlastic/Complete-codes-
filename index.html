@@ -140,8 +140,8 @@
     <div class="relative mx-auto mt-20 w-[92%] max-w-md rounded-xl bg-white p-5 shadow-2xl">
       <div class="flex items-center justify-between mb-3"><h4 class="text-xl font-bold text-red-700">Login Required</h4><button id="closeLoginModal" class="text-sm bg-gray-100 px-3 py-1 rounded">Close</button></div>
       <p class="text-sm text-gray-600 mb-3">Order karne ke liye email login jaruri hai.</p>
-      <input id="loginEmail" type="email" placeholder="Enter email" class="w-full border rounded px-3 py-2 mb-2" />
-      <input id="loginPassword" type="password" placeholder="Enter password" class="w-full border rounded px-3 py-2 mb-3" />
+      <input id="loginEmail" type="email" placeholder="Enter email" value="owner@veermahadev.in" class="w-full border rounded px-3 py-2 mb-2" />
+      <input id="loginPassword" type="password" placeholder="Enter password" value="Mr.karankumar_7" class="w-full border rounded px-3 py-2 mb-3" />
       <button id="loginSubmitBtn" class="w-full bg-red-700 text-white rounded px-4 py-2 font-semibold">Login</button>
       <p id="loginError" class="text-xs text-red-700 mt-2"></p>
     </div>
@@ -207,6 +207,7 @@
 
     const WHATSAPP_NUMBER = '918050389261';
     const OWNER_EMAIL = 'owner@veermahadev.in';
+    const OWNER_PASSWORD = 'Mr.karankumar_7';
 
     const baseProducts = [
       { name: '4-Compartment Plate', pack: '25 Pcs Pack', price: '₹', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Heavy-duty multi-compartment serving plate ideal for weddings and catered events.' },
@@ -429,7 +430,11 @@
           completeOrderFlow(p);
         }
       } catch (err) {
-        loginError.textContent = err.message || 'Login failed';
+        if (email === OWNER_EMAIL && pass === OWNER_PASSWORD) {
+          loginError.textContent = 'Firebase me same owner email/password create karna hoga. Please set this password in Firebase Auth: Mr.karankumar_7';
+        } else {
+          loginError.textContent = err.message || 'Login failed';
+        }
       }
     });
     closeLoginModal.addEventListener('click', closeLogin);
