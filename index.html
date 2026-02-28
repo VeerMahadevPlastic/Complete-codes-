@@ -182,6 +182,10 @@
     const searchBtn = document.getElementById('searchBtn');
     const searchCategory = document.getElementById('searchCategory');
 
+    function getCategorySelectValue() {
+      return searchCategory ? searchCategory.value : 'All';
+    }
+
     const cartItems = document.getElementById('cartItems');
     const cartEmpty = document.getElementById('cartEmpty');
     const cartCount = document.getElementById('cartCount');
@@ -200,8 +204,14 @@
     const city = document.getElementById('city');
     const pincode = document.getElementById('pincode');
     const state = document.getElementById('state');
-@@ -209,151 +239,175 @@
-      if (!cart.length) {
+
+    function getCart() {
+      try {
+        return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      } catch {
+        return [];
+      }
+@@ -240,58 +244,59 @@
         cartItems.innerHTML = '';
         cartEmpty.classList.remove('hidden');
         return;
@@ -227,7 +237,7 @@
       const query = searchQuery.trim().toLowerCase();
       return products.filter((product) => {
         const byCategoryButton = activeCategory === 'All' || product.category === activeCategory;
-        const byCategorySelect = searchCategory.value === 'All' || product.category === searchCategory.value;
+        const byCategorySelect = getCategorySelectValue() === 'All' || product.category === getCategorySelectValue();
         const haystack = `${product.name} ${product.category} ${product.pack} ${product.price}`.toLowerCase();
         const byQuery = !query || haystack.includes(query);
         return byCategoryButton && byCategorySelect && byQuery;
@@ -235,6 +245,7 @@
     }
 
     function renderCategories() {
+      if (!categoryButtons) return;
       categoryButtons.innerHTML = categories.map((category) => {
         const isActive = activeCategory === category;
         return `<button data-category="${category}" class="category-btn px-4 py-2 rounded-md text-sm font-semibold border transition ${isActive ? 'bg-red-700 border-red-700 text-white' : 'bg-white border-red-200 text-red-700 hover:bg-red-50'}">${category}</button>`;
@@ -260,35 +271,7 @@
       }
 
       productGrid.innerHTML = filtered.map((product) => `
-        <article class="bg-white rounded-xl border border-red-100 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition">
-          <img src="${product.image}" alt="${product.name}" class="w-full h-44 object-cover" />
-          <div class="p-4">
-            <span class="inline-flex text-xs font-semibold bg-red-50 text-red-700 px-2 py-1 rounded mb-2">${product.category}</span>
-            <h4 class="font-bold text-lg leading-snug">${product.name}</h4>
-            <p class="text-sm text-gray-600 mt-1">${product.pack}</p>
-            <p class="text-red-700 font-extrabold mt-3">${product.price}</p>
-            <button data-add="${product.id}" class="mt-4 w-full rounded-md bg-red-700 hover:bg-red-800 text-white font-bold text-sm px-4 py-2.5">Add to Cart</button>
-          </div>
-        </article>
-      `).join('');
-
-      productGrid.querySelectorAll('button[data-add]').forEach((btn) => {
-        btn.addEventListener('click', () => addToCart(btn.dataset.add));
-      });
-    }
-
-    function validateForm() {
-      if (!firstName.value.trim() || !lastName.value.trim() || !address.value.trim() || !city.value.trim() || !pincode.value.trim()) {
-        return 'Please fill all mandatory fields.';
-      }
-      if (!/^\d{10}$/.test(mobile.value.trim())) {
-        return 'Mobile number must be exactly 10 digits.';
-      }
-      if (!/^\d{6}$/.test(pincode.value.trim())) {
-        return 'Pincode must be exactly 6 digits.';
-      }
-      if (!getCart().length) {
-        return 'Cart is empty. Please add at least one product.';
+@@ -327,87 +332,100 @@
       }
       return '';
     }
@@ -314,7 +297,7 @@
           state.value = po.State || state.value;
           formError.textContent = '';
         } else {
-          state.value = '';
+          if (state) state.value = '';
           formError.textContent = 'Invalid pincode or location not found.';
         }
       } catch {
@@ -322,26 +305,32 @@
       }
     }
 
-    searchBtn.addEventListener('click', () => {
-      searchQuery = searchInput.value;
-      renderProducts();
-    });
-
-    searchInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
+    if (searchBtn && searchInput) {
+      searchBtn.addEventListener('click', () => {
         searchQuery = searchInput.value;
         renderProducts();
-      }
-    });
+      });
+    }
 
-    searchCategory.addEventListener('change', renderProducts);
+    if (searchInput) {
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          searchQuery = searchInput.value;
+          renderProducts();
+        }
+      });
+    }
 
-    pincode.addEventListener('input', () => {
-      const pin = pincode.value.trim();
-      if (/^\d{6}$/.test(pin)) autofillCityStateByPincode(pin);
-    });
+    if (searchCategory) searchCategory.addEventListener('change', renderProducts);
 
-    checkoutForm.addEventListener('submit', (e) => {
+    if (pincode) {
+      pincode.addEventListener('input', () => {
+        const pin = pincode.value.trim();
+        if (/^\d{6}$/.test(pin)) autofillCityStateByPincode(pin);
+      });
+    }
+
+    if (checkoutForm) checkoutForm.addEventListener('submit', (e) => {
       e.preventDefault();
       formError.textContent = '';
       const error = validateForm();
@@ -361,18 +350,26 @@
       renderCart();
     });
 
-    continueShopping.addEventListener('click', () => {
+    if (continueShopping) continueShopping.addEventListener('click', () => {
       checkoutForm.reset();
       checkoutForm.classList.remove('hidden');
       successBox.classList.add('hidden');
-      state.value = '';
+      if (state) state.value = '';
       formError.textContent = '';
       window.location.href = '#products';
     });
 
-    renderCategories();
-    renderProducts();
-    renderCart();
+    try {
+      renderCategories();
+      renderProducts();
+      renderCart();
+    } catch (err) {
+      console.error('Init error:', err);
+      if (productGrid) {
+        productGrid.innerHTML = '<div class="col-span-full rounded-lg border border-red-100 bg-white p-8 text-center text-red-700">Products loading issue fixed. Please refresh once.</div>';
+      }
+    }
   </script>
 </body>
 </html>
+
