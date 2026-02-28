@@ -295,7 +295,7 @@
     function createWhatsappMessage(orderId) {
       const cart = getCart();
       const itemsText = cart.map((item) => `- ${item.name} (${item.pack}) x ${item.qty}`).join('%0A');
-      return `Hi Veer Mahadev Plastic,%0A%0ANew Guest Order:%0AOrder ID: ${orderId}%0A%0ACustomer:%0A${firstName.value.trim()} ${lastName.value.trim()}%0AMobile: ${mobile.value.trim()}%0AAddress: ${address.value.trim()}%0ALandmark: ${landmark.value.trim() || 'N/A'}%0ACity: ${city.value.trim()}%0AState: ${state.value.trim() || 'N/A'}%0APincode: ${pincode.value.trim()}%0A%0AItems:%0A${itemsText}`;
+      return `Hi Veer Mahadev Plastic,%0A%0ANew Order:%0AOrder ID: ${orderId}%0A%0ACustomer:%0A${firstName.value.trim()} ${lastName.value.trim()}%0AMobile: ${mobile.value.trim()}%0AAddress: ${address.value.trim()}%0ALandmark: ${landmark.value.trim() || 'N/A'}%0ACity: ${city.value.trim()}%0AState: ${state.value.trim() || 'N/A'}%0APincode: ${pincode.value.trim()}%0A%0AItems:%0A${itemsText}`;
     }
 
     async function autofillCityStateByPincode(pin) {
