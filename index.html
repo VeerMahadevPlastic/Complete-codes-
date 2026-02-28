@@ -9,6 +9,8 @@
     html { scroll-behavior: smooth; }
     @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     .animate-marquee { display: inline-block; animation: marquee 15s linear infinite; }
+    @keyframes aiFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .ai-float { animation: aiFloat 2.2s ease-in-out infinite; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -66,7 +68,7 @@
     <div class="absolute inset-0 bg-gradient-to-r from-red-950/90 via-red-900/75 to-red-700/60"></div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28 text-white">
       <span class="inline-block px-3 py-1 rounded-full bg-white/20 border border-white/20 text-xs sm:text-sm font-semibold mb-4">Marriage & Event Disposable Specialist</span>
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold max-w-3xl leading-tight">Premium Disposable Product Range for Weddings, Catering, and Bulk Supply</h1>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold max-w-3xl leading-tight">Professional Disposable Product Range for Weddings, Catering, and Bulk Supply</h1>
       <p class="mt-4 text-red-50 max-w-2xl text-sm sm:text-base">Simple checkout form, pincode auto city/state, and direct WhatsApp order confirmation.</p>
       <div class="mt-7 flex flex-wrap gap-3">
         <a href="#products" class="px-5 py-3 rounded-md bg-white text-red-700 font-bold text-sm sm:text-base hover:bg-red-50">Explore Products</a>
@@ -150,6 +152,26 @@
     </section>
   </main>
 
+  <!-- Floating AI Assistant -->
+  <div id="aiBotWidget" class="fixed bottom-5 right-5 z-[120]">
+    <button id="aiBotToggle" class="ai-float h-14 w-14 rounded-full bg-red-700 text-white shadow-xl hover:bg-red-800 text-2xl" aria-label="Open AI Bot">🤖</button>
+    <div id="aiBotPanel" class="hidden mt-3 w-[92vw] max-w-sm overflow-hidden rounded-xl border border-red-100 bg-white shadow-2xl">
+      <div class="flex items-center justify-between bg-red-700 px-4 py-3 text-white">
+        <p class="font-bold">Veer AI Assistant</p>
+        <button id="aiBotClose" class="rounded bg-white/20 px-2 py-1 text-xs">Close</button>
+      </div>
+      <div id="aiBotMessages" class="h-72 space-y-3 overflow-y-auto p-3 text-sm">
+        <div class="rounded-lg bg-red-50 p-2 text-gray-800">Namaste! Main Veer AI Bot hu. Aap product, price, order process, ya delivery ke baare me pooch sakte ho.</div>
+      </div>
+      <div class="border-t border-gray-100 p-3">
+        <div class="flex gap-2">
+          <input id="aiBotInput" type="text" placeholder="Type your question..." class="w-full rounded-md border border-red-200 px-3 py-2 text-sm outline-none" />
+          <button id="aiBotSend" class="rounded-md bg-red-700 px-3 py-2 text-sm font-semibold text-white">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer id="footer" class="bg-white border-t border-red-100 mt-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid md:grid-cols-3 gap-8 text-sm">
       <div><h4 class="text-base font-extrabold text-red-700 mb-2">Veer Mahadev Plastic</h4><p class="text-gray-600">Your trusted partner for disposable cups, plates, and containers in wholesale quantities.</p></div>
@@ -208,6 +230,13 @@
     const city = document.getElementById('city');
     const pincode = document.getElementById('pincode');
     const state = document.getElementById('state');
+
+    const aiBotToggle = document.getElementById('aiBotToggle');
+    const aiBotPanel = document.getElementById('aiBotPanel');
+    const aiBotClose = document.getElementById('aiBotClose');
+    const aiBotMessages = document.getElementById('aiBotMessages');
+    const aiBotInput = document.getElementById('aiBotInput');
+    const aiBotSend = document.getElementById('aiBotSend');
 
     function getCart() {
       try {
@@ -425,6 +454,49 @@
       formError.textContent = '';
       window.location.href = '#products';
     });
+
+    function appendBotMessage(text, role = 'bot') {
+      if (!aiBotMessages) return;
+      const bubble = document.createElement('div');
+      bubble.className = role === 'user'
+        ? 'ml-auto max-w-[85%] rounded-lg bg-red-700 p-2 text-white'
+        : 'max-w-[85%] rounded-lg bg-red-50 p-2 text-gray-800';
+      bubble.textContent = text;
+      aiBotMessages.appendChild(bubble);
+      aiBotMessages.scrollTop = aiBotMessages.scrollHeight;
+    }
+
+    function getAiReply(input) {
+      const q = input.toLowerCase();
+      if (q.includes('price') || q.includes('rate')) return 'Price dekhne ke liye products section me product card check karo ya direct WhatsApp order pe click karo.';
+      if (q.includes('delivery')) return 'Ahmedabad me fast delivery available hai. Bulk order ke liye WhatsApp se confirm karein.';
+      if (q.includes('order') || q.includes('checkout')) return 'Aap product add karo, checkout form bharo, fir Place Order se direct WhatsApp message chala jayega.';
+      if (q.includes('cup')) return 'Disposable Cups category me Tea Cup aur aur bhi options available hain.';
+      if (q.includes('plate')) return 'Plates category me bulk options available hain.';
+      return 'Main aapki help ke liye hu. Aap product, delivery, ya order process pooch sakte ho.';
+    }
+
+    function sendAiMessage() {
+      if (!aiBotInput) return;
+      const userText = aiBotInput.value.trim();
+      if (!userText) return;
+      appendBotMessage(userText, 'user');
+      aiBotInput.value = '';
+      setTimeout(() => appendBotMessage(getAiReply(userText)), 250);
+    }
+
+    if (aiBotToggle && aiBotPanel) {
+      aiBotToggle.addEventListener('click', () => aiBotPanel.classList.toggle('hidden'));
+    }
+    if (aiBotClose && aiBotPanel) {
+      aiBotClose.addEventListener('click', () => aiBotPanel.classList.add('hidden'));
+    }
+    if (aiBotSend) aiBotSend.addEventListener('click', sendAiMessage);
+    if (aiBotInput) {
+      aiBotInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') sendAiMessage();
+      });
+    }
 
     try {
       renderCategories();
