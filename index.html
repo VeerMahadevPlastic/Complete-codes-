@@ -7,6 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     html { scroll-behavior: smooth; }
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    .animate-marquee { display: inline-block; animation: marquee 15s linear infinite; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -14,21 +16,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
       <p>Welcome to Veer Mahadev Plastic - Wholesale Disposable Supplier</p>
       <div class="flex items-center gap-3">
-        <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 underline hover:text-red-100" aria-label="Instagram">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm8.5 1.5h-8.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5a4.25 4.25 0 0 0-4.25-4.25ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-2a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"/></svg>
-          <span class="hidden sm:inline">Instagram</span>
-        </a>
-        <a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 underline hover:text-red-100" aria-label="YouTube">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4"><path d="M21.58 7.2a2.99 2.99 0 0 0-2.1-2.11C17.63 4.6 12 4.6 12 4.6s-5.63 0-7.48.49A2.99 2.99 0 0 0 2.42 7.2 31.3 31.3 0 0 0 2 12a31.3 31.3 0 0 0 .42 4.8 2.99 2.99 0 0 0 2.1 2.11c1.85.49 7.48.49 7.48.49s5.63 0 7.48-.49a2.99 2.99 0 0 0 2.1-2.11A31.3 31.3 0 0 0 22 12a31.3 31.3 0 0 0-.42-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
-          <span class="hidden sm:inline">YouTube</span>
-        </a>
+        <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer" class="underline hover:text-red-100">Instagram</a>
+        <a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer" class="underline hover:text-red-100">YouTube</a>
       </div>
     </div>
   </div>
 
   <header class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-      <div class="flex flex-wrap lg:flex-nowrap items-center gap-3">
+      <div class="flex flex-wrap items-center justify-between gap-3">
         <a href="#" class="flex items-center gap-3 min-w-max">
           <div class="h-11 w-11 rounded-full bg-red-700 text-white font-extrabold grid place-content-center">VM</div>
           <div>
@@ -37,7 +33,7 @@
           </div>
         </a>
 
-        <div class="w-full lg:flex-1 lg:w-auto order-3 lg:order-none">
+        <div class="w-full lg:flex-1 lg:w-auto">
           <div class="flex items-center rounded-md border border-red-200 overflow-hidden bg-white">
             <select id="searchCategory" class="hidden sm:block text-sm border-r border-red-100 px-3 py-2.5 bg-red-50 text-gray-700 outline-none">
               <option value="All">All Categories</option>
@@ -51,45 +47,43 @@
           </div>
         </div>
 
-        <a href="https://wa.me/918050389261" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-4 py-2.5 rounded-md bg-green-600 hover:bg-green-700 text-white text-sm font-bold text-center order-4 lg:order-none">Wholesale WhatsApp</a>
+        <a href="#checkout" class="px-4 py-2.5 rounded-md bg-green-600 hover:bg-green-700 text-white text-sm font-bold">Checkout (<span id="cartCount">0</span>)</a>
       </div>
 
       <nav class="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-gray-700">
         <a href="#home" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Home</a>
-        <a href="#categories" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Categories</a>
         <a href="#products" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Products</a>
-        <a href="#why-us" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Why Us</a>
-        <a href="#footer" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Contact</a>
+        <a href="#checkout" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Guest Checkout</a>
       </nav>
     </div>
   </header>
 
   <section id="home" class="relative">
-    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1800&q=80" alt="Marriage themed hero background" class="absolute inset-0 w-full h-full object-cover" />
+    <img src="https://i.postimg.cc/pXSCyWZX/BACKGROUND_IMAGE.png?auto=format&fit=crop&w=1800&q=80" alt="Hero background" class="absolute inset-0 w-full h-full object-cover" />
     <div class="absolute inset-0 bg-gradient-to-r from-red-950/90 via-red-900/75 to-red-700/60"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28 text-white">
-      <span class="inline-block px-3 py-1 rounded-full bg-white/20 border border-white/20 text-xs sm:text-sm font-semibold mb-4">Marriage & Event Disposable Specialist</span>
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold max-w-3xl leading-tight">Professional Disposable Product Range for Weddings, Catering, and Bulk Supply</h1>
-      <p class="mt-4 text-red-50 max-w-2xl text-sm sm:text-base">From premium compartment plates to food-grade containers and cups, we deliver consistent wholesale quality for your business.</p>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-white">
+      <span class="inline-block px-3 py-1 rounded-full bg-white/20 border border-white/20 text-xs sm:text-sm font-semibold mb-4">No Login Needed</span>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold max-w-3xl leading-tight">Add to Cart & Place Order as Guest</h1>
+      <p class="mt-4 text-red-50 max-w-2xl text-sm sm:text-base">Simple checkout form, pincode auto city/state, and direct WhatsApp order confirmation.</p>
       <div class="mt-7 flex flex-wrap gap-3">
         <a href="#products" class="px-5 py-3 rounded-md bg-white text-red-700 font-bold text-sm sm:text-base hover:bg-red-50">Explore Products</a>
-    
+        <a href="#checkout" class="px-5 py-3 rounded-md border border-white/40 bg-white/10 text-white font-bold text-sm sm:text-base hover:bg-white/20">Checkout Now</a>
       </div>
     </div>
   </section>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <section id="categories" class="mb-8">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-        <h2 class="text-2xl sm:text-3xl font-extrabold">Shop by Category</h2>
-        <p class="text-sm text-gray-500">Grid architecture can scale for 50+ products easily.</p>
-      </div>
-      <div id="categoryButtons" class="flex flex-wrap gap-2"></div>
-    </section>
+  <div class="bg-yellow-400 py-2 overflow-hidden border-y-2 border-red-600">
+    <div class="whitespace-nowrap animate-marquee flex items-center">
+      <span class="text-red-700 font-bold text-lg mx-10">🔥 SPECIAL MARRIAGE COMBO: FULL SET ONLY @ BEST PRICE 🔥</span>
+      <span class="text-red-700 font-bold text-lg mx-10">🚚 WHOLESALE DELIVERY ALL OVER AHMEDABAD</span>
+      <span class="text-red-700 font-bold text-lg mx-10">📞 CALL NOW: +91 80503 89261</span>
+    </div>
+  </div>
 
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <section id="products">
       <div class="mb-4 flex items-center justify-between gap-2">
-        <h3 class="text-xl font-bold">Wholesale Product Catalog</h3>
+        <h3 class="text-xl font-bold">Product Catalog</h3>
         <div class="text-right">
           <p id="productCount" class="text-sm text-gray-600"></p>
           <p id="searchStatus" class="text-xs text-red-700 font-semibold"></p>
@@ -98,137 +92,59 @@
       <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
     </section>
 
-    <section id="why-us" class="mt-14">
-      <h3 class="text-2xl font-extrabold mb-5">Why Choose Veer Mahadev Plastic?</h3>
-      <div class="grid md:grid-cols-3 gap-4">
-        <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm">
-          <p class="font-bold text-red-700 mb-1">Reliable Wholesale Pricing</p>
-          <p class="text-sm text-gray-600">Competitive rates designed for retailers, caterers, and event suppliers.</p>
-        </div>
-        <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm">
-          <p class="font-bold text-red-700 mb-1">Hygienic & Quality Focus</p>
-          <p class="text-sm text-gray-600">Consistent material quality and practical pack sizes for business needs.</p>
-        </div>
-        <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm">
-          <p class="font-bold text-red-700 mb-1">Fast WhatsApp Ordering</p>
-          <p class="text-sm text-gray-600">One click inquiry with pre-filled product details to speed up responses.</p>
+    <section id="checkout" class="mt-14 grid lg:grid-cols-2 gap-6">
+      <div class="bg-white rounded-xl border border-red-100 shadow-sm p-5">
+        <h4 class="text-xl font-extrabold text-red-700">Cart Summary</h4>
+        <p class="text-sm text-gray-500 mb-4">Items added from product cards दिखेंगे.</p>
+        <div id="cartItems" class="space-y-3"></div>
+        <p id="cartEmpty" class="text-sm text-gray-500">Your cart is empty. Add products first.</p>
+      </div>
+
+      <div class="bg-white rounded-xl border border-red-100 shadow-sm p-5">
+        <h4 class="text-xl font-extrabold text-red-700">Guest Checkout Form</h4>
+        <p class="text-sm text-gray-500 mb-4">कोई login/sign-up जरूरी नहीं है.</p>
+
+        <form id="checkoutForm" class="space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input id="firstName" class="border rounded px-3 py-2" placeholder="First Name *" required />
+            <input id="lastName" class="border rounded px-3 py-2" placeholder="Last Name *" required />
+          </div>
+          <input id="mobile" class="border rounded px-3 py-2 w-full" placeholder="Mobile Number (10 digits) *" maxlength="10" required />
+          <textarea id="address" class="border rounded px-3 py-2 w-full" placeholder="Full Address (House No., Street, Area) *" required></textarea>
+          <input id="landmark" class="border rounded px-3 py-2 w-full" placeholder="Landmark (Optional)" />
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input id="city" class="border rounded px-3 py-2" placeholder="City *" required />
+            <input id="pincode" class="border rounded px-3 py-2" placeholder="Pincode *" maxlength="6" required />
+          </div>
+          <input id="state" class="border rounded px-3 py-2 w-full bg-gray-50" placeholder="State (auto-fill from pincode)" readonly />
+          <p id="formError" class="text-xs text-red-700"></p>
+          <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold rounded px-4 py-2.5">Place Order</button>
+        </form>
+
+        <div id="successBox" class="hidden text-center py-4">
+          <img src="https://i.postimg.cc/X7Y9nM4B/order-success.png" alt="Order success" class="mx-auto h-28 w-28 object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/845/845646.png'" />
+          <h5 class="text-xl font-extrabold text-green-700 mt-3">Order Placed Successfully!</h5>
+          <p id="orderIdText" class="text-sm text-gray-700 mt-1"></p>
+          <button id="continueShopping" class="mt-4 bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded">Continue Shopping</button>
         </div>
       </div>
     </section>
   </main>
 
-  <section id="productDetailModal" class="fixed inset-0 z-[100] hidden">
-    <div id="productDetailOverlay" class="absolute inset-0 bg-black/50"></div>
-    <div class="relative mx-auto mt-10 w-[92%] max-w-3xl rounded-xl bg-white shadow-2xl">
-      <div class="flex items-center justify-between border-b border-gray-100 p-4">
-        <h4 class="text-lg font-extrabold text-red-700">Product Details</h4>
-        <button id="closeDetailModal" class="rounded-md bg-gray-100 px-3 py-1.5 text-sm font-semibold hover:bg-gray-200">Close</button>
-      </div>
-      <div class="grid gap-4 p-4 md:grid-cols-2 md:p-6">
-        <img id="detailImage" src="" alt="Product image" class="h-64 w-full rounded-lg object-cover border border-red-100" />
-        <div>
-          <p id="detailCategory" class="inline-flex rounded bg-red-50 px-2 py-1 text-xs font-semibold text-red-700"></p>
-          <h5 id="detailName" class="mt-2 text-2xl font-extrabold"></h5>
-          <p id="detailPack" class="mt-2 text-sm text-gray-600"></p>
-          <p id="detailPrice" class="mt-2 text-lg font-extrabold text-red-700"></p>
-          <p id="detailDescription" class="mt-3 text-sm leading-6 text-gray-700"></p>
-          <a id="detailWhatsappBtn" href="#" target="_blank" rel="noopener noreferrer" class="mt-5 inline-flex w-full justify-center rounded-md bg-green-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-green-700">Order on WhatsApp</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- AI Bot -->
-  <div id="aiBotWidget" class="fixed bottom-4 right-4 z-[120]">
-    <button id="aiBotToggle" class="h-14 w-14 rounded-full bg-red-700 text-white shadow-xl hover:bg-red-800" aria-label="Open AI Bot">
-      🤖
-    </button>
-    <div id="aiBotPanel" class="hidden mt-3 w-[92vw] max-w-sm overflow-hidden rounded-xl border border-red-100 bg-white shadow-2xl">
-      <div class="flex items-center justify-between bg-red-700 px-4 py-3 text-white">
-        <p class="font-bold">Veer AI Assistant</p>
-        <button id="aiBotClose" class="rounded bg-white/20 px-2 py-1 text-xs">Close</button>
-      </div>
-      <div id="aiBotMessages" class="h-72 space-y-3 overflow-y-auto p-3 text-sm">
-        <div class="rounded-lg bg-red-50 p-2 text-gray-800">Namaste! Main Veer AI Bot hu. Aap product, pack size, best offers, ya WhatsApp order ke baare me pooch sakte ho.</div>
-      </div>
-      <div class="border-t border-gray-100 p-3">
-        <div class="flex gap-2">
-          <input id="aiBotInput" type="text" placeholder="Type your question..." class="w-full rounded-md border border-red-200 px-3 py-2 text-sm outline-none" />
-          <button id="aiBotSend" class="rounded-md bg-red-700 px-3 py-2 text-sm font-semibold text-white">Send</button>
-        </div>
-        <a href="https://wa.me/918050389261" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-xs font-bold text-white hover:bg-green-700">Talk to Human on WhatsApp</a>
-      </div>
-    </div>
-  </div>
-
-  <footer id="footer" class="bg-white border-t border-red-100 mt-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid md:grid-cols-3 gap-8 text-sm">
-      <div>
-        <h4 class="text-base font-extrabold text-red-700 mb-2">Veer Mahadev Plastic</h4>
-        <p class="text-gray-600">Your trusted partner for disposable cups, plates, and containers in wholesale quantities.</p>
-      </div>
-      <div>
-        <h4 class="text-base font-extrabold mb-2">Trust Factors</h4>
-        <p class="text-gray-700">GST: <span class="font-semibold">24BLLPL0402N1Z6</span></p>
-        <p class="text-gray-700">MSME: <span class="font-semibold">UDYAM-GJ-01-0532946</span></p>
-      </div>
-      <div>
-        <h4 class="text-base font-extrabold mb-2">Connect</h4>
-        <div class="flex items-center gap-4">
-          <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-red-700 font-semibold hover:text-red-800" aria-label="Instagram">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm8.5 1.5h-8.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5a4.25 4.25 0 0 0-4.25-4.25ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-2a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"/></svg>
-            Instagram
-          </a>
-          <a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-red-700 font-semibold hover:text-red-800" aria-label="YouTube">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5"><path d="M21.58 7.2a2.99 2.99 0 0 0-2.1-2.11C17.63 4.6 12 4.6 12 4.6s-5.63 0-7.48.49A2.99 2.99 0 0 0 2.42 7.2 31.3 31.3 0 0 0 2 12a31.3 31.3 0 0 0 .42 4.8 2.99 2.99 0 0 0 2.1 2.11c1.85.49 7.48.49 7.48.49s5.63 0 7.48-.49a2.99 2.99 0 0 0 2.1-2.11A31.3 31.3 0 0 0 22 12a31.3 31.3 0 0 0-.42-4.8ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
-            YouTube
-          </a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
   <script>
     const WHATSAPP_NUMBER = '918050389261';
+    const CART_KEY = 'vmCart';
 
     const products = [
-      { name: '4-Compartment Plate', pack: '25 Pcs Pack', price: '₹210', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Heavy-duty multi-compartment serving plate ideal for weddings and catered events.' },
-      { name: '5-Compartment Plate', pack: '25 Pcs Pack', price: '₹245', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Premium section plate for complete meal serving with neat food separation.' },
-      { name: 'Round Buffet Plate', pack: '50 Pcs Pack', price: '₹320', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Classic buffet plate for large events and banquet-style setups.' },
-      { name: 'Heavy Duty Party Plate', pack: '50 Pcs Pack', price: '₹295', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Strong and durable plate that supports heavy menu combinations.' },
-      { name: 'Square Dinner Plate', pack: '25 Pcs Pack', price: '₹260', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Modern square design to elevate premium event presentations.' },
-      { name: 'Marriage Special Plate', pack: '25 Pcs Pack', price: '₹280', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Elegant wedding-focused disposable plate for high-traffic celebrations.' },
-      { name: 'Tea Cup 150ml', pack: '100 Pcs Pack', price: '₹145', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Lightweight and hygienic cups suitable for tea service and stalls.' },
-      { name: 'Coffee Cup 200ml', pack: '100 Pcs Pack', price: '₹170', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Reliable hot beverage cup with practical volume for coffee servings.' },
-      { name: 'Ripple Cup 250ml', pack: '50 Pcs Pack', price: '₹190', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Stylish ripple texture cup offering better grip and premium appearance.' },
-      { name: 'Lassi Cup 300ml', pack: '100 Pcs Pack', price: '₹240', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Large-capacity cup suitable for lassi, shakes, and cold beverages.' },
-      { name: 'Juice Cup 200ml', pack: '100 Pcs Pack', price: '₹160', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Transparent utility cup great for juices and welcome drinks.' },
-      { name: 'Premium Hot Cup 180ml', pack: '100 Pcs Pack', price: '₹185', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Insulated cup structure suitable for warm drink service.' },
-      { name: 'Food Container 500ml', pack: '25 Pcs Pack', price: '₹180', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Compact takeaway container for curries, sabzi, and meal portions.' },
-      { name: 'Rectangular Container 750ml', pack: '25 Pcs Pack', price: '₹230', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Spacious rectangular shape for organized and convenient food packing.' },
-      { name: 'Meal Box Container', pack: '50 Pcs Pack', price: '₹395', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Bulk meal box option designed for catering and tiffin distribution.' },
-      { name: 'Snack Container Mini', pack: '50 Pcs Pack', price: '₹155', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Mini container for snack servings and small takeaway portions.' },
-      { name: 'Microwave Container 650ml', pack: '25 Pcs Pack', price: '₹275', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Microwave-friendly container for practical home delivery usage.' },
-      { name: 'Leak-proof Container 1000ml', pack: '25 Pcs Pack', price: '₹340', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Large, secure, leak-resistant container for gravies and full meals.' },
-      { name: 'Family Meal Combo Pack', pack: '30 Pcs Pack', price: '', category: 'Best Offer For The Day', image: 'https://via.placeholder.com/300', description: 'Best combo offer for events with mixed utility products.' },
-      { name: 'Wedding Service Combo', pack: '40 Pcs Pack', price: '', category: 'Best Offer For The Day', image: 'https://via.placeholder.com/300', description: 'Best price for the day on complete wedding dining combo.' },
-      { name: 'Catering Super Saver Combo', pack: '50 Pcs Pack', price: '', category: 'Best Offer For The Day', image: 'https://via.placeholder.com/300', description: 'Bulk combo for caterers with practical plate-cup-container mix.' },
-      { name: 'Event Starter Combo', pack: '20 Pcs Pack', price: '', category: 'Best Offer For The Day', image: 'https://via.placeholder.com/300', description: 'Starter bundle ideal for small birthday and event gatherings.' },
-      { name: 'Premium Buffet Combo', pack: '35 Pcs Pack', price: '', category: 'Best Offer For The Day', image: 'https://via.placeholder.com/300', description: 'Premium buffet combination with elegant serving essentials.' },
-      { name: 'Festival Offer Combo', pack: '45 Pcs Pack', price: '', category: 'Best Offer For The Day', image: 'https://via.placeholder.com/300', description: 'Limited-time festive combo with high-demand products.' },
-      { name: 'Dinner Plate Value Pack', pack: '60 Pcs Pack', price: '', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Value plate pack for regular catering and canteen usage.' },
-      { name: 'Snack Plate Economy Pack', pack: '100 Pcs Pack', price: '', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Economy snack plate option for fast-moving counters.' },
-      { name: 'Water Cup Bulk Pack', pack: '200 Pcs Pack', price: '', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Bulk cup pack for wedding water service and events.' },
-      { name: 'Dessert Cup Party Pack', pack: '120 Pcs Pack', price: '', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Transparent dessert cup for sweets and serving counters.' },
-      { name: 'Lunch Container Saver Pack', pack: '75 Pcs Pack', price: '', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'High-quantity lunch container pack for meal distribution.' },
-      { name: 'Combo Offer Mega Box', pack: '80 Pcs Pack', price: '', category: 'Best Offer For The Day', image: 'https://via.placeholder.com/300', description: 'Mega box with best combo offers and best price of the day.' }
+      { id: 'p1', name: '4-Compartment Plate', pack: '25 Pcs Pack', price: '₹250', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Heavy-duty multi-compartment serving plate.' },
+      { id: 'p2', name: 'Round Buffet Plate', pack: '50 Pcs Pack', price: '₹420', category: 'Plates', image: 'https://via.placeholder.com/300', description: 'Classic buffet plate for events.' },
+      { id: 'p3', name: 'Tea Cup 150ml', pack: '100 Pcs Pack', price: '₹180', category: 'Disposable Cups', image: 'https://via.placeholder.com/300', description: 'Hygienic cups for tea service.' },
+      { id: 'p4', name: 'Food Container 500ml', pack: '25 Pcs Pack', price: '₹220', category: 'Containers', image: 'https://via.placeholder.com/300', description: 'Takeaway food container.' },
+      { id: 'p5', name: 'Family Meal Combo Pack', pack: '30 Pcs Pack', price: '₹699', category: 'Best Offer For The Day', image: 'https://via.placeholder.com/300', description: 'Best combo offer for events.' }
     ];
 
-    const categories = ['All', 'Disposable Cups', 'Plates', 'Containers', 'Best Offer For The Day'];
-    let activeCategory = 'All';
     let searchQuery = '';
 
-    const categoryButtons = document.getElementById('categoryButtons');
     const productGrid = document.getElementById('productGrid');
     const productCount = document.getElementById('productCount');
     const searchStatus = document.getElementById('searchStatus');
@@ -236,111 +152,90 @@
     const searchBtn = document.getElementById('searchBtn');
     const searchCategory = document.getElementById('searchCategory');
 
-    const productDetailModal = document.getElementById('productDetailModal');
-    const closeDetailModal = document.getElementById('closeDetailModal');
-    const productDetailOverlay = document.getElementById('productDetailOverlay');
-    const detailImage = document.getElementById('detailImage');
-    const detailCategory = document.getElementById('detailCategory');
-    const detailName = document.getElementById('detailName');
-    const detailPack = document.getElementById('detailPack');
-    const detailPrice = document.getElementById('detailPrice');
-    const detailDescription = document.getElementById('detailDescription');
-    const detailWhatsappBtn = document.getElementById('detailWhatsappBtn');
+    const cartItems = document.getElementById('cartItems');
+    const cartEmpty = document.getElementById('cartEmpty');
+    const cartCount = document.getElementById('cartCount');
 
-    const aiBotToggle = document.getElementById('aiBotToggle');
-    const aiBotPanel = document.getElementById('aiBotPanel');
-    const aiBotClose = document.getElementById('aiBotClose');
-    const aiBotMessages = document.getElementById('aiBotMessages');
-    const aiBotInput = document.getElementById('aiBotInput');
-    const aiBotSend = document.getElementById('aiBotSend');
+    const checkoutForm = document.getElementById('checkoutForm');
+    const formError = document.getElementById('formError');
+    const successBox = document.getElementById('successBox');
+    const orderIdText = document.getElementById('orderIdText');
+    const continueShopping = document.getElementById('continueShopping');
 
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const mobile = document.getElementById('mobile');
+    const address = document.getElementById('address');
+    const landmark = document.getElementById('landmark');
+    const city = document.getElementById('city');
+    const pincode = document.getElementById('pincode');
+    const state = document.getElementById('state');
 
-    function getWhatsappLink(productName) {
-      const message = `Hi Veer Mahadev Plastic, I want to inquire about ${productName} shown on your website.`;
-      return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    function getCart() {
+      try {
+        return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function saveCart(items) {
+      localStorage.setItem(CART_KEY, JSON.stringify(items));
+    }
+
+    function addToCart(productId) {
+      const item = products.find((p) => p.id === productId);
+      if (!item) return;
+      const cart = getCart();
+      const exists = cart.find((c) => c.id === item.id);
+      if (exists) {
+        exists.qty += 1;
+      } else {
+        cart.push({ id: item.id, name: item.name, pack: item.pack, price: item.price, qty: 1 });
+      }
+      saveCart(cart);
+      renderCart();
+    }
+
+    function removeFromCart(productId) {
+      const cart = getCart().filter((item) => item.id !== productId);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      cartCount.textContent = cart.reduce((sum, i) => sum + i.qty, 0);
+      if (!cart.length) {
+        cartItems.innerHTML = '';
+        cartEmpty.classList.remove('hidden');
+        return;
+      }
+      cartEmpty.classList.add('hidden');
+      cartItems.innerHTML = cart.map((item) => `
+        <div class="rounded border p-3 flex justify-between items-start gap-2">
+          <div>
+            <p class="font-semibold">${item.name}</p>
+            <p class="text-xs text-gray-600">${item.pack} · Qty: ${item.qty}</p>
+            <p class="text-sm text-red-700 font-bold">${item.price}</p>
+          </div>
+          <button data-remove="${item.id}" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded">Remove</button>
+        </div>
+      `).join('');
+
+      cartItems.querySelectorAll('button[data-remove]').forEach((btn) => {
+        btn.addEventListener('click', () => removeFromCart(btn.dataset.remove));
+      });
     }
 
     function getFilteredProducts() {
-      const normalizedQuery = searchQuery.trim().toLowerCase();
-
+      const query = searchQuery.trim().toLowerCase();
       return products.filter((product) => {
-        const byCategoryButtons = activeCategory === 'All' || product.category === activeCategory;
-        const bySearchCategory = searchCategory.value === 'All' || product.category === searchCategory.value;
+        const byCategory = searchCategory.value === 'All' || product.category === searchCategory.value;
         const haystack = `${product.name} ${product.category} ${product.pack} ${product.price}`.toLowerCase();
-        const byQuery = !normalizedQuery || haystack.includes(normalizedQuery);
-        return byCategoryButtons && bySearchCategory && byQuery;
+        const byQuery = !query || haystack.includes(query);
+        return byCategory && byQuery;
       });
-    }
-
-
-    function appendBotMessage(text, role = 'bot') {
-      const bubble = document.createElement('div');
-      bubble.className = role === 'user'
-        ? 'ml-auto max-w-[85%] rounded-lg bg-red-700 p-2 text-white'
-        : 'max-w-[85%] rounded-lg bg-red-50 p-2 text-gray-800';
-      bubble.textContent = text;
-      aiBotMessages.appendChild(bubble);
-      aiBotMessages.scrollTop = aiBotMessages.scrollHeight;
-    }
-
-    function getAiReply(input) {
-      const q = input.toLowerCase();
-      if (q.includes('price') || q.includes('rate')) return 'Price ke liye aap product select karke WhatsApp par inquiry bhejiye. Best wholesale quote turant milega.';
-      if (q.includes('best offer') || q.includes('combo')) return 'Best Offer For The Day category me combo packs available hain. Aap "combo" search karke dekh sakte ho.';
-      if (q.includes('cup')) return 'Disposable Cups category me Tea Cup, Coffee Cup, Lassi Cup aur aur bhi options available hain.';
-      if (q.includes('plate')) return 'Plates category me 4-Compartment, Buffet, Dinner aur Value packs available hain.';
-      if (q.includes('container')) return 'Containers me food, microwave aur leak-proof options mil jayenge bulk pack ke saath.';
-      if (q.includes('whatsapp') || q.includes('order')) return 'Har product card me "Order on WhatsApp" button diya gaya hai. Usse direct inquiry send ho jayegi.';
-      return 'Main aapki help ke liye hu. Aap category, combo offer, pack size, ya order process ke baare me pooch sakte ho.';
-    }
-
-    function sendAiMessage() {
-      const userText = aiBotInput.value.trim();
-      if (!userText) return;
-      appendBotMessage(userText, 'user');
-      aiBotInput.value = '';
-      setTimeout(() => appendBotMessage(getAiReply(userText)), 250);
-    }
-
-    function renderCategories() {
-      categoryButtons.innerHTML = categories.map((category) => {
-        const isActive = activeCategory === category;
-        return `
-          <button data-category="${category}" class="category-btn px-4 py-2 rounded-md text-sm font-semibold border transition ${isActive ? 'bg-red-700 border-red-700 text-white' : 'bg-white border-red-200 text-red-700 hover:bg-red-50'}">
-            ${category}
-          </button>
-        `;
-      }).join('');
-
-      document.querySelectorAll('.category-btn').forEach((button) => {
-        button.addEventListener('click', () => {
-          activeCategory = button.dataset.category;
-          renderCategories();
-          renderProducts();
-        });
-      });
-    }
-
-    function openProductDetail(index) {
-      const product = getFilteredProducts()[index];
-      if (!product) return;
-
-      detailImage.src = product.image;
-      detailImage.alt = product.name;
-      detailCategory.textContent = product.category;
-      detailName.textContent = product.name;
-      detailPack.textContent = `Pack Size: ${product.pack}`;
-      detailPrice.textContent = `Wholesale Price: ${product.price || ''}`;
-      detailDescription.textContent = product.description;
-      detailWhatsappBtn.href = getWhatsappLink(product.name);
-
-      productDetailModal.classList.remove('hidden');
-      document.body.classList.add('overflow-hidden');
-    }
-
-    function closeProductDetail() {
-      productDetailModal.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
     }
 
     function renderProducts() {
@@ -348,59 +243,117 @@
       productCount.textContent = `${filtered.length} product(s) showing`;
       searchStatus.textContent = searchQuery.trim() ? `Search: "${searchQuery.trim()}"` : '';
 
-      if (filtered.length === 0) {
-        productGrid.innerHTML = '<div class="col-span-full rounded-lg border border-red-100 bg-white p-8 text-center text-gray-600">No products found. Try a different search keyword.</div>';
-        return;
-      }
-
-      productGrid.innerHTML = filtered.map((product, index) => `
+      productGrid.innerHTML = filtered.map((product) => `
         <article class="bg-white rounded-xl border border-red-100 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition">
           <img src="${product.image}" alt="${product.name}" class="w-full h-44 object-cover" />
           <div class="p-4">
             <span class="inline-flex text-xs font-semibold bg-red-50 text-red-700 px-2 py-1 rounded mb-2">${product.category}</span>
             <h4 class="font-bold text-lg leading-snug">${product.name}</h4>
             <p class="text-sm text-gray-600 mt-1">${product.pack}</p>
-            <p class="text-red-700 font-extrabold mt-3">Wholesale Price: ${product.price || ''}</p>
-            <div class="mt-4 grid grid-cols-1 gap-2">
-              <button data-index="${index}" class="detail-btn inline-flex w-full justify-center items-center rounded-md border border-red-600 text-red-700 hover:bg-red-50 font-bold text-sm px-4 py-2.5">View Product Details</button>
-              <a href="${getWhatsappLink(product.name)}" target="_blank" rel="noopener noreferrer" class="inline-flex w-full justify-center items-center rounded-md bg-green-600 hover:bg-green-700 text-white font-bold text-sm px-4 py-2.5">Order on WhatsApp</a>
-            </div>
+            <p class="text-red-700 font-extrabold mt-3">${product.price}</p>
+            <button data-add="${product.id}" class="mt-4 w-full rounded-md bg-red-700 hover:bg-red-800 text-white font-bold text-sm px-4 py-2.5">Add to Cart</button>
           </div>
         </article>
       `).join('');
 
-      document.querySelectorAll('.detail-btn').forEach((button) => {
-        button.addEventListener('click', () => openProductDetail(Number(button.dataset.index)));
+      productGrid.querySelectorAll('button[data-add]').forEach((btn) => {
+        btn.addEventListener('click', () => addToCart(btn.dataset.add));
       });
     }
 
-    function runSearch() {
-      searchQuery = searchInput.value;
-      renderProducts();
+    function validateForm() {
+      if (!firstName.value.trim() || !lastName.value.trim() || !address.value.trim() || !city.value.trim() || !pincode.value.trim()) {
+        return 'Please fill all mandatory fields.';
+      }
+      if (!/^\d{10}$/.test(mobile.value.trim())) {
+        return 'Mobile number must be exactly 10 digits.';
+      }
+      if (!/^\d{6}$/.test(pincode.value.trim())) {
+        return 'Pincode must be exactly 6 digits.';
+      }
+      if (!getCart().length) {
+        return 'Cart is empty. Please add at least one product.';
+      }
+      return '';
     }
 
-    searchBtn.addEventListener('click', runSearch);
-    searchInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') runSearch();
+    function generateOrderId() {
+      return `VM${Date.now().toString().slice(-8)}${Math.floor(Math.random() * 900 + 100)}`;
+    }
+
+    function createWhatsappMessage(orderId) {
+      const cart = getCart();
+      const itemsText = cart.map((item) => `- ${item.name} (${item.pack}) x ${item.qty}`).join('%0A');
+      return `Hi Veer Mahadev Plastic,%0A%0ANew Guest Order:%0AOrder ID: ${orderId}%0A%0ACustomer:%0A${firstName.value.trim()} ${lastName.value.trim()}%0AMobile: ${mobile.value.trim()}%0AAddress: ${address.value.trim()}%0ALandmark: ${landmark.value.trim() || 'N/A'}%0ACity: ${city.value.trim()}%0AState: ${state.value.trim() || 'N/A'}%0APincode: ${pincode.value.trim()}%0A%0AItems:%0A${itemsText}`;
+    }
+
+    async function autofillCityStateByPincode(pin) {
+      if (!/^\d{6}$/.test(pin)) return;
+      try {
+        const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+        const data = await res.json();
+        if (data?.[0]?.Status === 'Success' && data[0].PostOffice?.length) {
+          const po = data[0].PostOffice[0];
+          city.value = po.District || city.value;
+          state.value = po.State || state.value;
+          formError.textContent = '';
+        } else {
+          state.value = '';
+          formError.textContent = 'Invalid pincode or location not found.';
+        }
+      } catch {
+        formError.textContent = 'Unable to fetch city/state right now. Please enter manually.';
+      }
+    }
+
+    searchBtn.addEventListener('click', () => {
+      searchQuery = searchInput.value;
+      renderProducts();
+    });
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        searchQuery = searchInput.value;
+        renderProducts();
+      }
     });
     searchCategory.addEventListener('change', renderProducts);
 
-    closeDetailModal.addEventListener('click', closeProductDetail);
-    productDetailOverlay.addEventListener('click', closeProductDetail);
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeProductDetail();
+    pincode.addEventListener('input', () => {
+      const pin = pincode.value.trim();
+      if (/^\d{6}$/.test(pin)) autofillCityStateByPincode(pin);
     });
 
+    checkoutForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      formError.textContent = '';
+      const error = validateForm();
+      if (error) {
+        formError.textContent = error;
+        return;
+      }
 
-    aiBotToggle.addEventListener('click', () => aiBotPanel.classList.toggle('hidden'));
-    aiBotClose.addEventListener('click', () => aiBotPanel.classList.add('hidden'));
-    aiBotSend.addEventListener('click', sendAiMessage);
-    aiBotInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') sendAiMessage();
+      const orderId = generateOrderId();
+      const waText = createWhatsappMessage(orderId);
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`, '_blank');
+
+      checkoutForm.classList.add('hidden');
+      successBox.classList.remove('hidden');
+      orderIdText.textContent = `Your Order ID: ${orderId}`;
+      saveCart([]);
+      renderCart();
     });
 
-    renderCategories();
+    continueShopping.addEventListener('click', () => {
+      checkoutForm.reset();
+      checkoutForm.classList.remove('hidden');
+      successBox.classList.add('hidden');
+      state.value = '';
+      formError.textContent = '';
+      window.location.href = '#products';
+    });
+
     renderProducts();
+    renderCart();
   </script>
 </body>
 </html>
