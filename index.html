@@ -191,9 +191,14 @@
     <div class="p-4 border-t bg-slate-50">
       <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
       <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
+      <div class="mt-3 grid gap-2">
+        <input id="customerName" class="border rounded-lg px-3 py-2 text-sm" placeholder="Customer Name (required)" />
+        <textarea id="customerAddress" class="border rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Full Address with City, State, Pincode (required)"></textarea>
+        <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
+      </div>
       <div class="grid grid-cols-2 gap-2 mt-3">
         <button id="waCart" class="bg-emerald-700 text-white py-2 rounded-lg font-semibold">WhatsApp Order</button>
-        <button class="border py-2 rounded-lg font-semibold">Buy Now</button>
+        <button id="buyNowCart" class="border py-2 rounded-lg font-semibold">Buy Now</button>
       </div>
     </div>
   </aside>
@@ -249,7 +254,7 @@
         name: `${seriesName} ${size}`,
         category,
         image: imageFrom(`${query} ${seriesName} ${size}`),
-        stock: (idx % 7 === 0) ? 0 : (60 + (idx * 23) % 290),
+        stock: (90 + (idx * 23) % 290),
         tiers: categoryTiers(category)
       }));
     }
@@ -413,11 +418,23 @@
       openCart();
     }
 
-    function cartWhatsappText(){
+    function cartWhatsappText(customerName, customerAddress){
       if(cart.length === 0) return 'Hello, I want to place an order. Please share latest catalog.';
       const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - ₹${(i.qty*i.unit).toFixed(2)}`);
       const subtotal = cartTotalAmount().toFixed(2);
-      return `Hello Veer Mahadev Plastic,%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
+      return `Hello Veer Mahadev Plastic,%0AName: ${customerName}%0AAddress: ${customerAddress}%0A%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
+    }
+
+    function getCustomerDetails(){
+      const name = (document.getElementById('customerName')?.value || '').trim();
+      const address = (document.getElementById('customerAddress')?.value || '').trim();
+      const msg = document.getElementById('cartCustomerMsg');
+      if(!name || !address){
+        msg.textContent = 'Please enter customer name and full address before placing order.';
+        return null;
+      }
+      msg.textContent = '';
+      return {name, address};
     }
 
     function openCart(){
@@ -516,12 +533,22 @@
     // WhatsApp actions (floating + cart)
     document.getElementById('waFloating').addEventListener('click', (e)=>{
       e.preventDefault();
-      const msg = cartWhatsappText();
+      const details = getCustomerDetails();
+      if(!details) { openCart(); return; }
+      const msg = cartWhatsappText(details.name, details.address);
       window.open(`https://wa.me/918050389261?text=${msg}`,'_blank');
     });
     document.getElementById('waCart').addEventListener('click', ()=>{
-      const msg = cartWhatsappText();
+      const details = getCustomerDetails();
+      if(!details) { openCart(); return; }
+      const msg = cartWhatsappText(details.name, details.address);
       window.open(`https://wa.me/918050389261?text=${msg}`,'_blank');
+    });
+
+    document.getElementById('buyNowCart').addEventListener('click', ()=>{
+      const details = getCustomerDetails();
+      if(!details) { openCart(); return; }
+      alert(`Order initiated for ${details.name}. Our team will confirm delivery at provided address.`);
     });
 
     // Repeat order
