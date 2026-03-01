@@ -242,10 +242,10 @@
     }
 
     function categoryTiers(category){
-      if(['Cup & Glasses','Cutlery & Accessories'].includes(category)) return [{min:1,price:2.4},{min:100,price:2.1},{min:500,price:1.8}];
-      if(['Bio & Disposable Plates','Bowls & Containers'].includes(category)) return [{min:1,price:8.5},{min:100,price:7.7},{min:500,price:6.9}];
-      if(['Foil & Food Packaging'].includes(category)) return [{min:1,price:18},{min:50,price:16},{min:200,price:14}];
-      return [{min:1,price:35},{min:50,price:32},{min:200,price:28}];
+      if(['Cup & Glasses','Cutlery & Accessories'].includes(category)) return [{min:1,price:50},{min:100,price:45},{min:500,price:40}];
+      if(['Bio & Disposable Plates','Bowls & Containers'].includes(category)) return [{min:1,price:155},{min:100,price:140},{min:500,price120}];
+      if(['Foil & Food Packaging'].includes(category)) return [{min:1,price:210},{min:50,price:180},{min:200,price:150}];
+      return [{min:1,price:125},{min:50,price:150},{min:200,price:200}];
     }
 
     function createSeries(category, seriesName, sizes, query){
