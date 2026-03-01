@@ -47,4 +47,298 @@
     <div class="p-6 border-t bg-slate-50">
       <div class="flex justify-between font-bold text-lg mb-4">
         <span>Total Estimate:</span>
-        <span id="
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button onclick="sendWhatsAppOrder()" class="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-[#1da851] transition">
+        <i class="fab fa-whatsapp mr-2"></i> PLACE ORDER ON WHATSAPP
+      </button>
+    </div>
+  </div>
+
+  <section id="home" class="relative pt-12 pb-24 px-4 bg-white">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <div class="space-y-6">
+        <span class="bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">Est. 2022 | Family Business</span>
+        <h1 class="text-5xl lg:text-7xl font-black text-slate-900 leading-[1.1]">
+          Premium <span class="text-emerald-600">Disposable</span> Solutions.
+        </h1>
+        <p class="text-xl text-slate-600 leading-relaxed">
+          The largest wholesale hub in Gujarat, serving over 10,000 monthly customers with high-quality, eco-friendly food packaging.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#shop" class="bg-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-emerald-200 hover:-translate-y-1 transition">Start Shopping</a>
+          <a href="#wholesale" class="border-2 border-slate-200 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-slate-50 transition">Wholesale Inquiry</a>
+        </div>
+      </div>
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1610631882985-adab00d941c7?auto=format&fit=crop&q=80&w=800" class="rounded-[40px] shadow-2xl" alt="Disposables" />
+        <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-3xl shadow-xl border border-emerald-50">
+            <p class="text-3xl font-black text-emerald-700">10,000+</p>
+            <p class="text-xs font-bold text-slate-500 uppercase">Monthly Orders</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate-100 py-16 px-4">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-center text-3xl font-black uppercase mb-12 tracking-tight">Browse Categories</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <button onclick="filterShop('Cup')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition">🥤</div>
+          <p class="font-bold text-sm uppercase">Cups</p>
+        </button>
+        <button onclick="filterShop('Plate')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition">🍽️</div>
+          <p class="font-bold text-sm uppercase">Plates</p>
+        </button>
+        <button onclick="filterShop('Glass')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition">🍷</div>
+          <p class="font-bold text-sm uppercase">Glass</p>
+        </button>
+        <button onclick="filterShop('Spoon')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition">🥄</div>
+          <p class="font-bold text-sm uppercase">Spoons</p>
+        </button>
+        <button onclick="filterShop('Container')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition">📦</div>
+          <p class="font-bold text-sm uppercase">Containers</p>
+        </button>
+        <button onclick="filterShop('Tissue')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
+          <div class="text-3xl mb-2 group-hover:scale-110 transition">🧻</div>
+          <p class="font-bold text-sm uppercase">Tissues</p>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="shop" class="max-w-7xl mx-auto px-4 py-20">
+    <div class="flex justify-between items-end mb-10">
+      <div>
+        <h2 class="text-4xl font-black uppercase">Live Inventory</h2>
+        <p class="text-slate-500 font-medium">Automatic bulk discounts apply on higher quantities.</p>
+      </div>
+    </div>
+    <div id="productGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      </div>
+  </section>
+
+  <section id="about" class="bg-emerald-900 text-white py-24 px-4">
+    <div class="max-w-4xl mx-auto text-center space-y-8">
+      <h2 class="text-4xl lg:text-5xl font-black uppercase">The Veer Mahadev Legacy</h2>
+      <p class="text-xl text-emerald-100 leading-relaxed">
+        Founded in 2022 as a family-driven enterprise, Veer Mahadev Plastic has rapidly grown into a cornerstone of the disposable industry. Our journey began with a simple mission: to provide high-quality food packaging at direct factory prices. 
+      </p>
+      <p class="text-xl text-emerald-100 leading-relaxed">
+        Today, we take pride in serving more than 10,000 monthly customers, ranging from local street vendors to premium cafes and large-scale event planners. Our commitment remains rooted in hygiene, durability, and a sustainable shift toward biodegradable alternatives.
+      </p>
+      <div class="pt-6 border-t border-emerald-800 flex justify-center gap-12">
+        <div><p class="text-4xl font-black">100%</p><p class="text-xs uppercase font-bold text-emerald-400">Hygienic</p></div>
+        <div><p class="text-4xl font-black">24h</p><p class="text-xs uppercase font-bold text-emerald-400">Dispatch</p></div>
+        <div><p class="text-4xl font-black">B2B</p><p class="text-xs uppercase font-bold text-emerald-400">Specialist</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-white border-t pt-20">
+    <div class="max-w-7xl mx-auto px-4 pb-12 grid md:grid-cols-4 gap-12">
+      <div class="col-span-1 space-y-6">
+        <p class="text-2xl font-black text-emerald-700">VEER MAHADEV PLASTIC</p>
+        <p class="text-slate-500 text-sm">Premier supplier of disposable kitchenware and packaging since 2022. Reliability in every order.</p>
+        <div class="flex gap-4 text-2xl">
+          <a href="#" class="text-pink-600 hover:scale-110 transition"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-blue-700 hover:scale-110 transition"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-red-600 hover:scale-110 transition"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      
+      <div>
+        <p class="font-black uppercase mb-6">Business Details</p>
+        <ul class="space-y-3 text-sm font-bold text-slate-600 uppercase tracking-tighter">
+          <li>GSTIN: <span class="text-emerald-700">24XXXXX0000X1Z</span></li>
+          <li>MSME: <span class="text-emerald-700">UDYAM-GJ-00-XXXXX</span></li>
+          <li>Email: <span class="text-emerald-700 normal-case">info@veermahadev.com</span></li>
+          <li>Phone: <span class="text-emerald-700">+91 80503 89261</span></li>
+        </ul>
+      </div>
+
+      <div class="col-span-2 rounded-3xl overflow-hidden shadow-lg border h-64">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117506.38112520379!2d72.5011035!3d23.0145893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fccd11674498817!2sAhmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+    
+    <div class="border-t py-6 text-center text-xs font-bold text-slate-400 uppercase tracking-widest">
+      &copy; 2026 Veer Mahadev Plastic | All Rights Reserved.
+    </div>
+  </footer>
+
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-4">
+    <button onclick="sendWhatsAppOrder()" class="bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition text-2xl"><i class="fab fa-whatsapp"></i></button>
+    <button id="botToggle" class="bg-emerald-700 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition text-2xl"><i class="fas fa-robot"></i></button>
+  </div>
+
+  <div id="botPanel" class="hidden fixed bottom-24 right-6 w-80 bg-white border rounded-3xl shadow-2xl overflow-hidden z-[70]">
+    <div class="bg-emerald-700 text-white p-4 font-bold flex justify-between uppercase text-sm tracking-widest">
+        <span>Veer AI Assistant</span>
+        <button id="botClose">&times;</button>
+    </div>
+    <div id="botMsgs" class="h-64 overflow-y-auto p-4 text-sm space-y-4 bg-slate-50">
+      <div class="bg-white p-3 rounded-2xl shadow-sm border border-emerald-100 italic">Hello! I am your Veer Assistant. Ask me about products, wholesale pricing, or location.</div>
+    </div>
+    <div class="p-4 bg-white border-t flex gap-2">
+      <input id="botInput" class="flex-1 bg-slate-100 rounded-xl px-4 py-2 text-sm outline-none" placeholder="Type a message..." />
+      <button id="botSend" class="bg-emerald-700 text-white p-2 rounded-xl"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      {id:'p1', name:'Premium Paper Cup 150ml', category:'Cup', image:'https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&w=400', price:1.9, wholesale:1.35},
+      {id:'p2', name:'Eco-Friendly Paper Plate 10"', category:'Plate', image:'https://images.unsplash.com/photo-1617196039897-3a2f8d9f7f9f?auto=format&fit=crop&w=400', price:3.8, wholesale:2.9},
+      {id:'p3', name:'Leak-Proof Container 500ml', category:'Container', image:'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?auto=format&fit=crop&w=400', price:8.5, wholesale:6.9},
+      {id:'p4', name:'Wooden Spoon Biodegradable', category:'Spoon', image:'https://images.unsplash.com/photo-1596041063346-a42e5d9c7921?auto=format&fit=crop&w=400', price:1.5, wholesale:0.95},
+      {id:'p5', name:'Premium Dinner Napkins', category:'Tissue', image:'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400', price:0.5, wholesale:0.35},
+      {id:'p6', name:'Plastic Drinking Glass 200ml', category:'Glass', image:'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400', price:2.5, wholesale:1.8}
+    ];
+
+    let cart = [];
+
+    function renderProducts(filter = '') {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = products
+        .filter(p => !filter || p.category === filter)
+        .map(p => `
+        <div class="bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-300">
+          <img src="${p.image}" class="h-56 w-full object-cover" />
+          <div class="p-6">
+            <span class="text-[10px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">${p.category}</span>
+            <h3 class="text-xl font-bold mt-2">${p.name}</h3>
+            <div class="mt-4 flex justify-between items-center bg-slate-50 p-3 rounded-2xl">
+              <div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase">Retail Price</p>
+                <p class="text-lg font-black italic">₹${p.price}</p>
+              </div>
+              <div class="text-right">
+                <p class="text-[10px] font-bold text-emerald-500 uppercase">Wholesale (100+)</p>
+                <p class="text-lg font-black text-emerald-700 italic">₹${p.wholesale}</p>
+              </div>
+            </div>
+            <div class="mt-6 flex gap-2">
+              <input type="number" id="qty-${p.id}" value="10" min="1" class="w-20 border rounded-xl px-2 font-bold text-center" />
+              <button onclick="addToCart('${p.id}')" class="flex-1 bg-emerald-700 text-white font-black py-3 rounded-xl uppercase tracking-tighter hover:bg-emerald-800 transition">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.filterShop = (cat) => {
+      document.getElementById('shop').scrollIntoView();
+      renderProducts(cat);
+    };
+
+    window.addToCart = (id) => {
+      const p = products.find(x => x.id === id);
+      const qty = parseInt(document.getElementById(`qty-${id}`).value);
+      const price = qty >= 100 ? p.wholesale : p.price;
+      
+      const existing = cart.find(item => item.id === id);
+      if(existing) {
+        existing.qty += qty;
+        existing.unitPrice = existing.qty >= 100 ? p.wholesale : p.price;
+      } else {
+        cart.push({ ...p, qty, unitPrice: price });
+      }
+      updateCartUI();
+      if(!document.getElementById('cartSidebar').classList.contains('hidden-cart')) return;
+      toggleCart();
+    };
+
+    function updateCartUI() {
+      const count = cart.reduce((a, c) => a + c.qty, 0);
+      document.getElementById('cartCount').textContent = count;
+      
+      const list = document.getElementById('cartItems');
+      if(cart.length === 0) {
+        list.innerHTML = '<p class="text-slate-500 text-center py-10 uppercase font-bold tracking-widest">Cart is empty</p>';
+        document.getElementById('cartTotal').textContent = '₹0';
+        return;
+      }
+
+      let total = 0;
+      list.innerHTML = cart.map((item, idx) => {
+        const itemTotal = item.qty * item.unitPrice;
+        total += itemTotal;
+        return `
+          <div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl">
+            <div>
+              <p class="font-black uppercase text-xs">${item.name}</p>
+              <p class="text-xs font-bold text-slate-500 italic">${item.qty} x ₹${item.unitPrice}</p>
+            </div>
+            <div class="flex items-center gap-4">
+              <p class="font-black text-emerald-700">₹${itemTotal.toFixed(0)}</p>
+              <button onclick="removeItem(${idx})" class="text-rose-500 text-lg"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('cartTotal').textContent = `₹${total.toFixed(0)}`;
+    }
+
+    window.removeItem = (idx) => {
+      cart.splice(idx, 1);
+      updateCartUI();
+    };
+
+    window.toggleCart = () => {
+      document.getElementById('cartSidebar').classList.toggle('hidden-cart');
+    };
+
+    window.sendWhatsAppOrder = () => {
+      if(cart.length === 0) return alert('Your cart is empty!');
+      
+      let text = `*NEW ORDER - VEER MAHADEV PLASTIC*%0A---------------------------%0A`;
+      let total = 0;
+      cart.forEach(item => {
+        const sub = item.qty * item.unitPrice;
+        total += sub;
+        text += `• *${item.name}*%0A  Qty: ${item.qty} | Price: ₹${item.unitPrice}%0A  Subtotal: ₹${sub.toFixed(0)}%0A`;
+      });
+      text += `---------------------------%0A*TOTAL ESTIMATE: ₹${total.toFixed(0)}*%0A---------------------------%0APlease confirm my order and share bank details.`;
+      
+      window.open(`https://wa.me/918050389261?text=${text}`, '_blank');
+    };
+
+    // AI BOT LOGIC
+    const botToggle = document.getElementById('botToggle');
+    const botPanel = document.getElementById('botPanel');
+    botToggle.onclick = () => botPanel.classList.toggle('hidden');
+    document.getElementById('botClose').onclick = () => botPanel.classList.add('hidden');
+
+    document.getElementById('botSend').onclick = () => {
+      const input = document.getElementById('botInput');
+      const val = input.value.toLowerCase();
+      if(!val) return;
+
+      const msgs = document.getElementById('botMsgs');
+      msgs.innerHTML += `<div class="bg-emerald-700 text-white p-3 rounded-2xl self-end text-right ml-10 shadow-sm">${input.value}</div>`;
+      
+      let reply = "I'm sorry, I didn't quite catch that. You can ask about our 'location', 'wholesale' options, or 'eco-friendly' products.";
+      
+      if(val.includes('wholesale') || val.includes('bulk')) reply = "For bulk orders, we offer special Tiered Pricing. Prices drop up to 30% for orders over 100 units.";
+      if(val.includes('location') || val.includes('map') || val.includes('address')) reply = "We are located in Ahmedabad, Gujarat. You can see our exact location on the map at the bottom of this page.";
+      if(val.includes('eco') || val.includes('environment')) reply = "Yes, we have a specialized 'Eco-Warrior' range featuring biodegradable plates, wooden cutlery, and paper-based packaging.";
+      if(val.includes('contact') || val.includes('phone')) reply = "You can call us at +91 80503 89261 or click the WhatsApp button for a quick chat.";
+
+      setTimeout(() => {
+        msgs.innerHTML += `<div class="bg-white p-3 rounded-2xl shadow-sm border border-emerald-100 italic">${reply}</div>`;
+        msgs.scrollTop = msgs.scrollHeight;
+      }, 500);
+      
+      input.value = '';
+    };
+
+    renderProducts();
+  </script>
+</body>
+</html>
