@@ -3,342 +3,508 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Veer Mahadev Plastic | Premium Disposable Solutions</title>
+  <title>Veer Mahadev Plastic | Wholesale & Retail Disposable Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
     html { scroll-behavior: smooth; }
-    .glass { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.9); }
-    .cart-sidebar { transition: transform 0.3s ease-in-out; }
-    .hidden-cart { transform: translateX(100%); }
+    .glass { backdrop-filter: blur(8px); }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans">
-
-  <header class="sticky top-0 z-50 glass border-b border-emerald-100">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="#" class="text-2xl font-black text-emerald-700 uppercase tracking-tighter">Veer Mahadev Plastic</a>
-      
-      <nav class="hidden lg:flex items-center gap-8 text-sm font-bold uppercase tracking-wide">
-        <a href="#home" class="hover:text-emerald-700 transition">Home</a>
-        <a href="#shop" class="hover:text-emerald-700 transition">Shop</a>
-        <a href="#wholesale" class="hover:text-emerald-700 transition">Wholesale</a>
-        <a href="#about" class="hover:text-emerald-700 transition">Our Story</a>
+<body class="bg-[#f5f8f5] text-slate-800">
+  <header class="sticky top-0 z-50 bg-white/95 glass border-b border-emerald-100">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <a href="#home" class="text-2xl font-extrabold text-emerald-700">Veer Mahadev Plastic</a>
+      <nav class="hidden lg:flex items-center gap-6 text-sm font-medium">
+        <a href="#home" class="text-emerald-700">Home</a>
+        <a href="#categories" class="hover:text-emerald-700">Categories</a>
+        <a href="#shop" class="hover:text-emerald-700">Shop All</a>
+        <a href="#eco" class="hover:text-emerald-700">Eco-Friendly Range</a>
+        <a href="#wholesale" class="hover:text-emerald-700">Wholesale Inquiry</a>
       </nav>
-
-      <div class="flex items-center gap-4">
-        <button onclick="alert('B2B Portal Login coming soon!')" class="hidden md:block bg-slate-100 px-4 py-2 rounded-lg font-bold text-xs uppercase">B2B Login</button>
-        <button onclick="toggleCart()" class="relative bg-emerald-700 text-white px-5 py-2 rounded-xl font-bold flex items-center gap-2">
-          <i class="fas fa-shopping-cart"></i>
-          <span id="cartCount">0</span>
-        </button>
+      <div class="flex items-center gap-3 text-sm">
+        <button id="openLogin" class="hidden sm:block border border-slate-300 rounded-lg px-3 py-2 hover:bg-slate-50">B2B Portal (Login)</button>
+        <button id="openCartTop" class="font-semibold border rounded-lg px-3 py-2 hover:bg-slate-50">Cart (<span id="cartCount">0</span>)</button>
       </div>
     </div>
   </header>
 
-  <div id="cartSidebar" class="fixed inset-y-0 right-0 w-full max-w-md bg-white z-[60] shadow-2xl cart-sidebar hidden-cart flex flex-col">
-    <div class="p-6 border-b flex justify-between items-center bg-emerald-700 text-white">
-      <h2 class="text-xl font-bold uppercase">Your Shopping Cart</h2>
-      <button onclick="toggleCart()" class="text-2xl">&times;</button>
-    </div>
-    <div id="cartItems" class="flex-1 overflow-y-auto p-6 space-y-4 text-sm">
-      <p class="text-slate-500 text-center py-10">Your cart is empty.</p>
-    </div>
-    <div class="p-6 border-t bg-slate-50">
-      <div class="flex justify-between font-bold text-lg mb-4">
-        <span>Total Estimate:</span>
-        <span id="cartTotal">₹0</span>
-      </div>
-      <button onclick="sendWhatsAppOrder()" class="w-full bg-[#25D366] text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-[#1da851] transition">
-        <i class="fab fa-whatsapp mr-2"></i> PLACE ORDER ON WHATSAPP
-      </button>
-    </div>
-  </div>
-
-  <section id="home" class="relative pt-12 pb-24 px-4 bg-white">
-    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-      <div class="space-y-6">
-        <span class="bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">Est. 2022 | Family Business</span>
-        <h1 class="text-5xl lg:text-7xl font-black text-slate-900 leading-[1.1]">
-          Premium <span class="text-emerald-600">Disposable</span> Solutions.
-        </h1>
-        <p class="text-xl text-slate-600 leading-relaxed">
-          The largest wholesale hub in Gujarat, serving over 10,000 monthly customers with high-quality, eco-friendly food packaging.
-        </p>
-        <div class="flex flex-wrap gap-4">
-          <a href="#shop" class="bg-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-emerald-200 hover:-translate-y-1 transition">Start Shopping</a>
-          <a href="#wholesale" class="border-2 border-slate-200 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-slate-50 transition">Wholesale Inquiry</a>
+  <main id="home">
+    <section class="relative overflow-hidden bg-white border-b border-emerald-100">
+      <img src="https://images.unsplash.com/photo-1610631882985-adab00d941c7?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
+      <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
+        <div>
+          <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
+            <span class="text-emerald-700">Bharat ka Leading Disposable Hub</span> - Factory Rates, High Quality!
+          </h1>
+          <p class="mt-4 text-lg">Serving <b>10,000+</b> customers monthly since 2022. Best quality for restaurants, cafes, event managers, and households.</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="#shop" class="px-6 py-3 rounded-xl bg-emerald-700 text-white font-bold hover:bg-emerald-800">Shop Retail</a>
+            <a href="#wholesale" class="px-6 py-3 rounded-xl border-2 border-emerald-700 text-emerald-700 font-bold hover:bg-emerald-50">Get Wholesale Quote</a>
+          </div>
+        </div>
+        <div class="bg-white/90 border border-emerald-100 rounded-2xl p-5 shadow-sm">
+          <h3 class="text-xl font-bold">Shipping Estimate (Weight/Volume)</h3>
+          <p class="text-sm text-slate-600 mt-1">For bulky products, shipping is calculated on whichever is higher: dead weight or volumetric weight.</p>
+          <div class="grid grid-cols-2 gap-2 mt-4 text-sm">
+            <input id="weight" type="number" step="0.1" placeholder="Weight kg" class="border rounded-lg px-3 py-2"/>
+            <input id="length" type="number" placeholder="Length cm" class="border rounded-lg px-3 py-2"/>
+            <input id="width" type="number" placeholder="Width cm" class="border rounded-lg px-3 py-2"/>
+            <input id="height" type="number" placeholder="Height cm" class="border rounded-lg px-3 py-2"/>
+            <select id="zone" class="border rounded-lg px-3 py-2 col-span-2">
+              <option value="1">Local (Ahmedabad)</option>
+              <option value="1.4">Within Gujarat</option>
+              <option value="1.9">Interstate</option>
+            </select>
+          </div>
+          <button id="calcShip" class="mt-3 w-full bg-emerald-700 text-white py-2.5 rounded-lg font-semibold">Calculate Shipping</button>
+          <p id="shipOut" class="mt-2 text-sm font-semibold text-emerald-700"></p>
         </div>
       </div>
-      <div class="relative">
-        <img src="https://images.unsplash.com/photo-1610631882985-adab00d941c7?auto=format&fit=crop&q=80&w=800" class="rounded-[40px] shadow-2xl" alt="Disposables" />
-        <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-3xl shadow-xl border border-emerald-50">
-            <p class="text-3xl font-black text-emerald-700">10,000+</p>
-            <p class="text-xs font-bold text-slate-500 uppercase">Monthly Orders</p>
+    </section>
+
+    <section class="bg-emerald-50 border-y border-emerald-100">
+      <div class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-semibold">
+        <p>✅ 500+ Items in Stock</p>
+        <p>🚚 Same Day Dispatch</p>
+        <p>♻️ Eco-Friendly / Biodegradable Range</p>
+        <p>🧾 GST Invoicing Ready</p>
+      </div>
+    </section>
+
+    <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
+      <div class="flex items-end justify-between flex-wrap gap-2">
+        <h2 class="text-3xl font-extrabold">Shop by Category</h2>
+        <p class="text-sm text-slate-600">Click any category to jump to products and view filtered items.</p>
+      </div>
+      <div id="categoryGrid" class="mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 text-center"></div>
+    </section>
+
+    <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <h3 class="text-2xl font-extrabold">Products</h3>
+        <div class="flex items-center gap-2">
+          <span class="text-sm text-slate-600">Filter:</span>
+          <select id="categoryFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
         </div>
       </div>
-    </div>
-  </section>
+      <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-5" id="productGrid"></div>
+    </section>
 
-  <section class="bg-slate-100 py-16 px-4">
-    <div class="max-w-7xl mx-auto">
-      <h2 class="text-center text-3xl font-black uppercase mb-12 tracking-tight">Browse Categories</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <button onclick="filterShop('Cup')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
-          <div class="text-3xl mb-2 group-hover:scale-110 transition">🥤</div>
-          <p class="font-bold text-sm uppercase">Cups</p>
-        </button>
-        <button onclick="filterShop('Plate')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
-          <div class="text-3xl mb-2 group-hover:scale-110 transition">🍽️</div>
-          <p class="font-bold text-sm uppercase">Plates</p>
-        </button>
-        <button onclick="filterShop('Glass')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
-          <div class="text-3xl mb-2 group-hover:scale-110 transition">🍷</div>
-          <p class="font-bold text-sm uppercase">Glass</p>
-        </button>
-        <button onclick="filterShop('Spoon')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
-          <div class="text-3xl mb-2 group-hover:scale-110 transition">🥄</div>
-          <p class="font-bold text-sm uppercase">Spoons</p>
-        </button>
-        <button onclick="filterShop('Container')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
-          <div class="text-3xl mb-2 group-hover:scale-110 transition">📦</div>
-          <p class="font-bold text-sm uppercase">Containers</p>
-        </button>
-        <button onclick="filterShop('Tissue')" class="bg-white p-6 rounded-2xl border-b-4 border-emerald-600 hover:shadow-lg transition group">
-          <div class="text-3xl mb-2 group-hover:scale-110 transition">🧻</div>
-          <p class="font-bold text-sm uppercase">Tissues</p>
-        </button>
+    <section id="eco" class="max-w-7xl mx-auto px-4 pb-10">
+      <div class="bg-gradient-to-r from-emerald-100 to-emerald-50 rounded-2xl border border-emerald-200 p-6 lg:p-8 flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <p class="text-sm uppercase tracking-wide text-emerald-700">Eco-Warrior Collection</p>
+          <h3 class="text-3xl font-extrabold">Go Green with Our Biodegradable Range</h3>
+          <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
+        </div>
+        <button data-cat="Eco-Friendly" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="shop" class="max-w-7xl mx-auto px-4 py-20">
-    <div class="flex justify-between items-end mb-10">
+    <section id="wholesale" class="max-w-7xl mx-auto px-4 pb-12 grid lg:grid-cols-2 gap-6">
+      <div class="bg-white rounded-2xl border p-6">
+        <h3 class="text-2xl font-extrabold">Bulk Order / Wholesale Inquiry</h3>
+        <p class="text-sm text-slate-600 mt-1">Upload your requirement list (Excel/PDF/Image) and receive a custom quote.</p>
+        <form id="bulkForm" class="grid gap-3 mt-4">
+          <input required class="border rounded-lg px-3 py-2" placeholder="Business Name"/>
+          <input required class="border rounded-lg px-3 py-2" placeholder="Contact Number / WhatsApp"/>
+          <input required class="border rounded-lg px-3 py-2" placeholder="City + Pincode"/>
+          <input required class="border rounded-lg px-3 py-2" placeholder="Monthly Quantity Requirement"/>
+          <input id="requirementFile" type="file" class="border rounded-lg px-3 py-2"/>
+          <button type="submit" class="bg-emerald-700 text-white py-2.5 rounded-lg font-semibold">Request Wholesale Quote</button>
+          <p id="bulkMsg" class="text-sm font-semibold"></p>
+        </form>
+      </div>
+      <div class="bg-white rounded-2xl border p-6 space-y-4">
+        <h3 class="text-2xl font-extrabold">B2B Buyer Portal</h3>
+        <p class="text-slate-700">Login to download full wholesale price list PDF, MOQ chart, and dispatch schedules.</p>
+        <button id="portalDownloadBtn" class="inline-block px-4 py-2 rounded-lg border border-emerald-300 text-emerald-700 font-semibold">Download Full Price List (PDF)</button>
+        <p id="portalStatus" class="text-sm font-medium text-slate-600">Please login to access B2B downloads.</p>
+        <div id="dashboard" class="mt-3 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
+          <p class="font-bold">Quick Re-order Dashboard</p>
+          <p class="text-sm text-slate-700">Last order: 37 items | ₹12,880 | Delivered 6 days ago</p>
+          <div class="mt-3 flex gap-3">
+            <button id="repeatOrder" class="px-4 py-2 rounded-lg bg-emerald-700 text-white text-sm font-semibold">Repeat Last Order</button>
+            <button id="openCartFromDash" class="px-4 py-2 rounded-lg border text-sm font-semibold">Open Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="max-w-7xl mx-auto px-4 pb-10">
+      <div class="bg-emerald-800 text-white rounded-3xl p-8 lg:p-10">
+        <h3 class="text-3xl font-extrabold">About Us - Veer Mahadev Plastic</h3>
+        <p class="mt-4 text-emerald-50">Started in 2022 as a family business, Veer Mahadev Plastic has grown through trust, quality, and hard work. Today, we proudly serve 10,000+ satisfied customers every month across wholesale and retail channels.</p>
+        <p class="mt-3 text-emerald-100">Our mission is simple: deliver hygienic, food-safe disposable products with fair wholesale pricing, consistent quality, and dependable dispatch. We support local businesses while promoting eco-friendly choices for a better future.</p>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 pb-10">
+      <h3 class="text-2xl font-extrabold mb-3">Visit Our Shop</h3>
+      <div class="rounded-2xl overflow-hidden border bg-white">
+        <iframe title="Shop Location Map" class="w-full h-80" loading="lazy" allowfullscreen
+          src="https://www.google.com/maps?q=Ahmedabad%20Gujarat&output=embed"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-4 gap-6 text-sm">
       <div>
-        <h2 class="text-4xl font-black uppercase">Live Inventory</h2>
-        <p class="text-slate-500 font-medium">Automatic bulk discounts apply on higher quantities.</p>
+        <p class="font-extrabold text-lg text-emerald-700">Veer Mahadev Plastic</p>
+        <p>Quality and trust in every order.</p>
       </div>
-    </div>
-    <div id="productGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      </div>
-  </section>
-
-  <section id="about" class="bg-emerald-900 text-white py-24 px-4">
-    <div class="max-w-4xl mx-auto text-center space-y-8">
-      <h2 class="text-4xl lg:text-5xl font-black uppercase">The Veer Mahadev Legacy</h2>
-      <p class="text-xl text-emerald-100 leading-relaxed">
-        Founded in 2022 as a family-driven enterprise, Veer Mahadev Plastic has rapidly grown into a cornerstone of the disposable industry. Our journey began with a simple mission: to provide high-quality food packaging at direct factory prices. 
-      </p>
-      <p class="text-xl text-emerald-100 leading-relaxed">
-        Today, we take pride in serving more than 10,000 monthly customers, ranging from local street vendors to premium cafes and large-scale event planners. Our commitment remains rooted in hygiene, durability, and a sustainable shift toward biodegradable alternatives.
-      </p>
-      <div class="pt-6 border-t border-emerald-800 flex justify-center gap-12">
-        <div><p class="text-4xl font-black">100%</p><p class="text-xs uppercase font-bold text-emerald-400">Hygienic</p></div>
-        <div><p class="text-4xl font-black">24h</p><p class="text-xs uppercase font-bold text-emerald-400">Dispatch</p></div>
-        <div><p class="text-4xl font-black">B2B</p><p class="text-xs uppercase font-bold text-emerald-400">Specialist</p></div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="bg-white border-t pt-20">
-    <div class="max-w-7xl mx-auto px-4 pb-12 grid md:grid-cols-4 gap-12">
-      <div class="col-span-1 space-y-6">
-        <p class="text-2xl font-black text-emerald-700">VEER MAHADEV PLASTIC</p>
-        <p class="text-slate-500 text-sm">Premier supplier of disposable kitchenware and packaging since 2022. Reliability in every order.</p>
-        <div class="flex gap-4 text-2xl">
-          <a href="#" class="text-pink-600 hover:scale-110 transition"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-blue-700 hover:scale-110 transition"><i class="fab fa-facebook"></i></a>
-          <a href="#" class="text-red-600 hover:scale-110 transition"><i class="fab fa-youtube"></i></a>
-        </div>
-      </div>
-      
       <div>
-        <p class="font-black uppercase mb-6">Business Details</p>
-        <ul class="space-y-3 text-sm font-bold text-slate-600 uppercase tracking-tighter">
-          <li>GSTIN: <span class="text-emerald-700">24XXXXX0000X1Z</span></li>
-          <li>MSME: <span class="text-emerald-700">UDYAM-GJ-00-XXXXX</span></li>
-          <li>Email: <span class="text-emerald-700 normal-case">info@veermahadev.com</span></li>
-          <li>Phone: <span class="text-emerald-700">+91 80503 89261</span></li>
+        <p class="font-bold">Quick Links</p>
+        <ul class="mt-2 space-y-1">
+          <li><a href="#wholesale">Bulk Inquiry</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">GST Invoicing</a></li>
         </ul>
       </div>
-
-      <div class="col-span-2 rounded-3xl overflow-hidden shadow-lg border h-64">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117506.38112520379!2d72.5011035!3d23.0145893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fccd11674498817!2sAhmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      <div>
+        <p class="font-bold">Business Details</p>
+        <p>GST No: 24BLLPL0402N1Z6</p>
+        <p>MSME No: UDYAM-GJ-01-0532946</p>
+        <p>Email: veermahadevplastic@gmail.com</p>
       </div>
-    </div>
-    
-    <div class="border-t py-6 text-center text-xs font-bold text-slate-400 uppercase tracking-widest">
-      &copy; 2026 Veer Mahadev Plastic | All Rights Reserved.
+      <div>
+        <p class="font-bold">Follow Us</p>
+        <div class="mt-2 flex gap-3 items-center">
+          <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/instagram" class="h-6 w-6" alt="Instagram"/></a>
+          <a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/youtube" class="h-6 w-6" alt="YouTube"/></a>
+          <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/facebook" class="h-6 w-6" alt="Facebook"/></a>
+        </div>
+      </div>
     </div>
   </footer>
 
-  <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-4">
-    <button onclick="sendWhatsAppOrder()" class="bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition text-2xl"><i class="fab fa-whatsapp"></i></button>
-    <button id="botToggle" class="bg-emerald-700 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition text-2xl"><i class="fas fa-robot"></i></button>
+  <a id="waFloating" href="#" class="fixed bottom-4 right-4 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-full shadow-xl z-40 font-semibold">💬 Order on WhatsApp</a>
+
+  <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h4 class="text-xl font-bold">Your Cart</h4>
+      <button id="closeCart" class="text-xl">✕</button>
+    </div>
+    <div id="cartItems" class="p-4 h-[calc(100%-220px)] overflow-y-auto hide-scrollbar"></div>
+    <div class="p-4 border-t bg-slate-50">
+      <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
+      <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
+      <div class="grid grid-cols-2 gap-2 mt-3">
+        <button id="waCart" class="bg-emerald-700 text-white py-2 rounded-lg font-semibold">WhatsApp Order</button>
+        <button class="border py-2 rounded-lg font-semibold">Buy Now</button>
+      </div>
+    </div>
+  </aside>
+  <div id="drawerOverlay" class="hidden fixed inset-0 bg-black/40 z-50"></div>
+
+  <div id="loginModal" class="hidden fixed inset-0 z-[70] bg-black/40 px-4">
+    <div class="max-w-md mx-auto mt-24 bg-white rounded-xl border shadow-xl p-5">
+      <h4 class="text-xl font-bold">B2B Portal Login</h4>
+      <p class="text-sm text-slate-600">Login to access wholesale price list and business tools.</p>
+      <form id="loginForm" class="mt-4 grid gap-3">
+        <input id="loginEmail" type="email" required placeholder="Business Email" class="border rounded-lg px-3 py-2"/>
+        <input id="loginPass" type="password" required placeholder="Password" class="border rounded-lg px-3 py-2"/>
+        <div class="flex gap-2">
+          <button type="submit" class="flex-1 bg-emerald-700 text-white py-2 rounded-lg font-semibold">Login</button>
+          <button type="button" id="closeLogin" class="flex-1 border py-2 rounded-lg font-semibold">Close</button>
+        </div>
+      </form>
+      <p id="loginMsg" class="text-sm mt-2 font-semibold"></p>
+    </div>
   </div>
 
-  <div id="botPanel" class="hidden fixed bottom-24 right-6 w-80 bg-white border rounded-3xl shadow-2xl overflow-hidden z-[70]">
-    <div class="bg-emerald-700 text-white p-4 font-bold flex justify-between uppercase text-sm tracking-widest">
-        <span>Veer AI Assistant</span>
-        <button id="botClose">&times;</button>
-    </div>
-    <div id="botMsgs" class="h-64 overflow-y-auto p-4 text-sm space-y-4 bg-slate-50">
-      <div class="bg-white p-3 rounded-2xl shadow-sm border border-emerald-100 italic">Hello! I am your Veer Assistant. Ask me about products, wholesale pricing, or location.</div>
-    </div>
-    <div class="p-4 bg-white border-t flex gap-2">
-      <input id="botInput" class="flex-1 bg-slate-100 rounded-xl px-4 py-2 text-sm outline-none" placeholder="Type a message..." />
-      <button id="botSend" class="bg-emerald-700 text-white p-2 rounded-xl"><i class="fas fa-paper-plane"></i></button>
+  <div class="fixed bottom-4 left-4 z-[65]">
+    <button id="botToggle" class="h-14 w-14 rounded-full bg-emerald-700 text-white text-2xl shadow-lg">🤖</button>
+    <div id="botPanel" class="hidden mt-2 w-80 bg-white border rounded-xl shadow-2xl overflow-hidden">
+      <div class="bg-emerald-700 text-white px-3 py-2 font-semibold flex justify-between"><span>AI Help Bot</span><button id="botClose">✕</button></div>
+      <div id="botMsgs" class="h-56 overflow-y-auto p-3 text-sm space-y-2">
+        <div class="bg-emerald-50 rounded-lg p-2">Hello! I can help with products, wholesale, shipping, stock, and order support.</div>
+      </div>
+      <div class="p-2 border-t flex gap-2">
+        <input id="botInput" class="flex-1 border rounded-lg px-2 py-1.5 text-sm" placeholder="Ask your question" />
+        <button id="botSend" class="bg-emerald-700 text-white px-3 rounded-lg">Send</button>
+      </div>
     </div>
   </div>
 
   <script>
     const products = [
-      {id:'p1', name:'Premium Paper Cup 150ml', category:'Cup', image:'https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&w=400', price:1.9, wholesale:1.35},
-      {id:'p2', name:'Eco-Friendly Paper Plate 10"', category:'Plate', image:'https://images.unsplash.com/photo-1617196039897-3a2f8d9f7f9f?auto=format&fit=crop&w=400', price:3.8, wholesale:2.9},
-      {id:'p3', name:'Leak-Proof Container 500ml', category:'Container', image:'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?auto=format&fit=crop&w=400', price:8.5, wholesale:6.9},
-      {id:'p4', name:'Wooden Spoon Biodegradable', category:'Spoon', image:'https://images.unsplash.com/photo-1596041063346-a42e5d9c7921?auto=format&fit=crop&w=400', price:1.5, wholesale:0.95},
-      {id:'p5', name:'Premium Dinner Napkins', category:'Tissue', image:'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400', price:0.5, wholesale:0.35},
-      {id:'p6', name:'Plastic Drinking Glass 200ml', category:'Glass', image:'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400', price:2.5, wholesale:1.8}
+      {id:'cup-150', name:'Paper Cup 150ml', category:'Cup', image:'https://images.unsplash.com/photo-1577937927133-66ef06acdf18?auto=format&fit=crop&w=800&q=60', stock:320, tiers:[{min:1,price:1.9},{min:100,price:1.6},{min:500,price:1.35}]},
+      {id:'cup-250', name:'Paper Cup 250ml', category:'Cup', image:'https://images.unsplash.com/photo-1610878180933-1237280435bd?auto=format&fit=crop&w=800&q=60', stock:160, tiers:[{min:1,price:2.7},{min:100,price:2.3},{min:500,price:2.0}]},
+      {id:'plate-10', name:'Paper Plate 10 inch', category:'Plate', image:'https://images.unsplash.com/photo-1584308074647-1a9f63f5b8b8?auto=format&fit=crop&w=800&q=60', stock:0, tiers:[{min:1,price:3.8},{min:100,price:3.3},{min:500,price:2.9}]},
+      {id:'glass-300', name:'Disposable Glass 300ml', category:'Glass', image:'https://images.unsplash.com/photo-1595341888016-a392ef81b7de?auto=format&fit=crop&w=800&q=60', stock:95, tiers:[{min:1,price:2.4},{min:100,price:2.1},{min:500,price:1.8}]},
+      {id:'spoon-wood', name:'Wooden Spoon', category:'Spoon', image:'https://images.unsplash.com/photo-1551029506-0807df4e2031?auto=format&fit=crop&w=800&q=60', stock:70, tiers:[{min:1,price:1.6},{min:100,price:1.3},{min:500,price:1.1}]},
+      {id:'cont-500', name:'Leak-Proof Container 500ml', category:'Container', image:'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?auto=format&fit=crop&w=800&q=60', stock:56, tiers:[{min:1,price:8.5},{min:100,price:7.7},{min:500,price:6.9}]},
+      {id:'tissue-100', name:'Tissue Paper Pack (100 Pulls)', category:'Tissue Paper', image:'https://images.unsplash.com/photo-1583947581924-860bda6a26df?auto=format&fit=crop&w=800&q=60', stock:240, tiers:[{min:1,price:35},{min:50,price:32},{min:200,price:28}]},
+      {id:'eco-set', name:'Biodegradable Meal Set', category:'Eco-Friendly', image:'https://images.unsplash.com/photo-1601315576601-5f32b95ac9be?auto=format&fit=crop&w=800&q=60', stock:120, tiers:[{min:1,price:19},{min:100,price:17},{min:500,price:15}]},
     ];
 
-    let cart = [];
+    const categories = ['All', 'Cup', 'Plate', 'Glass', 'Spoon', 'Container', 'Tissue Paper', 'Eco-Friendly'];
+    let activeCategory = 'All';
+    let cart = JSON.parse(localStorage.getItem('vmpCart') || '[]');
+    let b2bLoggedIn = false;
 
-    function renderProducts(filter = '') {
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML = products
-        .filter(p => !filter || p.category === filter)
-        .map(p => `
-        <div class="bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-300">
-          <img src="${p.image}" class="h-56 w-full object-cover" />
-          <div class="p-6">
-            <span class="text-[10px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">${p.category}</span>
-            <h3 class="text-xl font-bold mt-2">${p.name}</h3>
-            <div class="mt-4 flex justify-between items-center bg-slate-50 p-3 rounded-2xl">
-              <div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase">Retail Price</p>
-                <p class="text-lg font-black italic">₹${p.price}</p>
-              </div>
-              <div class="text-right">
-                <p class="text-[10px] font-bold text-emerald-500 uppercase">Wholesale (100+)</p>
-                <p class="text-lg font-black text-emerald-700 italic">₹${p.wholesale}</p>
-              </div>
-            </div>
-            <div class="mt-6 flex gap-2">
-              <input type="number" id="qty-${p.id}" value="10" min="1" class="w-20 border rounded-xl px-2 font-bold text-center" />
-              <button onclick="addToCart('${p.id}')" class="flex-1 bg-emerald-700 text-white font-black py-3 rounded-xl uppercase tracking-tighter hover:bg-emerald-800 transition">Add to Cart</button>
+    const productGrid = document.getElementById('productGrid');
+    const categoryGrid = document.getElementById('categoryGrid');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const cartCount = document.getElementById('cartCount');
+    const cartItems = document.getElementById('cartItems');
+    const cartSubtotal = document.getElementById('cartSubtotal');
+
+    function priceForQty(tiers, qty){
+      let unit = tiers[0].price;
+      for(const tier of tiers) if(qty >= tier.min) unit = tier.price;
+      return unit;
+    }
+
+    function stockBadge(stock){
+      if(stock === 0) return '<span class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded">Out of Stock</span>';
+      if(stock < 80) return '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">Low Stock</span>';
+      return '<span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">In Stock</span>';
+    }
+
+    function renderCategories(){
+      categoryGrid.innerHTML = categories.slice(1).map(cat => `
+        <button data-cat="${cat}" class="jump-cat bg-white rounded-xl p-4 border hover:border-emerald-400 hover:bg-emerald-50 font-semibold">${cat}</button>
+      `).join('');
+      categoryFilter.innerHTML = categories.map(cat => `<option>${cat}</option>`).join('');
+      categoryFilter.value = activeCategory;
+    }
+
+    function renderProducts(){
+      const filtered = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
+      productGrid.innerHTML = filtered.map(p => `
+        <article class="bg-white border rounded-2xl overflow-hidden">
+          <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover"/>
+          <div class="p-4 space-y-2">
+            <div class="flex justify-between gap-2 items-start"><h4 class="font-bold">${p.name}</h4>${stockBadge(p.stock)}</div>
+            <p class="text-xs text-slate-500">Category: ${p.category}</p>
+            <p class="text-xs text-slate-500">Tier Pricing: ${p.tiers.map(t => `${t.min}+ ₹${t.price}`).join(' | ')}</p>
+            <div class="flex gap-2 items-center">
+              <input id="qty-${p.id}" type="number" min="1" value="1" class="w-20 border rounded-lg px-2 py-1.5 text-sm"/>
+              <button onclick="addToCart('${p.id}')" class="flex-1 bg-emerald-700 text-white rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Add to Cart</button>
+              <button onclick="buyNow('${p.id}')" class="flex-1 border border-emerald-700 text-emerald-700 rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Buy Now</button>
             </div>
           </div>
+        </article>
+      `).join('') || '<p class="text-sm text-slate-600">No products in this category right now.</p>';
+    }
+
+    function saveCart(){
+      localStorage.setItem('vmpCart', JSON.stringify(cart));
+    }
+
+    function cartTotalQty(){
+      return cart.reduce((sum, item) => sum + item.qty, 0);
+    }
+
+    function cartTotalAmount(){
+      return cart.reduce((sum, item) => sum + (item.qty * item.unit), 0);
+    }
+
+    function renderCart(){
+      cartCount.textContent = cartTotalQty();
+      cartSubtotal.textContent = cartTotalAmount().toFixed(2);
+      if(cart.length === 0){
+        cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
+        return;
+      }
+      cartItems.innerHTML = cart.map((item, idx) => `
+        <div class="border rounded-xl p-3 mb-2">
+          <div class="flex justify-between gap-2">
+            <p class="font-semibold">${item.name}</p>
+            <button onclick="removeCartItem(${idx})" class="text-rose-600 text-sm">Remove</button>
+          </div>
+          <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
         </div>
       `).join('');
     }
 
-    window.filterShop = (cat) => {
-      document.getElementById('shop').scrollIntoView();
-      renderProducts(cat);
-    };
-
-    window.addToCart = (id) => {
-      const p = products.find(x => x.id === id);
-      const qty = parseInt(document.getElementById(`qty-${id}`).value);
-      const price = qty >= 100 ? p.wholesale : p.price;
-      
-      const existing = cart.find(item => item.id === id);
-      if(existing) {
-        existing.qty += qty;
-        existing.unitPrice = existing.qty >= 100 ? p.wholesale : p.price;
-      } else {
-        cart.push({ ...p, qty, unitPrice: price });
-      }
-      updateCartUI();
-      if(!document.getElementById('cartSidebar').classList.contains('hidden-cart')) return;
-      toggleCart();
-    };
-
-    function updateCartUI() {
-      const count = cart.reduce((a, c) => a + c.qty, 0);
-      document.getElementById('cartCount').textContent = count;
-      
-      const list = document.getElementById('cartItems');
-      if(cart.length === 0) {
-        list.innerHTML = '<p class="text-slate-500 text-center py-10 uppercase font-bold tracking-widest">Cart is empty</p>';
-        document.getElementById('cartTotal').textContent = '₹0';
-        return;
-      }
-
-      let total = 0;
-      list.innerHTML = cart.map((item, idx) => {
-        const itemTotal = item.qty * item.unitPrice;
-        total += itemTotal;
-        return `
-          <div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl">
-            <div>
-              <p class="font-black uppercase text-xs">${item.name}</p>
-              <p class="text-xs font-bold text-slate-500 italic">${item.qty} x ₹${item.unitPrice}</p>
-            </div>
-            <div class="flex items-center gap-4">
-              <p class="font-black text-emerald-700">₹${itemTotal.toFixed(0)}</p>
-              <button onclick="removeItem(${idx})" class="text-rose-500 text-lg"><i class="fas fa-trash"></i></button>
-            </div>
-          </div>
-        `;
-      }).join('');
-      document.getElementById('cartTotal').textContent = `₹${total.toFixed(0)}`;
+    window.removeCartItem = function(idx){
+      cart.splice(idx, 1);
+      saveCart();
+      renderCart();
     }
 
-    window.removeItem = (idx) => {
-      cart.splice(idx, 1);
-      updateCartUI();
-    };
+    window.addToCart = function(id){
+      const p = products.find(x => x.id === id);
+      const qty = Math.max(1, Number(document.getElementById(`qty-${id}`).value || 1));
+      const unit = priceForQty(p.tiers, qty);
+      const existing = cart.find(c => c.id === id && c.unit === unit);
+      if(existing) existing.qty += qty;
+      else cart.push({id, name:p.name, qty, unit});
+      saveCart();
+      renderCart();
+    }
 
-    window.toggleCart = () => {
-      document.getElementById('cartSidebar').classList.toggle('hidden-cart');
-    };
+    window.buyNow = function(id){
+      addToCart(id);
+      openCart();
+    }
 
-    window.sendWhatsAppOrder = () => {
-      if(cart.length === 0) return alert('Your cart is empty!');
-      
-      let text = `*NEW ORDER - VEER MAHADEV PLASTIC*%0A---------------------------%0A`;
-      let total = 0;
-      cart.forEach(item => {
-        const sub = item.qty * item.unitPrice;
-        total += sub;
-        text += `• *${item.name}*%0A  Qty: ${item.qty} | Price: ₹${item.unitPrice}%0A  Subtotal: ₹${sub.toFixed(0)}%0A`;
-      });
-      text += `---------------------------%0A*TOTAL ESTIMATE: ₹${total.toFixed(0)}*%0A---------------------------%0APlease confirm my order and share bank details.`;
-      
-      window.open(`https://wa.me/918050389261?text=${text}`, '_blank');
-    };
+    function cartWhatsappText(){
+      if(cart.length === 0) return 'Hello, I want to place an order. Please share latest catalog.';
+      const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - ₹${(i.qty*i.unit).toFixed(2)}`);
+      const subtotal = cartTotalAmount().toFixed(2);
+      return `Hello Veer Mahadev Plastic,%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
+    }
 
-    // AI BOT LOGIC
-    const botToggle = document.getElementById('botToggle');
+    function openCart(){
+      document.getElementById('cartDrawer').classList.remove('translate-x-full');
+      document.getElementById('drawerOverlay').classList.remove('hidden');
+    }
+
+    function closeCart(){
+      document.getElementById('cartDrawer').classList.add('translate-x-full');
+      document.getElementById('drawerOverlay').classList.add('hidden');
+    }
+
+    // Shipping calculator
+    document.getElementById('calcShip').addEventListener('click',()=>{
+      const w = Number(document.getElementById('weight').value||0);
+      const l = Number(document.getElementById('length').value||0);
+      const wi = Number(document.getElementById('width').value||0);
+      const h = Number(document.getElementById('height').value||0);
+      const zone = Number(document.getElementById('zone').value||1);
+      if(!w && !(l&&wi&&h)){
+        document.getElementById('shipOut').textContent = 'Please enter weight or dimensions.';
+        return;
+      }
+      const volumetric = (l*wi*h)/5000;
+      const chargeable = Math.max(w, volumetric || 0);
+      const cost = Math.max(60, chargeable * 32 * zone);
+      document.getElementById('shipOut').textContent = `Chargeable Weight: ${chargeable.toFixed(2)} kg | Estimated Shipping: ₹${cost.toFixed(0)}`;
+    });
+
+    // Bulk inquiry
+    document.getElementById('bulkForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const fileName = document.getElementById('requirementFile').files[0]?.name || 'No file';
+      const msg = document.getElementById('bulkMsg');
+      msg.className = 'text-sm font-semibold text-emerald-700';
+      msg.textContent = `Inquiry submitted successfully. Our team will contact you shortly. File: ${fileName}`;
+      e.target.reset();
+    });
+
+    // B2B login
+    document.getElementById('openLogin').addEventListener('click', ()=> document.getElementById('loginModal').classList.remove('hidden'));
+    document.getElementById('closeLogin').addEventListener('click', ()=> document.getElementById('loginModal').classList.add('hidden'));
+    document.getElementById('loginForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+      const loginMsg = document.getElementById('loginMsg');
+      if(email && pass.length >= 4){
+        b2bLoggedIn = true;
+        loginMsg.className = 'text-sm mt-2 font-semibold text-emerald-700';
+        loginMsg.textContent = 'Login successful. B2B portal unlocked.';
+        document.getElementById('portalStatus').textContent = `Logged in as ${email}`;
+        setTimeout(()=> document.getElementById('loginModal').classList.add('hidden'), 600);
+      }else{
+        loginMsg.className = 'text-sm mt-2 font-semibold text-rose-600';
+        loginMsg.textContent = 'Please enter valid email and password.';
+      }
+    });
+
+    // B2B download access control
+    document.getElementById('portalDownloadBtn').addEventListener('click', ()=>{
+      if(!b2bLoggedIn){
+        document.getElementById('portalStatus').textContent = 'Please login first to download price list.';
+        document.getElementById('openLogin').click();
+        return;
+      }
+      const a = document.createElement('a');
+      a.href = './assets/wholesale-price-list.pdf';
+      a.download = 'wholesale-price-list.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      document.getElementById('portalStatus').textContent = 'Price list downloaded successfully.';
+    });
+
+    // Category interactions
+    document.addEventListener('click', (e)=>{
+      const target = e.target.closest('.jump-cat');
+      if(!target) return;
+      activeCategory = target.dataset.cat;
+      categoryFilter.value = activeCategory;
+      renderProducts();
+      document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+    });
+    categoryFilter.addEventListener('change', ()=>{
+      activeCategory = categoryFilter.value;
+      renderProducts();
+    });
+
+    // Cart controls
+    document.getElementById('openCartTop').addEventListener('click', openCart);
+    document.getElementById('openCartFromDash').addEventListener('click', openCart);
+    document.getElementById('closeCart').addEventListener('click', closeCart);
+    document.getElementById('drawerOverlay').addEventListener('click', closeCart);
+
+    // WhatsApp actions (floating + cart)
+    document.getElementById('waFloating').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const msg = cartWhatsappText();
+      window.open(`https://wa.me/918050389261?text=${msg}`,'_blank');
+    });
+    document.getElementById('waCart').addEventListener('click', ()=>{
+      const msg = cartWhatsappText();
+      window.open(`https://wa.me/918050389261?text=${msg}`,'_blank');
+    });
+
+    // Repeat order
+    document.getElementById('repeatOrder').addEventListener('click', ()=>{
+      const lastOrder = [
+        {id:'cup-150', qty:200},
+        {id:'cont-500', qty:80},
+        {id:'tissue-100', qty:25},
+      ];
+      for(const l of lastOrder){
+        const p = products.find(x=>x.id===l.id);
+        if(!p) continue;
+        const unit = priceForQty(p.tiers, l.qty);
+        cart.push({id:p.id, name:p.name, qty:l.qty, unit});
+      }
+      saveCart();
+      renderCart();
+      openCart();
+    });
+
+    // AI bot (improved contextual replies)
     const botPanel = document.getElementById('botPanel');
-    botToggle.onclick = () => botPanel.classList.toggle('hidden');
-    document.getElementById('botClose').onclick = () => botPanel.classList.add('hidden');
+    document.getElementById('botToggle').onclick = ()=> botPanel.classList.toggle('hidden');
+    document.getElementById('botClose').onclick = ()=> botPanel.classList.add('hidden');
 
-    document.getElementById('botSend').onclick = () => {
+    function aiReply(text){
+      const q = text.toLowerCase();
+      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'We offer tiered pricing. The more quantity you order, the lower per-unit price you get. You can also submit a bulk inquiry for a custom quote.';
+      if(q.includes('shipping') || q.includes('delivery') || q.includes('dispatch')) return 'Shipping is based on dead weight vs volumetric weight (higher one applies). Local and interstate zones have different rates.';
+      if(q.includes('stock') || q.includes('available')) return 'Products show In Stock, Low Stock, or Out of Stock labels. For urgent bulk stock, please contact us on WhatsApp.';
+      if(q.includes('eco') || q.includes('biodegradable')) return 'Yes, we have an eco-friendly biodegradable range including meal sets, cutlery, cups, and packaging.';
+      if(q.includes('b2b') || q.includes('login') || q.includes('portal')) return 'Use the B2B Portal Login button on top. After login, you can download the wholesale PDF and manage repeat business orders.';
+      if(q.includes('cart') || q.includes('order')) return `Your current cart has ${cartTotalQty()} items with subtotal ₹${cartTotalAmount().toFixed(2)}. You can open cart and place order via WhatsApp.`;
+      if(q.includes('about') || q.includes('company')) return 'Veer Mahadev Plastic is a family business started in 2022 and now serves 10,000+ customers monthly with hygiene-focused disposable products.';
+      return 'I can help with pricing, stock, shipping, wholesale inquiry, B2B portal, and order support. Please ask your specific question.';
+    }
+
+    document.getElementById('botSend').onclick = ()=>{
       const input = document.getElementById('botInput');
-      const val = input.value.toLowerCase();
-      if(!val) return;
-
+      const text = input.value.trim();
+      if(!text) return;
       const msgs = document.getElementById('botMsgs');
-      msgs.innerHTML += `<div class="bg-emerald-700 text-white p-3 rounded-2xl self-end text-right ml-10 shadow-sm">${input.value}</div>`;
-      
-      let reply = "I'm sorry, I didn't quite catch that. You can ask about our 'location', 'wholesale' options, or 'eco-friendly' products.";
-      
-      if(val.includes('wholesale') || val.includes('bulk')) reply = "For bulk orders, we offer special Tiered Pricing. Prices drop up to 30% for orders over 100 units.";
-      if(val.includes('location') || val.includes('map') || val.includes('address')) reply = "We are located in Ahmedabad, Gujarat. You can see our exact location on the map at the bottom of this page.";
-      if(val.includes('eco') || val.includes('environment')) reply = "Yes, we have a specialized 'Eco-Warrior' range featuring biodegradable plates, wooden cutlery, and paper-based packaging.";
-      if(val.includes('contact') || val.includes('phone')) reply = "You can call us at +91 80503 89261 or click the WhatsApp button for a quick chat.";
-
-      setTimeout(() => {
-        msgs.innerHTML += `<div class="bg-white p-3 rounded-2xl shadow-sm border border-emerald-100 italic">${reply}</div>`;
-        msgs.scrollTop = msgs.scrollHeight;
-      }, 500);
-      
+      msgs.innerHTML += `<div class="bg-slate-100 rounded-lg p-2">${text}</div>`;
+      msgs.innerHTML += `<div class="bg-emerald-50 rounded-lg p-2">${aiReply(text)}</div>`;
+      msgs.scrollTop = msgs.scrollHeight;
       input.value = '';
     };
 
+    // initialize
+    renderCategories();
     renderProducts();
+    renderCart();
   </script>
 </body>
 </html>
