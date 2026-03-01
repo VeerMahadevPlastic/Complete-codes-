@@ -1,351 +1,271 @@
-# Veer Mhadev Plastic - E-commerce Website Plan, Homepage Content, and About Us Copy
-
-## 1) Website Strategy Snapshot
-**Business Type:** Disposable Items Wholesale & Retail (B2B + B2C)  
-**Primary Buyers:** Restaurant owners, café owners, event managers, and households  
-**Brand Tone:** Professional, hygienic, trustworthy, and growth-focused  
-**Visual Direction:** Clean UI, green + white palette, strong readability, fast checkout, clear pricing tiers
-
-### Color + UI Direction
-- **Primary Green:** `#1F8A4C` (trust + eco positioning)
-- **Light Green Accent:** `#E8F5EC` (section highlights, badges)
-- **White Base:** `#FFFFFF` (clean and hygienic look)
-- **Neutral Text:** `#1F2937` / `#4B5563`
-- **CTA Style:** Rounded buttons, bold text, clear action language (`Order on WhatsApp`, `Get Bulk Quote`, `Download Price List`)
-
----
-
-## 2) Sitemap (SEO + Conversion Friendly)
-
-### Main Navigation
-1. **Home**
-2. **Shop**
-   - All Products
-   - Paper Cups
-   - Paper Plates
-   - Food Containers
-   - Eco-friendly Cutlery
-   - Carry Bags & Packaging
-3. **Bulk / Wholesale**
-   - Bulk Inquiry Form
-   - Upload Requirement List
-   - Download Full Wholesale Price List (PDF)
-4. **About Us**
-5. **Contact**
-6. **Track Order**
-7. **My Account**
-   - Dashboard
-   - Orders
-   - Repeat Last Order
-   - Saved Addresses
-   - GST Details (for business customers)
-
-### Utility / Policy Pages
-- Shipping Policy (weight/volume-based logic)
-- Return & Refund Policy
-- Privacy Policy
-- Terms & Conditions
-- GST Invoicing Info
-- FAQ (MOQ, delivery timelines, payment terms)
-
-### Footer Quick Links
-- Bulk Inquiry
-- Shipping Policy
-- GST Invoicing
-- WhatsApp Order
-- Download Catalog
-
----
-
-## 3) Core Feature Plan (As Requested)
-
-### A) Dual Pricing / Tiered Pricing Logic
-Display a **dynamic price table** on product pages:
-- 1–99 units → Retail Price
-- 100–499 units → Semi-Wholesale Price
-- 500+ units → Wholesale Price
-
-**UX Notes:**
-- Quantity selector auto-updates per-unit price + total.
-- Label savings clearly: `You save ₹X per unit on bulk orders`.
-- Add `Best for Restaurants` badge at bulk tiers.
-
-### B) B2B Focus: Wholesale Inquiry + Price List Download
-- Dedicated **Wholesale Inquiry Form** with fields:
-  - Business Name
-  - Contact Person
-  - Mobile/WhatsApp
-  - City & Pincode
-  - GST Number (optional)
-  - Product Categories Needed
-  - Monthly Quantity Requirement
-  - File Upload (Excel/PDF requirement list)
-- **Bulk Buyer Portal** (login required) to download:
-  - Full Price List PDF
-  - Updated Catalog PDF
-  - MOQ and dispatch timelines
-
-### C) Quick Re-order (Repeat Last Order)
-In customer dashboard:
-- A prominent button: **`Repeat Last Order`**
-- One-click adds all last-order items to cart
-- Option to edit quantity before checkout
-- Useful for recurring B2B clients (restaurants/cafés)
-
-### D) Inventory Visibility
-Each product card + product page should show:
-- `In Stock` (green badge)
-- `Low Stock` (amber badge)
-- `Out of Stock` (gray/red badge + Notify Me)
-
-### E) Shipping Logic (Bulky Goods)
-Shipping engine should calculate based on:
-1. **Dead Weight (kg)**
-2. **Volumetric Weight** = `(L x W x H in cm) / divisor`
-3. Charge whichever is higher
-4. Zone-wise rates (local/city/state/interstate)
-
-**Checkout UX:**
-- Show `Estimated shipping` live after pincode entry
-- Mention `Bulk orders may get negotiated freight rates`
-
----
-
-## 4) Product Page Layout (High-Conversion Structure)
-
-### Above the Fold
-- Product image gallery (zoom + multiple angles)
-- Product name + short trust subtitle (`Food-grade, hygienic, leak-proof`)
-- Rating + order count (`4.8 | 1,500+ bulk orders`)
-- Stock badge (`In Stock`)
-- Tier pricing table (retail to wholesale)
-- Quantity stepper + unit selector (pack/carton)
-- CTA buttons:
-  - `Add to Cart`
-  - `Buy Now`
-  - `Order on WhatsApp`
-
-### Middle Section
-- Product Highlights (icons):
-  - Leak-proof
-  - Sturdy build
-  - Food-safe material
-  - Eco options available
-- Specifications table:
-  - Capacity/Size
-  - Material type
-  - Color
-  - Units per pack
-  - Units per carton
-  - Approx. weight/volume
-- Delivery estimator by pincode
-
-### B2B Conversion Block
-- `Need 1000+ qty? Get custom quote in 30 min`
-- Quick form (name, phone, quantity, city)
-- Upload requirement list button
-
-### Lower Section
-- Related products
-- Frequently bought together
-- FAQ (MOQ, transport, invoicing, replacements)
-- Reviews from restaurant/café clients
-
----
-
-## 5) Essential Plugins / Tools (Fast-Loading + Scalable)
-
-> Below stack is ideal for **WordPress + WooCommerce**, but the feature list can be replicated on Shopify/custom stack too.
-
-### Commerce + Pricing
-1. **WooCommerce** - core e-commerce engine
-2. **Tiered Pricing Table for WooCommerce** (or similar) - quantity-based price slabs
-3. **Wholesale Suite / B2BKing** - wholesale roles, hidden pricing, B2B forms
-
-### Forms + B2B Workflows
-4. **Fluent Forms / Gravity Forms** - advanced wholesale inquiry + file upload
-5. **PDF Embed/Download Manager** - controlled catalog and price list downloads
-
-### Shipping
-6. **Table Rate Shipping (weight/volume rules)** - zone + carton logic
-7. **Volumetric Shipping Calculator** plugin - accurate bulky item freight calculation
-
-### Speed + Core Web Vitals
-8. **LiteSpeed Cache** (or WP Rocket) - caching + minification + critical CSS
-9. **ShortPixel / Imagify** - image compression + WebP
-10. **Perfmatters** - script manager, bloat reduction
-11. **Cloudflare CDN** - global acceleration + security edge caching
-
-### Inventory + CX
-12. **ATUM Inventory Management** - stock visibility and low-stock alerts
-13. **WooCommerce PDF Invoices & Packing Slips** - GST-compliant invoicing
-14. **Click to Chat (WhatsApp)** - floating WhatsApp order button
-15. **Reorder Plugin / Custom dashboard action** - one-click repeat last order
-
----
-
-## 6) Complete Homepage Content + Layout (Hinglish)
-
-## Section 1: Top Announcement Bar
-**Text:**
-`Wholesale Rates | GST Billing Available | Fast Dispatch for Bulk Orders | Hygienic & Food-Grade Disposable Products`
-
----
-
-## Section 2: Hero Banner
-**Headline:**  
-**`High Quality Disposable Products at True Wholesale Prices`**
-
-**Subheadline:**  
-`Restaurant ho, cafe ho, event business ho ya ghar ka function — Veer Mhadev Plastic par milega durable, leak-proof aur hygienic disposable range, best bulk rates ke saath.`
-
-**Support Line:**  
-`Retail se leke truck-load tak supply | Trusted by 10,000+ monthly customers`
-
-**Primary CTA:** `Shop Now`  
-**Secondary CTA:** `Get Bulk Quote`  
-**Floating CTA:** **`Order on WhatsApp`** (sticky on all pages)
-
----
-
-## Section 3: Trust Strip
-**Micro Points:**
-- `Family Business Since 2022`
-- `10,000+ Satisfied Customers Every Month`
-- `Wholesale + Retail Both Available`
-- `Food-safe, Leak-proof, Quality Checked`
-
----
-
-## Section 4: Main Categories (6)
-
-### 1. Paper Cups
-`Tea, coffee aur beverage service ke liye strong aur heat-resistant cups. Perfect for cafes aur office pantry use.`
-
-### 2. Paper Plates
-`Heavy-duty plates jo oily ya gravy foods mein bhi shape maintain karein. Events aur catering ke liye ideal.`
-
-### 3. Food Containers
-`Leak-proof takeaway containers with secure lids. Delivery kitchens aur cloud kitchens ke liye best choice.`
-
-### 4. Eco-friendly Cutlery
-`Biodegradable spoons, forks, knives — modern brands ke liye sustainable aur premium option.`
-
-### 5. Meal Trays & Compartment Boxes
-`Portion control aur organized meal serving ke liye durable trays. Bulk canteen orders ke liye popular.`
-
-### 6. Packaging Essentials
-`Carry bags, wrapping aur utility disposables — daily commercial operations ke liye reliable packaging range.`
-
----
-
-## Section 5: Bulk Order / Wholesale Feature
-**Section Heading:**  
-**`Bulk Order? Upload Your Requirement List, Get Custom Quote Fast.`**
-
-**Description:**  
-`Agar aapko regular ya high-volume supply chahiye, toh simply apni list upload kijiye (Excel/PDF/Image). Hamari B2B team quantity, transport aur best slab pricing ke saath custom quotation share karegi.`
-
-**Fields:**
-- Business Name
-- Contact Number / WhatsApp
-- City + Pincode
-- Monthly Requirement
-- File Upload
-
-**CTA:** `Request Wholesale Quote`
-
----
-
-## Section 6: Featured USP - Eco-friendly Range
-**Heading:**  
-**`Switch to Eco-friendly & Biodegradable Range`**
-
-**Copy:**  
-`Aaj ke conscious customers sustainability dekhte hain. Isliye hum eco-friendly cups, cutlery aur packaging options provide karte hain — taaki aapka brand professional bhi lage aur planet-friendly bhi rahe.`
-
-**Mini CTA:** `Explore Eco Range`
-
----
-
-## Section 7: Why Businesses Prefer Veer Mhadev Plastic
-- `Consistent Quality, Every Lot`
-- `Transparent Tiered Pricing`
-- `On-time Dispatch for Business Orders`
-- `GST Billing & Proper Documentation`
-- `Easy Re-order for Repeat Clients`
-- `Dedicated Support on Call + WhatsApp`
-
----
-
-## Section 8: Testimonials
-**Sample 1:**  
-`“Cafe ke liye hum monthly order dete hain. Quality consistent rehti hai aur delivery time pe milti hai.”` — Café Owner, Ahmedabad
-
-**Sample 2:**  
-`“Event season mein bulk supply smoothly handle karte hain. Rates aur response dono best hain.”` — Event Planner
-
----
-
-## Section 9: Footer Content
-**Quick Links:**
-- Bulk Inquiry
-- Shipping Policy
-- GST Invoicing
-- About Us
-- Contact
-
-**Business Line:**  
-`Veer Mhadev Plastic - Your trusted partner for hygienic disposable supplies in wholesale & retail.`
-
-**Contact CTA:**  
-`Need urgent stock? Order directly on WhatsApp.`
-
----
-
-## 7) Complete About Us Page Copy (Hinglish)
-
-## About Veer Mhadev Plastic
-**`Parivaar se shuru, bharose se bada.`**
-
-Veer Mhadev Plastic ki journey 2022 mein ek **family business** ke roop mein shuru hui thi. Humara simple goal tha: market ko hygienic, reliable aur reasonable pricing par disposable products dena. Aaj, hum garv se kehte hain ki hum har mahine **10,000+ satisfied customers** ko serve kar rahe hain.
-
-Chahe restaurant owners ho, café partners, event managers, ya ghar ke regular buyers — hum sabko ek hi commitment dete hain: **quality first, service fast, pricing fair**.
-
-### Hum kya provide karte hain
-- Paper cups
-- Plates & meal trays
-- Containers
-- Eco-friendly cutlery
-- Bulk packaging essentials
-
-Har product category mein hum **hygiene, durability aur leak-proof performance** par strict focus rakhte hain, kyunki food business mein compromise ki koi jagah nahi hoti.
-
-### Family Values, Professional Service
-Family business hone ka sabse bada fayda yeh hai ki har order ko hum personal responsibility ke saath handle karte hain. Aapka trust humare liye sirf transaction nahi, long-term relationship hai.
-
-### 2022 se aaj tak ka growth
-Shuruaat chhoti thi, lekin niyat badi. Consistent quality, honest dealing aur wholesale-friendly pricing ke dum par humne short time mein strong customer network build kiya. Aaj ka 10,000+ monthly order milestone humare customers ke trust ka result hai.
-
-### Wholesale Pricing + Quality Commitment
-Humari policy clear hai:
-- Bulk quantity par better slab pricing
-- Genuine quality in every lot
-- Hygienic storage and dispatch process
-- Proper GST invoicing for businesses
-
-### Hamara Vision
-Hum chahte hain ki India ke har chhote-bade food business ko affordable aur dependable disposable supply mile — without quality tension.
-
-**Aaiye, local business ko support karein aur eco-friendly choices ko promote karein.**  
-**Veer Mhadev Plastic ke saath growth bhi, quality bhi, aur bharosa bhi.**
-
----
-
-## 8) Suggested UX Blocks for Dashboard (Quick Re-order)
-- `Last Order Summary` card (date, amount, item count)
-- Primary action: **Repeat Last Order**
-- Secondary action: `Modify Quantities`
-- Suggested restock reminder: `Aapka stock 7 din mein khatam ho sakta hai`
-
-This will dramatically improve repeat purchase rate for restaurant and café accounts
+// src/App.js
+import React, { useState } from 'react';
+import { ShoppingCart, Phone, Package, ShieldCheck, Truck, Recycle, Search, User, Zap, ChevronDown } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+// --- Data (Ideally from an API, but keeping it here for simplicity) ---
+const productCategories = [
+  { name: 'Paper Cups & Glasses', icon: '🥤', description: 'Leak-proof for hot & cold.' },
+  { name: 'Meal Trays', icon: '🍱', description: 'Heavy-duty trays that don\'t bend.' },
+  { name: 'Eco-Friendly Cutlery', icon: '🍴', description: 'Wooden spoons, forks, knives.' },
+  { name: 'Storage Containers', icon: '🍲', description: 'Microwave safe options.' },
+  { name: 'Tissue & Hygiene', icon: '🧻', description: 'Ultra-absorbent papers & gloves.' },
+  { name: 'Bulk Combos', icon: '🎁', description: 'Special bundles for events.' },
+];
+
+const featuredProducts = [
+  { id: 1, name: 'Premium 250ml Paper Cups', price: 150, wholesalePrice: 115, image: 'https://images.unsplash.com/photo-1610631882985-adab00d941c7?auto=format&fit=crop&q=80&w=400' },
+  { id: 2, name: 'Biodegradable Meal Trays (5 Comp)', price: 320, wholesalePrice: 280, image: 'https://images.unsplash.com/photo-1620706857370-e1b976f77219?auto=format&fit=crop&q=80&w=400' },
+  { id: 3, name: 'Wooden Spoon Set (Pack of 100)', price: 99, wholesalePrice: 75, image: 'https://images.unsplash.com/photo-1596041063346-a42e5d9c7921?auto=format&fit=crop&q=80&w=400' },
+  { id: 4, name: 'Microwave Safe Container (750ml)', price: 210, wholesalePrice: 185, image: 'https://images.unsplash.com/photo-1601053043868-b7c1d764789d?auto=format&fit=crop&q=80&w=400' },
+];
+
+// --- Sub-Components ---
+
+const StatCard = ({ icon: Icon, text }) => (
+  <motion.div 
+    whileHover={{ y: -5 }}
+    className="flex items-center space-x-3 bg-white p-5 rounded-2xl shadow-sm border border-gray-100"
+  >
+    <div className="bg-green-100 p-3 rounded-full text-green-700">
+      <Icon size={22} strokeWidth={2.5}/>
+    </div>
+    <span className="font-semibold text-gray-800 text-sm md:text-base leading-snug">{text}</span>
+  </motion.div>
+);
+
+const ProductCard = ({ product }) => (
+  <motion.div 
+    whileHover={{ scale: 1.02 }}
+    className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col group"
+  >
+    <div className="relative overflow-hidden rounded-2xl mb-5 aspect-[4/3]">
+      <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+      <div className="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1.5 rounded-full">Factory Rates</div>
+    </div>
+    <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 h-14">{product.name}</h3>
+    
+    <div className="bg-gray-50 p-4 rounded-xl mb-5 space-y-1.5 border border-gray-100">
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-gray-600">Retail Price:</span>
+        <span className="text-xl font-extrabold text-gray-900">₹{product.price}</span>
+      </div>
+      <div className="flex justify-between items-center text-green-700 font-bold bg-green-100 px-3 py-1.5 rounded-lg">
+        <span className="text-xs ">Bulk Rate:</span>
+        <span className="text-lg">₹{product.wholesalePrice} <span className="text-xs font-medium">/pc</span></span>
+      </div>
+    </div>
+
+    <div className="mt-auto flex space-x-3">
+      <button className="flex-1 bg-green-700 text-white py-3.5 rounded-xl font-bold hover:bg-green-800 transition text-sm">Add to Cart</button>
+      <button className="border-2 border-green-700 text-green-700 p-3.5 rounded-xl font-bold hover:bg-green-50 transition">
+        <Zap size={18} />
+      </button>
+    </div>
+  </motion.div>
+);
+
+
+// --- Main App Component ---
+
+const VeerMahadevWebsite = () => {
+  const [cartCount, setCartCount] = useState(0);
+
+  return (
+    <div className="min-h-screen bg-[#FDFDFD] font-sans text-gray-900 overflow-x-hidden">
+      
+      {/* --- Header (Navigation) --- */}
+      <header className="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <nav className="max-w-7xl mx-auto px-5 h-20 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="text-3xl font-extrabold text-green-700">Veer Mahadev</span>
+            <span className="text-xs font-semibold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full mt-1">Plastic</span>
+          </div>
+          
+          <div className="hidden lg:flex space-x-9 font-medium text-gray-700">
+            {['Home', 'Shop All', 'Eco-Friendly', 'Wholesale Inquiry', 'Track Order'].map(item => (
+              <a key={item} href="#" className="hover:text-green-600 relative group pb-1">
+                {item}
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-green-600 group-hover:w-full transition-all"></span>
+              </a>
+            ))}
+          </div>
+          
+          <div className="flex items-center space-x-6">
+            <button className="text-gray-600 hover:text-green-600"><Search size={22}/></button>
+            
+            <div className="relative group cursor-pointer flex items-center space-x-2 border border-gray-200 px-4 py-2 rounded-xl">
+              <User size={20} className="text-gray-600"/>
+              <span className="font-semibold text-sm">B2B Portal</span>
+              <ChevronDown size={16} className="text-gray-400 group-hover:rotate-180 transition-transform"/>
+            </div>
+            
+            <div className="relative cursor-pointer group">
+              <ShoppingCart className="text-gray-700 group-hover:text-green-600 transition" size={24}/>
+              {cartCount > 0 && <span className="absolute -top-2.5 -right-2.5 bg-green-600 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center">{cartCount}</span>}
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      {/* --- Hero Section --- */}
+      <section className="bg-white py-20 px-5">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
+            className="md:col-span-6 space-y-8"
+          >
+            <span className="inline-flex items-center space-x-2.5 bg-green-100 text-green-800 px-4 py-2 rounded-full font-semibold text-sm">
+                <Recycle size={18}/> <span>Go Green with Biodegradable Range</span>
+            </span>
+            <h1 className="text-6xl font-extrabold text-gray-950 leading-[1.15]">
+              Bharat ka Trusted <span className="text-green-600">Disposable Hub</span> – Factory Rates!
+            </h1>
+            <p className="text-xl text-gray-700 max-w-xl leading-relaxed">
+              Serving 10,000+ Customers Monthly since 2022. Best Quality for Restaurants, Cafes, and Events.
+            </p>
+            <div className="flex space-x-5 pt-4">
+              <button className="bg-green-700 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-green-800 transition shadow-lg shadow-green-700/20">Shop Retail</button>
+              <button className="border-2 border-green-700 text-green-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-green-50 transition flex items-center space-x-2.5">
+                  <Zap size={20}/> <span>Bulk Order Quote</span>
+              </button>
+            </div>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.2 }}
+            className="md:col-span-6 relative"
+          >
+            <img src="https://images.unsplash.com/photo-1610631882985-adab00d941c7?auto=format&fit=crop&q=80&w=800" alt="Disposable Items" className="rounded-[2.5rem] shadow-2xl aspect-[5/4] object-cover" />
+            <div className="absolute -bottom-8 -left-8 bg-white p-5 rounded-3xl shadow-xl border border-gray-100">
+                <span className="text-4xl">♻️</span>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* --- Trust Bar & About Journey --- */}
+      <section className="bg-green-50/50 py-16 px-5 border-y border-green-100">
+        <div className="max-w-7xl mx-auto space-y-16">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                <StatCard icon={Package} text="500+ Items in Stock" />
+                <StatCard icon={Truck} text="Fast Pan-India Shipping" />
+                <StatCard icon={Recycle} text="Verified Eco-Friendly Range" />
+                <StatCard icon={ShieldCheck} text="GST Invoicing Ready" />
+            </div>
+
+            <div className="bg-white p-10 md:p-14 rounded-[2rem] shadow-sm border border-gray-100 grid md:grid-cols-12 gap-10 items-center">
+                <div className="md:col-span-8 space-y-5">
+                    <h2 className="text-4xl font-extrabold text-gray-950">
+                        Ek Parivaar ka Sapna, <span className="text-green-600">10,000+ Customers ka Sath!</span>
+                    </h2>
+                    <p className="text-lg text-gray-700 leading-relaxed max-w-3xl">
+                        Veer Mahadev Plastic ek <span className='font-bold text-green-800'>family business</span> hai jo 2022 mein shuru hua. Hamara maqsad hai har restaurant, cafe aur ghar ko best quality ke disposables factory rates par deliver karna. Aaj aapke bharose ki wajah se hum har mahine hazaron orders poore kar rahe hain, wahi imandari aur quality ke sath.
+                    </p>
+                </div>
+                <div className="md:col-span-4 text-center md:text-right space-y-2">
+                    <div className="text-7xl font-extrabold text-green-700">10K+</div>
+                    <div className="text-xl font-bold text-gray-800">Customers Served Monthly</div>
+                    <div className="text-sm font-medium text-gray-500">Established 2022</div>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      {/* --- Categories Grid --- */}
+      <section className="py-24 px-5 max-w-7xl mx-auto">
+        <div className="text-center max-w-xl mx-auto mb-16 space-y-3">
+            <h2 className="text-5xl font-extrabold text-gray-950">Shop by Category</h2>
+            <p className="text-lg text-gray-600">Explore our wide range of leak-proof, durable, and eco-friendly products.</p>
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          {productCategories.map((cat, idx) => (
+            <motion.div 
+              key={cat.name} 
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}
+              viewport={{ once: true, amount: 0.5 }}
+              whileHover={{ y: -8 }}
+              className="bg-white rounded-3xl p-7 text-center border border-gray-100 shadow-sm cursor-pointer group flex flex-col items-center"
+            >
+              <div className="text-5xl mb-5 transform group-hover:scale-110 transition">{cat.icon}</div>
+              <h3 className="font-bold text-gray-900 text-lg mb-2 leading-snug line-clamp-2 h-14 flex items-center justify-center">{cat.name}</h3>
+              <p className="text-sm text-gray-500 line-clamp-2 mt-auto">{cat.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* --- Featured Products --- */}
+      <section className="bg-gray-50 py-24 px-5 border-y border-gray-100">
+        <div className="max-w-7xl mx-auto space-y-16">
+            <div className="flex items-center justify-between">
+                <h2 className="text-5xl font-extrabold text-gray-950">Best Selling <span className="text-green-600">Disposables</span></h2>
+                <a href="#" className="font-semibold text-green-700 hover:text-green-800 flex items-center space-x-1.5">
+                    <span>View All Products</span>
+                    <span>→</span>
+                </a>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {featuredProducts.map(product => <ProductCard key={product.id} product={product} />)}
+            </div>
+        </div>
+      </section>
+
+      {/* --- WhatsApp B2B CTA --- */}
+      <section className="py-24 px-5 max-w-7xl mx-auto">
+        <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+            className="bg-gradient-to-r from-green-700 to-green-900 rounded-[3rem] p-16 text-white flex flex-col md:flex-row items-center justify-between shadow-2xl shadow-green-900/20"
+        >
+          <div className="md:w-3/4 space-y-5 text-center md:text-left mb-10 md:mb-0">
+            <Zap className='inline-block mb-3 bg-green-800/50 p-3 rounded-2xl' size={45}/>
+            <h2 className="text-5xl font-extrabold mb-4 italic leading-tight">Bulk Order kar rahe hain? extra Discount payein!</h2>
+            <p className="text-green-100 text-xl max-w-3xl font-medium leading-relaxed">
+              Restaurants, Cafes aur Event planners ke liye special deals. Direct humse connect karein WhatsApp par customized quote ke liye.
+            </p>
+          </div>
+          <motion.button 
+            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}
+            className="bg-[#25D366] text-white px-10 py-5 rounded-2xl font-bold text-xl flex items-center space-x-3 shadow-xl shadow-[#25D366]/20"
+          >
+            <Phone size={24} />
+            <span>Order on WhatsApp</span>
+          </motion.button>
+        </motion.div>
+      </section>
+
+      {/* --- Footer --- */}
+      <footer className="bg-gray-950 text-gray-400 py-20 px-5 border-t border-gray-800">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 text-center md:text-left">
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+                <span className="text-2xl font-extrabold text-white">Veer Mahadev</span>
+                <span className="text-xs font-semibold text-gray-400 bg-gray-800 px-2 py-0.5 rounded-full">Plastic</span>
+            </div>
+            <p className="text-sm">Quality aur Bharosa, Har Order Mein. Aapka apna wholesale disposable center 2022 se.</p>
+          </div>
+          
+          {['Quick Links', 'Services', 'Customer Care'].map(section => (
+            <div key={section} className="space-y-4">
+                <h4 className="text-white font-semibold text-lg mb-5">{section}</h4>
+                <ul className="space-y-3 text-sm">
+                  {['Bulk Inquiry', 'Eco Range', 'Return Policy', 'Shipping Calculator', 'My Account'].map(link => (
+                      <li key={link}><a href="#" className="hover:text-green-500">{link}</a></li>
+                  ))}
+                </ul>
+            </div>
+          ))}
+          
+        </div>
+        <div className="max-w-7xl mx-auto mt-16 pt-10 border-t border-gray-800 text-center text-sm text-gray-600 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <p>© 2026 Veer Mahadev Plastic. All Rights Reserved. Crafted with ❤️ for Indian Businesses.</p>
+          <p className="font-bold text-white bg-green-900 px-4 py-1.5 rounded-full text-xs">GSTIN: XXXXXXXXXXXX</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default VeerMahadevWebsite;
