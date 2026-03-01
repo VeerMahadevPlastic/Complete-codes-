@@ -1,3 +1,4 @@
+606 index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +32,7 @@
 
   <main id="home">
     <section class="relative overflow-hidden bg-white border-b border-emerald-100">
-      <img src="https://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
+      <img src="https://images.unsplash.com/photo-1610631882985-adab00d941c7?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
       <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
         <div>
           <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
@@ -123,7 +124,7 @@
         <p id="portalStatus" class="text-sm font-medium text-slate-600">Please login to access B2B downloads.</p>
         <div id="dashboard" class="mt-3 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
           <p class="font-bold">Quick Re-order Dashboard</p>
-          <p class="text-sm text-slate-700">Last order:  items | ₹ | Delivered  days ago</p>
+          <p class="text-sm text-slate-700">Last order: 37 items | ₹12,880 | Delivered 6 days ago</p>
           <div class="mt-3 flex gap-3">
             <button id="repeatOrder" class="px-4 py-2 rounded-lg bg-emerald-700 text-white text-sm font-semibold">Repeat Last Order</button>
             <button id="openCartFromDash" class="px-4 py-2 rounded-lg border text-sm font-semibold">Open Cart</button>
@@ -144,7 +145,7 @@
       <h3 class="text-2xl font-extrabold mb-3">Visit Our Shop</h3>
       <div class="rounded-2xl overflow-hidden border bg-white">
         <iframe title="Shop Location Map" class="w-full h-80" loading="lazy" allowfullscreen
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d918.128940122035!2d72.63732540174827!3d23.004827666533586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e872d2f71fefb%3A0xf3248d09e89dd0dc!2sVeer%20Mahadev%20Plastic!5e0!3m2!1sen!2sin!4v1772378947905!5m2!1sen!2sin" width="200" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"
+          src="https://www.google.com/maps?q=Ahmedabad%20Gujarat&output=embed"></iframe>
       </div>
     </section>
   </main>
@@ -235,145 +236,7 @@
   </div>
 
   <script>
-    
-    const products = [
-      // --- PAPER CUPS & GLASSES ---
-      {
-        id: 'cup-nestle-100',
-        name: 'Paper Cup (Nestle) 100 ML',
-        category: 'Cup & Glasses',
-        image: 'images/nestle-100ml.jpg', 
-        stock: 200,
-        tiers: [{min:1,price:2.4},{min:100,price:2.1},{min:500,price:1.8}]
-      },
-      {
-        id: 'cup-nestle-150',
-        name: 'Paper Cup (Nestle) 150 ML',
-        category: 'Cup & Glasses',
-        image: 'images/nestle-150ml.jpg', 
-        stock: 150,
-        tiers: [{min:1,price:2.6},{min:100,price:2.3},{min:500,price:2.0}]
-      },
-      {
-        id: 'long-glass-200',
-        name: 'Long Glass 200 ML',
-        category: 'Cup & Glasses',
-        image: 'images/glass-200.jpg', 
-        stock: 300,
-        tiers: [{min:1,price:3.0},{min:100,price:2.7},{min:500,price:2.4}]
-      },
-
-      // --- PLATES & DISHES ---
-      {
-        id: 'bio-dish-9',
-        name: 'Bio Dish 9 NO',
-        category: 'Bio & Disposable Plates',
-        image: 'images/bio-dish-9.jpg',
-        stock: 500,
-        tiers: [{min:1,price:8.5},{min:100,price:7.7},{min:500,price:6.9}]
-      },
-      {
-        id: 'bio-dish-3cp-10',
-        name: 'Bio Dish (3 CP) 10 NO',
-        category: 'Bio & Disposable Plates',
-        image: 'images/plate-3cp.jpg',
-        stock: 250,
-        tiers: [{min:1,price:12.0},{min:100,price:10.5},{min:500,price:9.5}]
-      },
-
-      // --- BOWLS & CONTAINERS ---
-      {
-        id: 'hing-box-250',
-        name: 'Hing Box (Transparent) 250 ML',
-        category: 'Bowls & Containers',
-        image: 'images/hing-box-250.jpg',
-        stock: 400,
-        tiers: [{min:1,price:5.5},{min:100,price:4.8},{min:500,price:4.2}]
-      },
-      {
-        id: 'black-box-3cp',
-        name: 'Black Box (3 CP) Meal Box',
-        category: 'Bowls & Containers',
-        image: 'images/black-box-3cp.jpg',
-        stock: 180,
-        tiers: [{min:1,price:15.0},{min:100,price:13.5},{min:500,price:12.0}]
-      },
-
-      // --- TISSUES ---
-      {
-        id: 'tissue-27x27',
-        name: 'Tissue Paper 27x27 (L)',
-        category: 'Tissues & Bags',
-        image: 'images/tissue-27.jpg',
-        stock: 1000,
-        tiers: [{min:1,price:0.60},{min:500,price:0.50},{min:2000,price:0.40}]
-      }
-      
-    ];
-
-    // --- 2. RENDERING LOGIC ---
-    let cart = JSON.parse(localStorage.getItem('vmpCart') || '[]');
-    let activeCategory = 'All';
-
-    function renderProducts() {
-        const grid = document.getElementById('productGrid');
-        const filtered = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
-        
-        grid.innerHTML = filtered.map(p => `
-            <article class="bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition p-3">
-                <img src="${p.image}" alt="${p.name}" class="w-full h-40 object-cover rounded-xl mb-3" 
-                     onerror="this.src='https://via.placeholder.com/400x300?text=Image+Coming+Soon'"/>
-                <div class="space-y-1">
-                    <h4 class="font-bold text-sm leading-tight h-10">${p.name}</h4>
-                    <p class="text-[10px] text-emerald-600 font-bold uppercase">${p.category}</p>
-                    <div class="bg-slate-50 p-2 rounded-lg">
-                        <div class="flex justify-between text-[10px] text-slate-500 font-bold uppercase">
-                            <span>Retail</span>
-                            <span>Wholesale</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="font-bold text-slate-800">₹${p.tiers[0].price}</span>
-                            <span class="font-bold text-emerald-700">₹${p.tiers[p.tiers.length-1].price}</span>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 pt-2">
-                        <input id="qty-${p.id}" type="number" min="1" value="10" class="w-14 border rounded px-1 text-xs font-bold text-center"/>
-                        <button onclick="addToCart('${p.id}')" class="flex-1 bg-emerald-700 text-white rounded py-2 text-xs font-bold uppercase tracking-tighter">Add to Cart</button>
-                    </div>
-                </div>
-            </article>
-        `).join('');
-    }
-
-    // --- 3. CART FUNCTIONS ---
-    window.addToCart = function(id) {
-        const p = products.find(x => x.id === id);
-        const qty = Math.max(1, Number(document.getElementById(`qty-${id}`).value));
-        
-        // Find correct tier price
-        let unit = p.tiers[0].price;
-        for(const tier of p.tiers) {
-            if(qty >= tier.min) unit = tier.price;
-        }
-
-        const existing = cart.find(c => c.id === id);
-        if(existing) {
-            existing.qty += qty;
-            // Update unit price based on new total qty
-            let newUnit = p.tiers[0].price;
-            for(const tier of p.tiers) { if(existing.qty >= tier.min) newUnit = tier.price; }
-            existing.unit = newUnit;
-        } else {
-            cart.push({id, name: p.name, qty, unit});
-        }
-        
-        localStorage.setItem('vmpCart', JSON.stringify(cart));
-        updateCartUI();
-        alert(p.name + ' added to cart!');
-    }
-
-    // Initialize
-    renderProducts();
+    const imageFrom = (query) => `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}`;
 
     function slugify(value){
       return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -399,58 +262,58 @@
 
     const products = [
       // 1) Paper Cups & Glasses
-      ...createSeries('Cup & Glasses', 'Paper Cup (Nestle)', ['100 ML','150 ML'], 'paper cup disposable'), 
-      ...createSeries('Cup & Glasses', 'Long Glass', ['180 ML','200 ML','250 ML','300 ML','350 ML'], 'disposable long glass'), 
-      ...createSeries('Cup & Glasses', 'Bio Cup', ['200 ML','250 ML','300 ML','350 ML'], 'biodegradable paper cup'), 
-      ...createSeries('Cup & Glasses', 'Ripple Glass (Dip)', ['100 ML','130 ML','150 ML','200 ML','250 ML','300 ML'], 'ripple cup'), 
+      ...createSeries('Cup & Glasses', 'Paper Cup (Nestle)', ['100 ML','150 ML'], 'paper cup disposable'),
+      ...createSeries('Cup & Glasses', 'Long Glass', ['180 ML','200 ML','250 ML','300 ML','350 ML'], 'disposable long glass'),
+      ...createSeries('Cup & Glasses', 'Bio Cup', ['200 ML','250 ML','300 ML','350 ML'], 'biodegradable paper cup'),
+      ...createSeries('Cup & Glasses', 'Ripple Glass (Dip)', ['100 ML','130 ML','150 ML','200 ML','250 ML','300 ML'], 'ripple cup'),
 
       // 2) Bio & Disposable Plates (Dishes)
-      ...createSeries('Bio & Disposable Plates', 'Bio Dish', ['7 NO','9 NO','10 NO'], 'biodegradable plate'), 
-      ...createSeries('Bio & Disposable Plates', 'Bio Dish (Regular)', ['9 NO','10 NO','11 NO','12 NO'], 'paper plate round'), 
-      ...createSeries('Bio & Disposable Plates', 'Bio Dish (3 CP)', ['9 NO','10 NO'], 'compartment plate 3'), 
-      ...createSeries('Bio & Disposable Plates', 'Bio Dish (4 CP)', ['11 NO','12 NO'], 'compartment plate 4'), 
-      ...createSeries('Bio & Disposable Plates', 'Square Dish', ['10 NO'], 'square disposable plate'), 
-      ...createSeries('Bio & Disposable Plates', 'Square Dish (3 CP)', ['9 NO'], 'square compartment plate'), 
-      ...createSeries('Bio & Disposable Plates', 'Square Dish (5 CP)', ['Standard Size'], 'square 5 compartment plate'), 
+      ...createSeries('Bio & Disposable Plates', 'Bio Dish', ['7 NO','9 NO','10 NO'], 'biodegradable plate'),
+      ...createSeries('Bio & Disposable Plates', 'Bio Dish (Regular)', ['9 NO','10 NO','11 NO','12 NO'], 'paper plate round'),
+      ...createSeries('Bio & Disposable Plates', 'Bio Dish (3 CP)', ['9 NO','10 NO'], 'compartment plate 3'),
+      ...createSeries('Bio & Disposable Plates', 'Bio Dish (4 CP)', ['11 NO','12 NO'], 'compartment plate 4'),
+      ...createSeries('Bio & Disposable Plates', 'Square Dish', ['10 NO'], 'square disposable plate'),
+      ...createSeries('Bio & Disposable Plates', 'Square Dish (3 CP)', ['9 NO'], 'square compartment plate'),
+      ...createSeries('Bio & Disposable Plates', 'Square Dish (5 CP)', ['Standard Size'], 'square 5 compartment plate'),
 
       // 3) Bowls & Containers
-      ...createSeries('Bowls & Containers', 'Bowl (Bio Cup)', ['65 ML'], 'bio bowl'), 
-      ...createSeries('Bowls & Containers', 'Bowl (Bio)', ['180 ML','240 ML','350 ML'], 'biodegradable bowl'), 
-      ...createSeries('Bowls & Containers', 'Square Bowl', ['4x4','5x5','7x7'], 'square food bowl'), 
-      ...createSeries('Bowls & Containers', 'Square Bowl (2 CP)', ['Standard Size'], 'two compartment bowl'), 
-      ...createSeries('Bowls & Containers', 'Hing Box (Transparent)', ['45 ML','65 ML','75 ML','100 ML','150 ML','250 ML','350 ML','500 ML','600 ML','750 ML','1000 ML', '1200 ML','1400 ML','1500 ML','2000 ML'], 'transparent hing box'),
-      ...createSeries('Bowls & Containers', 'High Lid Container', ['500 ML','750 ML','1000 ML','1500 ML','2000 ML'], 'high lid food container'), 
-      ...createSeries('Bowls & Containers', 'Milky Container (Box)', ['250g','300g','400g','500g','600g','750g','1000g','1200g','1400g'], 'milky container box'), 
-      ...createSeries('Bowls & Containers', 'Square Box (Black)', ['250g','400g','500g','650g','750g','1000g'], 'black meal box'), 
-      ...createSeries('Bowls & Containers', 'Black Box (Sectional)', ['2 CP','3 CP','5 CP','8 CP'], 'black sectional food box'), 
+      ...createSeries('Bowls & Containers', 'Bowl (Bio Cup)', ['65 ML'], 'bio bowl'),
+      ...createSeries('Bowls & Containers', 'Bowl (Bio)', ['180 ML','240 ML','350 ML'], 'biodegradable bowl'),
+      ...createSeries('Bowls & Containers', 'Square Bowl', ['4x4','5x5','7x7'], 'square food bowl'),
+      ...createSeries('Bowls & Containers', 'Square Bowl (2 CP)', ['Standard Size'], 'two compartment bowl'),
+      ...createSeries('Bowls & Containers', 'Hing Box (Transparent)', ['45 ML','65 ML','75 ML','100 ML','150 ML','250 ML','350 ML','500 ML','600 ML','750 ML','1000 ML','1200 ML','1400 ML','1500 ML','2000 ML'], 'transparent hing box'),
+      ...createSeries('Bowls & Containers', 'High Lid Container', ['500 ML','750 ML','1000 ML','1500 ML','2000 ML'], 'high lid food container'),
+      ...createSeries('Bowls & Containers', 'Milky Container (Box)', ['250g','300g','400g','500g','600g','750g','1000g','1200g','1400g'], 'milky container box'),
+      ...createSeries('Bowls & Containers', 'Square Box (Black)', ['250g','400g','500g','650g','750g','1000g'], 'black meal box'),
+      ...createSeries('Bowls & Containers', 'Black Box (Sectional)', ['2 CP','3 CP','5 CP','8 CP'], 'black sectional food box'),
 
       // 4) Foil & Food Packaging
-      ...createSeries('Foil & Food Packaging', 'Foil Container', ['250 ML','400 ML','600 ML','650 ML','750 ML','1000 ML'], 'aluminium foil container'), 
-      ...createSeries('Foil & Food Packaging', 'Cup Container', ['100 ML'], 'small cup container'), 
-      ...createSeries('Foil & Food Packaging', 'Silver Foil', ['8 Mtr','18 Mtr','72 SP','72 Net','1 Kg Gross','1 Kg Net'], 'silver foil roll'), 
-      ...createSeries('Foil & Food Packaging', 'Butter Paper (Roll)', ['250g','500g','1 Kg','20+5 Mtr'], 'butter paper roll'), 
-      ...createSeries('Foil & Food Packaging', 'Silver Paper (Sheet)', ['8x8','10x10','12x12'], 'silver paper sheet'), 
-      ...createSeries('Foil & Food Packaging', 'Butter Paper (Sheet)', ['8x8','10x10','12x12'], 'butter paper sheet'), 
-      ...createSeries('Foil & Food Packaging', 'Mithai Silver Paper Box', ['100g','250g','500g','750g','1 Kg'], 'mithai packaging box'), 
+      ...createSeries('Foil & Food Packaging', 'Foil Container', ['250 ML','400 ML','600 ML','650 ML','750 ML','1000 ML'], 'aluminium foil container'),
+      ...createSeries('Foil & Food Packaging', 'Cup Container', ['100 ML'], 'small cup container'),
+      ...createSeries('Foil & Food Packaging', 'Silver Foil', ['8 Mtr','18 Mtr','72 SP','72 Net','1 Kg Gross','1 Kg Net'], 'silver foil roll'),
+      ...createSeries('Foil & Food Packaging', 'Butter Paper (Roll)', ['250g','500g','1 Kg','20+5 Mtr'], 'butter paper roll'),
+      ...createSeries('Foil & Food Packaging', 'Silver Paper (Sheet)', ['8x8','10x10','12x12'], 'silver paper sheet'),
+      ...createSeries('Foil & Food Packaging', 'Butter Paper (Sheet)', ['8x8','10x10','12x12'], 'butter paper sheet'),
+      ...createSeries('Foil & Food Packaging', 'Mithai Silver Paper Box', ['100g','250g','500g','750g','1 Kg'], 'mithai packaging box'),
 
       // 5) Cutlery & Accessories
-      ...createSeries('Cutlery & Accessories', 'Wooden Spoon (Plain)', ['140 MM','160 MM','180 MM','65 MM'], 'wooden spoon'), 
-      ...createSeries('Cutlery & Accessories', 'Wooden Fork', ['140 MM','160 MM'], 'wooden fork'), 
-      ...createSeries('Cutlery & Accessories', 'Bio Spoon', ['Small','Big'], 'bio spoon'), 
-      ...createSeries('Cutlery & Accessories', 'Bio Fork', ['Small','Big'], 'bio fork'), 
-      ...createSeries('Cutlery & Accessories', 'Shower Cap', ['Non-woven'], 'shower cap non woven'), 
-      ...createSeries('Cutlery & Accessories', 'Cook Cap', ['Non-woven'], 'cook cap non woven'), 
-      ...createSeries('Cutlery & Accessories', 'Apron', ['Non-woven'], 'non woven apron'), 
+      ...createSeries('Cutlery & Accessories', 'Wooden Spoon (Plain)', ['140 MM','160 MM','180 MM','65 MM'], 'wooden spoon'),
+      ...createSeries('Cutlery & Accessories', 'Wooden Fork', ['140 MM','160 MM'], 'wooden fork'),
+      ...createSeries('Cutlery & Accessories', 'Bio Spoon', ['Small','Big'], 'bio spoon'),
+      ...createSeries('Cutlery & Accessories', 'Bio Fork', ['Small','Big'], 'bio fork'),
+      ...createSeries('Cutlery & Accessories', 'Shower Cap', ['Non-woven'], 'shower cap non woven'),
+      ...createSeries('Cutlery & Accessories', 'Cook Cap', ['Non-woven'], 'cook cap non woven'),
+      ...createSeries('Cutlery & Accessories', 'Apron', ['Non-woven'], 'non woven apron'),
 
       // 6) Tissues & Bags
-      ...createSeries('Tissues & Bags', 'Tissue Paper', ['23x23','27x27 (L)','27x27 (H)','33x33','45x45','66x66'], 'tissue paper'), 
-      ...createSeries('Tissues & Bags', 'Car Napkin', ['1 Ply','2 Ply'], 'car napkin tissue'), 
-      ...createSeries('Tissues & Bags', 'Wet Tissue', ['1 Pcs x 100 N','25 N x 1 Pack'], 'wet tissue packet'), 
-      ...createSeries('Tissues & Bags', 'Garbage Bag', ['24x36','30x50'], 'garbage bag roll'), 
-      ...createSeries('Tissues & Bags', 'Garbage Bag (Box)', ['17x19','19x21','24x36','30x50'], 'garbage bag box'), 
-      ...createSeries('Tissues & Bags', 'Boi Theli (Plastic Bags)', ['8x10','9x13','13x16','16x20','20x26'], 'plastic carry bag'), 
-      ...createSeries('Tissues & Bags', 'Boi LLDP', ['4x6','5x7','6x10','7x12','8x16'], 'lldp bag'), 
-      ...createSeries('Tissues & Bags', 'Boi Kirana Bags', ['250g','500g','1000g','2 Kg','3 Kg','5 Kg','10 Kg'], 'kirana grocery bag') 
+      ...createSeries('Tissues & Bags', 'Tissue Paper', ['23x23','27x27 (L)','27x27 (H)','33x33','45x45','66x66'], 'tissue paper'),
+      ...createSeries('Tissues & Bags', 'Car Napkin', ['1 Ply','2 Ply'], 'car napkin tissue'),
+      ...createSeries('Tissues & Bags', 'Wet Tissue', ['1 Pcs x 100 N','25 N x 1 Pack'], 'wet tissue packet'),
+      ...createSeries('Tissues & Bags', 'Garbage Bag', ['24x36','30x50'], 'garbage bag roll'),
+      ...createSeries('Tissues & Bags', 'Garbage Bag (Box)', ['17x19','19x21','24x36','30x50'], 'garbage bag box'),
+      ...createSeries('Tissues & Bags', 'Boi Theli (Plastic Bags)', ['8x10','9x13','13x16','16x20','20x26'], 'plastic carry bag'),
+      ...createSeries('Tissues & Bags', 'Boi LLDP', ['4x6','5x7','6x10','7x12','8x16'], 'lldp bag'),
+      ...createSeries('Tissues & Bags', 'Boi Kirana Bags', ['250g','500g','1000g','2 Kg','3 Kg','5 Kg','10 Kg'], 'kirana grocery bag')
     ];
 
     const categories = ['All', ...new Set(products.map(p => p.category))];
@@ -742,4 +605,3 @@
   </script>
 </body>
 </html>
-is code ko update karo
