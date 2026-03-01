@@ -1,524 +1,351 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Veer Mahadev Plastic | Wholesale E-Commerce</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    html { scroll-behavior: smooth; }
-    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-    .animate-marquee { display: inline-block; animation: marquee 15s linear infinite; }
-    @keyframes aiFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-    .ai-float { animation: aiFloat 2.2s ease-in-out infinite; }
-  </style>
-</head>
-<body class="bg-gray-50 text-gray-900">
-  <div class="bg-white text-red-900 text-xs sm:text-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-between gap-2">
-      <p>Welcome to Veer Mahadev Plastic - Wholesale Disposable Supplier</p>
-      <div class="flex items-center gap-3">
-        <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 hover:text-red-700" aria-label="Instagram">Instagram</a>
-        <a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 hover:text-red-700" aria-label="YouTube">YouTube</a>
-      </div>
-    </div>
-  </div>
+# Veer Mhadev Plastic - E-commerce Website Plan, Homepage Content, and About Us Copy
 
-  <header class="sticky top-0 z-50 bg-white border-b border-red-100 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <a href="#" class="flex items-center gap-3 min-w-max">
-          <div class="h-11 w-11 rounded-full bg-red-700 text-white font-extrabold grid place-content-center">VMP</div>
-          <div>
-            <p class="font-extrabold text-red-700 leading-tight text-base sm:text-lg">VEER MAHADEV PLASTIC</p>
-            <p class="text-xs text-gray-500">Premium Disposable Products</p>
-          </div>
-        </a>
+## 1) Website Strategy Snapshot
+**Business Type:** Disposable Items Wholesale & Retail (B2B + B2C)  
+**Primary Buyers:** Restaurant owners, café owners, event managers, and households  
+**Brand Tone:** Professional, hygienic, trustworthy, and growth-focused  
+**Visual Direction:** Clean UI, green + white palette, strong readability, fast checkout, clear pricing tiers
 
-        <div class="w-full lg:flex-1 lg:w-auto">
-          <div class="flex items-center rounded-md border border-red-200 overflow-hidden bg-white">
-            <select id="searchCategory" class="hidden sm:block text-sm border-r border-red-100 px-3 py-2.5 bg-red-50 text-gray-700 outline-none">
-              <option value="All">All Categories</option>
-              <option value="Disposable Cups">Disposable Cups</option>
-              <option value="Plates">Plates</option>
-              <option value="Containers">Containers</option>
-              <option value="Best Offer For The Day">Best Offer For The Day</option>
-            </select>
-            <input id="searchInput" type="text" placeholder="Search products by name, category, pack size" class="flex-1 px-3 py-2.5 text-sm outline-none" aria-label="Search products" />
-            <button id="searchBtn" class="px-4 py-2.5 bg-red-700 hover:bg-red-800 text-white text-sm font-semibold">Search</button>
-          </div>
-        </div>
+### Color + UI Direction
+- **Primary Green:** `#1F8A4C` (trust + eco positioning)
+- **Light Green Accent:** `#E8F5EC` (section highlights, badges)
+- **White Base:** `#FFFFFF` (clean and hygienic look)
+- **Neutral Text:** `#1F2937` / `#4B5563`
+- **CTA Style:** Rounded buttons, bold text, clear action language (`Order on WhatsApp`, `Get Bulk Quote`, `Download Price List`)
 
-        <a href="#checkout" class="px-4 py-2.5 rounded-md bg-green-600 hover:bg-green-700 text-white text-sm font-bold">Checkout (<span id="cartCount">0</span>)</a>
-      </div>
+---
 
-      <nav class="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold text-gray-700">
-        <a href="#home" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Home</a>
-        <a href="#categories" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Categories</a>
-        <a href="#products" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Products</a>
-        <a href="#why-us" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Why Us</a>
-        <a href="#checkout" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Checkout</a>
-        <a href="#footer" class="px-3 py-1.5 rounded hover:bg-red-50 hover:text-red-700">Contact</a>
-      </nav>
-    </div>
-  </header>
+## 2) Sitemap (SEO + Conversion Friendly)
 
-  <section id="home" class="relative">
-    <img src="https://i.postimg.cc/pXSCyWZX/BACKGROUND_IMAGE.png?auto=format&fit=crop&w=1800&q=80" alt="Hero background" class="absolute inset-0 w-full h-full object-cover" />
-    <div class="absolute inset-0 bg-gradient-to-r from-red-950/90 via-red-900/75 to-red-700/60"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28 text-white">
-      <span class="inline-block px-3 py-1 rounded-full bg-white/20 border border-white/20 text-xs sm:text-sm font-semibold mb-4">Marriage & Event Disposable Specialist</span>
-      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold max-w-3xl leading-tight">Professional Disposable Product Range for Weddings, Catering, and Bulk Supply</h1>
-      <p class="mt-4 text-red-50 max-w-2xl text-sm sm:text-base">Simple checkout form, pincode auto city/state, and direct WhatsApp order confirmation.</p>
-      <div class="mt-7 flex flex-wrap gap-3">
-        <a href="#products" class="px-5 py-3 rounded-md bg-white text-red-700 font-bold text-sm sm:text-base hover:bg-red-50">Explore Products</a>
-        <a href="#checkout" class="px-5 py-3 rounded-md border border-white/40 bg-white/10 text-white font-bold text-sm sm:text-base hover:bg-white/20">Checkout Now</a>
-      </div>
-    </div>
-  </section>
+### Main Navigation
+1. **Home**
+2. **Shop**
+   - All Products
+   - Paper Cups
+   - Paper Plates
+   - Food Containers
+   - Eco-friendly Cutlery
+   - Carry Bags & Packaging
+3. **Bulk / Wholesale**
+   - Bulk Inquiry Form
+   - Upload Requirement List
+   - Download Full Wholesale Price List (PDF)
+4. **About Us**
+5. **Contact**
+6. **Track Order**
+7. **My Account**
+   - Dashboard
+   - Orders
+   - Repeat Last Order
+   - Saved Addresses
+   - GST Details (for business customers)
 
-  <div class="bg-yellow-400 py-2 overflow-hidden border-y-2 border-red-600">
-    <div class="whitespace-nowrap animate-marquee flex items-center">
-      <span class="text-red-700 font-bold text-lg mx-10">🔥 SPECIAL MARRIAGE COMBO: FULL SET ONLY @ BEST PRICE 🔥</span>
-      <span class="text-red-700 font-bold text-lg mx-10">🚚 WHOLESALE DELIVERY ALL OVER AHMEDABAD</span>
-      <span class="text-red-700 font-bold text-lg mx-10">📞 CALL NOW: +91 80503 89261</span>
-      <span class="text-red-700 font-bold text-lg mx-10">✨ PREMIUM BIODEGRADABLE QUALITY ✨</span>
-    </div>
-  </div>
+### Utility / Policy Pages
+- Shipping Policy (weight/volume-based logic)
+- Return & Refund Policy
+- Privacy Policy
+- Terms & Conditions
+- GST Invoicing Info
+- FAQ (MOQ, delivery timelines, payment terms)
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <section id="categories" class="mb-8">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-        <h2 class="text-2xl sm:text-3xl font-extrabold">Shop by Category</h2>
-        <p class="text-sm text-gray-500">Grid architecture can scale for 50+ products easily.</p>
-      </div>
-      <div id="categoryButtons" class="flex flex-wrap gap-2"></div>
-    </section>
+### Footer Quick Links
+- Bulk Inquiry
+- Shipping Policy
+- GST Invoicing
+- WhatsApp Order
+- Download Catalog
 
-    <section id="products">
-      <div class="mb-4 flex items-center justify-between gap-2">
-        <h3 class="text-xl font-bold">Product Catalog</h3>
-        <div class="text-right">
-          <p id="productCount" class="text-sm text-gray-600"></p>
-          <p id="searchStatus" class="text-xs text-red-700 font-semibold"></p>
-        </div>
-      </div>
-      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></div>
-    </section>
+---
 
-    <section id="why-us" class="mt-14">
-      <h3 class="text-2xl font-extrabold mb-5">Why Choose Veer Mahadev Plastic?</h3>
-      <div class="grid md:grid-cols-3 gap-4">
-        <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm"><p class="font-bold text-red-700 mb-1">Reliable Wholesale Pricing</p><p class="text-sm text-gray-600">Competitive rates designed for retailers, caterers, and event suppliers.</p></div>
-        <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm"><p class="font-bold text-red-700 mb-1">Hygienic & Quality Focus</p><p class="text-sm text-gray-600">Consistent material quality and practical pack sizes for business needs.</p></div>
-        <div class="bg-white rounded-xl border border-red-100 p-5 shadow-sm"><p class="font-bold text-red-700 mb-1">Fast WhatsApp Ordering</p><p class="text-sm text-gray-600">One click inquiry with pre-filled product details to speed up responses.</p></div>
-      </div>
-    </section>
+## 3) Core Feature Plan (As Requested)
 
-    <section id="checkout" class="mt-14 grid lg:grid-cols-2 gap-6">
-      <div class="bg-white rounded-xl border border-red-100 shadow-sm p-5">
-        <h4 class="text-xl font-extrabold text-red-700">Cart Summary</h4>
-        <p class="text-sm text-gray-500 mb-4">Items added from product cards.</p>
-        <div id="cartItems" class="space-y-3"></div>
-        <p id="cartEmpty" class="text-sm text-gray-500">Your cart is empty. Add products first.</p>
-      </div>
+### A) Dual Pricing / Tiered Pricing Logic
+Display a **dynamic price table** on product pages:
+- 1–99 units → Retail Price
+- 100–499 units → Semi-Wholesale Price
+- 500+ units → Wholesale Price
 
-      <div class="bg-white rounded-xl border border-red-100 shadow-sm p-5">
-        <h4 class="text-xl font-extrabold text-red-700">Guest Checkout Form</h4>
+**UX Notes:**
+- Quantity selector auto-updates per-unit price + total.
+- Label savings clearly: `You save ₹X per unit on bulk orders`.
+- Add `Best for Restaurants` badge at bulk tiers.
 
-        <form id="checkoutForm" class="space-y-3">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <input id="firstName" class="border rounded px-3 py-2" placeholder="First Name *" required />
-            <input id="lastName" class="border rounded px-3 py-2" placeholder="Last Name *" required />
-          </div>
-          <input id="mobile" class="border rounded px-3 py-2 w-full" placeholder="Mobile Number (10 digits) *" maxlength="10" required />
-          <textarea id="address" class="border rounded px-3 py-2 w-full" placeholder="Full Address (House No., Street, Area) *" required></textarea>
-          <input id="landmark" class="border rounded px-3 py-2 w-full" placeholder="Landmark (Optional)" />
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <input id="city" class="border rounded px-3 py-2" placeholder="City *" required />
-            <input id="pincode" class="border rounded px-3 py-2" placeholder="Pincode *" maxlength="6" required />
-          </div>
-          <input id="state" class="border rounded px-3 py-2 w-full bg-gray-50" placeholder="State (auto-fill from pincode)" readonly />
-          <p id="formError" class="text-xs text-red-700"></p>
-          <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold rounded px-4 py-2.5">Place Order</button>
-        </form>
+### B) B2B Focus: Wholesale Inquiry + Price List Download
+- Dedicated **Wholesale Inquiry Form** with fields:
+  - Business Name
+  - Contact Person
+  - Mobile/WhatsApp
+  - City & Pincode
+  - GST Number (optional)
+  - Product Categories Needed
+  - Monthly Quantity Requirement
+  - File Upload (Excel/PDF requirement list)
+- **Bulk Buyer Portal** (login required) to download:
+  - Full Price List PDF
+  - Updated Catalog PDF
+  - MOQ and dispatch timelines
 
-        <div id="successBox" class="hidden text-center py-4">
-          <h5 class="text-xl font-extrabold text-green-700 mt-3">Order Placed Successfully!</h5>
-          <p id="orderIdText" class="text-sm text-gray-700 mt-1"></p>
-          <button id="continueShopping" class="mt-4 bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded">Continue Shopping</button>
-        </div>
-      </div>
-    </section>
-  </main>
+### C) Quick Re-order (Repeat Last Order)
+In customer dashboard:
+- A prominent button: **`Repeat Last Order`**
+- One-click adds all last-order items to cart
+- Option to edit quantity before checkout
+- Useful for recurring B2B clients (restaurants/cafés)
 
-  <!-- Floating AI Assistant -->
-  <div id="aiBotWidget" class="fixed bottom-5 right-5 z-[120]">
-    <button id="aiBotToggle" class="ai-float h-14 w-14 rounded-full bg-red-700 text-white shadow-xl hover:bg-red-800 text-2xl" aria-label="Open AI Bot">🤖</button>
-    <div id="aiBotPanel" class="hidden mt-3 w-[92vw] max-w-sm overflow-hidden rounded-xl border border-red-100 bg-white shadow-2xl">
-      <div class="flex items-center justify-between bg-red-700 px-4 py-3 text-white">
-        <p class="font-bold">Veer AI Assistant</p>
-        <button id="aiBotClose" class="rounded bg-white/20 px-2 py-1 text-xs">Close</button>
-      </div>
-      <div id="aiBotMessages" class="h-72 space-y-3 overflow-y-auto p-3 text-sm">
-        <div class="rounded-lg bg-red-50 p-2 text-gray-800">Namaste! Main Veer AI Bot hu. Aap product, price, order process, ya delivery ke baare me pooch sakte ho.</div>
-      </div>
-      <div class="border-t border-gray-100 p-3">
-        <div class="flex gap-2">
-          <input id="aiBotInput" type="text" placeholder="Type your question..." class="w-full rounded-md border border-red-200 px-3 py-2 text-sm outline-none" />
-          <button id="aiBotSend" class="rounded-md bg-red-700 px-3 py-2 text-sm font-semibold text-white">Send</button>
-        </div>
-      </div>
-    </div>
-  </div>
+### D) Inventory Visibility
+Each product card + product page should show:
+- `In Stock` (green badge)
+- `Low Stock` (amber badge)
+- `Out of Stock` (gray/red badge + Notify Me)
 
-  <footer id="footer" class="bg-white border-t border-red-100 mt-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid md:grid-cols-3 gap-8 text-sm">
-      <div><h4 class="text-base font-extrabold text-red-700 mb-2">Veer Mahadev Plastic</h4><p class="text-gray-600">Your trusted partner for disposable cups, plates, and containers in wholesale quantities.</p></div>
-      <div><h4 class="text-base font-extrabold mb-2">Trust Factors</h4><p class="text-gray-700">GST: <span class="font-semibold">24BLLPL0402N1Z6</span></p><p class="text-gray-700">MSME: <span class="font-semibold">UDYAM-GJ-01-0532946</span></p></div>
-      <div><h4 class="text-base font-extrabold mb-2">Connect</h4><div class="flex items-center gap-4"><a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer" class="text-red-700 font-semibold hover:text-red-800">Instagram</a><a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer" class="text-red-700 font-semibold hover:text-red-800">YouTube</a></div></div>
-    </div>
-  </footer>
+### E) Shipping Logic (Bulky Goods)
+Shipping engine should calculate based on:
+1. **Dead Weight (kg)**
+2. **Volumetric Weight** = `(L x W x H in cm) / divisor`
+3. Charge whichever is higher
+4. Zone-wise rates (local/city/state/interstate)
 
-  <script>
-    const WHATSAPP_NUMBER = '918050389261';
-    const CART_KEY = 'vmCart';
+**Checkout UX:**
+- Show `Estimated shipping` live after pincode entry
+- Mention `Bulk orders may get negotiated freight rates`
 
-    const products = [
-      { id: 'p1', name: '4-Compartment Plate', pack: '25 Pcs Pack', price: '₹', category: 'Plates', image: 'https:///300', description: 'Heavy-duty multi-compartment serving plate.' },
-      { id: 'p2', name: 'Round Buffet Plate', pack: '50 Pcs Pack', price: '₹', category: 'Plates', image: 'https:///300', description: 'Classic buffet plate for events.' },
-      { id: 'p3', name: 'Tea Cup 150ml', pack: '100 Pcs Pack', price: '₹', category: 'Disposable Cups', image: 'https:///300', description: 'Hygienic cups for tea service.' },
-      { id: 'p4', name: 'Food Container 500ml', pack: '25 Pcs Pack', price: '₹', category: 'Containers', image: 'https:///300', description: 'Takeaway food container.' },
-      { id: 'p5', name: 'Family Meal Combo Pack', pack: '30 Pcs Pack', price: '₹', category: 'Best Offer For The Day', image: 'https:///300', description: 'Best combo offer for events.' },
-      { id: 'p6', name: '4-Compartment Plate', pack: '25 Pcs Pack', price: '₹', category: 'Plates', image: 'https:///300', description: 'Heavy-duty multi-compartment serving plate.' },
-      { id: 'p7', name: 'Round Buffet Plate', pack: '50 Pcs Pack', price: '₹', category: 'Plates', image: 'https:///300', description: 'Classic buffet plate for events.' },
-      { id: 'p8', name: 'Tea Cup 150ml', pack: '100 Pcs Pack', price: '₹', category: 'Disposable Cups', image: 'https:///300', description: 'Hygienic cups for tea service.' },
-      { id: 'p9', name: 'Food Container 500ml', pack: '25 Pcs Pack', price: '₹', category: 'Containers', image: 'https:///300', description: 'Takeaway food container.' },
-      { id: 'p10', name: 'Family Meal Combo Pack', pack: '30 Pcs Pack', price: '₹', category: 'Best Offer For The Day', image: 'https:///300', description: 'Best combo offer for events.' },
-      { id: 'p11', name: '4-Compartment Plate', pack: '25 Pcs Pack', price: '₹', category: 'Plates', image: 'https:///300', description: 'Heavy-duty multi-compartment serving plate.' },
-      { id: 'p12', name: 'Round Buffet Plate', pack: '50 Pcs Pack', price: '₹', category: 'Plates', image: 'https:///300', description: 'Classic buffet plate for events.' },
-      { id: 'p13', name: 'Tea Cup 150ml', pack: '100 Pcs Pack', price: '₹', category: 'Disposable Cups', image: 'https:///300', description: 'Hygienic cups for tea service.' },
-      { id: 'p14', name: 'Food Container 500ml', pack: '25 Pcs Pack', price: '₹', category: 'Containers', image: 'https:///300', description: 'Takeaway food container.' },
-      { id: 'p15', name: 'Family Meal Combo Pack', pack: '30 Pcs Pack', price: '₹', category: 'Best Offer For The Day', image: 'https:///300', description: 'Best combo offer for events.' },
-    
-    ];
+---
 
-    const categories = ['All', 'Disposable Cups', 'Plates', 'Containers', 'Best Offer For The Day'];
-    let activeCategory = 'All';
-    let searchQuery = '';
+## 4) Product Page Layout (High-Conversion Structure)
 
-    const categoryButtons = document.getElementById('categoryButtons');
-    const productGrid = document.getElementById('productGrid');
-    const productCount = document.getElementById('productCount');
-    const searchStatus = document.getElementById('searchStatus');
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchBtn');
-    const searchCategory = document.getElementById('searchCategory');
+### Above the Fold
+- Product image gallery (zoom + multiple angles)
+- Product name + short trust subtitle (`Food-grade, hygienic, leak-proof`)
+- Rating + order count (`4.8 | 1,500+ bulk orders`)
+- Stock badge (`In Stock`)
+- Tier pricing table (retail to wholesale)
+- Quantity stepper + unit selector (pack/carton)
+- CTA buttons:
+  - `Add to Cart`
+  - `Buy Now`
+  - `Order on WhatsApp`
 
-    function getCategorySelectValue() {
-      return searchCategory ? searchCategory.value : 'All';
-    }
+### Middle Section
+- Product Highlights (icons):
+  - Leak-proof
+  - Sturdy build
+  - Food-safe material
+  - Eco options available
+- Specifications table:
+  - Capacity/Size
+  - Material type
+  - Color
+  - Units per pack
+  - Units per carton
+  - Approx. weight/volume
+- Delivery estimator by pincode
 
-    function setSafeText(el, value) {
-      if (el) el.textContent = value;
-    }
+### B2B Conversion Block
+- `Need 1000+ qty? Get custom quote in 30 min`
+- Quick form (name, phone, quantity, city)
+- Upload requirement list button
 
-    const cartItems = document.getElementById('cartItems');
-    const cartEmpty = document.getElementById('cartEmpty');
-    const cartCount = document.getElementById('cartCount');
+### Lower Section
+- Related products
+- Frequently bought together
+- FAQ (MOQ, transport, invoicing, replacements)
+- Reviews from restaurant/café clients
 
-    const checkoutForm = document.getElementById('checkoutForm');
-    const formError = document.getElementById('formError');
-    const successBox = document.getElementById('successBox');
-    const orderIdText = document.getElementById('orderIdText');
-    const continueShopping = document.getElementById('continueShopping');
+---
 
-    const firstName = document.getElementById('firstName');
-    const lastName = document.getElementById('lastName');
-    const mobile = document.getElementById('mobile');
-    const address = document.getElementById('address');
-    const landmark = document.getElementById('landmark');
-    const city = document.getElementById('city');
-    const pincode = document.getElementById('pincode');
-    const state = document.getElementById('state');
+## 5) Essential Plugins / Tools (Fast-Loading + Scalable)
 
-    const aiBotToggle = document.getElementById('aiBotToggle');
-    const aiBotPanel = document.getElementById('aiBotPanel');
-    const aiBotClose = document.getElementById('aiBotClose');
-    const aiBotMessages = document.getElementById('aiBotMessages');
-    const aiBotInput = document.getElementById('aiBotInput');
-    const aiBotSend = document.getElementById('aiBotSend');
+> Below stack is ideal for **WordPress + WooCommerce**, but the feature list can be replicated on Shopify/custom stack too.
 
-    function getCart() {
-      try {
-        return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-      } catch {
-        return [];
-      }
-    }
+### Commerce + Pricing
+1. **WooCommerce** - core e-commerce engine
+2. **Tiered Pricing Table for WooCommerce** (or similar) - quantity-based price slabs
+3. **Wholesale Suite / B2BKing** - wholesale roles, hidden pricing, B2B forms
 
-    function saveCart(items) {
-      localStorage.setItem(CART_KEY, JSON.stringify(items));
-    }
+### Forms + B2B Workflows
+4. **Fluent Forms / Gravity Forms** - advanced wholesale inquiry + file upload
+5. **PDF Embed/Download Manager** - controlled catalog and price list downloads
 
-    function addToCart(productId) {
-      const item = products.find((p) => p.id === productId);
-      if (!item) return;
-      const cart = getCart();
-      const exists = cart.find((c) => c.id === item.id);
-      if (exists) {
-        exists.qty += 1;
-      } else {
-        cart.push({ id: item.id, name: item.name, pack: item.pack, price: item.price, qty: 1 });
-      }
-      saveCart(cart);
-      renderCart();
-    }
+### Shipping
+6. **Table Rate Shipping (weight/volume rules)** - zone + carton logic
+7. **Volumetric Shipping Calculator** plugin - accurate bulky item freight calculation
 
-    function removeFromCart(productId) {
-      const cart = getCart().filter((item) => item.id !== productId);
-      saveCart(cart);
-      renderCart();
-    }
+### Speed + Core Web Vitals
+8. **LiteSpeed Cache** (or WP Rocket) - caching + minification + critical CSS
+9. **ShortPixel / Imagify** - image compression + WebP
+10. **Perfmatters** - script manager, bloat reduction
+11. **Cloudflare CDN** - global acceleration + security edge caching
 
-    function renderCart() {
-      const cart = getCart();
-      setSafeText(cartCount, cart.reduce((sum, i) => sum + i.qty, 0));
-      if (!cartItems || !cartEmpty) return;
+### Inventory + CX
+12. **ATUM Inventory Management** - stock visibility and low-stock alerts
+13. **WooCommerce PDF Invoices & Packing Slips** - GST-compliant invoicing
+14. **Click to Chat (WhatsApp)** - floating WhatsApp order button
+15. **Reorder Plugin / Custom dashboard action** - one-click repeat last order
 
-      if (!cart.length) {
-        cartItems.innerHTML = '';
-        cartEmpty.classList.remove('hidden');
-        return;
-      }
+---
 
-      cartEmpty.classList.add('hidden');
-      cartItems.innerHTML = cart.map((item) => `
-        <div class="rounded border p-3 flex justify-between items-start gap-2">
-          <div>
-            <p class="font-semibold">${item.name}</p>
-            <p class="text-xs text-gray-600">${item.pack} · Qty: ${item.qty}</p>
-            <p class="text-sm text-red-700 font-bold">${item.price}</p>
-          </div>
-          <button data-remove="${item.id}" class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded">Remove</button>
-        </div>
-      `).join('');
+## 6) Complete Homepage Content + Layout (Hinglish)
 
-      cartItems.querySelectorAll('button[data-remove]').forEach((btn) => {
-        btn.addEventListener('click', () => removeFromCart(btn.dataset.remove));
-      });
-    }
+## Section 1: Top Announcement Bar
+**Text:**
+`Wholesale Rates | GST Billing Available | Fast Dispatch for Bulk Orders | Hygienic & Food-Grade Disposable Products`
 
-    function getFilteredProducts() {
-      const query = searchQuery.trim().toLowerCase();
-      return products.filter((product) => {
-        const byCategoryButton = activeCategory === 'All' || product.category === activeCategory;
-        const byCategorySelect = getCategorySelectValue() === 'All' || product.category === getCategorySelectValue();
-        const haystack = `${product.name} ${product.category} ${product.pack} ${product.price}`.toLowerCase();
-        const byQuery = !query || haystack.includes(query);
-        return byCategoryButton && byCategorySelect && byQuery;
-      });
-    }
+---
 
-    function renderCategories() {
-      if (!categoryButtons) return;
-      categoryButtons.innerHTML = categories.map((category) => {
-        const isActive = activeCategory === category;
-        return `<button data-category="${category}" class="category-btn px-4 py-2 rounded-md text-sm font-semibold border transition ${isActive ? 'bg-red-700 border-red-700 text-white' : 'bg-white border-red-200 text-red-700 hover:bg-red-50'}">${category}</button>`;
-      }).join('');
+## Section 2: Hero Banner
+**Headline:**  
+**`High Quality Disposable Products at True Wholesale Prices`**
 
-      document.querySelectorAll('.category-btn').forEach((button) => {
-        button.addEventListener('click', () => {
-          activeCategory = button.dataset.category;
-          renderCategories();
-          renderProducts();
-        });
-      });
-    }
+**Subheadline:**  
+`Restaurant ho, cafe ho, event business ho ya ghar ka function — Veer Mhadev Plastic par milega durable, leak-proof aur hygienic disposable range, best bulk rates ke saath.`
 
-    function renderProducts() {
-      if (!productGrid) return;
+**Support Line:**  
+`Retail se leke truck-load tak supply | Trusted by 10,000+ monthly customers`
 
-      const filtered = getFilteredProducts();
-      setSafeText(productCount, `${filtered.length} product(s) showing`);
-      setSafeText(searchStatus, searchQuery.trim() ? `Search: "${searchQuery.trim()}"` : '');
+**Primary CTA:** `Shop Now`  
+**Secondary CTA:** `Get Bulk Quote`  
+**Floating CTA:** **`Order on WhatsApp`** (sticky on all pages)
 
-      if (!filtered.length) {
-        productGrid.innerHTML = '<div class="col-span-full rounded-lg border border-red-100 bg-white p-8 text-center text-gray-600">No products found. Try a different search keyword.</div>';
-        return;
-      }
+---
 
-      productGrid.innerHTML = filtered.map((product) => `
-        <article class="bg-white rounded-xl border border-red-100 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition">
-          <img src="${product.image}" alt="${product.name}" class="w-full h-44 object-cover" onerror="this.src='https://i.postimg.cc/3RjwZ9yh/hot-cup-180Ml.png';this.onerror=null;" />
-          <div class="p-4">
-            <span class="inline-flex text-xs font-semibold bg-red-50 text-red-700 px-2 py-1 rounded mb-2">${product.category}</span>
-            <h4 class="font-bold text-lg leading-snug">${product.name}</h4>
-            <p class="text-sm text-gray-600 mt-1">${product.pack}</p>
-            <p class="text-red-700 font-extrabold mt-3">${product.price}</p>
-            <button data-add="${product.id}" class="mt-4 w-full rounded-md bg-red-700 hover:bg-red-800 text-white font-bold text-sm px-4 py-2.5">Add to Cart</button>
-          </div>
-        </article>
-      `).join('');
+## Section 3: Trust Strip
+**Micro Points:**
+- `Family Business Since 2022`
+- `10,000+ Satisfied Customers Every Month`
+- `Wholesale + Retail Both Available`
+- `Food-safe, Leak-proof, Quality Checked`
 
-      productGrid.querySelectorAll('button[data-add]').forEach((btn) => {
-        btn.addEventListener('click', () => addToCart(btn.dataset.add));
-      });
-    }
+---
 
-    function validateForm() {
-      if (!firstName || !lastName || !address || !city || !pincode || !mobile) return 'Checkout form elements missing. Please refresh once.';
-      if (!firstName.value.trim() || !lastName.value.trim() || !address.value.trim() || !city.value.trim() || !pincode.value.trim()) {
-        return 'Please fill all mandatory fields.';
-      }
-      if (!/^\d{10}$/.test(mobile.value.trim())) {
-        return 'Mobile number must be exactly 10 digits.';
-      }
-      if (!/^\d{6}$/.test(pincode.value.trim())) {
-        return 'Pincode must be exactly 6 digits.';
-      }
-      if (!getCart().length) {
-        return 'Cart is empty. Please add at least one product.';
-      }
-      return '';
-    }
+## Section 4: Main Categories (6)
 
-    function generateOrderId() {
-      return `VM${Date.now().toString().slice(-8)}${Math.floor(Math.random() * 900 + 100)}`;
-    }
+### 1. Paper Cups
+`Tea, coffee aur beverage service ke liye strong aur heat-resistant cups. Perfect for cafes aur office pantry use.`
 
-    function createWhatsappMessage(orderId) {
-      const cart = getCart();
-      const itemsText = cart.map((item) => `- ${item.name} (${item.pack}) x ${item.qty}`).join('%0A');
-      return `Hi Veer Mahadev Plastic,%0A%0ANew Order:%0AOrder ID: ${orderId}%0A%0ACustomer:%0A${firstName.value.trim()} ${lastName.value.trim()}%0AMobile: ${mobile.value.trim()}%0AAddress: ${address.value.trim()}%0ALandmark: ${landmark.value.trim() || 'N/A'}%0ACity: ${city.value.trim()}%0AState: ${state.value.trim() || 'N/A'}%0APincode: ${pincode.value.trim()}%0A%0AItems:%0A${itemsText}`;
-    }
+### 2. Paper Plates
+`Heavy-duty plates jo oily ya gravy foods mein bhi shape maintain karein. Events aur catering ke liye ideal.`
 
-    async function autofillCityStateByPincode(pin) {
-      if (!/^\d{6}$/.test(pin)) return;
-      try {
-        const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
-        const data = await res.json();
-        if (data?.[0]?.Status === 'Success' && data[0].PostOffice?.length) {
-          const po = data[0].PostOffice[0];
-          city.value = po.District || city.value;
-          state.value = po.State || state.value;
-          formError.textContent = '';
-        } else {
-          if (state) state.value = '';
-          formError.textContent = 'Invalid pincode or location not found.';
-        }
-      } catch {
-        formError.textContent = 'Unable to fetch city/state right now. Please enter manually.';
-      }
-    }
+### 3. Food Containers
+`Leak-proof takeaway containers with secure lids. Delivery kitchens aur cloud kitchens ke liye best choice.`
 
-    if (searchBtn && searchInput) {
-      searchBtn.addEventListener('click', () => {
-        searchQuery = searchInput.value;
-        renderProducts();
-      });
-    }
+### 4. Eco-friendly Cutlery
+`Biodegradable spoons, forks, knives — modern brands ke liye sustainable aur premium option.`
 
-    if (searchInput) {
-      searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          searchQuery = searchInput.value;
-          renderProducts();
-        }
-      });
-    }
+### 5. Meal Trays & Compartment Boxes
+`Portion control aur organized meal serving ke liye durable trays. Bulk canteen orders ke liye popular.`
 
-    if (searchCategory) searchCategory.addEventListener('change', renderProducts);
+### 6. Packaging Essentials
+`Carry bags, wrapping aur utility disposables — daily commercial operations ke liye reliable packaging range.`
 
-    if (pincode) {
-      pincode.addEventListener('input', () => {
-        const pin = pincode.value.trim();
-        if (/^\d{6}$/.test(pin)) autofillCityStateByPincode(pin);
-      });
-    }
+---
 
-    if (checkoutForm) checkoutForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      formError.textContent = '';
-      const error = validateForm();
-      if (error) {
-        formError.textContent = error;
-        return;
-      }
+## Section 5: Bulk Order / Wholesale Feature
+**Section Heading:**  
+**`Bulk Order? Upload Your Requirement List, Get Custom Quote Fast.`**
 
-      const orderId = generateOrderId();
-      const waText = createWhatsappMessage(orderId);
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`, '_blank');
+**Description:**  
+`Agar aapko regular ya high-volume supply chahiye, toh simply apni list upload kijiye (Excel/PDF/Image). Hamari B2B team quantity, transport aur best slab pricing ke saath custom quotation share karegi.`
 
-      checkoutForm.classList.add('hidden');
-      successBox.classList.remove('hidden');
-      orderIdText.textContent = `Your Order ID: ${orderId}`;
-      saveCart([]);
-      renderCart();
-    });
+**Fields:**
+- Business Name
+- Contact Number / WhatsApp
+- City + Pincode
+- Monthly Requirement
+- File Upload
 
-    if (continueShopping) continueShopping.addEventListener('click', () => {
-      checkoutForm.reset();
-      checkoutForm.classList.remove('hidden');
-      successBox.classList.add('hidden');
-      if (state) state.value = '';
-      formError.textContent = '';
-      window.location.href = '#products';
-    });
+**CTA:** `Request Wholesale Quote`
 
-    function appendBotMessage(text, role = 'bot') {
-      if (!aiBotMessages) return;
-      const bubble = document.createElement('div');
-      bubble.className = role === 'user'
-        ? 'ml-auto max-w-[85%] rounded-lg bg-red-700 p-2 text-white'
-        : 'max-w-[85%] rounded-lg bg-red-50 p-2 text-gray-800';
-      bubble.textContent = text;
-      aiBotMessages.appendChild(bubble);
-      aiBotMessages.scrollTop = aiBotMessages.scrollHeight;
-    }
+---
 
-    function getAiReply(input) {
-      const q = input.toLowerCase();
-      if (q.includes('price') || q.includes('rate')) return 'Price dekhne ke liye products section me product card check karo ya direct WhatsApp order pe click karo.';
-      if (q.includes('delivery')) return 'Ahmedabad me fast delivery available hai. Bulk order ke liye WhatsApp se confirm karein.';
-      if (q.includes('order') || q.includes('checkout')) return 'Aap product add karo, checkout form bharo, fir Place Order se direct WhatsApp message chala jayega.';
-      if (q.includes('cup')) return 'Disposable Cups category me Tea Cup aur aur bhi options available hain.';
-      if (q.includes('plate')) return 'Plates category me bulk options available hain.';
-      return 'Main aapki help ke liye hu. Aap product, delivery, ya order process pooch sakte ho.';
-    }
+## Section 6: Featured USP - Eco-friendly Range
+**Heading:**  
+**`Switch to Eco-friendly & Biodegradable Range`**
 
-    function sendAiMessage() {
-      if (!aiBotInput) return;
-      const userText = aiBotInput.value.trim();
-      if (!userText) return;
-      appendBotMessage(userText, 'user');
-      aiBotInput.value = '';
-      setTimeout(() => appendBotMessage(getAiReply(userText)), 250);
-    }
+**Copy:**  
+`Aaj ke conscious customers sustainability dekhte hain. Isliye hum eco-friendly cups, cutlery aur packaging options provide karte hain — taaki aapka brand professional bhi lage aur planet-friendly bhi rahe.`
 
-    if (aiBotToggle && aiBotPanel) {
-      aiBotToggle.addEventListener('click', () => aiBotPanel.classList.toggle('hidden'));
-    }
-    if (aiBotClose && aiBotPanel) {
-      aiBotClose.addEventListener('click', () => aiBotPanel.classList.add('hidden'));
-    }
-    if (aiBotSend) aiBotSend.addEventListener('click', sendAiMessage);
-    if (aiBotInput) {
-      aiBotInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') sendAiMessage();
-      });
-    }
+**Mini CTA:** `Explore Eco Range`
 
-    try {
-      renderCategories();
-      renderProducts();
-      renderCart();
-    } catch (err) {
-      console.error('Init error:', err);
-      if (productGrid) {
-        productGrid.innerHTML = '<div class="col-span-full rounded-lg border border-red-100 bg-white p-8 text-center text-red-700">Products loading issue fixed. Please refresh once.</div>';
-      }
-    }
-  </script>
-</body>
-</html>
+---
+
+## Section 7: Why Businesses Prefer Veer Mhadev Plastic
+- `Consistent Quality, Every Lot`
+- `Transparent Tiered Pricing`
+- `On-time Dispatch for Business Orders`
+- `GST Billing & Proper Documentation`
+- `Easy Re-order for Repeat Clients`
+- `Dedicated Support on Call + WhatsApp`
+
+---
+
+## Section 8: Testimonials
+**Sample 1:**  
+`“Cafe ke liye hum monthly order dete hain. Quality consistent rehti hai aur delivery time pe milti hai.”` — Café Owner, Ahmedabad
+
+**Sample 2:**  
+`“Event season mein bulk supply smoothly handle karte hain. Rates aur response dono best hain.”` — Event Planner
+
+---
+
+## Section 9: Footer Content
+**Quick Links:**
+- Bulk Inquiry
+- Shipping Policy
+- GST Invoicing
+- About Us
+- Contact
+
+**Business Line:**  
+`Veer Mhadev Plastic - Your trusted partner for hygienic disposable supplies in wholesale & retail.`
+
+**Contact CTA:**  
+`Need urgent stock? Order directly on WhatsApp.`
+
+---
+
+## 7) Complete About Us Page Copy (Hinglish)
+
+## About Veer Mhadev Plastic
+**`Parivaar se shuru, bharose se bada.`**
+
+Veer Mhadev Plastic ki journey 2022 mein ek **family business** ke roop mein shuru hui thi. Humara simple goal tha: market ko hygienic, reliable aur reasonable pricing par disposable products dena. Aaj, hum garv se kehte hain ki hum har mahine **10,000+ satisfied customers** ko serve kar rahe hain.
+
+Chahe restaurant owners ho, café partners, event managers, ya ghar ke regular buyers — hum sabko ek hi commitment dete hain: **quality first, service fast, pricing fair**.
+
+### Hum kya provide karte hain
+- Paper cups
+- Plates & meal trays
+- Containers
+- Eco-friendly cutlery
+- Bulk packaging essentials
+
+Har product category mein hum **hygiene, durability aur leak-proof performance** par strict focus rakhte hain, kyunki food business mein compromise ki koi jagah nahi hoti.
+
+### Family Values, Professional Service
+Family business hone ka sabse bada fayda yeh hai ki har order ko hum personal responsibility ke saath handle karte hain. Aapka trust humare liye sirf transaction nahi, long-term relationship hai.
+
+### 2022 se aaj tak ka growth
+Shuruaat chhoti thi, lekin niyat badi. Consistent quality, honest dealing aur wholesale-friendly pricing ke dum par humne short time mein strong customer network build kiya. Aaj ka 10,000+ monthly order milestone humare customers ke trust ka result hai.
+
+### Wholesale Pricing + Quality Commitment
+Humari policy clear hai:
+- Bulk quantity par better slab pricing
+- Genuine quality in every lot
+- Hygienic storage and dispatch process
+- Proper GST invoicing for businesses
+
+### Hamara Vision
+Hum chahte hain ki India ke har chhote-bade food business ko affordable aur dependable disposable supply mile — without quality tension.
+
+**Aaiye, local business ko support karein aur eco-friendly choices ko promote karein.**  
+**Veer Mhadev Plastic ke saath growth bhi, quality bhi, aur bharosa bhi.**
+
+---
+
+## 8) Suggested UX Blocks for Dashboard (Quick Re-order)
+- `Last Order Summary` card (date, amount, item count)
+- Primary action: **Repeat Last Order**
+- Secondary action: `Modify Quantities`
+- Suggested restock reminder: `Aapka stock 7 din mein khatam ho sakta hai`
+
+This will dramatically improve repeat purchase rate for restaurant and café accounts
