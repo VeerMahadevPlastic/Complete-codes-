@@ -244,79 +244,95 @@
     function categoryTiers(category){
       if(['Cup & Glasses'].includes(category)) return [{min:1,price:50},{min:100,price:45},{min:500,price:35}];
       if(['Bio & Disposable Plates'].includes(category)) return [{min:1,price:150},{min:100,price:145},{min:500,price:120}];
-      if(['Foil & Food Packaging'].includes(category)) return [{min:1,price:18},{min:250,price:190},{min:200,price:160}];
+      if(['Foil & Food Packaging'].includes(category)) return [{min:1,price:180},{min:100,price:170},{min:250,price:160}];
       if(['Cutlery & Accessories'].includes(category)) return [{min:1,price:50},{min:100,price:45},{min:500,price:35}];
       if(['Bowls & Containers'].includes(category)) return [{min:1,price:150},{min:100,price:145},{min:500,price:120}];
-      if(['Tisues & Bags'].includes(category)) return [{min:1,price:18},{min:250,price:190},{min:200,price:160}];
+      if(['Tissues & Bags'].includes(category)) return [{min:1,price:180},{min:100,price:170},{min:250,price:160}];
       return [{min:1,price:35},{min:50,price:32},{min:200,price:28}];
     }
 
-    function createSeries(category, seriesName, sizes, query){
-      return sizes.map((size, idx) => ({
-        id: `${slugify(seriesName)}-${slugify(String(size))}`,
-        name: `${seriesName} ${size}`,
-        category,
-        image: imageFrom(`${query} ${seriesName} ${size}`),
-        stock: (90 + (idx * 23) % 290),
-        tiers: categoryTiers(category)
-      }));
+    function createSeries(category, seriesName, sizes, query, overrides = {}){
+      return sizes.map((size, idx) => {
+        const key = String(size);
+        const variantOverride = overrides[key] || {};
+        const id = variantOverride.id || `${slugify(seriesName)}-${slugify(key)}`;
+        return {
+          id,
+          name: variantOverride.name || `${seriesName} ${key}`,
+          category,
+          image: variantOverride.image || imageFrom(`${query} ${seriesName} ${key}`),
+          stock: Number.isFinite(variantOverride.stock) ? variantOverride.stock : (120 + (idx * 17) % 180),
+          tiers: Array.isArray(variantOverride.tiers) ? variantOverride.tiers : categoryTiers(category)
+        };
+      });
     }
 
-    const products = [
-      // 1) Paper Cups & Glasses
-      ...createSeries('Cup & Glasses', 'Paper Cup (Nestle)', ['100 ML','150 ML'], 'paper cup disposable'),
-      ...createSeries('Cup & Glasses', 'Long Glass', ['180 ML','200 ML','250 ML','300 ML','350 ML'], 'disposable long glass'),
-      ...createSeries('Cup & Glasses', 'Bio Cup', ['200 ML','250 ML','300 ML','350 ML'], 'biodegradable paper cup'),
-      ...createSeries('Cup & Glasses', 'Ripple Glass (Dip)', ['100 ML','130 ML','150 ML','200 ML','250 ML','300 ML'], 'ripple cup'),
+    // NOTE:
+    // 1) Har product ka image/stock/price control `variants` ke andar hai.
+    // 2) Aap naya product add karna ho to same object format copy karke add kar do.
+    // 3) UI/color par koi effect nahi padega, sirf data update hoga.
+    const PRODUCT_CATALOG = [
+      {
+        category: 'Cup & Glasses',
+        seriesName: 'Paper Cup (Nestle)',
+        query: 'paper cup disposable',
+        sizes: ['100 ML','150 ML'],
+        variants: {
+          '100 ML': { image: 'https://i.postimg.cc/yYksSfV8/ripple-glass.jpg', stock: 240, tiers:[{min:1,price:45},{min:100,price:41},{min:500,price:36}] },
+          '150 ML': { image: 'https://i.postimg.cc/yYksSfV8/ripple-glass.jpg', stock: 190, tiers:[{min:1,price:52},{min:100,price:47},{min:500,price:40}] }
+        }
+      },
+      { category:'Cup & Glasses', seriesName:'Long Glass', query:'disposable long glass', sizes:['180 ML','200 ML','250 ML','300 ML','350 ML'] },
+      { category:'Cup & Glasses', seriesName:'Bio Cup', query:'biodegradable paper cup', sizes:['200 ML','250 ML','300 ML','350 ML'] },
+      { category:'Cup & Glasses', seriesName:'Ripple Glass (Dip)', query:'ripple cup', sizes:['100 ML','130 ML','150 ML','200 ML','250 ML','300 ML'] },
 
-      // 2) Bio & Disposable Plates (Dishes)
-      ...createSeries('Bio & Disposable Plates', 'Bio Dish', ['7 NO','9 NO','10 NO'], 'biodegradable plate'),
-      ...createSeries('Bio & Disposable Plates', 'Bio Dish (Regular)', ['9 NO','10 NO','11 NO','12 NO'], 'paper plate round'),
-      ...createSeries('Bio & Disposable Plates', 'Bio Dish (3 CP)', ['9 NO','10 NO'], 'compartment plate 3'),
-      ...createSeries('Bio & Disposable Plates', 'Bio Dish (4 CP)', ['11 NO','12 NO'], 'compartment plate 4'),
-      ...createSeries('Bio & Disposable Plates', 'Square Dish', ['10 NO'], 'square disposable plate'),
-      ...createSeries('Bio & Disposable Plates', 'Square Dish (3 CP)', ['9 NO'], 'square compartment plate'),
-      ...createSeries('Bio & Disposable Plates', 'Square Dish (5 CP)', ['Standard Size'], 'square 5 compartment plate'),
+      { category:'Bio & Disposable Plates', seriesName:'Bio Dish', query:'biodegradable plate', sizes:['7 NO','9 NO','10 NO'] },
+      { category:'Bio & Disposable Plates', seriesName:'Bio Dish (Regular)', query:'paper plate round', sizes:['9 NO','10 NO','11 NO','12 NO'] },
+      { category:'Bio & Disposable Plates', seriesName:'Bio Dish (3 CP)', query:'compartment plate 3', sizes:['9 NO','10 NO'] },
+      { category:'Bio & Disposable Plates', seriesName:'Bio Dish (4 CP)', query:'compartment plate 4', sizes:['11 NO','12 NO'] },
+      { category:'Bio & Disposable Plates', seriesName:'Square Dish', query:'square disposable plate', sizes:['10 NO'] },
+      { category:'Bio & Disposable Plates', seriesName:'Square Dish (3 CP)', query:'square compartment plate', sizes:['9 NO'] },
+      { category:'Bio & Disposable Plates', seriesName:'Square Dish (5 CP)', query:'square 5 compartment plate', sizes:['Standard Size'] },
 
-      // 3) Bowls & Containers
-      ...createSeries('Bowls & Containers', 'Bowl (Bio Cup)', ['65 ML'], 'bio bowl'),
-      ...createSeries('Bowls & Containers', 'Bowl (Bio)', ['180 ML','240 ML','350 ML'], 'biodegradable bowl'),
-      ...createSeries('Bowls & Containers', 'Square Bowl', ['4x4','5x5','7x7'], 'square food bowl'),
-      ...createSeries('Bowls & Containers', 'Square Bowl (2 CP)', ['Standard Size'], 'two compartment bowl'),
-      ...createSeries('Bowls & Containers', 'Hing Box (Transparent)', ['45 ML','65 ML','75 ML','100 ML','150 ML','250 ML','350 ML','500 ML','600 ML','750 ML','1000 ML','1200 ML','1400 ML','1500 ML','2000 ML'], 'transparent hing box'),
-      ...createSeries('Bowls & Containers', 'High Lid Container', ['500 ML','750 ML','1000 ML','1500 ML','2000 ML'], 'high lid food container'),
-      ...createSeries('Bowls & Containers', 'Milky Container (Box)', ['250g','300g','400g','500g','600g','750g','1000g','1200g','1400g'], 'milky container box'),
-      ...createSeries('Bowls & Containers', 'Square Box (Black)', ['250g','400g','500g','650g','750g','1000g'], 'black meal box'),
-      ...createSeries('Bowls & Containers', 'Black Box (Sectional)', ['2 CP','3 CP','5 CP','8 CP'], 'black sectional food box'),
+      { category:'Bowls & Containers', seriesName:'Bowl (Bio Cup)', query:'bio bowl', sizes:['65 ML'] },
+      { category:'Bowls & Containers', seriesName:'Bowl (Bio)', query:'biodegradable bowl', sizes:['180 ML','240 ML','350 ML'] },
+      { category:'Bowls & Containers', seriesName:'Square Bowl', query:'square food bowl', sizes:['4x4','5x5','7x7'] },
+      { category:'Bowls & Containers', seriesName:'Square Bowl (2 CP)', query:'two compartment bowl', sizes:['Standard Size'] },
+      { category:'Bowls & Containers', seriesName:'Hing Box (Transparent)', query:'transparent hing box', sizes:['45 ML','65 ML','75 ML','100 ML','150 ML','250 ML','350 ML','500 ML','600 ML','750 ML','1000 ML','1200 ML','1400 ML','1500 ML','2000 ML'] },
+      { category:'Bowls & Containers', seriesName:'High Lid Container', query:'high lid food container', sizes:['500 ML','750 ML','1000 ML','1500 ML','2000 ML'] },
+      { category:'Bowls & Containers', seriesName:'Milky Container (Box)', query:'milky container box', sizes:['250g','300g','400g','500g','600g','750g','1000g','1200g','1400g'] },
+      { category:'Bowls & Containers', seriesName:'Square Box (Black)', query:'black meal box', sizes:['250g','400g','500g','650g','750g','1000g'] },
+      { category:'Bowls & Containers', seriesName:'Black Box (Sectional)', query:'black sectional food box', sizes:['2 CP','3 CP','5 CP','8 CP'] },
 
-      // 4) Foil & Food Packaging
-      ...createSeries('Foil & Food Packaging', 'Foil Container', ['250 ML','400 ML','600 ML','650 ML','750 ML','1000 ML'], 'aluminium foil container'),
-      ...createSeries('Foil & Food Packaging', 'Cup Container', ['100 ML'], 'small cup container'),
-      ...createSeries('Foil & Food Packaging', 'Silver Foil', ['8 Mtr','18 Mtr','72 SP','72 Net','1 Kg Gross','1 Kg Net'], 'silver foil roll'),
-      ...createSeries('Foil & Food Packaging', 'Butter Paper (Roll)', ['250g','500g','1 Kg','20+5 Mtr'], 'butter paper roll'),
-      ...createSeries('Foil & Food Packaging', 'Silver Paper (Sheet)', ['8x8','10x10','12x12'], 'silver paper sheet'),
-      ...createSeries('Foil & Food Packaging', 'Butter Paper (Sheet)', ['8x8','10x10','12x12'], 'butter paper sheet'),
-      ...createSeries('Foil & Food Packaging', 'Mithai Silver Paper Box', ['100g','250g','500g','750g','1 Kg'], 'mithai packaging box'),
+      { category:'Foil & Food Packaging', seriesName:'Foil Container', query:'aluminium foil container', sizes:['250 ML','400 ML','600 ML','650 ML','750 ML','1000 ML'] },
+      { category:'Foil & Food Packaging', seriesName:'Cup Container', query:'small cup container', sizes:['100 ML'] },
+      { category:'Foil & Food Packaging', seriesName:'Silver Foil', query:'silver foil roll', sizes:['8 Mtr','18 Mtr','72 SP','72 Net','1 Kg Gross','1 Kg Net'] },
+      { category:'Foil & Food Packaging', seriesName:'Butter Paper (Roll)', query:'butter paper roll', sizes:['250g','500g','1 Kg','20+5 Mtr'] },
+      { category:'Foil & Food Packaging', seriesName:'Silver Paper (Sheet)', query:'silver paper sheet', sizes:['8x8','10x10','12x12'] },
+      { category:'Foil & Food Packaging', seriesName:'Butter Paper (Sheet)', query:'butter paper sheet', sizes:['8x8','10x10','12x12'] },
+      { category:'Foil & Food Packaging', seriesName:'Mithai Silver Paper Box', query:'mithai packaging box', sizes:['100g','250g','500g','750g','1 Kg'] },
 
-      // 5) Cutlery & Accessories
-      ...createSeries('Cutlery & Accessories', 'Wooden Spoon (Plain)', ['140 MM','160 MM','180 MM','65 MM'], 'wooden spoon'),
-      ...createSeries('Cutlery & Accessories', 'Wooden Fork', ['140 MM','160 MM'], 'wooden fork'),
-      ...createSeries('Cutlery & Accessories', 'Bio Spoon', ['Small','Big'], 'bio spoon'),
-      ...createSeries('Cutlery & Accessories', 'Bio Fork', ['Small','Big'], 'bio fork'),
-      ...createSeries('Cutlery & Accessories', 'Shower Cap', ['Non-woven'], 'shower cap non woven'),
-      ...createSeries('Cutlery & Accessories', 'Cook Cap', ['Non-woven'], 'cook cap non woven'),
-      ...createSeries('Cutlery & Accessories', 'Apron', ['Non-woven'], 'non woven apron'),
+      { category:'Cutlery & Accessories', seriesName:'Wooden Spoon (Plain)', query:'wooden spoon', sizes:['140 MM','160 MM','180 MM','65 MM'] },
+      { category:'Cutlery & Accessories', seriesName:'Wooden Fork', query:'wooden fork', sizes:['140 MM','160 MM'] },
+      { category:'Cutlery & Accessories', seriesName:'Bio Spoon', query:'bio spoon', sizes:['Small','Big'] },
+      { category:'Cutlery & Accessories', seriesName:'Bio Fork', query:'bio fork', sizes:['Small','Big'] },
+      { category:'Cutlery & Accessories', seriesName:'Shower Cap', query:'shower cap non woven', sizes:['Non-woven'] },
+      { category:'Cutlery & Accessories', seriesName:'Cook Cap', query:'cook cap non woven', sizes:['Non-woven'] },
+      { category:'Cutlery & Accessories', seriesName:'Apron', query:'non woven apron', sizes:['Non-woven'] },
 
-      // 6) Tissues & Bags
-      ...createSeries('Tissues & Bags', 'Tissue Paper', ['23x23','27x27 (L)','27x27 (H)','33x33','45x45','66x66'], 'tissue paper'),
-      ...createSeries('Tissues & Bags', 'Car Napkin', ['1 Ply','2 Ply'], 'car napkin tissue'),
-      ...createSeries('Tissues & Bags', 'Wet Tissue', ['1 Pcs x 100 N','25 N x 1 Pack'], 'wet tissue packet'),
-      ...createSeries('Tissues & Bags', 'Garbage Bag', ['24x36','30x50'], 'garbage bag roll'),
-      ...createSeries('Tissues & Bags', 'Garbage Bag (Box)', ['17x19','19x21','24x36','30x50'], 'garbage bag box'),
-      ...createSeries('Tissues & Bags', 'Boi Theli (Plastic Bags)', ['8x10','9x13','13x16','16x20','20x26'], 'plastic carry bag'),
-      ...createSeries('Tissues & Bags', 'Boi LLDP', ['4x6','5x7','6x10','7x12','8x16'], 'lldp bag'),
-      ...createSeries('Tissues & Bags', 'Boi Kirana Bags', ['250g','500g','1000g','2 Kg','3 Kg','5 Kg','10 Kg'], 'kirana grocery bag')
+      { category:'Tissues & Bags', seriesName:'Tissue Paper', query:'tissue paper', sizes:['23x23','27x27 (L)','27x27 (H)','33x33','45x45','66x66'] },
+      { category:'Tissues & Bags', seriesName:'Car Napkin', query:'car napkin tissue', sizes:['1 Ply','2 Ply'] },
+      { category:'Tissues & Bags', seriesName:'Wet Tissue', query:'wet tissue packet', sizes:['1 Pcs x 100 N','25 N x 1 Pack'] },
+      { category:'Tissues & Bags', seriesName:'Garbage Bag', query:'garbage bag roll', sizes:['24x36','30x50'] },
+      { category:'Tissues & Bags', seriesName:'Garbage Bag (Box)', query:'garbage bag box', sizes:['17x19','19x21','24x36','30x50'] },
+      { category:'Tissues & Bags', seriesName:'Boi Theli (Plastic Bags)', query:'plastic carry bag', sizes:['8x10','9x13','13x16','16x20','20x26'] },
+      { category:'Tissues & Bags', seriesName:'Boi LLDP', query:'lldp bag', sizes:['4x6','5x7','6x10','7x12','8x16'] },
+      { category:'Tissues & Bags', seriesName:'Boi Kirana Bags', query:'kirana grocery bag', sizes:['250g','500g','1000g','2 Kg','3 Kg','5 Kg','10 Kg'] }
     ];
+
+    const products = PRODUCT_CATALOG.flatMap(item =>
+      createSeries(item.category, item.seriesName, item.sizes, item.query, item.variants)
+    );
 
     const categories = ['All', ...new Set(products.map(p => p.category))];
     let activeCategory = 'All';
