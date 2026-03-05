@@ -240,162 +240,6 @@
     function slugify(value){
       return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
     }
-
-    const PRODUCT_IMAGE_OVERRIDES = {
-      // Har product id ke aage image URL paste karo. खाली छोड़ोगे to fallback image aayegi.
-      'paper-cup-nestle-100-ml': '',
-      'paper-cup-nestle-150-ml': '',
-      'long-glass-180-ml': '',
-      'long-glass-200-ml': '',
-      'long-glass-250-ml': '',
-      'long-glass-300-ml': '',
-      'long-glass-350-ml': '',
-      'bio-cup-200-ml': '',
-      'bio-cup-250-ml': '',
-      'bio-cup-300-ml': '',
-      'bio-cup-350-ml': '',
-      'ripple-glass-dip-100-ml': '',
-      'ripple-glass-dip-130-ml': '',
-      'ripple-glass-dip-150-ml': '',
-      'ripple-glass-dip-200-ml': '',
-      'ripple-glass-dip-250-ml': '',
-      'ripple-glass-dip-300-ml': '',
-      'bio-dish-7-no': '',
-      'bio-dish-9-no': '',
-      'bio-dish-10-no': '',
-      'bio-dish-regular-9-no': '',
-      'bio-dish-regular-10-no': '',
-      'bio-dish-regular-11-no': '',
-      'bio-dish-regular-12-no': '',
-      'bio-dish-3-cp-9-no': '',
-      'bio-dish-3-cp-10-no': '',
-      'bio-dish-4-cp-11-no': '',
-      'bio-dish-4-cp-12-no': '',
-      'square-dish-10-no': '',
-      'square-dish-3-cp-9-no': '',
-      'square-dish-5-cp-standard-size': '',
-      'bowl-bio-cup-65-ml': '',
-      'bowl-bio-180-ml': '',
-      'bowl-bio-240-ml': '',
-      'bowl-bio-350-ml': '',
-      'square-bowl-4x4': '',
-      'square-bowl-5x5': '',
-      'square-bowl-7x7': '',
-      'square-bowl-2-cp-standard-size': '',
-      'hing-box-transparent-45-ml': '',
-      'hing-box-transparent-65-ml': '',
-      'hing-box-transparent-75-ml': '',
-      'hing-box-transparent-100-ml': '',
-      'hing-box-transparent-150-ml': '',
-      'hing-box-transparent-250-ml': '',
-      'hing-box-transparent-350-ml': '',
-      'hing-box-transparent-500-ml': '',
-      'hing-box-transparent-600-ml': '',
-      'hing-box-transparent-750-ml': '',
-      'hing-box-transparent-1000-ml': '',
-      'hing-box-transparent-1200-ml': '',
-      'hing-box-transparent-1400-ml': '',
-      'hing-box-transparent-1500-ml': '',
-      'hing-box-transparent-2000-ml': '',
-      'high-lid-container-500-ml': '',
-      'high-lid-container-750-ml': '',
-      'high-lid-container-1000-ml': '',
-      'high-lid-container-1500-ml': '',
-      'high-lid-container-2000-ml': '',
-      'milky-container-box-250g': '',
-      'milky-container-box-300g': '',
-      'milky-container-box-400g': '',
-      'milky-container-box-500g': '',
-      'milky-container-box-600g': '',
-      'milky-container-box-750g': '',
-      'milky-container-box-1000g': '',
-      'milky-container-box-1200g': '',
-      'milky-container-box-1400g': '',
-      'square-box-black-250g': '',
-      'square-box-black-400g': '',
-      'square-box-black-500g': '',
-      'square-box-black-650g': '',
-      'square-box-black-750g': '',
-      'square-box-black-1000g': '',
-      'black-box-sectional-2-cp': '',
-      'black-box-sectional-3-cp': '',
-      'black-box-sectional-5-cp': '',
-      'black-box-sectional-8-cp': '',
-      'foil-container-250-ml': '',
-      'foil-container-400-ml': '',
-      'foil-container-600-ml': '',
-      'foil-container-650-ml': '',
-      'foil-container-750-ml': '',
-      'foil-container-1000-ml': '',
-      'cup-container-100-ml': '',
-      'silver-foil-8-mtr': '',
-      'silver-foil-18-mtr': '',
-      'silver-foil-72-sp': '',
-      'silver-foil-72-net': '',
-      'silver-foil-1-kg-gross': '',
-      'silver-foil-1-kg-net': '',
-      'butter-paper-roll-250g': '',
-      'butter-paper-roll-500g': '',
-      'butter-paper-roll-1-kg': '',
-      'butter-paper-roll-20-5-mtr': '',
-      'silver-paper-sheet-8x8': '',
-      'silver-paper-sheet-10x10': '',
-      'silver-paper-sheet-12x12': '',
-      'butter-paper-sheet-8x8': '',
-      'butter-paper-sheet-10x10': '',
-      'butter-paper-sheet-12x12': '',
-      'mithai-silver-paper-box-100g': '',
-      'mithai-silver-paper-box-250g': '',
-      'mithai-silver-paper-box-500g': '',
-      'mithai-silver-paper-box-750g': '',
-      'mithai-silver-paper-box-1-kg': '',
-      'wooden-spoon-plain-140-mm': '',
-      'wooden-spoon-plain-160-mm': '',
-      'wooden-spoon-plain-180-mm': '',
-      'wooden-spoon-plain-65-mm': '',
-      'wooden-fork-140-mm': '',
-      'wooden-fork-160-mm': '',
-      'bio-spoon-small': '',
-      'bio-spoon-big': '',
-      'bio-fork-small': '',
-      'bio-fork-big': '',
-      'shower-cap-non-woven': '',
-      'cook-cap-non-woven': '',
-      'apron-non-woven': '',
-      'tissue-paper-23x23': '',
-      'tissue-paper-27x27-l': '',
-      'tissue-paper-27x27-h': '',
-      'tissue-paper-33x33': '',
-      'tissue-paper-45x45': '',
-      'tissue-paper-66x66': '',
-      'car-napkin-1-ply': '',
-      'car-napkin-2-ply': '',
-      'wet-tissue-1-pcs-x-100-n': '',
-      'wet-tissue-25-n-x-1-pack': '',
-      'garbage-bag-24x36': '',
-      'garbage-bag-30x50': '',
-      'garbage-bag-box-17x19': '',
-      'garbage-bag-box-19x21': '',
-      'garbage-bag-box-24x36': '',
-      'garbage-bag-box-30x50': '',
-      'boi-theli-plastic-bags-8x10': '',
-      'boi-theli-plastic-bags-9x13': '',
-      'boi-theli-plastic-bags-13x16': '',
-      'boi-theli-plastic-bags-16x20': '',
-      'boi-theli-plastic-bags-20x26': '',
-      'boi-lldp-4x6': '',
-      'boi-lldp-5x7': '',
-      'boi-lldp-6x10': '',
-      'boi-lldp-7x12': '',
-      'boi-lldp-8x16': '',
-      'boi-kirana-bags-250g': '',
-      'boi-kirana-bags-500g': '',
-      'boi-kirana-bags-1000g': '',
-      'boi-kirana-bags-2-kg': '',
-      'boi-kirana-bags-3-kg': '',
-      'boi-kirana-bags-5-kg': '',
-      'boi-kirana-bags-10-kg': ''
-    };
     function categoryTiers(category){
       if(['Cup & Glasses'].includes(category)) return [{min:1,price:50},{min:100,price:45},{min:500,price:35}];
       if(['Bio & Disposable Plates'].includes(category)) return [{min:1,price:150},{min:100,price:145},{min:500,price:120}];
@@ -415,7 +259,7 @@
           id,
           name: variantOverride.name || `${seriesName} ${key}`,
           category,
-          image: variantOverride.image || PRODUCT_IMAGE_OVERRIDES[id] || imageFrom(`${query} ${seriesName} ${key}`),
+          image: variantOverride.image || getProductImage(category, seriesName, key) || imageFrom(`${query} ${seriesName} ${key}`),
           stock: Number.isFinite(variantOverride.stock) ? variantOverride.stock : (120 + (idx * 17) % 180),
           tiers: Array.isArray(variantOverride.tiers) ? variantOverride.tiers : categoryTiers(category)
         };
@@ -433,8 +277,8 @@
         query: 'paper cup disposable',
         sizes: ['100 ML','150 ML'],
         variants: {
-          '100 ML': { image: 'https://i.postimg.cc/yYksSfV8/ripple-glass.jpg', stock: 240, tiers:[{min:1,price:45},{min:100,price:41},{min:500,price:36}] },
-          '150 ML': { image: 'https://i.postimg.cc/yYksSfV8/ripple-glass.jpg', stock: 190, tiers:[{min:1,price:52},{min:100,price:47},{min:500,price:40}] }
+          '100 ML': { image: '', stock: 240, tiers:[{min:1,price:45},{min:100,price:41},{min:500,price:36}] },
+          '150 ML': { image: '', stock: 190, tiers:[{min:1,price:52},{min:100,price:47},{min:500,price:40}] }
         }
       },
       { category:'Cup & Glasses', seriesName:'Long Glass', query:'disposable long glass', sizes:['180 ML','200 ML','250 ML','300 ML','350 ML'] },
@@ -484,6 +328,263 @@
       { category:'Tissues & Bags', seriesName:'Boi LLDP', query:'lldp bag', sizes:['4x6','5x7','6x10','7x12','8x16'] },
       { category:'Tissues & Bags', seriesName:'Boi Kirana Bags', query:'kirana grocery bag', sizes:['250g','500g','1000g','2 Kg','3 Kg','5 Kg','10 Kg'] }
     ];
+
+    const PRODUCT_IMAGE_SETTINGS = {
+      // Sirf yahan image URL paste karo: category -> seriesName -> size
+      'Cup & Glasses': {
+        'Paper Cup (Nestle)': {
+          '100 ML': '',
+          '150 ML': ''
+        },
+        'Long Glass': {
+          '180 ML': '',
+          '200 ML': '',
+          '250 ML': '',
+          '300 ML': '',
+          '350 ML': ''
+        },
+        'Bio Cup': {
+          '200 ML': '',
+          '250 ML': '',
+          '300 ML': '',
+          '350 ML': ''
+        },
+        'Ripple Glass (Dip)': {
+          '100 ML': '',
+          '130 ML': '',
+          '150 ML': '',
+          '200 ML': '',
+          '250 ML': '',
+          '300 ML': ''
+        }
+      },
+      'Bio & Disposable Plates': {
+        'Bio Dish': {
+          '7 NO': '',
+          '9 NO': '',
+          '10 NO': ''
+        },
+        'Bio Dish (Regular)': {
+          '9 NO': '',
+          '10 NO': '',
+          '11 NO': '',
+          '12 NO': ''
+        },
+        'Bio Dish (3 CP)': {
+          '9 NO': '',
+          '10 NO': ''
+        },
+        'Bio Dish (4 CP)': {
+          '11 NO': '',
+          '12 NO': ''
+        },
+        'Square Dish': {
+          '10 NO': ''
+        },
+        'Square Dish (3 CP)': {
+          '9 NO': ''
+        },
+        'Square Dish (5 CP)': {
+          'Standard Size': ''
+        }
+      },
+      'Bowls & Containers': {
+        'Bowl (Bio Cup)': {
+          '65 ML': ''
+        },
+        'Bowl (Bio)': {
+          '180 ML': '',
+          '240 ML': '',
+          '350 ML': ''
+        },
+        'Square Bowl': {
+          '4x4': '',
+          '5x5': '',
+          '7x7': ''
+        },
+        'Square Bowl (2 CP)': {
+          'Standard Size': ''
+        },
+        'Hing Box (Transparent)': {
+          '45 ML': '',
+          '65 ML': '',
+          '75 ML': '',
+          '100 ML': '',
+          '150 ML': '',
+          '250 ML': '',
+          '350 ML': '',
+          '500 ML': '',
+          '600 ML': '',
+          '750 ML': '',
+          '1000 ML': '',
+          '1200 ML': '',
+          '1400 ML': '',
+          '1500 ML': '',
+          '2000 ML': ''
+        },
+        'High Lid Container': {
+          '500 ML': '',
+          '750 ML': '',
+          '1000 ML': '',
+          '1500 ML': '',
+          '2000 ML': ''
+        },
+        'Milky Container (Box)': {
+          '250g': '',
+          '300g': '',
+          '400g': '',
+          '500g': '',
+          '600g': '',
+          '750g': '',
+          '1000g': '',
+          '1200g': '',
+          '1400g': ''
+        },
+        'Square Box (Black)': {
+          '250g': '',
+          '400g': '',
+          '500g': '',
+          '650g': '',
+          '750g': '',
+          '1000g': ''
+        },
+        'Black Box (Sectional)': {
+          '2 CP': '',
+          '3 CP': '',
+          '5 CP': '',
+          '8 CP': ''
+        }
+      },
+      'Foil & Food Packaging': {
+        'Foil Container': {
+          '250 ML': '',
+          '400 ML': '',
+          '600 ML': '',
+          '650 ML': '',
+          '750 ML': '',
+          '1000 ML': ''
+        },
+        'Cup Container': {
+          '100 ML': ''
+        },
+        'Silver Foil': {
+          '8 Mtr': '',
+          '18 Mtr': '',
+          '72 SP': '',
+          '72 Net': '',
+          '1 Kg Gross': '',
+          '1 Kg Net': ''
+        },
+        'Butter Paper (Roll)': {
+          '250g': '',
+          '500g': '',
+          '1 Kg': '',
+          '20+5 Mtr': ''
+        },
+        'Silver Paper (Sheet)': {
+          '8x8': '',
+          '10x10': '',
+          '12x12': ''
+        },
+        'Butter Paper (Sheet)': {
+          '8x8': '',
+          '10x10': '',
+          '12x12': ''
+        },
+        'Mithai Silver Paper Box': {
+          '100g': '',
+          '250g': '',
+          '500g': '',
+          '750g': '',
+          '1 Kg': ''
+        }
+      },
+      'Cutlery & Accessories': {
+        'Wooden Spoon (Plain)': {
+          '140 MM': '',
+          '160 MM': '',
+          '180 MM': '',
+          '65 MM': ''
+        },
+        'Wooden Fork': {
+          '140 MM': '',
+          '160 MM': ''
+        },
+        'Bio Spoon': {
+          'Small': '',
+          'Big': ''
+        },
+        'Bio Fork': {
+          'Small': '',
+          'Big': ''
+        },
+        'Shower Cap': {
+          'Non-woven': ''
+        },
+        'Cook Cap': {
+          'Non-woven': ''
+        },
+        'Apron': {
+          'Non-woven': ''
+        }
+      },
+      'Tissues & Bags': {
+        'Tissue Paper': {
+          '23x23': '',
+          '27x27 (L)': '',
+          '27x27 (H)': '',
+          '33x33': '',
+          '45x45': '',
+          '66x66': ''
+        },
+        'Car Napkin': {
+          '1 Ply': '',
+          '2 Ply': ''
+        },
+        'Wet Tissue': {
+          '1 Pcs x 100 N': '',
+          '25 N x 1 Pack': ''
+        },
+        'Garbage Bag': {
+          '24x36': '',
+          '30x50': ''
+        },
+        'Garbage Bag (Box)': {
+          '17x19': '',
+          '19x21': '',
+          '24x36': '',
+          '30x50': ''
+        },
+        'Boi Theli (Plastic Bags)': {
+          '8x10': '',
+          '9x13': '',
+          '13x16': '',
+          '16x20': '',
+          '20x26': ''
+        },
+        'Boi LLDP': {
+          '4x6': '',
+          '5x7': '',
+          '6x10': '',
+          '7x12': '',
+          '8x16': ''
+        },
+        'Boi Kirana Bags': {
+          '250g': '',
+          '500g': '',
+          '1000g': '',
+          '2 Kg': '',
+          '3 Kg': '',
+          '5 Kg': '',
+          '10 Kg': ''
+        }
+      }
+    };
+
+    function getProductImage(category, seriesName, size){
+      return PRODUCT_IMAGE_SETTINGS?.[category]?.[seriesName]?.[size] || '';
+    }
+
 
     const products = PRODUCT_CATALOG.flatMap(item =>
       createSeries(item.category, item.seriesName, item.sizes, item.query, item.variants)
