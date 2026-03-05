@@ -144,7 +144,7 @@
       <h3 class="text-2xl font-extrabold mb-3">Visit Our Shop</h3>
       <div class="rounded-2xl overflow-hidden border bg-white">
         <iframe title="Shop Location Map" class="w-full h-80" loading="lazy" allowfullscreen
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d918.128940122035!2d72.63732540174827!3d23.004827666533586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e872d2f71fefb%3A0xf3248d09e89dd0dc!2sVeer%20Mahadev%20Plastic!5e0!3m2!1sen!2sin!4v1772378947905!5m2!1sen!2sin" width="200" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d918.128940122035!2d72.63732540174827!3d23.004827666533586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e872d2f71fefb%3A0xf3248d09e89dd0dc!2sVeer%20Mahadev%20Plastic!5e0!3m2!1sen!2sin!4v1772378947905!5m2!1sen!2sin" width="200" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </section>
   </main>
@@ -244,10 +244,10 @@
     function categoryTiers(category){
       if(['Cup & Glasses'].includes(category)) return [{min:1,price:50},{min:100,price:45},{min:500,price:35}];
       if(['Bio & Disposable Plates'].includes(category)) return [{min:1,price:150},{min:100,price:145},{min:500,price:120}];
-      if(['Foil & Food Packaging'].includes(category)) return [{min:1,price:180},{min:100,price:170},{min:250,price:160}];
+      if(['Foil & Food Packaging'].includes(category)) return [{min:1,price:18},{min:200,price:17},{min:500,price:16}];
       if(['Cutlery & Accessories'].includes(category)) return [{min:1,price:50},{min:100,price:45},{min:500,price:35}];
       if(['Bowls & Containers'].includes(category)) return [{min:1,price:150},{min:100,price:145},{min:500,price:120}];
-      if(['Tissues & Bags'].includes(category)) return [{min:1,price:180},{min:100,price:170},{min:250,price:160}];
+      if(['Tissues & Bags'].includes(category)) return [{min:1,price:18},{min:200,price:17},{min:500,price:16}];
       return [{min:1,price:35},{min:50,price:32},{min:200,price:28}];
     }
 
@@ -573,9 +573,9 @@
     // Repeat order
     document.getElementById('repeatOrder').addEventListener('click', ()=>{
       const lastOrder = [
-        {id:'cup-150', qty:200},
-        {id:'cont-500', qty:80},
-        {id:'tissue-100', qty:25},
+        {id:'paper-cup-nestle-150-ml', qty:200},
+        {id:'hing-box-transparent-500-ml', qty:80},
+        {id:'tissue-paper-23x23', qty:25},
       ];
       for(const l of lastOrder){
         const p = products.find(x=>x.id===l.id);
