@@ -69,6 +69,7 @@
     </div>
   </header>
 
+
         <button id="portalDownloadBtn" class="inline-block px-4 py-2 rounded-lg border border-emerald-300 text-emerald-700 font-semibold">Download Full Price List (PDF)</button>
         <p id="portalStatus" class="text-sm font-medium text-slate-600">Please login to access B2B downloads.</p>
         <div id="dashboard" class="mt-3 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
@@ -120,7 +121,7 @@
         <p>Email: veermahadevplastic@gmail.com</p>
       </div>
       <div>
-@@ -218,127 +258,493 @@
+
       </form>
       <p id="loginMsg" class="text-sm mt-2 font-semibold"></p>
     </div>
@@ -148,10 +149,10 @@
     }
     const RAW_PRICE_DATA = `
 SR CORNSTARCH MEAL TRAY PACKING RATE BOX RATE PCS
-1 3CP MEAL TRAY WITH LID (https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg) 400 4600 11.5
-2 4CP MEAL TRAY WITH LID (https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg) 300 4890 16.3
-3 5CP MEAL TRAY WITH LID (https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg) 300 5055 16.85
-4 8CP MEAL TRAY WITH LID (https://i.postimg.cc/dQWJ3McX/3-CP-plate.jpg) 200 4700 23.5
+1 3CP MEAL TRAY WITH LID (7041) 400 4600 11.5
+2 4CP MEAL TRAY WITH LID (7043) 300 4890 16.3
+3 5CP MEAL TRAY WITH LID (7045) 300 5055 16.85
+4 8CP MEAL TRAY WITH LID (7048) 200 4700 23.5
 
 SR CORNSTARCH ROUND / RECTANGLE CONTAINER PACKING RATE BOX RATE PCS
 1 350ML ROUND CONTAINER WITH LID (7063) 800 3760 4.7
@@ -529,7 +530,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 25 STRAWBERYY PUNNET 200GRM - (1642) 1600 3120 1.95
 26 STRAWBERYY PUNNET 200GRM - (1642B) 1600 3200 2
 27 PUNNET STRAWBERRY -250GRM 117X117X67 (1644) 1600 3200 2
-28 PUNNET MULBERRY 117X117X67 () 1575 4803.75 3.05
+28 PUNNET MULBERRY 117X117X67 (1645) 1575 4803.75 3.05
 29 PUNNET BLUEBERRY SQUARE (1648) 1500 4680 3.12
 30 PUNNET AVOCADO -2PC (1652) 1050 4882.5 4.65
 `;
@@ -669,6 +670,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(q.includes('b2b') || q.includes('login') || q.includes('portal')) return 'Use the B2B Portal Login button on top. After login, you can download the wholesale PDF and manage repeat business orders.';
       if(q.includes('cart') || q.includes('order')) return `Your current cart has ${cartTotalQty()} items with subtotal ₹${cartTotalAmount().toFixed(2)}. You can open cart and place order via WhatsApp.`;
 
+
     // Shipping calculator
     document.getElementById('calcShip').addEventListener('click',()=>{
       const w = Number(document.getElementById('weight').value||0);
@@ -679,7 +681,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(!w && !(l&&wi&&h)){
         document.getElementById('shipOut').textContent = 'Please enter weight or dimensions.';
         return;
-      }
+      
       const volumetric = (l*wi*h)/5000;
       const chargeable = Math.max(w, volumetric || 0);
       const cost = Math.max(60, chargeable * 32 * zone);
