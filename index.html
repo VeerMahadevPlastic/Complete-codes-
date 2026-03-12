@@ -123,7 +123,9 @@
     <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
       <div class="flex items-center justify-between flex-wrap gap-3">
         <h3 class="text-2xl font-extrabold">Products</h3>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
+          <input id="productSearch" class="border rounded-lg px-3 py-2 text-sm" placeholder="Search product name..." />
+          <button id="searchBtn" class="border rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-50">Search</button>
           <span class="text-sm text-slate-600">Filter:</span>
           <select id="categoryFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
         </div>
@@ -237,7 +239,7 @@
         <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
       </div>
       <div class="grid grid-cols-2 gap-2 mt-3">
-        <button id="waCart" class="bg-emerald-700 text-white py-2 rounded-lg font-semibold">WhatsApp Order</button>
+        <button id="waCart" disabled class="bg-emerald-700 text-white py-2 rounded-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed">WhatsApp Order</button>
         <button id="buyNowCart" class="border py-2 rounded-lg font-semibold">Buy Now</button>
       </div>
     </div>
@@ -275,18 +277,18 @@
   </div>
 
   <script>
-    const imageFrom = (query) => `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}`;
+    const PRICE_INCREMENT = 1;
+    const imageFrom = () => './images/plate.jpg';
 
     function slugify(value){
       return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
     }
     const RAW_PRICE_DATA = `
-    const PRODUCT_IMAGE_OVERRIDES = {
 SR CORNSTARCH MEAL TRAY PACKING RATE BOX RATE PCS
-1 3CP MEAL TRAY WITH LID (7041) 400 4600 11.5,<3CP MEAL TRAY WITH LID (7041)>||image'https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg'
-2 4CP MEAL TRAY WITH LID (7043) 300 4890 16.3<4CP MEAL TRAY WITH LID (7041)>||image'https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg'
-3 5CP MEAL TRAY WITH LID (7045) 300 5055 16.85<5CP MEAL TRAY WITH LID (7041)>||image'https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg'
-4 8CP MEAL TRAY WITH LID (7048) 200 4700 23.5<8CP MEAL TRAY WITH LID (7041)>||image'https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg'
+1 3CP MEAL TRAY WITH LID (7041) 400 4600 11.5 || https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg
+2 4CP MEAL TRAY WITH LID (7043) 300 4890 16.3 || https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg
+3 5CP MEAL TRAY WITH LID (7045) 300 5055 16.85 || https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg
+4 8CP MEAL TRAY WITH LID (7048) 200 4700 23.5 || https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg
 
 SR CORNSTARCH ROUND / RECTANGLE CONTAINER PACKING RATE BOX RATE PCS
 1 350ML ROUND CONTAINER WITH LID (7063) 800 3760 4.7
@@ -673,7 +675,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     // Per-product image URLs (id-wise). Add/replace links here.
     // Example: '3cp-meal-tray-with-lid-7041': 'https://...'
     const PRODUCT_IMAGE_OVERRIDES = {
-      // Add custom image URLs here for each product ID.
+      // Example: '3cp-meal-tray-with-lid-7041': 'https://your-image.jpg'
     };
 
     function parsePriceData(rawText){
@@ -688,13 +690,17 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         }
         if (!/^\d+\s+/.test(line)) continue;
 
-        const [linePart, imagePart] = line.split('||').map(v => (v || '').trim());
+        const [linePart, imagePartRaw] = line.split('||').map(v => (v || '').trim());
+        const imagePart = (imagePartRaw || '').replace(/^image\s*['"]?/i, '').replace(/['"]$/,'').trim();
         const noSr = linePart.replace(/^\d+\s+/, '').trim();
         const mLast = noSr.match(/(\d+(?:\.\d+)?)\s*$/);
         if (!mLast) continue;
 
         const pcs = Number(mLast[1]);
-        const updatedPcs = Number.isFinite(pcs) ? Number((pcs + 1).toFixed(2)) : 1;
+        const updatedPcs = Number.isFinite(pcs) ? Number((pcs + PRICE_INCREMENT).toFixed(2)) : PRICE_INCREMENT;
+        const tier500 = Number((updatedPcs * 0.92).toFixed(2));
+        const tier200 = Number((tier500 + 1).toFixed(2));
+        const tier100 = Number((tier500 + 2).toFixed(2));
 
         let name = noSr.slice(0, mLast.index).trim();
         name = name
@@ -710,7 +716,11 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           category: section,
           image: imagePart || '',
           stock: 200,
-          tiers: [{min:1, price: updatedPcs}]
+          tiers: [
+            {min:100, price: tier100},
+            {min:200, price: tier200},
+            {min:500, price: tier500}
+          ]
         });
       }
       return items;
@@ -729,6 +739,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     const categories = ['All', ...new Set(products.map(p => p.category))];
     let activeCategory = 'All';
+    let searchTerm = '';
+    let filteredProducts = [...products];
     let cart = JSON.parse(localStorage.getItem('vmpCart') || '[]');
     let b2bLoggedIn = false;
 
@@ -738,6 +750,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     const cartCount = document.getElementById('cartCount');
     const cartItems = document.getElementById('cartItems');
     const cartSubtotal = document.getElementById('cartSubtotal');
+    const productSearch = document.getElementById('productSearch');
+    const searchBtn = document.getElementById('searchBtn');
+    const waCartBtn = document.getElementById('waCart');
 
     function priceForQty(tiers, qty){
       let unit = tiers[0].price;
@@ -759,23 +774,32 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       categoryFilter.value = activeCategory;
     }
 
+    function applyProductFilters(){
+      filteredProducts = products.filter(p => {
+        const categoryOk = activeCategory === 'All' || p.category === activeCategory;
+        const searchOk = !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase());
+        return categoryOk && searchOk;
+      });
+      renderProducts();
+    }
+
     function renderProducts(){
-      const filtered = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
-      productGrid.innerHTML = filtered.map(p => `
+      productGrid.innerHTML = filteredProducts.map(p => `
         <article class="bg-white border rounded-2xl overflow-hidden">
-          <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover"/>
+          <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
           <div class="p-4 space-y-2">
             <div class="flex justify-between gap-2 items-start"><h4 class="font-bold">${p.name}</h4>${stockBadge(p.stock)}</div>
             <p class="text-xs text-slate-500">Category: ${p.category}</p>
-            <p class="text-xs text-slate-500">Tier Pricing: ${p.tiers.map(t => `${t.min}+ ₹${t.price}`).join(' | ')}</p>
+            <p class="text-xs text-slate-500">Tier Pricing (MOQ): ${p.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')}</p>
             <div class="flex gap-2 items-center">
-              <input id="qty-${p.id}" type="number" min="1" value="1" class="w-20 border rounded-lg px-2 py-1.5 text-sm"/>
+              <input id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-24 border rounded-lg px-2 py-1.5 text-sm"/>
               <button onclick="addToCart('${p.id}')" class="flex-1 bg-emerald-700 text-white rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Add to Cart</button>
               <button onclick="buyNow('${p.id}')" class="flex-1 border border-emerald-700 text-emerald-700 rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Buy Now</button>
             </div>
+            <p class="text-[11px] text-slate-500">Image add format in data: <code>Product line || https://image-url.jpg</code></p>
           </div>
         </article>
-      `).join('') || '<p class="text-sm text-slate-600">No products in this category right now.</p>';
+      `).join('') || '<p class="text-sm text-slate-600">No products found. Try another category or search keyword.</p>';
     }
 
     function saveCart(){
@@ -816,7 +840,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     window.addToCart = function(id){
       const p = products.find(x => x.id === id);
-      const qty = Math.max(1, Number(document.getElementById(`qty-${id}`).value || 1));
+      const qty = Math.max(100, Number(document.getElementById(`qty-${id}`).value || 100));
       const unit = priceForQty(p.tiers, qty);
       const existing = cart.find(c => c.id === id && c.unit === unit);
       if(existing) existing.qty += qty;
@@ -837,6 +861,14 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return `Hello Veer Mahadev Plastic,%0AName: ${customerName}%0AAddress: ${customerAddress}%0A%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
     }
 
+    function updateWhatsappButton(){
+      const name = (document.getElementById('customerName')?.value || '').trim();
+      const address = (document.getElementById('customerAddress')?.value || '').trim();
+      waCartBtn.disabled = !(name && address);
+      waCartBtn.classList.toggle('opacity-40', waCartBtn.disabled);
+      waCartBtn.classList.toggle('cursor-not-allowed', waCartBtn.disabled);
+    }
+
     function getCustomerDetails(){
       const name = (document.getElementById('customerName')?.value || '').trim();
       const address = (document.getElementById('customerAddress')?.value || '').trim();
@@ -846,6 +878,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         return null;
       }
       msg.textContent = '';
+      updateWhatsappButton();
       return {name, address};
     }
 
@@ -914,7 +947,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         return;
       }
       const a = document.createElement('a');
-      a.href = './assets/wholesale-price-list.pdf';
+      a.href = './wholesale-price-list.pdf';
       a.download = 'wholesale-price-list.pdf';
       document.body.appendChild(a);
       a.click();
@@ -928,12 +961,25 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(!target) return;
       activeCategory = target.dataset.cat;
       categoryFilter.value = activeCategory;
-      renderProducts();
+      applyProductFilters();
       document.getElementById('shop').scrollIntoView({behavior:'smooth'});
     });
     categoryFilter.addEventListener('change', ()=>{
       activeCategory = categoryFilter.value;
-      renderProducts();
+      applyProductFilters();
+    });
+
+    searchBtn.addEventListener('click', ()=>{
+      searchTerm = productSearch.value.trim();
+      applyProductFilters();
+    });
+
+    productSearch.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        searchTerm = productSearch.value.trim();
+        applyProductFilters();
+      }
     });
 
     // Cart controls
@@ -967,7 +1013,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     document.getElementById('repeatOrder').addEventListener('click', ()=>{
       const lastOrder = [
         {id:'3cp-meal-tray-with-lid-7041', qty:200},
-        {id:'500ml-round-container-with-lid-7065', qty:80},
+        {id:'500ml-round-container-with-lid-7065', qty:500},
         {id:'160mm-spoon-7055', qty:250},
       ];
       for(const l of lastOrder){
@@ -988,14 +1034,19 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     function aiReply(text){
       const q = text.toLowerCase();
-      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'We offer tiered pricing. The more quantity you order, the lower per-unit price you get. You can also submit a bulk inquiry for a custom quote.';
-      if(q.includes('shipping') || q.includes('delivery') || q.includes('dispatch')) return 'Shipping is based on dead weight vs volumetric weight (higher one applies). Local and interstate zones have different rates.';
-      if(q.includes('stock') || q.includes('available')) return 'Products show In Stock, Low Stock, or Out of Stock labels. For urgent bulk stock, please contact us on WhatsApp.';
-      if(q.includes('eco') || q.includes('biodegradable')) return 'Yes, we have an eco-friendly biodegradable range including meal sets, cutlery, cups, and packaging.';
-      if(q.includes('b2b') || q.includes('login') || q.includes('portal')) return 'Use the B2B Portal Login button on top. After login, you can download the wholesale PDF and manage repeat business orders.';
-      if(q.includes('cart') || q.includes('order')) return `Your current cart has ${cartTotalQty()} items with subtotal ₹${cartTotalAmount().toFixed(2)}. You can open cart and place order via WhatsApp.`;
-      if(q.includes('about') || q.includes('company')) return 'Veer Mahadev Plastic is a family business started in 2022 and now serves 10,000+ customers monthly with hygiene-focused disposable products.';
-      return 'I can help with pricing, stock, shipping, wholesale inquiry, B2B portal, and order support. Please ask your specific question.';
+      const productMatch = products.find(p => q.includes(p.name.toLowerCase()));
+      if(productMatch){
+        return `${productMatch.name} ka rate: ${productMatch.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')}. Category: ${productMatch.category}.`;
+      }
+      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'Bulk tier pricing active hai: 100+, 200+, 500+ quantity slabs. 500+ sabse kam rate (minimum price) rakha gaya hai.';
+      if(q.includes('shipping') || q.includes('delivery') || q.includes('dispatch')) return 'Shipping dead weight vs volumetric weight (jo zyada ho) par calculate hoti hai. Local/Gujarat/Interstate zones available hain.';
+      if(q.includes('stock') || q.includes('available')) return 'Product cards par live stock badge dikh raha hai: In Stock, Low Stock, Out of Stock.';
+      if(q.includes('eco') || q.includes('biodegradable')) return 'Haan ji, eco-friendly biodegradable range available hai. Aap "Eco" ya product name type karein to rate details mil jayengi.';
+      if(q.includes('b2b') || q.includes('login') || q.includes('portal')) return 'Top bar se B2B login karke full wholesale price list PDF directly download kar sakte hain.';
+      if(q.includes('cart') || q.includes('order') || q.includes('whatsapp')) return `Cart summary: ${cartTotalQty()} qty items | Subtotal ₹${cartTotalAmount().toFixed(2)}. Name + Address भरने ke baad WhatsApp Order button active ho jata hai.`;
+      if(q.includes('search')) return 'Products bahut saare hain, isliye Shop section mein search box + button diya gaya hai. Product name type karke Search karein.';
+      if(q.includes('about') || q.includes('company')) return 'Veer Mahadev Plastic 2022 se wholesale disposable products supply kar raha hai, Ahmedabad aur Gujarat mein strong delivery support ke saath.';
+      return 'Main website related sab help kar sakta hoon: product rate, MOQ, stock, shipping, B2B login, PDF download, cart aur WhatsApp order.';
     }
 
     document.getElementById('botSend').onclick = ()=>{
@@ -1011,8 +1062,10 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     // initialize
     renderCategories();
-    renderProducts();
+    applyProductFilters();
     renderCart();
+    ['customerName','customerAddress'].forEach(id => document.getElementById(id).addEventListener('input', updateWhatsappButton));
+    updateWhatsappButton();
   </script>
 </body>
 </html>
