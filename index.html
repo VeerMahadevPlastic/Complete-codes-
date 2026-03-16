@@ -653,7 +653,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
               <button onclick="addToCart('${p.id}')" class="flex-1 bg-emerald-700 text-white rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Add to Cart</button>
               <button onclick="buyNow('${p.id}')" class="flex-1 border border-emerald-700 text-emerald-700 rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Buy Now</button>
             </div>
-            <p class="text-[11px] text-slate-500">Image add format in data: <code>Product line || https://image-url.jpg</code></p>
           </div>
         </article>
       `).join('') || '<p class="text-sm text-slate-600">No products found. Try another category or search keyword.</p>';
