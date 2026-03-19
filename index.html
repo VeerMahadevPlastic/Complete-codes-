@@ -956,8 +956,14 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       const text = input.value.trim();
       if(!text) return;
       const msgs = document.getElementById('botMsgs');
-      msgs.innerHTML += `<div class="bg-slate-100 rounded-lg p-2">${text}</div>`;
-      msgs.innerHTML += `<div class="bg-emerald-50 rounded-lg p-2">${aiReply(text)}</div>`;
+      const userMsg = document.createElement('div');
+      userMsg.className = 'bg-slate-100 rounded-lg p-2';
+      userMsg.textContent = text;
+      msgs.appendChild(userMsg);
+      const botMsg = document.createElement('div');
+      botMsg.className = 'bg-emerald-50 rounded-lg p-2';
+      botMsg.textContent = aiReply(text);
+      msgs.appendChild(botMsg);
       msgs.scrollTop = msgs.scrollHeight;
       input.value = '';
     };
