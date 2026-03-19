@@ -1,0 +1,13 @@
+diff --git a/icons/icon-192.svg b/icons/icon-192.svg
+new file mode 100644
+index 0000000000000000000000000000000000000000..8c15464a3a10edf0dced7ef3e4151776790d00ec
+--- /dev/null
++++ b/icons/icon-192.svg
+@@ -0,0 +1,7 @@
++<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
++  <rect width="192" height="192" rx="42" fill="#0a221d"/>
++  <rect x="10" y="10" width="172" height="172" rx="34" fill="#0f5c4a" stroke="#d4af37" stroke-width="4"/>
++  <circle cx="96" cy="68" r="24" fill="#d4af37" opacity="0.95"/>
++  <path d="M52 120c0-20 18-36 44-36s44 16 44 36v16H52z" fill="#f5efe2"/>
++  <text x="96" y="156" text-anchor="middle" font-size="22" font-family="Arial, sans-serif" font-weight="700" fill="#d4af37">VMP</text>
++</svg>
