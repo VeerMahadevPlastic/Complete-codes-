@@ -1,11 +1,11 @@
 {
   "name": "Veer Mahadev Plastic",
   "short_name": "Veer Mahadev",
-  "description": "Wholesale disposable items Ahmedabad PWA for quick bulk ordering.",
+  "description": "Veer Mahadev Plastic wholesale disposable app for Ahmedabad buyers.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f7f4ec",
-  "theme_color": "#0f5c4a",
+  "background_color": "#f5f8f5",
+  "theme_color": "#047857",
   "orientation": "portrait",
   "icons": [
     {

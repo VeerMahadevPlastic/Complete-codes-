@@ -1,11 +1,14 @@
-const CACHE_NAME = 'veer-mahadev-pwa-v1';
+const CACHE_NAME = 'veer-mahadev-app-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './sw.js',
+  './icons/logo.svg',
   './icons/icon-192.svg',
-  './icons/icon-512.svg'
+  './icons/icon-512.svg',
+  './images/plate.jpg',
+  './wholesale-price-list.pdf'
 ];
 
 self.addEventListener('install', (event) => {
@@ -28,8 +31,8 @@ self.addEventListener('fetch', (event) => {
       if (cached) return cached;
       return fetch(event.request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           return response;
         })
         .catch(() => caches.match('./index.html'));
