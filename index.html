@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#047857" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Veer Mahadev" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
   <meta name="description" content="Veer Mahadev Plastic - Leading manufacturer & wholesaler of disposable plates, paper cups, biodegradable glasses, and silver foil in Ahmedabad. Best wholesale prices for catering and events.">
   <meta name="keywords" content="disposable plate dealer Ahmedabad, paper cup manufacturer Gujarat, biodegradable plates shop, disposable items wholesaler near me, silver foil supplier, wholesale plastic glass dealer, Veer Mahadev Plastic, disposable shop Ahmedabad">
 
@@ -49,9 +56,29 @@
     html { scroll-behavior: smooth; }
     .glass { backdrop-filter: blur(8px); }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .app-shell { min-height: 100vh; padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+    .mobile-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+    .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); }
+    .logo-card { animation: logoFloat 2.4s ease-in-out infinite; }
+    .logo-glow { animation: glowPulse 2.4s ease-in-out infinite; }
+    .logo-shimmer { position: relative; overflow: hidden; }
+    .logo-shimmer::after { content: ""; position: absolute; inset: -40%; background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.42) 50%, transparent 65%); animation: shimmer 2.8s linear infinite; }
+    @keyframes logoFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); } }
+    @keyframes glowPulse { 0%,100% { opacity: 0.45; transform: scale(0.96); } 50% { opacity: 0.95; transform: scale(1.03); } }
+    @keyframes shimmer { 0% { transform: translateX(-120%) rotate(12deg); } 100% { transform: translateX(120%) rotate(12deg); } }
   </style>
 </head>
 <body class="bg-[#f5f8f5] text-slate-800">
+  <div id="logoSplash" class="logo-splash fixed inset-0 z-[120] flex items-center justify-center px-6 transition-opacity duration-700">
+    <div class="relative text-center">
+      <div class="logo-glow absolute inset-0 rounded-[3rem] bg-emerald-200/80 blur-3xl"></div>
+      <div class="logo-card logo-shimmer relative rounded-[3rem] border-4 border-amber-300 bg-white/75 p-4 shadow-2xl">
+        <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" class="h-64 w-64 max-w-full rounded-[2.2rem] object-contain bg-white" />
+      </div>
+      <p class="mt-6 text-sm font-semibold tracking-[0.35em] text-emerald-700">WELCOME TO THE APP</p>
+    </div>
+  </div>
+  <div class="app-shell">
   <header class="sticky top-0 z-50 bg-white/95 glass border-b border-emerald-100">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
       <a href="#home" class="text-2xl font-extrabold text-emerald-700">Veer Mahadev Plastic</a>
@@ -123,7 +150,9 @@
     <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
       <div class="flex items-center justify-between flex-wrap gap-3">
         <h3 class="text-2xl font-extrabold">Products</h3>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
+          <input id="productSearch" class="border rounded-lg px-3 py-2 text-sm" placeholder="Search product name..." />
+          <button id="searchBtn" class="border rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-50">Search</button>
           <span class="text-sm text-slate-600">Filter:</span>
           <select id="categoryFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
         </div>
@@ -189,6 +218,15 @@
     </section>
   </main>
 
+  <nav class="mobile-nav fixed bottom-0 left-0 right-0 z-40 border-t border-emerald-100 bg-white/95 backdrop-blur lg:hidden">
+    <div class="mx-auto grid max-w-7xl grid-cols-4 px-4 py-2 text-[11px] font-semibold text-slate-600">
+      <a href="#home" class="flex flex-col items-center gap-1 rounded-xl py-2 text-emerald-700"><span>🏠</span><span>Home</span></a>
+      <a href="#categories" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📂</span><span>Products</span></a>
+      <a href="#wholesale" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>🛒</span><span>Order</span></a>
+      <a href="#about" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📞</span><span>Contact</span></a>
+    </div>
+  </nav>
+
   <footer class="border-t bg-white">
     <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-4 gap-6 text-sm">
       <div>
@@ -237,7 +275,7 @@
         <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
       </div>
       <div class="grid grid-cols-2 gap-2 mt-3">
-        <button id="waCart" class="bg-emerald-700 text-white py-2 rounded-lg font-semibold">WhatsApp Order</button>
+        <button id="waCart" disabled class="bg-emerald-700 text-white py-2 rounded-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed">WhatsApp Order</button>
         <button id="buyNowCart" class="border py-2 rounded-lg font-semibold">Buy Now</button>
       </div>
     </div>
@@ -275,18 +313,33 @@
   </div>
 
   <script>
-    const imageFrom = (query) => `https://source.unsplash.com/800x600/?${encodeURIComponent(query)}`;
+    let deferredPrompt;
+
+    const PRICE_INCREMENT = 1;
+    const imageFrom = () => './images/plate.jpg';
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      deferredPrompt = event;
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
 
     function slugify(value){
       return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
     }
     const RAW_PRICE_DATA = `
-    const PRODUCT_IMAGE_OVERRIDES = {
+# Image add format (optional, per product line):
+# <same product line> || https://your-image-url.jpg
 SR CORNSTARCH MEAL TRAY PACKING RATE BOX RATE PCS
-1 3CP MEAL TRAY WITH LID (7041) 400 4600 11.5,<3CP MEAL TRAY WITH LID (7041)>||image'https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg'
-2 4CP MEAL TRAY WITH LID (7043) 300 4890 16.3<4CP MEAL TRAY WITH LID (7041)>||image'https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg'
-3 5CP MEAL TRAY WITH LID (7045) 300 5055 16.85<5CP MEAL TRAY WITH LID (7041)>||image'https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg'
-4 8CP MEAL TRAY WITH LID (7048) 200 4700 23.5<8CP MEAL TRAY WITH LID (7041)>||image'https://i.postimg.cc/dQWJ3McX/3_CP_plate.jpg'
+1 3CP MEAL TRAY WITH LID (7041) 400 4600 11.5
+2 4CP MEAL TRAY WITH LID (7043) 300 4890 16.3
+3 5CP MEAL TRAY WITH LID (7045) 300 5055 16.85
+4 8CP MEAL TRAY WITH LID (7048) 200 4700 23.5
 
 SR CORNSTARCH ROUND / RECTANGLE CONTAINER PACKING RATE BOX RATE PCS
 1 350ML ROUND CONTAINER WITH LID (7063) 800 3760 4.7
@@ -667,7 +720,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 28 PUNNET MULBERRY 117X117X67 (1645) 1575 4803.75 3.05
 29 PUNNET BLUEBERRY SQUARE (1648) 1500 4680 3.12
 30 PUNNET AVOCADO -2PC (1652) 1050 4882.5 4.65
-    };
 `;
 
     // Per-product image URLs (id-wise). Add/replace links here.
@@ -688,13 +740,17 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         }
         if (!/^\d+\s+/.test(line)) continue;
 
-        const [linePart, imagePart] = line.split('||').map(v => (v || '').trim());
+        const [linePart, imagePartRaw] = line.split('||').map(v => (v || '').trim());
+        const imagePart = (imagePartRaw || '').replace(/^image\s*['"]?/i, '').replace(/['"]$/,'').trim();
         const noSr = linePart.replace(/^\d+\s+/, '').trim();
         const mLast = noSr.match(/(\d+(?:\.\d+)?)\s*$/);
         if (!mLast) continue;
 
         const pcs = Number(mLast[1]);
-        const updatedPcs = Number.isFinite(pcs) ? Number((pcs + 1).toFixed(2)) : 1;
+        const updatedPcs = Number.isFinite(pcs) ? Number((pcs + PRICE_INCREMENT).toFixed(2)) : PRICE_INCREMENT;
+        const tier500 = Number((updatedPcs * 0.92).toFixed(2));
+        const tier200 = Number((tier500 + 1).toFixed(2));
+        const tier100 = Number((tier500 + 2).toFixed(2));
 
         let name = noSr.slice(0, mLast.index).trim();
         name = name
@@ -710,7 +766,11 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           category: section,
           image: imagePart || '',
           stock: 200,
-          tiers: [{min:1, price: updatedPcs}]
+          tiers: [
+            {min:100, price: tier100},
+            {min:200, price: tier200},
+            {min:500, price: tier500}
+          ]
         });
       }
       return items;
@@ -729,6 +789,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     const categories = ['All', ...new Set(products.map(p => p.category))];
     let activeCategory = 'All';
+    let searchTerm = '';
+    let filteredProducts = [...products];
     let cart = JSON.parse(localStorage.getItem('vmpCart') || '[]');
     let b2bLoggedIn = false;
 
@@ -738,6 +800,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     const cartCount = document.getElementById('cartCount');
     const cartItems = document.getElementById('cartItems');
     const cartSubtotal = document.getElementById('cartSubtotal');
+    const productSearch = document.getElementById('productSearch');
+    const searchBtn = document.getElementById('searchBtn');
+    const waCartBtn = document.getElementById('waCart');
 
     function priceForQty(tiers, qty){
       let unit = tiers[0].price;
@@ -759,23 +824,31 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       categoryFilter.value = activeCategory;
     }
 
+    function applyProductFilters(){
+      filteredProducts = products.filter(p => {
+        const categoryOk = activeCategory === 'All' || p.category === activeCategory;
+        const searchOk = !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase());
+        return categoryOk && searchOk;
+      });
+      renderProducts();
+    }
+
     function renderProducts(){
-      const filtered = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
-      productGrid.innerHTML = filtered.map(p => `
+      productGrid.innerHTML = filteredProducts.map(p => `
         <article class="bg-white border rounded-2xl overflow-hidden">
-          <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover"/>
+          <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
           <div class="p-4 space-y-2">
             <div class="flex justify-between gap-2 items-start"><h4 class="font-bold">${p.name}</h4>${stockBadge(p.stock)}</div>
             <p class="text-xs text-slate-500">Category: ${p.category}</p>
-            <p class="text-xs text-slate-500">Tier Pricing: ${p.tiers.map(t => `${t.min}+ ₹${t.price}`).join(' | ')}</p>
+            <p class="text-xs text-slate-500">Tier Pricing (MOQ): ${p.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')}</p>
             <div class="flex gap-2 items-center">
-              <input id="qty-${p.id}" type="number" min="1" value="1" class="w-20 border rounded-lg px-2 py-1.5 text-sm"/>
+              <input id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-24 border rounded-lg px-2 py-1.5 text-sm"/>
               <button onclick="addToCart('${p.id}')" class="flex-1 bg-emerald-700 text-white rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Add to Cart</button>
               <button onclick="buyNow('${p.id}')" class="flex-1 border border-emerald-700 text-emerald-700 rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Buy Now</button>
             </div>
           </div>
         </article>
-      `).join('') || '<p class="text-sm text-slate-600">No products in this category right now.</p>';
+      `).join('') || '<p class="text-sm text-slate-600">No products found. Try another category or search keyword.</p>';
     }
 
     function saveCart(){
@@ -816,7 +889,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     window.addToCart = function(id){
       const p = products.find(x => x.id === id);
-      const qty = Math.max(1, Number(document.getElementById(`qty-${id}`).value || 1));
+      const qty = Math.max(100, Number(document.getElementById(`qty-${id}`).value || 100));
       const unit = priceForQty(p.tiers, qty);
       const existing = cart.find(c => c.id === id && c.unit === unit);
       if(existing) existing.qty += qty;
@@ -837,6 +910,14 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return `Hello Veer Mahadev Plastic,%0AName: ${customerName}%0AAddress: ${customerAddress}%0A%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
     }
 
+    function updateWhatsappButton(){
+      const name = (document.getElementById('customerName')?.value || '').trim();
+      const address = (document.getElementById('customerAddress')?.value || '').trim();
+      waCartBtn.disabled = !(name && address);
+      waCartBtn.classList.toggle('opacity-40', waCartBtn.disabled);
+      waCartBtn.classList.toggle('cursor-not-allowed', waCartBtn.disabled);
+    }
+
     function getCustomerDetails(){
       const name = (document.getElementById('customerName')?.value || '').trim();
       const address = (document.getElementById('customerAddress')?.value || '').trim();
@@ -846,6 +927,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         return null;
       }
       msg.textContent = '';
+      updateWhatsappButton();
       return {name, address};
     }
 
@@ -914,7 +996,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         return;
       }
       const a = document.createElement('a');
-      a.href = './assets/wholesale-price-list.pdf';
+      a.href = './wholesale-price-list.pdf';
       a.download = 'wholesale-price-list.pdf';
       document.body.appendChild(a);
       a.click();
@@ -928,12 +1010,25 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(!target) return;
       activeCategory = target.dataset.cat;
       categoryFilter.value = activeCategory;
-      renderProducts();
+      applyProductFilters();
       document.getElementById('shop').scrollIntoView({behavior:'smooth'});
     });
     categoryFilter.addEventListener('change', ()=>{
       activeCategory = categoryFilter.value;
-      renderProducts();
+      applyProductFilters();
+    });
+
+    searchBtn.addEventListener('click', ()=>{
+      searchTerm = productSearch.value.trim();
+      applyProductFilters();
+    });
+
+    productSearch.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        searchTerm = productSearch.value.trim();
+        applyProductFilters();
+      }
     });
 
     // Cart controls
@@ -967,7 +1062,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     document.getElementById('repeatOrder').addEventListener('click', ()=>{
       const lastOrder = [
         {id:'3cp-meal-tray-with-lid-7041', qty:200},
-        {id:'500ml-round-container-with-lid-7065', qty:80},
+        {id:'500ml-round-container-with-lid-7065', qty:500},
         {id:'160mm-spoon-7055', qty:250},
       ];
       for(const l of lastOrder){
@@ -988,14 +1083,19 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     function aiReply(text){
       const q = text.toLowerCase();
-      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'We offer tiered pricing. The more quantity you order, the lower per-unit price you get. You can also submit a bulk inquiry for a custom quote.';
-      if(q.includes('shipping') || q.includes('delivery') || q.includes('dispatch')) return 'Shipping is based on dead weight vs volumetric weight (higher one applies). Local and interstate zones have different rates.';
-      if(q.includes('stock') || q.includes('available')) return 'Products show In Stock, Low Stock, or Out of Stock labels. For urgent bulk stock, please contact us on WhatsApp.';
-      if(q.includes('eco') || q.includes('biodegradable')) return 'Yes, we have an eco-friendly biodegradable range including meal sets, cutlery, cups, and packaging.';
-      if(q.includes('b2b') || q.includes('login') || q.includes('portal')) return 'Use the B2B Portal Login button on top. After login, you can download the wholesale PDF and manage repeat business orders.';
-      if(q.includes('cart') || q.includes('order')) return `Your current cart has ${cartTotalQty()} items with subtotal ₹${cartTotalAmount().toFixed(2)}. You can open cart and place order via WhatsApp.`;
-      if(q.includes('about') || q.includes('company')) return 'Veer Mahadev Plastic is a family business started in 2022 and now serves 10,000+ customers monthly with hygiene-focused disposable products.';
-      return 'I can help with pricing, stock, shipping, wholesale inquiry, B2B portal, and order support. Please ask your specific question.';
+      const productMatch = products.find(p => q.includes(p.name.toLowerCase()));
+      if(productMatch){
+        return `${productMatch.name} ka rate: ${productMatch.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')}. Category: ${productMatch.category}.`;
+      }
+      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'Bulk tier pricing active hai: 100+, 200+, 500+ quantity slabs. 500+ sabse kam rate (minimum price) rakha gaya hai.';
+      if(q.includes('shipping') || q.includes('delivery') || q.includes('dispatch')) return 'Shipping dead weight vs volumetric weight (jo zyada ho) par calculate hoti hai. Local/Gujarat/Interstate zones available hain.';
+      if(q.includes('stock') || q.includes('available')) return 'Product cards par live stock badge dikh raha hai: In Stock, Low Stock, Out of Stock.';
+      if(q.includes('eco') || q.includes('biodegradable')) return 'Haan ji, eco-friendly biodegradable range available hai. Aap "Eco" ya product name type karein to rate details mil jayengi.';
+      if(q.includes('b2b') || q.includes('login') || q.includes('portal')) return 'Top bar se B2B login karke full wholesale price list PDF directly download kar sakte hain.';
+      if(q.includes('cart') || q.includes('order') || q.includes('whatsapp')) return `Cart summary: ${cartTotalQty()} qty items | Subtotal ₹${cartTotalAmount().toFixed(2)}. Name + Address भरने ke baad WhatsApp Order button active ho jata hai.`;
+      if(q.includes('search')) return 'Products bahut saare hain, isliye Shop section mein search box + button diya gaya hai. Product name type karke Search karein.';
+      if(q.includes('about') || q.includes('company')) return 'Veer Mahadev Plastic 2022 se wholesale disposable products supply kar raha hai, Ahmedabad aur Gujarat mein strong delivery support ke saath.';
+      return 'Main website related sab help kar sakta hoon: product rate, MOQ, stock, shipping, B2B login, PDF download, cart aur WhatsApp order.';
     }
 
     document.getElementById('botSend').onclick = ()=>{
@@ -1011,8 +1111,17 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     // initialize
     renderCategories();
-    renderProducts();
+    applyProductFilters();
     renderCart();
+    ['customerName','customerAddress'].forEach(id => document.getElementById(id).addEventListener('input', updateWhatsappButton));
+    updateWhatsappButton();
+
+    const splash = document.getElementById('logoSplash');
+    setTimeout(() => {
+      splash.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => splash.remove(), 900);
+    }, 5000);
   </script>
+  </div>
 </body>
 </html>
