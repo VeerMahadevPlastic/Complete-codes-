@@ -23,31 +23,17 @@
     "@context": "https://schema.org",
     "@type": "WholesaleStore",
     "name": "Veer Mahadev Plastic",
-    "image": "https://veermahadevplastic.in/logo.png",
-    "@id": "https://veermahadevplastic.in",
-    "url": "https://veermahadevplastic.in",
+    "url": "https://veermahadevplastic.in/",
     "telephone": "+918050389261",
+    "description": "Wholesale disposable items supplier in Ahmedabad offering meal trays, food containers, and punnets.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Wholesale Market Area",
       "addressLocality": "Ahmedabad",
-      "addressRegion": "GJ",
-      "postalCode": "380001",
+      "addressRegion": "Gujarat",
       "addressCountry": "IN"
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 23.0225,
-      "longitude": 72.5714
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-      ],
-      "opens": "09:00",
-      "closes": "20:00"
-    }
+    "areaServed": "Ahmedabad",
+    "keywords": "Wholesale Disposable Items Ahmedabad"
   }
   </script>
   <title>Veer Mahadev Plastic | Best Disposable Items Wholesaler in Ahmedabad, Gujarat</title>
@@ -101,111 +87,73 @@
       <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
       <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
         <div>
-          <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
-            <span class="text-emerald-700">Bharat ka Leading Disposable Hub</span> - Factory Rates, High Quality!
-          </h1>
-          <p class="mt-4 text-lg">Serving <b>10,000+</b> customers monthly since 2022. Best quality for restaurants, cafes, event managers, and households.</p>
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a href="#shop" class="px-6 py-3 rounded-xl bg-emerald-700 text-white font-bold hover:bg-emerald-800">Shop Retail</a>
-            <a href="#wholesale" class="px-6 py-3 rounded-xl border-2 border-emerald-700 text-emerald-700 font-bold hover:bg-emerald-50">Get Wholesale Quote</a>
+          <p class="text-[11px] uppercase tracking-[0.35em] text-goldRoyal">Wholesale Disposable Items Ahmedabad</p>
+          <h1 class="text-2xl font-black tracking-tight">Veer Mahadev Plastic</h1>
+        </div>
+        <button id="installAppBtn" class="hidden rounded-full border border-goldRoyal/50 px-4 py-2 text-xs font-bold text-goldRoyal">Install App</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="px-5 pt-5">
+        <div class="rounded-[30px] bg-gradient-to-br from-emeraldRoyal via-emeraldDeep to-nightRoyal p-5 text-white gold-ring">
+          <p class="text-xs uppercase tracking-[0.3em] text-goldRoyal">Royal B2B Experience</p>
+          <h2 class="mt-2 text-3xl font-black leading-tight">Premium Disposable Supply App for Fast Bulk Orders</h2>
+          <p class="mt-3 text-sm text-emerald-50">Professional PWA design, mobile-first ordering, instant WhatsApp follow-up, and trusted pricing for Ahmedabad wholesale buyers.</p>
+          <div class="mt-5 grid grid-cols-2 gap-3 text-center text-xs font-semibold">
+            <div class="rounded-2xl bg-white/10 p-3 border border-white/10">
+              <p class="text-goldRoyal text-lg font-black">6</p>
+              <p>Featured SKUs</p>
+            </div>
+            <div class="rounded-2xl bg-white/10 p-3 border border-white/10">
+              <p class="text-goldRoyal text-lg font-black">Same Day</p>
+              <p>Bulk Response</p>
+            </div>
           </div>
         </div>
-        <div class="bg-white/90 border border-emerald-100 rounded-2xl p-5 shadow-sm">
-          <h3 class="text-xl font-bold">Shipping Estimate (Weight/Volume)</h3>
-          <p class="text-sm text-slate-600 mt-1">For bulky products, shipping is calculated on whichever is higher: dead weight or volumetric weight.</p>
-          <div class="grid grid-cols-2 gap-2 mt-4 text-sm">
-            <input id="weight" type="number" step="0.1" placeholder="Weight kg" class="border rounded-lg px-3 py-2"/>
-            <input id="length" type="number" placeholder="Length cm" class="border rounded-lg px-3 py-2"/>
-            <input id="width" type="number" placeholder="Width cm" class="border rounded-lg px-3 py-2"/>
-            <input id="height" type="number" placeholder="Height cm" class="border rounded-lg px-3 py-2"/>
-            <select id="zone" class="border rounded-lg px-3 py-2 col-span-2">
-              <option value="1">Local (Ahmedabad)</option>
-              <option value="1.4">Within Gujarat</option>
-              <option value="1.9">Interstate</option>
-            </select>
+      </section>
+
+      <section class="px-5 pt-5">
+        <div class="rounded-[28px] bg-white p-4 shadow-soft border border-emeraldRoyal/10">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-xs uppercase tracking-[0.25em] text-emeraldRoyal font-bold">Business Focus</p>
+              <h3 class="text-xl font-black text-nightRoyal">Why Buyers Prefer Us</h3>
+            </div>
+            <span class="rounded-full bg-goldRoyal/15 px-3 py-1 text-xs font-bold text-emeraldDeep">Ahmedabad</span>
           </div>
-          <button id="calcShip" class="mt-3 w-full bg-emerald-700 text-white py-2.5 rounded-lg font-semibold">Calculate Shipping</button>
-          <p id="shipOut" class="mt-2 text-sm font-semibold text-emerald-700"></p>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-emerald-50 border-y border-emerald-100">
-      <div class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-semibold">
-        <p>✅ 500+ Items in Stock</p>
-        <p>🚚 Same Day Dispatch</p>
-        <p>♻️ Eco-Friendly / Biodegradable Range</p>
-        <p>🧾 GST Invoicing Ready</p>
-      </div>
-    </section>
-
-    <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
-      <div class="flex items-end justify-between flex-wrap gap-2">
-        <h2 class="text-3xl font-extrabold">Shop by Category</h2>
-        <p class="text-sm text-slate-600">Click any category to jump to products and view filtered items.</p>
-      </div>
-      <div id="categoryGrid" class="mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 text-center"></div>
-    </section>
-
-    <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="flex items-center justify-between flex-wrap gap-3">
-        <h3 class="text-2xl font-extrabold">Products</h3>
-        <div class="flex items-center gap-2">
-          <span class="text-sm text-slate-600">Filter:</span>
-          <select id="categoryFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
-        </div>
-      </div>
-      <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-5" id="productGrid"></div>
-    </section>
-
-    <section id="eco" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="bg-gradient-to-r from-emerald-100 to-emerald-50 rounded-2xl border border-emerald-200 p-6 lg:p-8 flex items-center justify-between flex-wrap gap-4">
-        <div>
-          <p class="text-sm uppercase tracking-wide text-emerald-700">Eco-Warrior Collection</p>
-          <h3 class="text-3xl font-extrabold">Go Green with Our Biodegradable Range</h3>
-          <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
-        </div>
-        <button data-cat="Eco-Friendly" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
-      </div>
-    </section>
-
-    <section id="wholesale" class="max-w-7xl mx-auto px-4 pb-12 grid lg:grid-cols-2 gap-6">
-      <div class="bg-white rounded-2xl border p-6">
-        <h3 class="text-2xl font-extrabold">Bulk Order / Wholesale Inquiry</h3>
-        <p class="text-sm text-slate-600 mt-1">Upload your requirement list (Excel/PDF/Image) and receive a custom quote.</p>
-        <form id="bulkForm" class="grid gap-3 mt-4">
-          <input required class="border rounded-lg px-3 py-2" placeholder="Business Name"/>
-          <input required class="border rounded-lg px-3 py-2" placeholder="Contact Number / WhatsApp"/>
-          <input required class="border rounded-lg px-3 py-2" placeholder="City + Pincode"/>
-          <input required class="border rounded-lg px-3 py-2" placeholder="Monthly Quantity Requirement"/>
-          <input id="requirementFile" type="file" class="border rounded-lg px-3 py-2"/>
-          <button type="submit" class="bg-emerald-700 text-white py-2.5 rounded-lg font-semibold">Request Wholesale Quote</button>
-          <p id="bulkMsg" class="text-sm font-semibold"></p>
-        </form>
-      </div>
-      <div class="bg-white rounded-2xl border p-6 space-y-4">
-        <h3 class="text-2xl font-extrabold">B2B Buyer Portal</h3>
-        <p class="text-slate-700">Login to download full wholesale price list PDF, MOQ chart, and dispatch schedules.</p>
-        <button id="portalDownloadBtn" class="inline-block px-4 py-2 rounded-lg border border-emerald-300 text-emerald-700 font-semibold">Download Full Price List (PDF)</button>
-        <p id="portalStatus" class="text-sm font-medium text-slate-600">Please login to access B2B downloads.</p>
-        <div id="dashboard" class="mt-3 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
-          <p class="font-bold">Quick Re-order Dashboard</p>
-          <p class="text-sm text-slate-700">Last order: 37 items | ₹12,880 | Delivered 6 days ago</p>
-          <div class="mt-3 flex gap-3">
-            <button id="repeatOrder" class="px-4 py-2 rounded-lg bg-emerald-700 text-white text-sm font-semibold">Repeat Last Order</button>
-            <button id="openCartFromDash" class="px-4 py-2 rounded-lg border text-sm font-semibold">Open Cart</button>
+          <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+            <div class="rounded-2xl bg-creamRoyal p-3">
+              <p class="font-bold text-nightRoyal">B2B Pricing</p>
+              <p class="mt-1 text-slate-600">Clear retail-to-wholesale product pricing.</p>
+            </div>
+            <div class="rounded-2xl bg-creamRoyal p-3">
+              <p class="font-bold text-nightRoyal">Quick WhatsApp</p>
+              <p class="mt-1 text-slate-600">One tap bulk inquiry with product name.</p>
+            </div>
+            <div class="rounded-2xl bg-creamRoyal p-3">
+              <p class="font-bold text-nightRoyal">PWA Ready</p>
+              <p class="mt-1 text-slate-600">Installable mobile app experience.</p>
+            </div>
+            <div class="rounded-2xl bg-creamRoyal p-3">
+              <p class="font-bold text-nightRoyal">SEO Optimized</p>
+              <p class="mt-1 text-slate-600">Built for local Ahmedabad search visibility.</p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="about" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="bg-emerald-800 text-white rounded-3xl p-8 lg:p-10">
-        <h3 class="text-3xl font-extrabold">About Us - Veer Mahadev Plastic</h3>
-        <p class="mt-4 text-emerald-50">Started in 2022 as a family business, Veer Mahadev Plastic has grown through trust, quality, and hard work. Today, we proudly serve 10,000+ satisfied customers every month across wholesale and retail channels.</p>
-        <p class="mt-3 text-emerald-100">Our mission is simple: deliver hygienic, food-safe disposable products with fair wholesale pricing, consistent quality, and dependable dispatch. We support local businesses while promoting eco-friendly choices for a better future.</p>
-      </div>
-    </section>
+      <section id="products" class="px-5 pt-5">
+        <div class="flex items-end justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-emeraldRoyal font-bold">Product Table</p>
+            <h3 class="text-2xl font-black text-nightRoyal">Top Selling Items</h3>
+          </div>
+          <span class="text-xs font-bold text-goldRoyal">Updated Price List</span>
+        </div>
+
+        <div id="productList" class="mt-4 space-y-3"></div>
+      </section>
 
     <section class="max-w-7xl mx-auto px-4 pb-10">
       <h3 class="text-2xl font-extrabold mb-3">Visit Our Shop</h3>
@@ -252,62 +200,37 @@
           <a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/youtube" class="h-6 w-6" alt="YouTube"/></a>
           <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/facebook" class="h-6 w-6" alt="Facebook"/></a>
         </div>
-      </div>
-    </div>
-  </footer>
+      </section>
 
-  <a id="waFloating" href="#" class="fixed bottom-4 right-4 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-full shadow-xl z-40 font-semibold">💬 Order on WhatsApp</a>
-
-  <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300">
-    <div class="p-4 border-b flex justify-between items-center">
-      <h4 class="text-xl font-bold">Your Cart</h4>
-      <button id="closeCart" class="text-xl">✕</button>
-    </div>
-    <div id="cartItems" class="p-4 h-[calc(100%-220px)] overflow-y-auto hide-scrollbar"></div>
-    <div class="p-4 border-t bg-slate-50">
-      <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
-      <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
-      <div class="mt-3 grid gap-2">
-        <input id="customerName" class="border rounded-lg px-3 py-2 text-sm" placeholder="Customer Name (required)" />
-        <textarea id="customerAddress" class="border rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Full Address with City, State, Pincode (required)"></textarea>
-        <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
-      </div>
-      <div class="grid grid-cols-2 gap-2 mt-3">
-        <button id="waCart" class="bg-emerald-700 text-white py-2 rounded-lg font-semibold">WhatsApp Order</button>
-        <button id="buyNowCart" class="border py-2 rounded-lg font-semibold">Buy Now</button>
-      </div>
-    </div>
-  </aside>
-  <div id="drawerOverlay" class="hidden fixed inset-0 bg-black/40 z-50"></div>
-
-  <div id="loginModal" class="hidden fixed inset-0 z-[70] bg-black/40 px-4">
-    <div class="max-w-md mx-auto mt-24 bg-white rounded-xl border shadow-xl p-5">
-      <h4 class="text-xl font-bold">B2B Portal Login</h4>
-      <p class="text-sm text-slate-600">Login to access wholesale price list and business tools.</p>
-      <form id="loginForm" class="mt-4 grid gap-3">
-        <input id="loginEmail" type="email" required placeholder="Business Email" class="border rounded-lg px-3 py-2"/>
-        <input id="loginPass" type="password" required placeholder="Password" class="border rounded-lg px-3 py-2"/>
-        <div class="flex gap-2">
-          <button type="submit" class="flex-1 bg-emerald-700 text-white py-2 rounded-lg font-semibold">Login</button>
-          <button type="button" id="closeLogin" class="flex-1 border py-2 rounded-lg font-semibold">Close</button>
+      <section id="contact" class="px-5 py-5">
+        <div class="rounded-[28px] bg-white p-5 shadow-soft border border-emeraldRoyal/10">
+          <p class="text-xs uppercase tracking-[0.25em] text-emeraldRoyal font-bold">Contact</p>
+          <h3 class="mt-1 text-2xl font-black text-nightRoyal">Veer Mahadev Plastic</h3>
+          <div class="mt-4 space-y-3 text-sm text-slate-700">
+            <p><span class="font-bold text-nightRoyal">Phone / WhatsApp:</span> <a class="text-emeraldRoyal font-bold" href="tel:+918050389261">+91 80503 89261</a></p>
+            <p><span class="font-bold text-nightRoyal">Location:</span> Ahmedabad, Gujarat</p>
+            <p><span class="font-bold text-nightRoyal">Speciality:</span> Wholesale Disposable Items Ahmedabad</p>
+          </div>
         </div>
-      </form>
-      <p id="loginMsg" class="text-sm mt-2 font-semibold"></p>
-    </div>
-  </div>
+      </section>
+    </main>
 
-  <div class="fixed bottom-4 left-4 z-[65]">
-    <button id="botToggle" class="h-14 w-14 rounded-full bg-emerald-700 text-white text-2xl shadow-lg">🤖</button>
-    <div id="botPanel" class="hidden mt-2 w-80 bg-white border rounded-xl shadow-2xl overflow-hidden">
-      <div class="bg-emerald-700 text-white px-3 py-2 font-semibold flex justify-between"><span>AI Help Bot</span><button id="botClose">✕</button></div>
-      <div id="botMsgs" class="h-56 overflow-y-auto p-3 text-sm space-y-2">
-        <div class="bg-emerald-50 rounded-lg p-2">Hello! I can help with products, wholesale, shipping, stock, and order support.</div>
+    <nav class="fixed bottom-0 left-1/2 z-40 w-full max-w-[430px] -translate-x-1/2 border-t border-emeraldRoyal/10 bg-white/95 backdrop-blur-xl">
+      <div class="grid grid-cols-4 px-2 py-2 text-[11px] font-bold text-slate-600">
+        <a href="#home" class="flex flex-col items-center gap-1 rounded-2xl py-2 text-emeraldRoyal">
+          <span>🏠</span><span>Home</span>
+        </a>
+        <a href="#products" class="flex flex-col items-center gap-1 rounded-2xl py-2">
+          <span>📦</span><span>Products</span>
+        </a>
+        <a href="#order" class="flex flex-col items-center gap-1 rounded-2xl py-2">
+          <span>🛒</span><span>Order</span>
+        </a>
+        <a href="#contact" class="flex flex-col items-center gap-1 rounded-2xl py-2">
+          <span>📞</span><span>Contact</span>
+        </a>
       </div>
-      <div class="p-2 border-t flex gap-2">
-        <input id="botInput" class="flex-1 border rounded-lg px-2 py-1.5 text-sm" placeholder="Ask your question" />
-        <button id="botSend" class="bg-emerald-700 text-white px-3 rounded-lg">Send</button>
-      </div>
-    </div>
+    </nav>
   </div>
 
   <script>
@@ -823,116 +746,26 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
               <button onclick="buyNow('${p.id}')" class="flex-1 border border-emerald-700 text-emerald-700 rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Buy Now</button>
             </div>
           </div>
+          <a href="${whatsappOrderLink(product.name)}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-emeraldRoyal px-4 py-3 text-sm font-black text-white">Bulk Order</a>
         </article>
-      `).join('') || '<p class="text-sm text-slate-600">No products in this category right now.</p>';
-    }
-
-    function saveCart(){
-      localStorage.setItem('vmpCart', JSON.stringify(cart));
-    }
-
-    function cartTotalQty(){
-      return cart.reduce((sum, item) => sum + item.qty, 0);
-    }
-
-    function cartTotalAmount(){
-      return cart.reduce((sum, item) => sum + (item.qty * item.unit), 0);
-    }
-
-    function renderCart(){
-      cartCount.textContent = cartTotalQty();
-      cartSubtotal.textContent = cartTotalAmount().toFixed(2);
-      if(cart.length === 0){
-        cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
-        return;
-      }
-      cartItems.innerHTML = cart.map((item, idx) => `
-        <div class="border rounded-xl p-3 mb-2">
-          <div class="flex justify-between gap-2">
-            <p class="font-semibold">${item.name}</p>
-            <button onclick="removeCartItem(${idx})" class="text-rose-600 text-sm">Remove</button>
-          </div>
-          <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
-        </div>
       `).join('');
     }
 
-    window.removeCartItem = function(idx){
-      cart.splice(idx, 1);
-      saveCart();
-      renderCart();
-    }
+    let deferredPrompt = null;
+    const installAppBtn = document.getElementById('installAppBtn');
 
-    window.addToCart = function(id){
-      const p = products.find(x => x.id === id);
-      const qty = Math.max(1, Number(document.getElementById(`qty-${id}`).value || 1));
-      const unit = priceForQty(p.tiers, qty);
-      const existing = cart.find(c => c.id === id && c.unit === unit);
-      if(existing) existing.qty += qty;
-      else cart.push({id, name:p.name, qty, unit});
-      saveCart();
-      renderCart();
-    }
-
-    window.buyNow = function(id){
-      addToCart(id);
-      openCart();
-    }
-
-    function cartWhatsappText(customerName, customerAddress){
-      if(cart.length === 0) return 'Hello, I want to place an order. Please share latest catalog.';
-      const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - ₹${(i.qty*i.unit).toFixed(2)}`);
-      const subtotal = cartTotalAmount().toFixed(2);
-      return `Hello Veer Mahadev Plastic,%0AName: ${customerName}%0AAddress: ${customerAddress}%0A%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
-    }
-
-    function getCustomerDetails(){
-      const name = (document.getElementById('customerName')?.value || '').trim();
-      const address = (document.getElementById('customerAddress')?.value || '').trim();
-      const msg = document.getElementById('cartCustomerMsg');
-      if(!name || !address){
-        msg.textContent = 'Please enter customer name and full address before placing order.';
-        return null;
-      }
-      msg.textContent = '';
-      return {name, address};
-    }
-
-    function openCart(){
-      document.getElementById('cartDrawer').classList.remove('translate-x-full');
-      document.getElementById('drawerOverlay').classList.remove('hidden');
-    }
-
-    function closeCart(){
-      document.getElementById('cartDrawer').classList.add('translate-x-full');
-      document.getElementById('drawerOverlay').classList.add('hidden');
-    }
-
-    // Shipping calculator
-    document.getElementById('calcShip').addEventListener('click',()=>{
-      const w = Number(document.getElementById('weight').value||0);
-      const l = Number(document.getElementById('length').value||0);
-      const wi = Number(document.getElementById('width').value||0);
-      const h = Number(document.getElementById('height').value||0);
-      const zone = Number(document.getElementById('zone').value||1);
-      if(!w && !(l&&wi&&h)){
-        document.getElementById('shipOut').textContent = 'Please enter weight or dimensions.';
-        return;
-      }
-      const volumetric = (l*wi*h)/5000;
-      const chargeable = Math.max(w, volumetric || 0);
-      const cost = Math.max(60, chargeable * 32 * zone);
-      document.getElementById('shipOut').textContent = `Chargeable Weight: ${chargeable.toFixed(2)} kg | Estimated Shipping: ₹${cost.toFixed(0)}`;
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      deferredPrompt = event;
+      installAppBtn.classList.remove('hidden');
     });
 
-    // Bulk inquiry
-    document.getElementById('bulkForm').addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const fileName = document.getElementById('requirementFile').files[0]?.name || 'No file';
-      const msg = document.getElementById('bulkMsg');
-      msg.className = 'text-sm font-semibold text-emerald-700';
-      msg.textContent = `Inquiry submitted successfully. Our team will contact you shortly. File: ${fileName}`;
-      e.target.reset();
+    installAppBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installAppBtn.classList.add('hidden');
     });
 
     // B2B login
@@ -1047,19 +880,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return 'I can help with pricing, stock, shipping, wholesale inquiry, B2B portal, and order support. Please ask your specific question.';
     }
 
-    document.getElementById('botSend').onclick = ()=>{
-      const input = document.getElementById('botInput');
-      const text = input.value.trim();
-      if(!text) return;
-      const msgs = document.getElementById('botMsgs');
-      msgs.innerHTML += `<div class="bg-slate-100 rounded-lg p-2">${text}</div>`;
-      msgs.innerHTML += `<div class="bg-emerald-50 rounded-lg p-2">${aiReply(text)}</div>`;
-      msgs.scrollTop = msgs.scrollHeight;
-      input.value = '';
-    };
-
-    // initialize
-    renderCategories();
     renderProducts();
     renderCart();
 
