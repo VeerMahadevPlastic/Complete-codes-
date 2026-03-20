@@ -282,6 +282,17 @@
 
     const PRICE_INCREMENT = 1;
     const imageFrom = () => './images/plate.jpg';
+    const splash = document.getElementById('logoSplash');
+
+    function dismissSplashScreen(){
+      if(!splash) return;
+      splash.style.opacity = '0';
+      splash.style.pointerEvents = 'none';
+      setTimeout(() => splash.remove(), 900);
+    }
+
+    setTimeout(dismissSplashScreen, 1500);
+    window.addEventListener('load', dismissSplashScreen);
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
@@ -735,11 +746,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     ['customerName','customerAddress'].forEach(id => document.getElementById(id).addEventListener('input', updateWhatsappButton));
     updateWhatsappButton();
 
-    const splash = document.getElementById('logoSplash');
-    setTimeout(() => {
-      splash.classList.add('opacity-0', 'pointer-events-none');
-      setTimeout(() => splash.remove(), 900);
-    }, 5000);
   </script>
   </div>
 </body>
