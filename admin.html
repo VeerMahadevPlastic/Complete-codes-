@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Veer Mahadev Plastic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#f7faf8] text-slate-800">
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <section id="adminLoginView" class="mx-auto max-w-lg rounded-[2rem] border border-[#D4AF37]/40 bg-white p-8 shadow-2xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-[#065f46]">Owner Access</p>
+      <h1 class="mt-3 text-3xl font-black text-[#065f46]">Admin Login</h1>
+      <p class="mt-2 text-sm text-slate-600">Use your owner credentials to manage pricing and campaigns.</p>
+      <form id="adminLoginForm" class="mt-8 space-y-4">
+        <input id="adminUsername" required class="w-full rounded-2xl border border-slate-200 px-4 py-3" placeholder="Username" />
+        <input id="adminPassword" required type="password" class="w-full rounded-2xl border border-slate-200 px-4 py-3" placeholder="Password" />
+        <button type="submit" class="w-full rounded-2xl bg-[#065f46] px-4 py-3 font-semibold text-white">Login</button>
+      </form>
+      <p id="adminLoginMsg" class="mt-4 text-sm font-semibold"></p>
+    </section>
+
+    <section id="adminDashboard" class="hidden space-y-6">
+      <div class="rounded-[2rem] bg-[#065f46] p-8 text-white shadow-2xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-[#D4AF37]">Veer Mahadev Plastic</p>
+        <h2 class="mt-3 text-4xl font-black">Owner Dashboard</h2>
+        <p class="mt-3 max-w-3xl text-sm text-emerald-50">Manage product prices saved from the storefront and draft campaigns for all logged-in customers.</p>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
+        <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Price Control</p>
+              <h3 class="text-2xl font-black text-slate-900">Product Price Manager</h3>
+            </div>
+            <button id="reloadProducts" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800">Refresh</button>
+          </div>
+          <div id="productAdminList" class="mt-6 space-y-3"></div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
+            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Campaign Manager</p>
+            <h3 class="mt-2 text-2xl font-black text-slate-900">Send to Logged-in Customers</h3>
+            <textarea id="campaignMessage" class="mt-4 min-h-[180px] w-full rounded-2xl border border-slate-200 px-4 py-3" placeholder="Type your campaign message here..."></textarea>
+            <button id="sendCampaign" class="mt-4 w-full rounded-2xl bg-[#065f46] px-4 py-3 font-semibold text-white">Send Campaign</button>
+            <p id="campaignMsg" class="mt-3 text-sm font-semibold"></p>
+          </div>
+          <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
+            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Captured Customers</p>
+            <div id="customerList" class="mt-4 space-y-2 text-sm text-slate-700"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const ADMIN_USERNAME = 'KaranAdmin';
+    const ADMIN_PASSWORD = 'Veer@Owner2026';
+
+    function readJson(key, fallback){
+      try {
+        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+      } catch {
+        return fallback;
+      }
+    }
+
+    function writeJson(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function renderProducts(){
+      const list = document.getElementById('productAdminList');
+      const products = readJson('vmpProductSnapshot', []);
+      const overrides = readJson('vmpPriceOverrides', {});
+
+      if (!products.length) {
+        list.innerHTML = '<p class="text-sm text-slate-500">Open the storefront once to sync products here.</p>';
+        return;
+      }
+
+      list.innerHTML = products.map(product => `
+        <div class="flex flex-col gap-3 rounded-2xl border border-slate-100 p-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p class="font-semibold text-slate-900">${product.name}</p>
+            <p class="text-xs text-slate-500">${product.category} • Current 100+ price: ₹${overrides[product.id] || product.price100}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <input id="price-${product.id}" type="number" step="0.01" min="0" value="${overrides[product.id] || product.price100}" class="w-28 rounded-xl border border-slate-200 px-3 py-2 text-sm" />
+            <button data-id="${product.id}" class="save-price rounded-xl bg-[#065f46] px-4 py-2 text-sm font-semibold text-white">Edit Price</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.save-price').forEach((button) => {
+        button.addEventListener('click', () => {
+          const overridesMap = readJson('vmpPriceOverrides', {});
+          const id = button.dataset.id;
+          const value = Number(document.getElementById(`price-${id}`).value);
+          if (!Number.isFinite(value) || value <= 0) return;
+          overridesMap[id] = value;
+          writeJson('vmpPriceOverrides', overridesMap);
+          renderProducts();
+        });
+      });
+    }
+
+    function renderCustomers(){
+      const customers = readJson('vmpCustomers', []);
+      const container = document.getElementById('customerList');
+      if (!customers.length) {
+        container.innerHTML = '<p>No customer logins yet.</p>';
+        return;
+      }
+      container.innerHTML = customers.map(customer => `<div class="rounded-xl border border-slate-100 px-3 py-2"><p class="font-semibold">${customer.name}</p><p>${customer.email}</p></div>`).join('');
+    }
+
+    document.getElementById('adminLoginForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const username = document.getElementById('adminUsername').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+      const msg = document.getElementById('adminLoginMsg');
+      if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+        msg.className = 'mt-4 text-sm font-semibold text-rose-600';
+        msg.textContent = 'Unauthorized Access. This is for the Owner only.';
+        return;
+      }
+      document.getElementById('adminLoginView').classList.add('hidden');
+      document.getElementById('adminDashboard').classList.remove('hidden');
+      renderProducts();
+      renderCustomers();
+    });
+
+    document.getElementById('reloadProducts').addEventListener('click', renderProducts);
+
+    document.getElementById('sendCampaign').addEventListener('click', () => {
+      const customers = readJson('vmpCustomers', []);
+      const emails = customers.map(customer => customer.email).filter(Boolean);
+      const message = document.getElementById('campaignMessage').value.trim();
+      const out = document.getElementById('campaignMsg');
+      if (!emails.length || !message) {
+        out.className = 'mt-3 text-sm font-semibold text-rose-600';
+        out.textContent = 'Add a campaign message and capture at least one customer first.';
+        return;
+      }
+      window.location.href = `mailto:${emails.join(',')}?subject=${encodeURIComponent('Veer Mahadev Plastic Campaign')}&body=${encodeURIComponent(message)}`;
+      out.className = 'mt-3 text-sm font-semibold text-emerald-700';
+      out.textContent = 'Campaign draft opened in your email app for all logged-in customers.';
+    });
+  </script>
+</body>
+</html>
