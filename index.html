@@ -95,7 +95,7 @@
   <header class="sticky top-0 z-50 border-b border-emerald-100 bg-white/95 glass">
     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
       <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3">
-        <a href="customer.html" class="hidden sm:inline-flex items-center rounded-full border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50">Customer Login</a>
+        <button id="openAuthHubTop" class="hidden sm:inline-flex items-center rounded-full border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50">Login</button>
         <a href="#home" class="text-center text-xl font-black tracking-tight text-emerald-800 sm:text-2xl">Veer Mahadev</a>
         <button id="openCartTop" class="justify-self-end rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">Cart (<span id="cartCount">0</span>)</button>
       </div>
@@ -105,7 +105,7 @@
           <input id="productSearch" class="w-full bg-transparent text-sm outline-none" placeholder="Search plates, cups, spoons, trays..." />
         </div>
         <button id="searchBtn" class="rounded-2xl bg-emerald-800 px-4 py-2 text-sm font-semibold text-white">Search</button>
-        <a href="customer.html" class="inline-flex items-center rounded-2xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 sm:hidden">Login</a>
+        <button id="openAuthHubMobile" class="inline-flex items-center rounded-2xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 sm:hidden">Login</button>
       </div>
       <div class="flex items-center justify-between gap-3 text-xs font-medium text-slate-600">
         <nav class="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
@@ -113,7 +113,7 @@
           <a href="#shop">Shop All</a>
           <a href="#eco">Eco Range</a>
           <a href="#wholesale">Wholesale</a>
-          <a href="customer.html">Sign Up</a>
+          <button id="openAuthHubNav" class="rounded-full border border-transparent px-1 py-1">Login / Sign Up</button>
         </nav>
         <button id="openLogin" class="hidden rounded-full border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50 sm:inline-flex">B2B Portal</button>
       </div>
@@ -216,7 +216,7 @@
           <h3 class="text-3xl font-extrabold">Go Green with Our Biodegradable Range</h3>
           <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
         </div>
-        <button data-cat="Eco-Friendly" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
+        <button data-cat="eco-range" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
       </div>
     </section>
 
@@ -342,12 +342,37 @@
         <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
       </div>
       <div class="grid grid-cols-2 gap-2 mt-3">
-        <button id="waCart" disabled class="bg-emerald-700 text-white py-2 rounded-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed">Order by WhatsApp</button>
+        <button id="waCart" disabled class="bg-emerald-700 text-white py-2 rounded-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed">Order on WhatsApp</button>
         <button id="buyNowCart" class="border py-2 rounded-lg font-semibold">Buy Now</button>
       </div>
     </div>
   </aside>
   <div id="drawerOverlay" class="hidden fixed inset-0 bg-black/40 z-50"></div>
+
+  <div id="authHubModal" class="hidden fixed inset-0 z-[72] bg-black/40 px-4">
+    <div class="mx-auto mt-24 max-w-xl rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-2xl">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Login Hub</p>
+          <h4 class="mt-2 text-2xl font-black text-slate-900">Customer & Admin Access</h4>
+          <p class="mt-2 text-sm text-slate-600">Use the same login button to choose customer sign up/login or owner admin access.</p>
+        </div>
+        <button id="closeAuthHub" class="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600">✕</button>
+      </div>
+      <div class="mt-6 grid gap-4 md:grid-cols-2">
+        <a href="customer.html" class="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5 transition hover:-translate-y-1 hover:shadow-lg">
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Customer</p>
+          <h5 class="mt-2 text-xl font-black text-emerald-900">Login / Sign Up</h5>
+          <p class="mt-2 text-sm text-slate-600">Customers add their name and email to join the wholesale member list.</p>
+        </a>
+        <a href="admin.html" class="rounded-[1.5rem] border border-[#D4AF37]/40 bg-[#065f46] p-5 text-white transition hover:-translate-y-1 hover:shadow-lg">
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">Admin</p>
+          <h5 class="mt-2 text-xl font-black">Owner Dashboard</h5>
+          <p class="mt-2 text-sm text-emerald-50">Admin logs in with username and password to manage prices and campaigns.</p>
+        </a>
+      </div>
+    </div>
+  </div>
 
   <div id="loginModal" class="hidden fixed inset-0 z-[70] bg-black/40 px-4">
     <div class="max-w-md mx-auto mt-24 bg-white rounded-xl border shadow-xl p-5">
@@ -980,12 +1005,21 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     const waCartBtn = document.getElementById('waCart');
     const cartDrawer = document.getElementById('cartDrawer');
     const drawerOverlay = document.getElementById('drawerOverlay');
+    const authHubModal = document.getElementById('authHubModal');
 
     function bindById(id, eventName, handler){
       const element = document.getElementById(id);
       if(!element) return null;
       element.addEventListener(eventName, handler);
       return element;
+    }
+
+    function openAuthHub(){
+      authHubModal?.classList.remove('hidden');
+    }
+
+    function closeAuthHub(){
+      authHubModal?.classList.add('hidden');
     }
 
     bindById('installNowBtn', 'click', async ()=>{
@@ -998,6 +1032,13 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     });
 
     bindById('closeInstallBanner', 'click', ()=> hideInstallBanner(true));
+    bindById('openAuthHubTop', 'click', openAuthHub);
+    bindById('openAuthHubMobile', 'click', openAuthHub);
+    bindById('openAuthHubNav', 'click', openAuthHub);
+    bindById('closeAuthHub', 'click', closeAuthHub);
+    bindById('authHubModal', 'click', (event)=>{
+      if(event.target.id === 'authHubModal') closeAuthHub();
+    });
 
     function priceForQty(tiers, qty){
       let unit = tiers[0].price;
@@ -1277,8 +1318,15 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     document.addEventListener('click', (e)=>{
       const target = e.target.closest('.jump-cat');
       if(!target) return;
-      activeCategory = target.dataset.cat;
+      const requestedCategory = target.dataset.cat;
+      if(requestedCategory === 'eco-range'){
+        activeCategory = categories.find(cat => /bio|cornstarch|eco/i.test(cat)) || 'All';
+      } else {
+        activeCategory = requestedCategory;
+      }
       categoryFilter.value = activeCategory;
+      searchTerm = '';
+      if(productSearch) productSearch.value = '';
       applyProductFilters();
       document.getElementById('shop').scrollIntoView({behavior:'smooth'});
     });
