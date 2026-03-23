@@ -333,7 +333,7 @@
         <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
       </div>
       <div class="grid grid-cols-2 gap-2 mt-3">
-        <button id="waCart" disabled class="bg-emerald-700 text-white py-2 rounded-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed">WhatsApp Order</button>
+        <button id="waCart" disabled class="bg-emerald-700 text-white py-2 rounded-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed">Order by WhatsApp</button>
         <button id="buyNowCart" class="border py-2 rounded-lg font-semibold">Buy Now</button>
       </div>
     </div>
@@ -1045,6 +1045,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       cartSubtotal.textContent = cartTotalAmount().toFixed(2);
       if(cart.length === 0){
         cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
+        updateWhatsappButton();
         return;
       }
       cartItems.innerHTML = cart.map((item, idx) => `
@@ -1056,6 +1057,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
         </div>
       `).join('');
+      updateWhatsappButton();
     }
 
     window.removeCartItem = function(idx){
@@ -1116,11 +1118,19 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return `Hello Veer Mahadev Plastic,%0AName: ${customerName}%0AAddress: ${customerAddress}%0A%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
     }
 
+    function cartEmailText(customerName, customerAddress){
+      if(cart.length === 0) return 'Hello Veer Mahadev Plastic,%0A%0AI want to place an order. Please share the latest catalog.';
+      const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - Amount ₹${(i.qty*i.unit).toFixed(2)}`);
+      const subtotal = cartTotalAmount().toFixed(2);
+      const totalQty = cartTotalQty();
+      return `Hello Veer Mahadev Plastic,%0A%0AName: ${customerName}%0AAddress: ${customerAddress}%0ATotal Items Qty: ${totalQty}%0AOrder Amount: ₹${subtotal}%0A%0AOrder Details:%0A${lines.join('%0A')}%0A%0APlease confirm availability, final total, and delivery details.`;
+    }
+
     function updateWhatsappButton(){
       if(!waCartBtn) return;
       const name = (document.getElementById('customerName')?.value || '').trim();
       const address = (document.getElementById('customerAddress')?.value || '').trim();
-      waCartBtn.disabled = !(name && address);
+      waCartBtn.disabled = !(name && address && cart.length);
       waCartBtn.classList.toggle('opacity-40', waCartBtn.disabled);
       waCartBtn.classList.toggle('cursor-not-allowed', waCartBtn.disabled);
     }
@@ -1255,8 +1265,15 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     bindById('waCart', 'click', ()=>{
       const details = getCustomerDetails();
       if(!details) { openCart(); return; }
-      const msg = cartWhatsappText(details.name, details.address);
-      window.open(`https://wa.me/918050389261?text=${msg}`,'_blank');
+      if(cart.length === 0){
+        alert('Please add products to the cart before placing the order.');
+        updateWhatsappButton();
+        return;
+      }
+      const whatsappMsg = cartWhatsappText(details.name, details.address);
+      const emailBody = cartEmailText(details.name, details.address);
+      window.open(`https://wa.me/918050389261?text=${whatsappMsg}`,'_blank');
+      window.location.href = `mailto:veermahadevplastic@gmail.com?subject=${encodeURIComponent(`New order enquiry from ${details.name}`)}&body=${emailBody}`;
     });
 
     bindById('buyNowCart', 'click', ()=>{
