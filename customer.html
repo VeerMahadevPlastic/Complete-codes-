@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Login | Veer Mahadev Plastic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#f7faf8] text-slate-800">
+  <div class="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-4 py-10">
+    <div class="grid w-full overflow-hidden rounded-[2rem] border border-emerald-100 bg-white shadow-2xl lg:grid-cols-2">
+      <section class="bg-[#065f46] p-8 text-white lg:p-10">
+        <p class="text-sm font-semibold uppercase tracking-[0.35em] text-[#D4AF37]">Premium Wholesale Club</p>
+        <h1 class="mt-4 text-4xl font-black">Customer Login / Sign Up</h1>
+        <p class="mt-4 max-w-md text-sm text-emerald-50">Join Veer Mahadev Plastic to get product updates, wholesale offers, and personalized notifications. Your email can be synced with OneSignal for faster alerts.</p>
+        <div class="mt-8 rounded-3xl border border-white/10 bg-white/10 p-5 text-sm text-emerald-50">
+          <p class="font-semibold text-[#D4AF37]">Benefits</p>
+          <ul class="mt-3 space-y-2">
+            <li>• Faster re-orders for wholesale buyers</li>
+            <li>• Future promotional campaigns and rate alerts</li>
+            <li>• Premium member welcome status after sign up</li>
+          </ul>
+        </div>
+      </section>
+      <section class="p-8 lg:p-10">
+        <div class="mx-auto max-w-md">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Create your account</p>
+          <h2 class="mt-2 text-3xl font-black text-slate-900">Save your name & email</h2>
+          <form id="customerAuthForm" class="mt-8 space-y-4">
+            <input id="customerName" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-600" placeholder="Your Name" />
+            <input id="customerEmail" required type="email" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-600" placeholder="Your Email" />
+            <button type="submit" class="w-full rounded-2xl bg-[#065f46] px-4 py-3 font-semibold text-white">Login / Sign Up</button>
+          </form>
+          <p id="authMsg" class="mt-4 text-sm font-semibold"></p>
+          <div id="welcomeCard" class="mt-6 hidden rounded-3xl border border-emerald-100 bg-emerald-50 p-5">
+            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Welcome</p>
+            <h3 class="mt-2 text-2xl font-black text-emerald-900">Premium wholesale member activated</h3>
+            <p class="mt-2 text-sm text-slate-700">Thank you for joining Veer Mahadev Plastic! You are now a premium wholesale member.</p>
+            <p class="mt-4 text-xs text-slate-500">If OneSignal is loaded on this device, your email will be synced using <code>OneSignal.login(email)</code>.</p>
+            <a href="index.html" class="mt-4 inline-flex rounded-full bg-[#065f46] px-4 py-2 text-sm font-semibold text-white">Go to Store</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'vmpCustomers';
+    const CURRENT_KEY = 'vmpCurrentCustomer';
+
+    function readJson(key, fallback){
+      try {
+        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+      } catch {
+        return fallback;
+      }
+    }
+
+    function writeJson(key, value){
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    document.getElementById('customerAuthForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = document.getElementById('customerName').value.trim();
+      const email = document.getElementById('customerEmail').value.trim().toLowerCase();
+      const authMsg = document.getElementById('authMsg');
+      const welcomeCard = document.getElementById('welcomeCard');
+
+      const customers = readJson(STORAGE_KEY, []);
+      const existingIndex = customers.findIndex((entry) => entry.email === email);
+      const payload = { name, email, joinedAt: new Date().toISOString() };
+
+      if (existingIndex >= 0) customers[existingIndex] = { ...customers[existingIndex], ...payload };
+      else customers.push(payload);
+
+      writeJson(STORAGE_KEY, customers);
+      writeJson(CURRENT_KEY, payload);
+
+      if (window.OneSignal && typeof window.OneSignal.login === 'function') {
+        try { await window.OneSignal.login(email); } catch (error) { console.warn('OneSignal login failed', error); }
+      }
+
+      authMsg.className = 'mt-4 text-sm font-semibold text-emerald-700';
+      authMsg.textContent = 'Login successful. Your name and email have been captured for future campaigns.';
+      welcomeCard.classList.remove('hidden');
+      event.target.reset();
+    });
+  </script>
+</body>
+</html>
