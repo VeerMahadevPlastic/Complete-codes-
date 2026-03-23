@@ -56,9 +56,10 @@
     html { scroll-behavior: smooth; }
     .glass { backdrop-filter: blur(8px); }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .app-shell { min-height: 100vh; padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+    .app-shell { min-height: 100vh; padding-bottom: calc(170px + env(safe-area-inset-bottom)); }
     .mobile-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
     .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); animation: splashFade 5s ease forwards; }
+    .install-banner { bottom: calc(88px + env(safe-area-inset-bottom)); }
     .logo-card { animation: logoFloat 2.4s ease-in-out infinite; }
     .logo-glow { animation: glowPulse 2.4s ease-in-out infinite; }
     .logo-shimmer { position: relative; overflow: hidden; }
@@ -67,6 +68,10 @@
     @keyframes glowPulse { 0%,100% { opacity: 0.45; transform: scale(0.96); } 50% { opacity: 0.95; transform: scale(1.03); } }
     @keyframes shimmer { 0% { transform: translateX(-120%) rotate(12deg); } 100% { transform: translateX(120%) rotate(12deg); } }
     @keyframes splashFade { 0%, 78% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; pointer-events: none; } }
+    @media (min-width: 1024px) {
+      .app-shell { padding-bottom: 128px; }
+      .install-banner { bottom: 20px; }
+    }
   </style>
 </head>
 <body class="bg-[#f5f8f5] text-slate-800">
@@ -286,6 +291,20 @@
     </div>
   </footer>
 
+  <div id="installBanner" class="install-banner fixed left-1/2 z-[58] hidden w-[calc(100%-1.5rem)] max-w-3xl -translate-x-1/2 translate-y-8 opacity-0 transition-all duration-500">
+    <div class="rounded-2xl border border-[#D4AF37]/70 bg-[#065f46] px-4 py-3 text-[#D4AF37] shadow-2xl">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="pr-2">
+          <p class="text-sm font-bold tracking-wide sm:text-base">📱 Install Veer Mahadev App for Live Wholesale Rates!</p>
+        </div>
+        <div class="flex items-center gap-2 self-end sm:self-auto">
+          <button id="installNowBtn" class="rounded-full border border-[#D4AF37] px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10">Install Now</button>
+          <button id="closeInstallBanner" class="rounded-full border border-white/20 px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/10" aria-label="Close install banner">✕</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <a id="waFloating" href="#" class="fixed bottom-4 right-4 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-full shadow-xl z-40 font-semibold">💬 Order on WhatsApp</a>
 
   <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300">
@@ -342,10 +361,60 @@
 
   <script>
     let deferredPrompt;
+    let installBannerTimer = null;
 
     const PRICE_INCREMENT = 1;
     const imageFrom = () => './images/plate.jpg';
     const splash = document.getElementById('logoSplash');
+    const installBanner = document.getElementById('installBanner');
+    const INSTALL_BANNER_DISMISS_KEY = 'vmpInstallBannerDismissedAt';
+    const INSTALL_BANNER_HIDE_MS = 24 * 60 * 60 * 1000;
+
+    function readStorage(key){
+      try {
+        return localStorage.getItem(key);
+      } catch (error) {
+        console.warn(`Unable to read ${key} from localStorage.`, error);
+        return null;
+      }
+    }
+
+    function writeStorage(key, value){
+      try {
+        localStorage.setItem(key, value);
+      } catch (error) {
+        console.warn(`Unable to write ${key} to localStorage.`, error);
+      }
+    }
+
+    function isInstallBannerDismissed(){
+      const saved = Number(readStorage(INSTALL_BANNER_DISMISS_KEY) || 0);
+      return Boolean(saved && (Date.now() - saved) < INSTALL_BANNER_HIDE_MS);
+    }
+
+    function isAppInstalled(){
+      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+
+    function hideInstallBanner(saveDismissed = false){
+      if(!installBanner) return;
+      if(saveDismissed) writeStorage(INSTALL_BANNER_DISMISS_KEY, String(Date.now()));
+      installBanner.classList.add('translate-y-8', 'opacity-0');
+      setTimeout(() => installBanner.classList.add('hidden'), 500);
+    }
+
+    function showInstallBanner(){
+      if(!installBanner || !deferredPrompt || isAppInstalled() || isInstallBannerDismissed()) return;
+      installBanner.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        installBanner.classList.remove('translate-y-8', 'opacity-0');
+      });
+    }
+
+    function scheduleInstallBanner(){
+      if(installBannerTimer) clearTimeout(installBannerTimer);
+      installBannerTimer = setTimeout(showInstallBanner, 5000);
+    }
 
     function dismissSplashScreen(){
       if(!splash) return;
@@ -355,6 +424,7 @@
       splash.style.visibility = 'hidden';
       splash.style.pointerEvents = 'none';
       setTimeout(() => splash.remove(), 900);
+      scheduleInstallBanner();
     }
 
     setTimeout(dismissSplashScreen, 5000);
@@ -363,6 +433,12 @@
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
       deferredPrompt = event;
+      if(splash?.dataset.dismissed === 'true') scheduleInstallBanner();
+    });
+
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      hideInstallBanner();
     });
 
     if ('serviceWorker' in navigator) {
@@ -864,6 +940,17 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       element.addEventListener(eventName, handler);
       return element;
     }
+
+    bindById('installNowBtn', 'click', async ()=>{
+      if(!deferredPrompt) return;
+      hideInstallBanner();
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      if(choice.outcome === 'dismissed') scheduleInstallBanner();
+      deferredPrompt = null;
+    });
+
+    bindById('closeInstallBanner', 'click', ()=> hideInstallBanner(true));
 
     function priceForQty(tiers, qty){
       let unit = tiers[0].price;
