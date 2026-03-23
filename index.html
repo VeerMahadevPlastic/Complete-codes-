@@ -92,19 +92,30 @@
     </div>
   </div>
   <div class="app-shell">
-  <header class="sticky top-0 z-50 bg-white/95 glass border-b border-emerald-100">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-      <a href="#home" class="text-2xl font-extrabold text-emerald-700">Veer Mahadev Plastic</a>
-      <nav class="hidden lg:flex items-center gap-6 text-sm font-medium">
-        <a href="#home" class="text-emerald-700">Home</a>
-        <a href="#categories" class="hover:text-emerald-700">Categories</a>
-        <a href="#shop" class="hover:text-emerald-700">Shop All</a>
-        <a href="#eco" class="hover:text-emerald-700">Eco-Friendly Range</a>
-        <a href="#wholesale" class="hover:text-emerald-700">Wholesale Inquiry</a>
-      </nav>
-      <div class="flex items-center gap-3 text-sm">
-        <button id="openLogin" class="hidden sm:block border border-slate-300 rounded-lg px-3 py-2 hover:bg-slate-50">B2B Portal (Login)</button>
-        <button id="openCartTop" class="font-semibold border rounded-lg px-3 py-2 hover:bg-slate-50">Cart (<span id="cartCount">0</span>)</button>
+  <header class="sticky top-0 z-50 border-b border-emerald-100 bg-white/95 glass">
+    <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
+      <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3">
+        <a href="customer.html" class="hidden sm:inline-flex items-center rounded-full border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50">Customer Login</a>
+        <a href="#home" class="text-center text-xl font-black tracking-tight text-emerald-800 sm:text-2xl">Veer Mahadev</a>
+        <button id="openCartTop" class="justify-self-end rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">Cart (<span id="cartCount">0</span>)</button>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="flex flex-1 items-center rounded-2xl border border-emerald-100 bg-[#f8fbf8] px-3 py-2 shadow-sm">
+          <span class="mr-2 text-emerald-700">🔎</span>
+          <input id="productSearch" class="w-full bg-transparent text-sm outline-none" placeholder="Search plates, cups, spoons, trays..." />
+        </div>
+        <button id="searchBtn" class="rounded-2xl bg-emerald-800 px-4 py-2 text-sm font-semibold text-white">Search</button>
+        <a href="customer.html" class="inline-flex items-center rounded-2xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 sm:hidden">Login</a>
+      </div>
+      <div class="flex items-center justify-between gap-3 text-xs font-medium text-slate-600">
+        <nav class="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
+          <a href="#categories" class="text-emerald-700">Categories</a>
+          <a href="#shop">Shop All</a>
+          <a href="#eco">Eco Range</a>
+          <a href="#wholesale">Wholesale</a>
+          <a href="customer.html">Sign Up</a>
+        </nav>
+        <button id="openLogin" class="hidden rounded-full border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50 sm:inline-flex">B2B Portal</button>
       </div>
     </div>
   </header>
@@ -184,20 +195,18 @@
         <h2 class="text-3xl font-extrabold">Shop by Category</h2>
         <p class="text-sm text-slate-600">Click any category to jump to products and view filtered items.</p>
       </div>
-      <div id="categoryGrid" class="mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 text-center"></div>
+      <div id="categoryGrid" class="mt-5 flex gap-3 overflow-x-auto pb-2 text-center"></div>
     </section>
 
     <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
       <div class="flex items-center justify-between flex-wrap gap-3">
         <h3 class="text-2xl font-extrabold">Products</h3>
         <div class="flex items-center gap-2 flex-wrap">
-          <input id="productSearch" class="border rounded-lg px-3 py-2 text-sm" placeholder="Search product name..." />
-          <button id="searchBtn" class="border rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-50">Search</button>
           <span class="text-sm text-slate-600">Filter:</span>
           <select id="categoryFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
         </div>
       </div>
-      <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-5" id="productGrid"></div>
+      <div class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" id="productGrid"></div>
     </section>
 
     <section id="eco" class="max-w-7xl mx-auto px-4 pb-10">
@@ -905,16 +914,43 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return items;
     }
 
+    function loadPriceOverrides(){
+      try {
+        return JSON.parse(readStorage('vmpPriceOverrides') || '{}');
+      } catch (error) {
+        console.warn('Unable to parse price overrides.', error);
+        return {};
+      }
+    }
+
+    const priceOverrides = loadPriceOverrides();
+
     const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
 
     const products = PRODUCT_ITEMS.map(item => {
       const id = slugify(item.name);
+      const overridePrice = Number(priceOverrides[id]);
+      const tiers = Number.isFinite(overridePrice) && overridePrice > 0
+        ? [
+            {min:100, price: Number(overridePrice.toFixed(2))},
+            {min:200, price: Number(Math.max(overridePrice - 1, 0).toFixed(2))},
+            {min:500, price: Number(Math.max(overridePrice - 2, 0).toFixed(2))}
+          ]
+        : item.tiers;
       return {
         ...item,
         id,
+        tiers,
         image: PRODUCT_IMAGE_OVERRIDES[id] || item.image || imageFrom(item.name)
       };
     });
+
+    writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      price100: product.tiers[0]?.price || 0
+    }))));
 
     const categories = ['All', ...new Set(products.map(p => p.category))];
     let activeCategory = 'All';
@@ -975,10 +1011,23 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return '<span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">In Stock</span>';
     }
 
+    function categoryIcon(category){
+      const value = category.toLowerCase();
+      if(value.includes('glass')) return '🥤';
+      if(value.includes('plate') || value.includes('tray')) return '🍽️';
+      if(value.includes('spoon') || value.includes('cutlery')) return '🥄';
+      if(value.includes('bowl')) return '🥣';
+      if(value.includes('container') || value.includes('box')) return '📦';
+      return '🛍️';
+    }
+
     function renderCategories(){
       if(!categoryGrid || !categoryFilter) return;
       categoryGrid.innerHTML = categories.slice(1).map(cat => `
-        <button data-cat="${cat}" class="jump-cat bg-white rounded-xl p-4 border hover:border-emerald-400 hover:bg-emerald-50 font-semibold">${cat}</button>
+        <button data-cat="${cat}" class="jump-cat min-w-[92px] rounded-3xl border border-emerald-100 bg-white px-3 py-3 shadow-sm hover:border-emerald-400 hover:bg-emerald-50">
+          <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-2xl">${categoryIcon(cat)}</span>
+          <span class="mt-2 block text-xs font-semibold leading-tight text-slate-700">${cat}</span>
+        </button>
       `).join('');
       categoryFilter.innerHTML = categories.map(cat => `<option>${cat}</option>`).join('');
       categoryFilter.value = activeCategory;
@@ -996,9 +1045,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     function renderProducts(){
       if(!productGrid) return;
       productGrid.innerHTML = filteredProducts.map(p => `
-        <article class="bg-white border rounded-2xl overflow-hidden">
+        <article class="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
           <div class="relative">
-            <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
+            <img src="${p.image}" alt="${p.name}" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
             <button onclick="shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
               <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="18" cy="5" r="3"></circle>
@@ -1009,15 +1058,16 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
               </svg>
             </button>
           </div>
-          <div class="p-4 space-y-2">
-            <div class="flex justify-between gap-2 items-start"><h4 class="font-bold">${p.name}</h4>${stockBadge(p.stock)}</div>
-            <p class="text-xs text-slate-500">Category: ${p.category}</p>
-            <p class="text-xs text-slate-500">Tier Pricing (MOQ): ${p.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')}</p>
-            <div class="flex gap-2 items-center">
-              <input id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-24 border rounded-lg px-2 py-1.5 text-sm"/>
-              <button onclick="addToCart('${p.id}')" class="flex-1 bg-emerald-700 text-white rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Add to Cart</button>
-              <button onclick="buyNow('${p.id}')" class="flex-1 border border-emerald-700 text-emerald-700 rounded-lg py-2 text-sm font-semibold disabled:opacity-40" ${p.stock===0?'disabled':''}>Buy Now</button>
+          <div class="space-y-3 p-3">
+            <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${p.name}</h4>${stockBadge(p.stock)}</div>
+            <p class="text-[11px] text-slate-500">${p.category}</p>
+            <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
+            <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
+            <div class="flex items-center gap-2">
+              <input id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
+              <button onclick="addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
             </div>
+            <button onclick="buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
           </div>
         </article>
       `).join('') || '<p class="text-sm text-slate-600">No products found. Try another category or search keyword.</p>';
