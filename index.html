@@ -60,17 +60,24 @@
     .mobile-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
     .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); animation: splashFade 5s ease forwards; }
     .install-banner { bottom: calc(88px + env(safe-area-inset-bottom)); }
+    .floating-wa-btn { bottom: calc(168px + env(safe-area-inset-bottom)); }
     .logo-card { animation: logoFloat 2.4s ease-in-out infinite; }
     .logo-glow { animation: glowPulse 2.4s ease-in-out infinite; }
     .logo-shimmer { position: relative; overflow: hidden; }
+    .pulse-soft { animation: pulseSoft 2s ease-in-out infinite; }
     .logo-shimmer::after { content: ""; position: absolute; inset: -40%; background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.42) 50%, transparent 65%); animation: shimmer 2.8s linear infinite; }
     @keyframes logoFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); } }
     @keyframes glowPulse { 0%,100% { opacity: 0.45; transform: scale(0.96); } 50% { opacity: 0.95; transform: scale(1.03); } }
     @keyframes shimmer { 0% { transform: translateX(-120%) rotate(12deg); } 100% { transform: translateX(120%) rotate(12deg); } }
     @keyframes splashFade { 0%, 78% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; pointer-events: none; } }
+    @keyframes pulseSoft {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.35); }
+      50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+    }
     @media (min-width: 1024px) {
       .app-shell { padding-bottom: 128px; }
       .install-banner { bottom: 20px; }
+      .floating-wa-btn { bottom: 24px; }
     }
   </style>
 </head>
@@ -305,7 +312,11 @@
     </div>
   </div>
 
-  <a id="waFloating" href="#" class="fixed bottom-4 right-4 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-full shadow-xl z-40 font-semibold">💬 Order on WhatsApp</a>
+  <a id="waFloating" href="#" class="floating-wa-btn pulse-soft fixed right-4 z-[57] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition hover:scale-105" aria-label="Chat on WhatsApp">
+    <svg aria-hidden="true" viewBox="0 0 32 32" class="h-7 w-7 fill-current">
+      <path d="M19.11 17.41c-.29-.14-1.71-.84-1.98-.94-.26-.1-.46-.14-.65.15-.19.29-.75.94-.91 1.13-.17.19-.33.22-.62.07-.29-.14-1.21-.45-2.3-1.44-.85-.76-1.42-1.69-1.59-1.98-.17-.29-.02-.45.12-.59.13-.13.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.65-1.57-.89-2.15-.23-.55-.47-.48-.65-.49l-.55-.01c-.19 0-.5.07-.76.36-.26.29-1 1-.1 2.43.9 1.43 2.58 2.82 2.82 3.01.24.19 3.88 5.93 9.41 8.31 1.32.57 2.36.91 3.17 1.17 1.33.42 2.54.36 3.5.22 1.07-.16 3.3-1.35 3.77-2.65.47-1.3.47-2.42.33-2.65-.14-.23-.52-.36-.81-.5zM16.27 3C9.3 3 3.64 8.63 3.64 15.57c0 2.22.58 4.39 1.68 6.3L3 29l7.33-2.29a12.69 12.69 0 0 0 5.94 1.51h.01c6.97 0 12.63-5.63 12.63-12.58C28.91 8.63 23.24 3 16.27 3zm0 22.97h-.01a10.4 10.4 0 0 1-5.29-1.45l-.38-.22-4.35 1.36 1.42-4.23-.25-.43a10.33 10.33 0 0 1-1.58-5.44c0-5.7 4.67-10.34 10.43-10.34 2.79 0 5.41 1.08 7.38 3.04a10.25 10.25 0 0 1 3.06 7.31c0 5.7-4.68 10.4-10.43 10.4z"/>
+    </svg>
+  </a>
 
   <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300">
     <div class="p-4 border-b flex justify-between items-center">
@@ -986,7 +997,18 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(!productGrid) return;
       productGrid.innerHTML = filteredProducts.map(p => `
         <article class="bg-white border rounded-2xl overflow-hidden">
-          <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
+          <div class="relative">
+            <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
+            <button onclick="shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <path d="M8.59 13.51 15.42 17.49"></path>
+                <path d="M15.41 6.51 8.59 10.49"></path>
+              </svg>
+            </button>
+          </div>
           <div class="p-4 space-y-2">
             <div class="flex justify-between gap-2 items-start"><h4 class="font-bold">${p.name}</h4>${stockBadge(p.stock)}</div>
             <p class="text-xs text-slate-500">Category: ${p.category}</p>
@@ -1056,6 +1078,35 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     window.buyNow = function(id){
       addToCart(id);
       openCart();
+    }
+
+    window.shareProduct = async function(id){
+      const product = products.find(item => item.id === id);
+      if(!product) return;
+      const productUrl = window.location.href.split('#')[0];
+      const shareText = `Check out ${product.name} from Veer Mahadev Plastic! See rates here: ${productUrl}`;
+
+      if(navigator.share){
+        try {
+          await navigator.share({
+            title: product.name,
+            text: shareText,
+            url: productUrl
+          });
+          return;
+        } catch (error) {
+          if(error?.name === 'AbortError') return;
+        }
+      }
+
+      if(navigator.clipboard?.writeText){
+        navigator.clipboard.writeText(shareText)
+          .then(() => alert('Product share message copied. Paste it in WhatsApp or anywhere you want to share.'))
+          .catch(() => window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank'));
+        return;
+      }
+
+      window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
     }
 
     function cartWhatsappText(customerName, customerAddress){
@@ -1198,10 +1249,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     // WhatsApp actions (floating + cart)
     bindById('waFloating', 'click', (e)=>{
       e.preventDefault();
-      const details = getCustomerDetails();
-      if(!details) { openCart(); return; }
-      const msg = cartWhatsappText(details.name, details.address);
-      window.open(`https://wa.me/918050389261?text=${msg}`,'_blank');
+      const msg = 'Hi Karan bhai, I am interested in some products from Veer Mahadev Plastic. Please guide me.';
+      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
     });
     bindById('waCart', 'click', ()=>{
       const details = getCustomerDetails();
