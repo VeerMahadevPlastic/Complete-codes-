@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#047857" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Veer Mahadev Plastic  " />
+  <meta name="apple-mobile-web-app-title" content="Veer Mahadev" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
@@ -23,7 +23,7 @@
     "@context": "https://schema.org",
     "@type": "WholesaleStore",
     "name": "Veer Mahadev Plastic",
-    "image": "https://i.postimg.cc/NGm28gSH/welcome.jpg",
+    "image": "https://veermahadevplastic.in/logo.png",
     "@id": "https://veermahadevplastic.in",
     "url": "https://veermahadevplastic.in",
     "telephone": "+918050389261",
@@ -122,11 +122,11 @@
 
   <main id="home">
     <section class="relative overflow-hidden bg-white border-b border-emerald-100">
-      <img src="https://i.postimg.cc/NGm28gSH/welcome_logo.jpg?auto=format&fit=crop&q=80&w=180" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
+      <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
       <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
         <div>
           <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
-            <span class="text-emerald-600">Bharat ka Leading Disposable Hub</span> - Factory Rates, High Quality!
+            <span class="text-emerald-700">Bharat ka Leading Disposable Hub</span> - Factory Rates, High Quality!
           </h1>
           <p class="mt-4 text-lg">Serving <b>10,000+</b> customers monthly since 2022. Best quality for restaurants, cafes, event managers, and households.</p>
           <div class="mt-6 flex flex-wrap gap-3">
@@ -162,7 +162,6 @@
         <p>🧾 GST Invoicing Ready</p>
       </div>
     </section>
-
     <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex items-end justify-between flex-wrap gap-2">
         <h2 class="text-3xl font-extrabold">Shop by Category</h2>
@@ -189,8 +188,8 @@
           <h3 class="text-3xl font-extrabold">Go Green with Our Biodegradable Range</h3>
           <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
         </div>
-        <button data-cat="eco-range" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
-       <section class="max-w-7xl mx-auto px-4 py-10">
+        
+    <section class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex items-end justify-between flex-wrap gap-3">
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Why Businesses Choose Us</p>
@@ -216,6 +215,7 @@
         </article>
       </div>
     </section>
+        <button data-cat="eco-range" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
       </div>
     </section>
 
@@ -340,13 +340,48 @@
         <textarea id="customerAddress" class="border rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Full Address with City, State, Pincode (required)"></textarea>
         <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
       </div>
-      <div class="grid grid-cols-2 gap-2 mt-3">
-        <button id="waCart" disabled class="bg-emerald-700 text-white py-2 rounded-lg font-semibold disabled:opacity-40 disabled:cursor-not-allowed">Order on WhatsApp</button>
-        <button id="buyNowCart" class="border py-2 rounded-lg font-semibold">Buy Now</button>
+      <div class="mt-3 space-y-2">
+        <button id="waCart" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
+          <span>💬</span><span>Order on WhatsApp</span>
+        </button>
+        <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Buy Now</button>
       </div>
     </div>
   </aside>
   <div id="drawerOverlay" class="hidden fixed inset-0 bg-black/40 z-50"></div>
+
+  <div id="productModal" class="hidden fixed inset-0 z-[68] bg-black/50 px-4">
+    <div class="mx-auto mt-10 max-w-3xl rounded-[2rem] bg-white shadow-2xl">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-100 px-5 py-4">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Product Details</p>
+          <h4 id="productModalTitle" class="mt-1 text-2xl font-black text-slate-900"></h4>
+        </div>
+        <button id="closeProductModal" class="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600">✕</button>
+      </div>
+      <div class="grid gap-6 px-5 py-5 md:grid-cols-[1fr_1fr]">
+        <img id="productModalImage" src="" alt="" class="h-80 w-full rounded-[1.5rem] bg-slate-50 object-cover" />
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="rounded-2xl bg-emerald-50 p-3"><p class="text-xs uppercase text-slate-500">Category</p><p id="productModalCategory" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-emerald-50 p-3"><p class="text-xs uppercase text-slate-500">Stock</p><p id="productModalStock" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">Size / Capacity</p><p id="productModalSize" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">Colour</p><p id="productModalColor" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">HSN Code</p><p id="productModalHsn" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">MOQ</p><p id="productModalMoq" class="mt-1 font-semibold text-slate-800"></p></div>
+          </div>
+          <div class="rounded-[1.5rem] border border-emerald-100 p-4">
+            <p class="text-sm font-semibold text-emerald-800">Tier Pricing</p>
+            <p id="productModalPricing" class="mt-2 text-sm text-slate-700"></p>
+          </div>
+          <div class="rounded-[1.5rem] border border-slate-100 p-4">
+            <p class="text-sm font-semibold text-slate-800">Recommended Use</p>
+            <p id="productModalUse" class="mt-2 text-sm text-slate-600"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="authHubModal" class="hidden fixed inset-0 z-[72] bg-black/40 px-4">
     <div class="mx-auto mt-24 max-w-xl rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-2xl">
@@ -846,6 +881,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     const cartDrawer = document.getElementById('cartDrawer');
     const drawerOverlay = document.getElementById('drawerOverlay');
     const authHubModal = document.getElementById('authHubModal');
+    const productModal = document.getElementById('productModal');
 
     function bindById(id, eventName, handler){
       const element = document.getElementById(id);
@@ -860,6 +896,10 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     function closeAuthHub(){
       authHubModal?.classList.add('hidden');
+    }
+
+    function closeProductDetails(){
+      productModal?.classList.add('hidden');
     }
 
     bindById('installNowBtn', 'click', async ()=>{
@@ -878,6 +918,10 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     bindById('closeAuthHub', 'click', closeAuthHub);
     bindById('authHubModal', 'click', (event)=>{
       if(event.target.id === 'authHubModal') closeAuthHub();
+    });
+    bindById('closeProductModal', 'click', closeProductDetails);
+    bindById('productModal', 'click', (event)=>{
+      if(event.target.id === 'productModal') closeProductDetails();
     });
 
     function priceForQty(tiers, qty){
@@ -900,6 +944,51 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(value.includes('bowl')) return '🥣';
       if(value.includes('container') || value.includes('box')) return '📦';
       return '🛍️';
+    }
+
+    function productMeta(product){
+      const name = product.name;
+      const sizeMatch = name.match(/(\d+\s?(?:ML|GRM|MM|DIA|OZ|NO|CP))/i);
+      const colorMatch = name.match(/(BLACK|MILKY|WHITE|RED|TRANS|TRANSPARENT|BROWN|GREEN)/i);
+      const category = product.category.toLowerCase();
+      let hsn = '3924';
+      if(category.includes('paper') || category.includes('cornstarch') || category.includes('biodegradable')) hsn = '4823';
+      if(category.includes('glass')) hsn = '3923';
+      if(category.includes('spoon') || category.includes('cutlery')) hsn = '3924';
+      let use = 'Suitable for wholesale supply, events, food service, catering, takeaway, and retail packaging.';
+      if(category.includes('glass')) use = 'Ideal for beverages, mocktails, water service, dessert serving, and party use.';
+      if(category.includes('plate') || category.includes('tray')) use = 'Best for meal service, catering packs, takeaway combos, and event dining.';
+      if(category.includes('container') || category.includes('box')) use = 'Good for takeaway packing, sweets, bakery items, meal storage, and delivery use.';
+      let color = 'As per product specification';
+      if(colorMatch){
+        color = colorMatch[1].toUpperCase();
+        if(color === 'TRANS') color = 'Transparent';
+      }
+      return {
+        size: sizeMatch ? sizeMatch[1].toUpperCase() : 'Standard Wholesale Size',
+        color,
+        hsn,
+        moq: `${product.tiers[0]?.min || 100}+ pcs`,
+        use
+      };
+    }
+
+    window.openProductDetails = function(id){
+      const product = products.find(item => item.id === id);
+      if(!product || !productModal) return;
+      const meta = productMeta(product);
+      document.getElementById('productModalTitle').textContent = product.name;
+      document.getElementById('productModalImage').src = product.image;
+      document.getElementById('productModalImage').alt = product.name;
+      document.getElementById('productModalCategory').textContent = product.category;
+      document.getElementById('productModalStock').textContent = product.stock > 0 ? `${product.stock} packs ready` : 'Currently unavailable';
+      document.getElementById('productModalSize').textContent = meta.size;
+      document.getElementById('productModalColor').textContent = meta.color;
+      document.getElementById('productModalHsn').textContent = meta.hsn;
+      document.getElementById('productModalMoq').textContent = meta.moq;
+      document.getElementById('productModalPricing').textContent = product.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ');
+      document.getElementById('productModalUse').textContent = meta.use;
+      productModal.classList.remove('hidden');
     }
 
     function renderCategories(){
@@ -926,10 +1015,10 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     function renderProducts(){
       if(!productGrid) return;
       productGrid.innerHTML = filteredProducts.map(p => `
-        <article class="overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+        <article onclick="openProductDetails('${p.id}')" class="cursor-pointer overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
           <div class="relative">
             <img src="${p.image}" alt="${p.name}" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
-            <button onclick="shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
+            <button onclick="event.stopPropagation();shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
               <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="18" cy="5" r="3"></circle>
                 <circle cx="6" cy="12" r="3"></circle>
@@ -945,10 +1034,10 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
             <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
             <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
             <div class="flex items-center gap-2">
-              <input id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
-              <button onclick="addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
+              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
+              <button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
             </div>
-            <button onclick="buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
+            <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
           </div>
         </article>
       `).join('') || '<p class="text-sm text-slate-600">No products found. Try another category or search keyword.</p>';
