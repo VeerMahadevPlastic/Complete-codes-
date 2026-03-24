@@ -96,7 +96,7 @@
     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
       <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3">
         <button id="openAuthHubTop" class="hidden sm:inline-flex items-center rounded-full border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50">Login</button>
-        <a href="#home" class="text-center text-xl font-black tracking-tight text-emerald-800 sm:text-2xl">Veer Mahadev Plastic</a>
+        <a href="#home" class="text-center text-xl font-black tracking-tight text-emerald-800 sm:text-2xl">Veer Mahadev</a>
         <button id="openCartTop" class="justify-self-end rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">Cart (<span id="cartCount">0</span>)</button>
       </div>
       <div class="flex items-center gap-2">
@@ -163,7 +163,33 @@
       </div>
     </section>
 
-    
+    <section class="max-w-7xl mx-auto px-4 py-10">
+      <div class="flex items-end justify-between flex-wrap gap-3">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Why Businesses Choose Us</p>
+          <h2 class="text-3xl font-extrabold">Professional supply support for retail and wholesale buyers</h2>
+        </div>
+        <p class="max-w-2xl text-sm text-slate-600">From restaurants and caterers to event planners and resellers, we help teams buy faster with transparent pricing, ready stock, and direct WhatsApp ordering support.</p>
+      </div>
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
+          <p class="text-sm font-semibold text-emerald-700">Fast fulfilment</p>
+          <h3 class="mt-2 text-xl font-bold">Ready inventory with quick dispatch</h3>
+          <p class="mt-2 text-sm text-slate-600">Popular disposable trays, bowls, containers, cups, and lids are organized for faster order confirmation and same-day dispatch support.</p>
+        </article>
+        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
+          <p class="text-sm font-semibold text-emerald-700">Wholesale clarity</p>
+          <h3 class="mt-2 text-xl font-bold">MOQ pricing that feels business-friendly</h3>
+          <p class="mt-2 text-sm text-slate-600">Category filters, search, and tier pricing make it easier for buyers to compare quantity slabs before placing a wholesale or repeat order.</p>
+        </article>
+        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
+          <p class="text-sm font-semibold text-emerald-700">Trusted support</p>
+          <h3 class="mt-2 text-xl font-bold">Direct assistance for custom requirements</h3>
+          <p class="mt-2 text-sm text-slate-600">Customers can submit bulk inquiries, use cart-based WhatsApp ordering, and connect with the team for delivery planning and special packaging needs.</p>
+        </article>
+      </div>
+    </section>
+
     <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex items-end justify-between flex-wrap gap-2">
         <h2 class="text-3xl font-extrabold">Shop by Category</h2>
@@ -191,30 +217,6 @@
           <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
         </div>
         <button data-cat="eco-range" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
-      <section class="max-w-7xl mx-auto px-4 py-10">
-      <div class="flex items-end justify-between flex-wrap gap-3">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Why Businesses Choose Us</p>
-          <h2 class="text-3xl font-extrabold">Professional supply support for retail and wholesale buyers</h2>
-        </div>
-        <p class="max-w-2xl text-sm text-slate-600">From restaurants and caterers to event planners and resellers, we help teams buy faster with transparent pricing, ready stock, and direct WhatsApp ordering support.</p>
-      </div>
-      <div class="mt-6 grid gap-4 md:grid-cols-3">
-        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
-          <p class="text-sm font-semibold text-emerald-700">Fast fulfilment</p>
-          <h3 class="mt-2 text-xl font-bold">Ready inventory with quick dispatch</h3>
-          <p class="mt-2 text-sm text-slate-600">Popular disposable trays, bowls, containers, cups, and lids are organized for faster order confirmation and same-day dispatch support.</p>
-        </article>
-        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
-          <p class="text-sm font-semibold text-emerald-700">Wholesale clarity</p>
-          <h3 class="mt-2 text-xl font-bold">MOQ pricing that feels business-friendly</h3>
-          <p class="mt-2 text-sm text-slate-600">Category filters, search, and tier pricing make it easier for buyers to compare quantity slabs before placing a wholesale or repeat order.</p>
-        </article>
-        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
-          <p class="text-sm font-semibold text-emerald-700">Trusted support</p>
-          <h3 class="mt-2 text-xl font-bold">Direct assistance for custom requirements</h3>
-          <p class="mt-2 text-sm text-slate-600">Customers can submit bulk inquiries, use cart-based WhatsApp ordering, and connect with the team for delivery planning and special packaging needs.</p>
-        </article>
       </div>
     </section>
 
@@ -341,7 +343,7 @@
       </div>
       <div class="mt-3 space-y-2">
         <button id="waCart" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
-          <span>💬</span><span>Order By WhatsApp</span>
+          <span>💬</span><span>Order on WhatsApp</span>
         </button>
         <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Buy Now</button>
       </div>
@@ -529,6 +531,8 @@
       return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
     }
     const RAW_PRICE_DATA = `
+# Image add format (optional, per product line):
+# <same product line> || https://your-image-url.jpg
 1 3CP MEAL TRAY WITH LID (7041) 400 4600 12.5 || https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg
 2 4CP MEAL TRAY WITH LID (7043) 300 4890 17.3 || https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg
 3 5CP MEAL TRAY WITH LID (7045) 300 5055 17.85 || https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg
@@ -547,16 +551,16 @@ SR CORNSTARCH BOWL / PLATE / CUTLERY PACKING RATE BOX RATE PCS
 3 250ML BOWL (7003) 1800 4356 3.60 || https://i.postimg.cc/gk2vBjHZ/eco-bowl.jpg
 4 6' ROUND PLATE (7016) 2000 3760 2.88 || https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
 5 9' ROUND PLATE (7018) 800 3640 5.55 || https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
-6 9' 3CP ROUND PLATE (7019) 800 3640 5.55 || https://i.postimg.cc/7LLjdSyd/3_compartment_plate_round.png
+6 9' 3CP ROUND PLATE (7019) 800 3640 5.55 || https://i.postimg.cc/75pBTGhn/3-compartment-plate-round.png
 7 10' ROUND PLATE (7021) 600 3510 6.85 || https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
-8 10' 3CP ROUND PLATE (7022) 600 3510 6.85 || https://i.postimg.cc/7LLjdSyd/3_compartment_plate_round.png
+8 10' 3CP ROUND PLATE (7022) 600 3510 6.85 || https://i.postimg.cc/75pBTGhn/3-compartment-plate-round.png
 9 11' ROUND PLATE (7023) 500 3550 8.1 ||  https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
 10 11' 4CP ROUND PLATE (7025) 500 3550 8.1 || https://i.postimg.cc/Y2GDCmmh/bio_plate_4cp.jpg
 11 12' ROUND PLATE (7026) 500 4275 9.55 ||  https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
 12 12' 4CP ROUND PLATE (7027) 500 4275 9.55 || https://i.postimg.cc/Y2GDCmmh/bio_plate_4cp.jpg
-13 3CP TRAY ECO (7032E) 500 3010 7.02 ||  https://i.postimg.cc/7LLjdSyd/3_compartment_plate_round.png
+13 3CP TRAY ECO (7032E) 500 3010 7.02 ||  https://i.postimg.cc/75pBTGhn/3-compartment-plate-round.png
 14 4CP TRAY ECO (7034E) 500 4550 10.1 || https://i.postimg.cc/Y2GDCmmh/bio_plate_4cp.jpg
-15 4CP TRAY (7034) 400 3800 10.5 || https://i.postimg.cc/7LLjdSyd/3_compartment_plate_round.png
+15 4CP TRAY (7034) 400 3800 10.5 || https://i.postimg.cc/75pBTGhn/3-compartment-plate-round.png
 16 6CP TRAY ECO (7038E) 400 4120 11.3 || https://i.postimg.cc/wvGbqs05/6CP-PLATE-TRAY-ECO.jpg
 17 6CP TRAY (7038) 400 4240 11.6 || https://i.postimg.cc/wvGbqs05/6CP-PLATE-TRAY-ECO.jpg
 
@@ -601,24 +605,24 @@ SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
 6 HINGED SAUCE CUP ROUND 3OZ (1417) 3500 5005 2.43 || https://i.postimg.cc/cCWD6Pv3/HINGED-SAUCE-CUP-round.jpg
 7 HINGED SAUCE CUP OVAL 85ML (1418) 4050 4252.5 2.05 ||  https://i.postimg.cc/XvXtbM5q/HINGED-SAUCE-CUP-OVAL.jpg
 8 HINGED ROUND CONTAINER 120ML (1410) 3150 4788 2.52 ||  https://i.postimg.cc/cCWD6Pv3/HINGED-SAUCE-CUP-round.jpg
-9 HINGED SAUCE CUP 2CP (1405) 2500 4400 2.76 || https://i.postimg.cc/3xpcBfDC/Sauce-Cup-2cp.webp
-10 HINGED BOX 80X60MM (1411) 6000 3660 1.61 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-11 HINGED BOX 80X80MM (1412) 5100 4896 1.96 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-12 HINGED BOX 100ML (1413) 2700 3780 2.4 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-13 HINGED BOX 150ML (1420) 1800 3870 3.15 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-14 HINGED BOX 250ML (1421) 1500 4500 4 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-15 HINGED BOX 375ML (1422) 1500 5055 4.37 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-16 HINGED BOX 500ML (1423) 1500 5625 4.75 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-17 HINGED BOX 500ML FLAT (1425) 900 4374 5.86 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-18 HINGED BOX 600ML (1427) 900 4725 6.25 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-19 HINGED BOX 750ML (1428) 900 5400 7 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-20 HINGED BOX 1000ML (1429) 900 6075 7.75 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-21 HINGED BOX 1000ML FLAT (1430) 720 5940 9.25 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-22 HINGED BOX 1000ML FLAT (1419) 600 4560 8.6 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-23 HINGED BOX 1250ML (1431) 600 5238 9.73 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-24 HINGED BOX 1500ML (1432) 600 5700 10.5 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-25 HINGED BOX 2000ML (1434) 480 5640 12.75 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-26 HINGED BOX 2250ML (1435) 480 6240 14 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
+9 HINGED SAUCE CUP 2CP (1405) 2500 4400 2.76 || https://i.postimg.cc/xT4K4W9Z/HINGED-SAUCE-CUP-2-Comparetment.jpg
+10 HINGED BOX 80X60MM (1411) 6000 3660 1.61 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+11 HINGED BOX 80X80MM (1412) 5100 4896 1.96 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+12 HINGED BOX 100ML (1413) 2700 3780 2.4 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+13 HINGED BOX 150ML (1420) 1800 3870 3.15 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+14 HINGED BOX 250ML (1421) 1500 4500 4 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+15 HINGED BOX 375ML (1422) 1500 5055 4.37 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+16 HINGED BOX 500ML (1423) 1500 5625 4.75 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+17 HINGED BOX 500ML FLAT (1425) 900 4374 5.86 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+18 HINGED BOX 600ML (1427) 900 4725 6.25 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+19 HINGED BOX 750ML (1428) 900 5400 7 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+20 HINGED BOX 1000ML (1429) 900 6075 7.75 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+21 HINGED BOX 1000ML FLAT (1430) 720 5940 9.25 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+22 HINGED BOX 1000ML FLAT (1419) 600 4560 8.6 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+23 HINGED BOX 1250ML (1431) 600 5238 9.73 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+24 HINGED BOX 1500ML (1432) 600 5700 10.5 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+25 HINGED BOX 2000ML (1434) 480 5640 12.75 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
+26 HINGED BOX 2250ML (1435) 480 6240 14 || https://i.postimg.cc/0MXm2kTX/transperent-box.png
 27 HINGED BOX 250ML HI LID (1421A) 1500 4500 4 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
 28 HINGED BOX 375ML HI LID (1422A) 1500 5055 4.37 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
 29 HINGED BOX 500ML HI LID (1423A) 1500 5625 4.75 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
@@ -637,33 +641,33 @@ SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
 42 HINGED BOX 190X140X90MM (1485) 600 4860 9.1 || https://i.postimg.cc/FFndr3wX/transperent-box-packing-of-dry-fruits-4cp.jpg
 
 SR BAKERY HINGED PACKING RATE BOX RATE PCS
-1 SANDWICH BOX MED (1404) 1260 4410 4.5 || https://i.postimg.cc/Rh5Bhxcj/SANDWICH-BOX.jpg
-2 BURGER BOX (1402) 1500 5250 4.5 || https://i.postimg.cc/Rh5Bhxcj/SANDWICH-BOX.jpg
-3 HINGED BOX CUP CAKE DOME (1414) 2850 4560 2.6 || https://i.postimg.cc/vm4FvZh2/HINGED-BOX-CUP-CAKE-DOME.jpg
-4 HINGED BOX BROWNIE (1415) 2250 5287.5 3.35 || https://i.postimg.cc/gjT3840z/HINGED-BOX-BROWNIE.jpg
-5 HINGED BOX 200X110X10 (1438) 900 6120 7.8 || https://i.postimg.cc/V67tP4nk/HINGED-BOX.jpg
-6 HINGED BOX 234X114X40 CAKE (1439) 900 4950 6.5 || https://i.postimg.cc/jjtnWBhJ/HINGED-BOX-CAKE.jpg
-7 HINGED BOX 200X110X65 CAKE (1440) 1200 5100 5.25 || https://i.postimg.cc/jjtnWBhJ/HINGED-BOX-CAKE.jpg
-8 HINGED BOX 190X110X60 CAKE (1441) 1400 5320 4.8 || https://i.postimg.cc/jjtnWBhJ/HINGED-BOX-CAKE.jpg
-9 HINGED BOX 195X110X67 CAKE TRIANGLE (1442) 1200 5100 5.25 || https://i.postimg.cc/C5qxr4Ng/HINGED-BOX-CAKE-TRINGLE.jpg
-10 HINGED BOX 235X110X60 BIG CAKE (1443) 900 4203 5.67 || https://i.postimg.cc/jjtnWBhJ/HINGED-BOX-CAKE.jpg
-11 HINGED BOX 180X150X60 2 CUP CAKE (1444) 1500 4425 3.95 || https://i.postimg.cc/RCW5tRGY/HINGED-BOX-2-CUP-CAKE.webp
-12 HINGED BOX 155X155X60 4 CUP CAKE (1445) 900 5265 6.85 || https://i.postimg.cc/kGKTcB2b/HINGED-BOX-4-CUP-CAKE.jpg
-13 HINGED BOX 215X160X60 6 CUP CAKE (1446) 500 4000 9 || https://i.postimg.cc/cJzTGQYv/6cp-cup-cake-hinged-container.webp
-14 HINGED BOX 6 CUP CAKE (1…1786 tokens truncated… (1356) 1000 5050 6.05 || https://i.postimg.cc/cJzTGQYv/6cp-cup-cake-hinged-container.webp
-7 PET ROUND CONTAINER 1200ML (1357) 1000 5550 6.55 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-8 PET ROUND CONTAINER LID 120DIA (1241) 2000 2520 2.26 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-9 PP ROUND CONTAINER 200ML (5411) 2000 3200 2.6 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-10 PP ROUND CONTAINER 300ML (5412) 2000 3200 2.6 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-11 PP ROUND CONTAINER 500ML (5414) 2000 5320 3.66 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-12 PP ROUND CONTAINER 750ML (5415) 2000 6400 4.2 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-13 PP ROUND CONTAINER 1000ML (5416) 1000 4260 5.26 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-14 PP ROUND CONTAINER 1200ML (5417) 1000 4800 5.8 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-15 PP CONTAINER FB 300ML BLACK / TRANSPERENT (5402) 2000 3840 2.92 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-16 PP CONTAINER FB 400ML BLACK / TRANSPERENT (5403) 2000 4360 3.18 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-17 PP CONTAINER FB 500ML BLACK / TRANSPERENT (5404) 2000 5460 3.73 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-18 PP CONTAINER FB 650ML BLACK / TRANSPERENT (5405) 2000 6600 4.3 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-19 PP ROUND CONTAINER LID 123DIA (5451) 2000 2800 2.4 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
+1 SANDWICH BOX MED (1404) 1260 4410 4.5 || 
+2 BURGER BOX (1402) 1500 5250 4.5 || 
+3 HINGED BOX CUP CAKE DOME (1414) 2850 4560 2.6 || 
+4 HINGED BOX BROWNIE (1415) 2250 5287.5 3.35 || 
+5 HINGED BOX 200X110X10 (1438) 900 6120 7.8 || 
+6 HINGED BOX 234X114X40 CAKE (1439) 900 4950 6.5 || 
+7 HINGED BOX 200X110X65 CAKE (1440) 1200 5100 5.25 || 
+8 HINGED BOX 190X110X60 CAKE (1441) 1400 5320 4.8 || 
+9 HINGED BOX 195X110X67 CAKE TRIANGLE (1442) 1200 5100 5.25 || 
+10 HINGED BOX 235X110X60 BIG CAKE (1443) 900 4203 5.67 || 
+11 HINGED BOX 180X150X60 2 CUP CAKE (1444) 1500 4425 3.95 || 
+12 HINGED BOX 155X155X60 4 CUP CAKE (1445) 900 5265 6.85 || 
+13 HINGED BOX 215X160X60 6 CUP CAKE (1446) 500 4000 9 || 
+14 HINGED BOX 6 CUP CAKE (1…1786 tokens truncated… (1356) 1000 5050 6.05 || 
+7 PET ROUND CONTAINER 1200ML (1357) 1000 5550 6.55 || 
+8 PET ROUND CONTAINER LID 120DIA (1241) 2000 2520 2.26 || 
+9 PP ROUND CONTAINER 200ML (5411) 2000 3200 2.6 || 
+10 PP ROUND CONTAINER 300ML (5412) 2000 3200 2.6 || 
+11 PP ROUND CONTAINER 500ML (5414) 2000 5320 3.66 || 
+12 PP ROUND CONTAINER 750ML (5415) 2000 6400 4.2 || 
+13 PP ROUND CONTAINER 1000ML (5416) 1000 4260 5.26 || 
+14 PP ROUND CONTAINER 1200ML (5417) 1000 4800 5.8 || 
+15 PP CONTAINER FB 300ML BLACK / TRANSPERENT (5402) 2000 3840 2.92 || 
+16 PP CONTAINER FB 400ML BLACK / TRANSPERENT (5403) 2000 4360 3.18 || 
+17 PP CONTAINER FB 500ML BLACK / TRANSPERENT (5404) 2000 5460 3.73 || 
+18 PP CONTAINER FB 650ML BLACK / TRANSPERENT (5405) 2000 6600 4.3 || 
+19 PP ROUND CONTAINER LID 123DIA (5451) 2000 2800 2.4 || 
 
 SR ROUND CAKE BOX PET PACKING RATE BOX RATE PCS
 1 ROUND CONTAINER 150DIA 45H 500GRM (1358) 640 4416 7.9 || 
@@ -754,7 +758,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 27 PUNNET STRAWBERRY -250GRM 117X117X67 (1644) 1600 3200 3 || 
 28 PUNNET MULBERRY 117X117X67 (1645) 1575 4803.75 4.05 || 
 29 PUNNET BLUEBERRY SQUARE (1648) 1500 4680 4.12 || 
-30 PUNNET AVOCADO -2PC (1652) 1050 4882.5 5.65 ||
+30 PUNNET AVOCADO -2PC (1652) 1050 4882.5 5.65 || 
 `;
 
     // Per-product image URLs (id-wise). Add/replace links here.
@@ -1132,39 +1136,15 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(cart.length === 0) return 'Hello, I want to place an order. Please share latest catalog.';
       const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - ₹${(i.qty*i.unit).toFixed(2)}`);
       const subtotal = cartTotalAmount().toFixed(2);
-     const totalQty = cartTotalQty();
-      return [
-        'Hello Veer Mahadev Plastic,',
-        `Customer Name: ${customerName}`,
-        `Customer Address: ${customerAddress}`,
-        '',
-        'I want to place this order:',
-        ...lines,
-        '',
-        `Total Quantity: ${totalQty}`,
-        `Estimated Order Total: ₹${subtotal}`,
-        'Please confirm final amount with shipping and delivery timeline.'
-      ].join('\n');
+      return `Hello Veer Mahadev Plastic,%0AName: ${customerName}%0AAddress: ${customerAddress}%0A%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
     }
-    
+
     function cartEmailText(customerName, customerAddress){
       if(cart.length === 0) return 'Hello Veer Mahadev Plastic,%0A%0AI want to place an order. Please share the latest catalog.';
       const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - Amount ₹${(i.qty*i.unit).toFixed(2)}`);
       const subtotal = cartTotalAmount().toFixed(2);
       const totalQty = cartTotalQty();
-       const totalQty = cartTotalQty();
-      return [
-        'Hello Veer Mahadev Plastic,',
-        `Customer Name: ${customerName}`,
-        `Customer Address: ${customerAddress}`,
-        '',
-        'I want to place this order:',
-        ...lines,
-        '',
-        `Total Quantity: ${totalQty}`,
-        `Estimated Order Total: ₹${subtotal}`,
-        'Please confirm final amount with shipping and delivery timeline.'
-      ].join('\n');
+      return `Hello Veer Mahadev Plastic,%0A%0AName: ${customerName}%0AAddress: ${customerAddress}%0ATotal Items Qty: ${totalQty}%0AOrder Amount: ₹${subtotal}%0A%0AOrder Details:%0A${lines.join('%0A')}%0A%0APlease confirm availability, final total, and delivery details.`;
     }
 
     function updateWhatsappButton(){
