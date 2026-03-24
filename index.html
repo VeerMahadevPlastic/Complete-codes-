@@ -14,7 +14,7 @@
   <meta name="keywords" content="disposable plate dealer Ahmedabad, paper cup manufacturer Gujarat, biodegradable plates shop, disposable items wholesaler near me, silver foil supplier, wholesale plastic glass dealer, Veer Mahadev Plastic, disposable shop Ahmedabad">
 
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://veermahadevplastic.in/">
+  <meta property="og:url" content="https://www.veermahadevplastic.in/">
   <meta property="og:title" content="Veer Mahadev Plastic | Wholesale Disposable Expert">
   <meta property="og:description" content="Get premium quality disposable and biodegradable products at factory rates. Serving Ahmedabad and all over Gujarat.">
 
@@ -23,9 +23,9 @@
     "@context": "https://schema.org",
     "@type": "WholesaleStore",
     "name": "Veer Mahadev Plastic",
-    "image": "https://veermahadevplastic.in/logo.png",
-    "@id": "https://veermahadevplastic.in",
-    "url": "https://veermahadevplastic.in",
+    "image": "https://www.veermahadevplastic.in/logo.png",
+    "@id": "https://www.veermahadevplastic.in",
+    "url": "https://www.veermahadevplastic.in",
     "telephone": "+918050389261",
     "address": {
       "@type": "PostalAddress",
@@ -52,13 +52,14 @@
   </script>
   <title>Veer Mahadev Plastic | Best Disposable Items Wholesaler in Ahmedabad, Gujarat</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <style>
     html { scroll-behavior: smooth; }
     .glass { backdrop-filter: blur(8px); }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .app-shell { min-height: 100vh; padding-bottom: calc(170px + env(safe-area-inset-bottom)); }
     .mobile-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
-    .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); animation: splashFade 5s ease forwards; }
+    .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); animation: splashFade 3s ease forwards; }
     .install-banner { bottom: calc(88px + env(safe-area-inset-bottom)); }
     .floating-wa-btn { bottom: calc(168px + env(safe-area-inset-bottom)); }
     .logo-card { animation: logoFloat 2.4s ease-in-out infinite; }
@@ -86,7 +87,7 @@
     <div class="relative text-center">
       <div class="logo-glow absolute inset-0 rounded-[3rem] bg-emerald-200/80 blur-3xl"></div>
       <div class="logo-card logo-shimmer relative rounded-[3rem] border-4 border-amber-300 bg-white/75 p-4 shadow-2xl">
-        <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" class="h-64 w-64 max-w-full rounded-[2.2rem] object-contain bg-white" />
+        <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" loading="eager" class="h-64 w-64 max-w-full rounded-[2.2rem] object-contain bg-white" />
       </div>
       <p class="mt-6 text-sm font-semibold tracking-[0.35em] text-emerald-700">WELCOME TO THE APP</p>
     </div>
@@ -96,7 +97,7 @@
     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
       <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3">
         <button id="openAuthHubTop" class="hidden sm:inline-flex items-center rounded-full border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50">Login</button>
-        <a href="#home" class="text-center text-xl font-black tracking-tight text-emerald-800 sm:text-2xl">Veer Mahadev</a>
+        <a href="#home" class="text-center text-xl font-black tracking-tight text-emerald-800 sm:text-2xl">Veer Mahadev Plastic</a>
         <button id="openCartTop" class="justify-self-end rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">Cart (<span id="cartCount">0</span>)</button>
       </div>
       <div class="flex items-center gap-2">
@@ -106,6 +107,11 @@
         </div>
         <button id="searchBtn" class="rounded-2xl bg-emerald-800 px-4 py-2 text-sm font-semibold text-white">Search</button>
         <button id="openAuthHubMobile" class="inline-flex items-center rounded-2xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 sm:hidden">Login</button>
+      </div>
+      <div id="quickChips" class="flex gap-2 overflow-x-auto whitespace-nowrap pt-1 text-xs font-semibold">
+        <button data-chip="MEAL TREY" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Meal Trays</button>
+        <button data-chip="CONTAINER" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Containers</button>
+        <button data-chip="SILVER FOIL" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Silver Foil</button>
       </div>
       <div class="flex items-center justify-between gap-3 text-xs font-medium text-slate-600">
         <nav class="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
@@ -122,7 +128,7 @@
 
   <main id="home">
     <section class="relative overflow-hidden bg-white border-b border-emerald-100">
-      <img src="https://i.postimg.cc/NGm28gSH/welcome_logo.jpg?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
+      <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products" loading="lazy"/>
       <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
         <div>
           <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
@@ -163,6 +169,7 @@
       </div>
     </section>
 
+    
     <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex items-end justify-between flex-wrap gap-2">
         <h2 class="text-3xl font-extrabold">Shop by Category</h2>
@@ -170,6 +177,8 @@
       </div>
       <div id="categoryGrid" class="mt-5 flex gap-3 overflow-x-auto pb-2 text-center"></div>
     </section>
+
+    <section id="liveRates" class="max-w-7xl mx-auto px-4 pb-2"><p class="text-xs font-semibold text-emerald-700">Live wholesale rates (updated from latest catalog)</p></section>
 
     <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
       <div class="flex items-center justify-between flex-wrap gap-3">
@@ -189,63 +198,13 @@
           <h3 class="text-3xl font-extrabold">Go Green with Our Biodegradable Range</h3>
           <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
         </div>
-        
-    <section class="max-w-7xl mx-auto px-4 py-10">
+        <button data-cat="eco-range" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
+      <section class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex items-end justify-between flex-wrap gap-3">
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Why Businesses Choose Us</p>
           <h2 class="text-3xl font-extrabold">Professional supply support for retail and wholesale buyers</h2>
         </div>
-        <p class="max-w-2xl text-sm text-slate-600">From restaurants and caterers to event planners and resellers, we help teams buy faster with transparent pricing, ready stock, and direct WhatsApp ordering support.</p>
-      </div>
-      <div class="mt-6 grid gap-4 md:grid-cols-3">
-        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
-          <p class="text-sm font-semibold text-emerald-700">Fast fulfilment</p>
-          <h3 class="mt-2 text-xl font-bold">Ready inventory with quick dispatch</h3>
-          <p class="mt-2 text-sm text-slate-600">Popular disposable trays, bowls, containers, cups, and lids are organized for faster order confirmation and same-day dispatch support.</p>
-        </article>
-        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
-          <p class="text-sm font-semibold text-emerald-700">Wholesale clarity</p>
-          <h3 class="mt-2 text-xl font-bold">MOQ pricing that feels business-friendly</h3>
-          <p class="mt-2 text-sm text-slate-600">Category filters, search, and tier pricing make it easier for buyers to compare quantity slabs before placing a wholesale or repeat order.</p>
-        </article>
-        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
-          <p class="text-sm font-semibold text-emerald-700">Trusted support</p>
-          <h3 class="mt-2 text-xl font-bold">Direct assistance for custom requirements</h3>
-          <p class="mt-2 text-sm text-slate-600">Customers can submit bulk inquiries, use cart-based WhatsApp ordering, and connect with the team for delivery planning and special packaging needs.</p>
-        </article>
-      </div>
-    </section>
-
-        <button data-cat="eco-range" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
-      </div>
-    </section>
-
-    <section id="wholesale" class="max-w-7xl mx-auto px-4 pb-12 grid lg:grid-cols-2 gap-6">
-      <div class="bg-white rounded-2xl border p-6">
-        <h3 class="text-2xl font-extrabold">Bulk Order / Wholesale Inquiry</h3>
-        <p class="text-sm text-slate-600 mt-1">Upload your requirement list (Excel/PDF/Image) and receive a custom quote.</p>
-        <form id="bulkForm" class="grid gap-3 mt-4">
-          <input required class="border rounded-lg px-3 py-2" placeholder="Business Name"/>
-          <input required class="border rounded-lg px-3 py-2" placeholder="Contact Number / WhatsApp"/>
-          <input required class="border rounded-lg px-3 py-2" placeholder="City + Pincode"/>
-          <input required class="border rounded-lg px-3 py-2" placeholder="Monthly Quantity Requirement"/>
-          <input id="requirementFile" type="file" class="border rounded-lg px-3 py-2"/>
-          <button type="submit" class="bg-emerald-700 text-white py-2.5 rounded-lg font-semibold">Request Wholesale Quote</button>
-          <p id="bulkMsg" class="text-sm font-semibold"></p>
-        </form>
-      </div>
-      <div class="bg-white rounded-2xl border p-6 space-y-4">
-        <h3 class="text-2xl font-extrabold">B2B Buyer Portal</h3>
-        <p class="text-slate-700">Login to download full wholesale price list PDF, MOQ chart, and dispatch schedules.</p>
-        <button id="portalDownloadBtn" class="inline-block px-4 py-2 rounded-lg border border-emerald-300 text-emerald-700 font-semibold">Download Full Price List (PDF)</button>
-        <p id="portalStatus" class="text-sm font-medium text-slate-600">Please login to access B2B downloads.</p>
-        <div id="dashboard" class="mt-3 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
-          <p class="font-bold">Quick Re-order Dashboard</p>
-          <p class="text-sm text-slate-700">Last order: 37 items | ₹12,880 | Delivered 6 days ago</p>
-          <div class="mt-3 flex gap-3">
-            <button id="repeatOrder" class="px-4 py-2 rounded-lg bg-emerald-700 text-white text-sm font-semibold">Repeat Last Order</button>
-            <button id="openCartFromDash" class="px-4 py-2 rounded-lg border text-sm font-semibold">Open Cart</button>
           </div>
         </div>
       </div>
@@ -271,9 +230,9 @@
   <nav class="mobile-nav fixed bottom-0 left-0 right-0 z-40 border-t border-emerald-100 bg-white/95 backdrop-blur lg:hidden">
     <div class="mx-auto grid max-w-7xl grid-cols-4 px-4 py-2 text-[11px] font-semibold text-slate-600">
       <a href="#home" class="flex flex-col items-center gap-1 rounded-xl py-2 text-emerald-700"><span>🏠</span><span>Home</span></a>
-      <a href="#categories" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📂</span><span>Products</span></a>
-      <a href="#wholesale" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>🛒</span><span>Order</span></a>
-      <a href="#about" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📞</span><span>Contact</span></a>
+     <a href="#shop" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📦</span><span>Products</span></a>
+      <button id="openCartBottom" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>💬</span><span>WhatsApp Order</span></button>
+      <a href="#liveRates" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📈</span><span>Live Rates</span></a>
     </div>
   </nav>
 
@@ -380,6 +339,7 @@
             <p class="text-sm font-semibold text-slate-800">Recommended Use</p>
             <p id="productModalUse" class="mt-2 text-sm text-slate-600"></p>
           </div>
+        <button id="modalOrderWa" class="w-full rounded-xl bg-emerald-700 py-2.5 text-sm font-bold text-white">💬 Order this product on WhatsApp</button>
         </div>
       </div>
     </div>
@@ -426,6 +386,7 @@
     </div>
   </div>
 
+     <button id="notifyBell" class="fixed right-4 top-24 z-[66] h-12 w-12 rounded-full border border-[#D4AF37] bg-emerald-800 text-xl text-[#D4AF37] shadow-xl" aria-label="Enable price update notifications">🔔</button>
   <div class="fixed bottom-4 left-4 z-[65]">
     <button id="botToggle" class="h-14 w-14 rounded-full bg-emerald-700 text-white text-2xl shadow-lg">🤖</button>
     <div id="botPanel" class="hidden mt-2 w-80 bg-white border rounded-xl shadow-2xl overflow-hidden">
@@ -805,6 +766,10 @@ SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
     bindById('closeProductModal', 'click', closeProductDetails);
     bindById('productModal', 'click', (event)=>{
       if(event.target.id === 'productModal') closeProductDetails();
+       bindById('modalOrderWa', 'click', ()=>{
+      if(!selectedProductForOrder) return;
+      const msg = `Hi Veer Mahadev Plastic, I want to order ${selectedProductForOrder.name}. Please confirm today's rate.`;
+      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
     });
 
     function priceForQty(tiers, qty){
@@ -900,7 +865,7 @@ SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
       productGrid.innerHTML = filteredProducts.map(p => `
         <article onclick="openProductDetails('${p.id}')" class="cursor-pointer overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
           <div class="relative">
-            <img src="${p.image}" alt="${p.name}" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
+              <img src="${p.image}" alt="${p.name}" loading="lazy" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
             <button onclick="event.stopPropagation();shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
               <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="18" cy="5" r="3"></circle>
@@ -949,6 +914,8 @@ SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
       if(cart.length === 0){
         cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
         updateWhatsappButton();
+        initNotifications();
+        initNotifications();
         return;
       }
       cartItems.innerHTML = cart.map((item, idx) => `
@@ -1159,7 +1126,14 @@ SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
         applyProductFilters();
       }
     });
-
+ document.querySelectorAll('.quick-chip').forEach((chip)=>{
+      chip.addEventListener('click', ()=>{
+        searchTerm = chip.dataset.chip || '';
+        if(productSearch) productSearch.value = searchTerm;
+        applyProductFilters();
+        document.getElementById('shop')?.scrollIntoView({behavior:'smooth'});
+      });
+    });
     // Cart controls
     bindById('openCartTop', 'click', openCart);
     bindById('openCartFromDash', 'click', openCart);
@@ -1240,12 +1214,36 @@ SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
       const text = input.value.trim();
       if(!text) return;
       const msgs = document.getElementById('botMsgs');
-      msgs.innerHTML += `<div class="bg-slate-100 rounded-lg p-2">${text}</div>`;
-      msgs.innerHTML += `<div class="bg-emerald-50 rounded-lg p-2">${aiReply(text)}</div>`;
+       const userMsg = document.createElement('div');
+      userMsg.className = 'bg-slate-100 rounded-lg p-2';
+      userMsg.textContent = text;
+      const botMsg = document.createElement('div');
+      botMsg.className = 'bg-emerald-50 rounded-lg p-2';
+      botMsg.textContent = aiReply(text);
+      msgs.appendChild(userMsg);
+      msgs.appendChild(botMsg);
       msgs.scrollTop = msgs.scrollHeight;
       input.value = '';
     };
+ async function initNotifications(){
+      if(!window.OneSignal) return;
+      try {
+        await OneSignal.init({
+          appId: 'YOUR-ONESIGNAL-APP-ID',
+          notifyButton: { enable: false },
+          allowLocalhostAsSecureOrigin: true
+        });
+      } catch (error) {
+        console.warn('OneSignal init failed.', error);
+      }
+    }
 
+    bindById('notifyBell', 'click', async ()=>{
+      if(!window.OneSignal) return;
+      await initNotifications();
+      try { await OneSignal.Slidedown.promptPush(); } catch (error) { console.warn('Push prompt failed.', error); }
+    });
+      
     // initialize
     renderCategories();
     applyProductFilters();
@@ -1255,7 +1253,8 @@ SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
       if(element) element.addEventListener('input', updateWhatsappButton);
     });
     updateWhatsappButton();
-
+    initNotifications();
+      
   </script>
   </div>
 </body>
