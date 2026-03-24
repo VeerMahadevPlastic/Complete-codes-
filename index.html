@@ -1457,6 +1457,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         alert('Please add products to the cart before placing the order.');
         updateWhatsappButton();
         return;
+      }
       const whatsappMsg = cartWhatsappText(details.name, details.address);
       const emailBody = cartEmailText(details.name, details.address);
       window.open(`https://wa.me/918050389261?text=${whatsappMsg}`,'_blank');
