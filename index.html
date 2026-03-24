@@ -328,13 +328,13 @@
     </svg>
   </a>
 
-  <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300">
+  <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300 flex flex-col">
     <div class="p-4 border-b flex justify-between items-center">
       <h4 class="text-xl font-bold">Your Cart</h4>
       <button id="closeCart" class="text-xl">✕</button>
     </div>
-    <div id="cartItems" class="p-4 h-[calc(100%-220px)] overflow-y-auto hide-scrollbar"></div>
-    <div class="p-4 border-t bg-slate-50">
+     <div id="cartItems" class="flex-1 min-h-0 overflow-y-auto p-4 hide-scrollbar"></div>
+    <div class="shrink-0 p-4 border-t bg-slate-50">
       <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
       <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
       <div class="mt-3 grid gap-2">
