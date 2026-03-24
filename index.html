@@ -122,7 +122,7 @@
 
   <main id="home">
     <section class="relative overflow-hidden bg-white border-b border-emerald-100">
-      <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
+      <img src="https://i.postimg.cc/NGm28gSH/welcome_logo.jpg?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
       <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
         <div>
           <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
@@ -163,6 +163,33 @@
       </div>
     </section>
 
+    <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
+      <div class="flex items-end justify-between flex-wrap gap-2">
+        <h2 class="text-3xl font-extrabold">Shop by Category</h2>
+        <p class="text-sm text-slate-600">Click any category to jump to products and view filtered items.</p>
+      </div>
+      <div id="categoryGrid" class="mt-5 flex gap-3 overflow-x-auto pb-2 text-center"></div>
+    </section>
+
+    <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <h3 class="text-2xl font-extrabold">Products</h3>
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-sm text-slate-600">Filter:</span>
+          <select id="categoryFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
+        </div>
+      </div>
+      <div class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" id="productGrid"></div>
+    </section>
+
+    <section id="eco" class="max-w-7xl mx-auto px-4 pb-10">
+      <div class="bg-gradient-to-r from-emerald-100 to-emerald-50 rounded-2xl border border-emerald-200 p-6 lg:p-8 flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <p class="text-sm uppercase tracking-wide text-emerald-700">Eco-Warrior Collection</p>
+          <h3 class="text-3xl font-extrabold">Go Green with Our Biodegradable Range</h3>
+          <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
+        </div>
+        
     <section class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex items-end justify-between flex-wrap gap-3">
         <div>
@@ -190,32 +217,6 @@
       </div>
     </section>
 
-    <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
-      <div class="flex items-end justify-between flex-wrap gap-2">
-        <h2 class="text-3xl font-extrabold">Shop by Category</h2>
-        <p class="text-sm text-slate-600">Click any category to jump to products and view filtered items.</p>
-      </div>
-      <div id="categoryGrid" class="mt-5 flex gap-3 overflow-x-auto pb-2 text-center"></div>
-    </section>
-
-    <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="flex items-center justify-between flex-wrap gap-3">
-        <h3 class="text-2xl font-extrabold">Products</h3>
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-sm text-slate-600">Filter:</span>
-          <select id="categoryFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
-        </div>
-      </div>
-      <div class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" id="productGrid"></div>
-    </section>
-
-    <section id="eco" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="bg-gradient-to-r from-emerald-100 to-emerald-50 rounded-2xl border border-emerald-200 p-6 lg:p-8 flex items-center justify-between flex-wrap gap-4">
-        <div>
-          <p class="text-sm uppercase tracking-wide text-emerald-700">Eco-Warrior Collection</p>
-          <h3 class="text-3xl font-extrabold">Go Green with Our Biodegradable Range</h3>
-          <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
-        </div>
         <button data-cat="eco-range" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
       </div>
     </section>
@@ -1446,7 +1447,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     // WhatsApp actions (floating + cart)
     bindById('waFloating', 'click', (e)=>{
       e.preventDefault();
-      const msg = 'Hi Karan bhai, I am interested in some products from Veer Mahadev Plastic. Please guide me.';
       window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
     });
     bindById('waCart', 'click', ()=>{
@@ -1456,7 +1456,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         alert('Please add products to the cart before placing the order.');
         updateWhatsappButton();
         return;
-      }
       const whatsappMsg = cartWhatsappText(details.name, details.address);
       const emailBody = cartEmailText(details.name, details.address);
       window.open(`https://wa.me/918050389261?text=${whatsappMsg}`,'_blank');
