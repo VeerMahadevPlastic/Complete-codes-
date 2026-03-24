@@ -1033,7 +1033,7 @@ SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
       if(!waCartBtn) return;
       const name = (document.getElementById('customerName')?.value || '').trim();
       const address = (document.getElementById('customerAddress')?.value || '').trim();
-      waCartBtn.disabled = !(name && address && cart.length);
+    waCartBtn.disabled = !(name && address);
       waCartBtn.classList.toggle('opacity-40', waCartBtn.disabled);
       waCartBtn.classList.toggle('cursor-not-allowed', waCartBtn.disabled);
     }
