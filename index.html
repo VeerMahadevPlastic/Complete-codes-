@@ -1132,9 +1132,21 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(cart.length === 0) return 'Hello, I want to place an order. Please share latest catalog.';
       const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - ₹${(i.qty*i.unit).toFixed(2)}`);
       const subtotal = cartTotalAmount().toFixed(2);
-      return `Hello Veer Mahadev Plastic,%0AName: ${customerName}%0AAddress: ${customerAddress}%0A%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
+     const totalQty = cartTotalQty();
+      return [
+        'Hello Veer Mahadev Plastic,',
+        `Customer Name: ${customerName}`,
+        `Customer Address: ${customerAddress}`,
+        '',
+        'I want to place this order:',
+        ...lines,
+        '',
+        `Total Quantity: ${totalQty}`,
+        `Estimated Order Total: ₹${subtotal}`,
+        'Please confirm final amount with shipping and delivery timeline.'
+      ].join('\n');
     }
-
+    
     function cartEmailText(customerName, customerAddress){
       if(cart.length === 0) return 'Hello Veer Mahadev Plastic,%0A%0AI want to place an order. Please share the latest catalog.';
       const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - Amount ₹${(i.qty*i.unit).toFixed(2)}`);
