@@ -1,5 +1,5 @@
 importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
-const CACHE_NAME = 'veer-mahadev-app-v2';
+const CACHE_NAME = 'veer-mahadev-app-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -9,7 +9,8 @@ const ASSETS = [
   './icons/icon-192.svg',
   './icons/icon-512.svg',
   './images/plate.jpg',
-  './wholesale-price-list.pdf'
+  './wholesale-price-list.pdf',
+  './last-rates.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -27,16 +28,25 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const requestUrl = new URL(event.request.url);
+  if (requestUrl.pathname.endsWith('/last-rates.json')) {
+    event.respondWith(
+      caches.match('./last-rates.json').then((cached) => cached || fetch('./last-rates.json'))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
+      const networkFetch = fetch(event.request)
         .then((response) => {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           return response;
         })
-        .catch(() => caches.match('./index.html'));
+        .catch(() => cached || caches.match('./index.html'));
+
+      return cached || networkFetch;
     })
   );
 });

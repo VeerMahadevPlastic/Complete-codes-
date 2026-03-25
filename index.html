@@ -14,7 +14,7 @@
   <meta name="keywords" content="disposable plate dealer Ahmedabad, paper cup manufacturer Gujarat, biodegradable plates shop, disposable items wholesaler near me, silver foil supplier, wholesale plastic glass dealer, Veer Mahadev Plastic, disposable shop Ahmedabad">
 
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://veermahadevplastic.in/">
+  <meta property="og:url" content="https://www.veermahadevplastic.in/">
   <meta property="og:title" content="Veer Mahadev Plastic | Wholesale Disposable Expert">
   <meta property="og:description" content="Get premium quality disposable and biodegradable products at factory rates. Serving Ahmedabad and all over Gujarat.">
 
@@ -23,9 +23,9 @@
     "@context": "https://schema.org",
     "@type": "WholesaleStore",
     "name": "Veer Mahadev Plastic",
-    "image": "https://veermahadevplastic.in/logo.png",
-    "@id": "https://veermahadevplastic.in",
-    "url": "https://veermahadevplastic.in",
+    "image": "https://www.veermahadevplastic.in/logo.png",
+    "@id": "https://www.veermahadevplastic.in",
+    "url": "https://www.veermahadevplastic.in",
     "telephone": "+918050389261",
     "address": {
       "@type": "PostalAddress",
@@ -52,15 +52,19 @@
   </script>
   <title>Veer Mahadev Plastic | Best Disposable Items Wholesaler in Ahmedabad, Gujarat</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
   <style>
-    html { scroll-behavior: smooth; }
+    html, body { scroll-behavior: smooth; width: 100%; max-width: 100%; overflow-x: hidden; background: #f5f8f5; }
+    .app-shell { width: 100%; }
     .glass { backdrop-filter: blur(8px); }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .app-shell { min-height: 100vh; padding-bottom: calc(170px + env(safe-area-inset-bottom)); }
     .mobile-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
-    .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); animation: splashFade 5s ease forwards; }
+    .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); animation: splashFade 3s ease forwards; }
     .install-banner { bottom: calc(88px + env(safe-area-inset-bottom)); }
     .floating-wa-btn { bottom: calc(168px + env(safe-area-inset-bottom)); }
+    .floating-edge { right: max(12px, env(safe-area-inset-right)); }
     .logo-card { animation: logoFloat 2.4s ease-in-out infinite; }
     .logo-glow { animation: glowPulse 2.4s ease-in-out infinite; }
     .logo-shimmer { position: relative; overflow: hidden; }
@@ -86,7 +90,7 @@
     <div class="relative text-center">
       <div class="logo-glow absolute inset-0 rounded-[3rem] bg-emerald-200/80 blur-3xl"></div>
       <div class="logo-card logo-shimmer relative rounded-[3rem] border-4 border-amber-300 bg-white/75 p-4 shadow-2xl">
-        <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" class="h-64 w-64 max-w-full rounded-[2.2rem] object-contain bg-white" />
+        <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" loading="eager" class="h-64 w-64 max-w-full rounded-[2.2rem] object-contain bg-white" />
       </div>
       <p class="mt-6 text-sm font-semibold tracking-[0.35em] text-emerald-700">WELCOME TO THE APP</p>
     </div>
@@ -107,12 +111,18 @@
         <button id="searchBtn" class="rounded-2xl bg-emerald-800 px-4 py-2 text-sm font-semibold text-white">Search</button>
         <button id="openAuthHubMobile" class="inline-flex items-center rounded-2xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 sm:hidden">Login</button>
       </div>
+      <div id="quickChips" class="flex gap-2 overflow-x-auto whitespace-nowrap pt-1 text-xs font-semibold">
+        <button data-chip="MEAL TREY" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Meal Trays</button>
+        <button data-chip="CONTAINER" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Containers</button>
+        <button data-chip="SILVER FOIL" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Silver Foil</button>
+      </div>
       <div class="flex items-center justify-between gap-3 text-xs font-medium text-slate-600">
         <nav class="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
           <a href="#categories" class="text-emerald-700">Categories</a>
           <a href="#shop">Shop All</a>
           <a href="#eco">Eco Range</a>
           <a href="#wholesale">Wholesale</a>
+          <a href="#profile">Profile</a>
           <button id="openAuthHubNav" class="rounded-full border border-transparent px-1 py-1">Login / Sign Up</button>
         </nav>
         <button id="openLogin" class="hidden rounded-full border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50 sm:inline-flex">B2B Portal</button>
@@ -122,7 +132,7 @@
 
   <main id="home">
     <section class="relative overflow-hidden bg-white border-b border-emerald-100">
-      <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
+      <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products" loading="lazy"/>
       <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
         <div>
           <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
@@ -171,6 +181,8 @@
       </div>
       <div id="categoryGrid" class="mt-5 flex gap-3 overflow-x-auto pb-2 text-center"></div>
     </section>
+
+    <section id="liveRates" class="max-w-7xl mx-auto px-4 pb-2"><p class="text-xs font-semibold text-emerald-700">Live wholesale rates (updated from latest catalog)</p></section>
 
     <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
       <div class="flex items-center justify-between flex-wrap gap-3">
@@ -248,7 +260,38 @@
       </div>
     </section>
 
-    <section id="about" class="max-w-7xl mx-auto px-4 pb-10">
+        <section id="profile" class="max-w-7xl mx-auto px-4 pb-10">
+      <div class="rounded-2xl border border-emerald-200 bg-white p-6">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">User Profile</p>
+            <h3 class="text-2xl font-black text-slate-900">My Account & Order History</h3>
+          </div>
+          <button id="logoutBtn" class="rounded-lg border border-emerald-300 px-4 py-2 text-sm font-semibold text-emerald-700">Logout</button>
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <div class="rounded-xl bg-emerald-50 p-4">
+            <p class="text-sm font-semibold text-emerald-800">Saved Details</p>
+            <p id="profileName" class="mt-2 text-sm text-slate-700">Name: -</p>
+            <p id="profileWhatsapp" class="text-sm text-slate-700">WhatsApp: -</p>
+            <p id="profileAddress" class="text-sm text-slate-700">Address: -</p>
+            <div class="mt-3 grid gap-2">
+              <textarea id="editAddressInput" rows="2" class="rounded-lg border px-3 py-2 text-sm" placeholder="Edit Address"></textarea>
+              <button id="saveAddressBtn" class="rounded-lg bg-[#065f46] py-2 text-sm font-semibold text-white">Edit Address</button>
+            </div>
+          </div>
+          <div class="rounded-xl border p-4">
+            <p class="text-sm font-semibold text-slate-800">Last Order</p>
+            <div id="lastOrderBox" class="mt-2 text-sm text-slate-700">No previous order yet.</div>
+            <p class="mt-4 text-sm font-semibold text-slate-800">Order History</p>
+            <div id="orderHistoryList" class="mt-2 max-h-40 space-y-2 overflow-y-auto text-sm text-slate-700"></div>
+            <button id="reorderBtn" class="mt-3 w-full rounded-lg border border-[#065f46] py-2 text-sm font-semibold text-[#065f46]">Re-order Last</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section id="about" class="max-w-7xl mx-auto px-4 pb-10">
       <div class="bg-emerald-800 text-white rounded-3xl p-8 lg:p-10">
         <h3 class="text-3xl font-extrabold">About Us - Veer Mahadev Plastic</h3>
         <p class="mt-4 text-emerald-50">Started in 2022 as a family business, Veer Mahadev Plastic has grown through trust, quality, and hard work. Today, we proudly serve 10,000+ satisfied customers every month across wholesale and retail channels.</p>
@@ -268,11 +311,14 @@
   <nav class="mobile-nav fixed bottom-0 left-0 right-0 z-40 border-t border-emerald-100 bg-white/95 backdrop-blur lg:hidden">
     <div class="mx-auto grid max-w-7xl grid-cols-4 px-4 py-2 text-[11px] font-semibold text-slate-600">
       <a href="#home" class="flex flex-col items-center gap-1 rounded-xl py-2 text-emerald-700"><span>🏠</span><span>Home</span></a>
-      <a href="#categories" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📂</span><span>Products</span></a>
-      <a href="#wholesale" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>🛒</span><span>Order</span></a>
-      <a href="#about" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📞</span><span>Contact</span></a>
+      <a href="#shop" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📦</span><span>Products</span></a>
+      <button id="openCartBottom" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>💬</span><span>WhatsApp Order</span></button>
+      <a href="#liveRates" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📈</span><span>Live Rates</span></a>
     </div>
   </nav>
+  <button id="floatingCartBtn" class="floating-edge fixed bottom-[calc(168px+env(safe-area-inset-bottom))] z-[56] inline-flex items-center gap-2 rounded-full bg-[#065f46] px-4 py-3 text-sm font-bold text-white shadow-2xl">
+    🛒 Cart <span id="floatingCartCount" class="rounded-full bg-[#D4AF37] px-2 py-0.5 text-xs text-[#065f46]">0</span>
+  </button>
 
   <footer class="border-t bg-white">
     <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-4 gap-6 text-sm">
@@ -319,19 +365,19 @@
     </div>
   </div>
 
-  <a id="waFloating" href="#" class="floating-wa-btn pulse-soft fixed right-4 z-[57] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition hover:scale-105" aria-label="Chat on WhatsApp">
+  <a id="waFloating" href="#" class="floating-wa-btn floating-edge pulse-soft fixed z-[57] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition hover:scale-105" aria-label="Chat on WhatsApp">
     <svg aria-hidden="true" viewBox="0 0 32 32" class="h-7 w-7 fill-current">
       <path d="M19.11 17.41c-.29-.14-1.71-.84-1.98-.94-.26-.1-.46-.14-.65.15-.19.29-.75.94-.91 1.13-.17.19-.33.22-.62.07-.29-.14-1.21-.45-2.3-1.44-.85-.76-1.42-1.69-1.59-1.98-.17-.29-.02-.45.12-.59.13-.13.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.65-1.57-.89-2.15-.23-.55-.47-.48-.65-.49l-.55-.01c-.19 0-.5.07-.76.36-.26.29-1 1-.1 2.43.9 1.43 2.58 2.82 2.82 3.01.24.19 3.88 5.93 9.41 8.31 1.32.57 2.36.91 3.17 1.17 1.33.42 2.54.36 3.5.22 1.07-.16 3.3-1.35 3.77-2.65.47-1.3.47-2.42.33-2.65-.14-.23-.52-.36-.81-.5zM16.27 3C9.3 3 3.64 8.63 3.64 15.57c0 2.22.58 4.39 1.68 6.3L3 29l7.33-2.29a12.69 12.69 0 0 0 5.94 1.51h.01c6.97 0 12.63-5.63 12.63-12.58C28.91 8.63 23.24 3 16.27 3zm0 22.97h-.01a10.4 10.4 0 0 1-5.29-1.45l-.38-.22-4.35 1.36 1.42-4.23-.25-.43a10.33 10.33 0 0 1-1.58-5.44c0-5.7 4.67-10.34 10.43-10.34 2.79 0 5.41 1.08 7.38 3.04a10.25 10.25 0 0 1 3.06 7.31c0 5.7-4.68 10.4-10.43 10.4z"/>
     </svg>
   </a>
 
-  <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300">
+  <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300 flex flex-col">
     <div class="p-4 border-b flex justify-between items-center">
       <h4 class="text-xl font-bold">Your Cart</h4>
       <button id="closeCart" class="text-xl">✕</button>
     </div>
-    <div id="cartItems" class="p-4 h-[calc(100%-220px)] overflow-y-auto hide-scrollbar"></div>
-    <div class="p-4 border-t bg-slate-50">
+    <div id="cartItems" class="flex-1 min-h-0 overflow-y-auto p-4 hide-scrollbar"></div>
+    <div class="shrink-0 p-4 border-t bg-slate-50">
       <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
       <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
       <div class="mt-3 grid gap-2">
@@ -341,8 +387,9 @@
       </div>
       <div class="mt-3 space-y-2">
         <button id="waCart" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
-          <span>💬</span><span>Order on WhatsApp</span>
+          <span>💬</span><span>Order by WhatsApp</span>
         </button>
+        <button id="checkoutBtn" class="w-full rounded-lg bg-[#065f46] py-2.5 font-semibold text-white">Proceed to Checkout</button>
         <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Buy Now</button>
       </div>
     </div>
@@ -377,6 +424,7 @@
             <p class="text-sm font-semibold text-slate-800">Recommended Use</p>
             <p id="productModalUse" class="mt-2 text-sm text-slate-600"></p>
           </div>
+          <button id="modalOrderWa" class="w-full rounded-xl bg-emerald-700 py-2.5 text-sm font-bold text-white">💬 Order this product on WhatsApp</button>
         </div>
       </div>
     </div>
@@ -414,6 +462,7 @@
       <form id="loginForm" class="mt-4 grid gap-3">
         <input id="loginEmail" type="email" required placeholder="Business Email" class="border rounded-lg px-3 py-2"/>
         <input id="loginPass" type="password" required placeholder="Password" class="border rounded-lg px-3 py-2"/>
+        <label class="flex items-center gap-2 text-sm text-slate-700"><input id="rememberMe" type="checkbox" class="h-4 w-4" checked /> Remember Me (Stay Logged In)</label>
         <div class="flex gap-2">
           <button type="submit" class="flex-1 bg-emerald-700 text-white py-2 rounded-lg font-semibold">Login</button>
           <button type="button" id="closeLogin" class="flex-1 border py-2 rounded-lg font-semibold">Close</button>
@@ -423,9 +472,10 @@
     </div>
   </div>
 
-  <div class="fixed bottom-4 left-4 z-[65]">
+  <button id="notifyBell" class="floating-edge fixed top-24 z-[66] h-12 w-12 rounded-full border border-[#D4AF37] bg-emerald-800 text-xl text-[#D4AF37] shadow-xl" aria-label="Enable price update notifications">🔔</button>
+  <div class="floating-edge fixed bottom-[calc(96px+env(safe-area-inset-bottom))] z-[65]">
     <button id="botToggle" class="h-14 w-14 rounded-full bg-emerald-700 text-white text-2xl shadow-lg">🤖</button>
-    <div id="botPanel" class="hidden mt-2 w-80 bg-white border rounded-xl shadow-2xl overflow-hidden">
+    <div id="botPanel" class="hidden mt-2 w-[min(20rem,calc(100vw-2rem))] bg-white border rounded-xl shadow-2xl overflow-hidden">
       <div class="bg-emerald-700 text-white px-3 py-2 font-semibold flex justify-between"><span>AI Help Bot</span><button id="botClose">✕</button></div>
       <div id="botMsgs" class="h-56 overflow-y-auto p-3 text-sm space-y-2">
         <div class="bg-emerald-50 rounded-lg p-2">Hello! I can help with products, wholesale, shipping, stock, and order support.</div>
@@ -433,6 +483,44 @@
       <div class="p-2 border-t flex gap-2">
         <input id="botInput" class="flex-1 border rounded-lg px-2 py-1.5 text-sm" placeholder="Ask your question" />
         <button id="botSend" class="bg-emerald-700 text-white px-3 rounded-lg">Send</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="checkoutModal" class="hidden fixed inset-0 z-[75] bg-black/50 px-4 py-6">
+    <div class="mx-auto max-w-3xl rounded-2xl bg-white shadow-2xl">
+      <div class="flex items-center justify-between border-b p-4">
+        <h4 class="text-xl font-black text-[#065f46]">Secure Checkout</h4>
+        <button id="closeCheckout" class="rounded-full border px-3 py-1">✕</button>
+      </div>
+      <div class="grid gap-5 p-4 md:grid-cols-2">
+        <div>
+          <p class="font-bold">Order Summary</p>
+          <div id="checkoutItems" class="mt-2 max-h-48 overflow-y-auto text-sm"></div>
+          <div class="mt-3 space-y-1 text-sm">
+            <p>Subtotal: ₹<span id="coSubtotal">0</span></p>
+            <p>GST (18%): ₹<span id="coGst">0</span></p>
+            <p>Delivery: ₹<span id="coDelivery">0</span></p>
+            <p class="text-lg font-black text-[#065f46]">Total: ₹<span id="coTotal">0</span></p>
+          </div>
+        </div>
+        <div>
+          <form id="checkoutForm" class="grid gap-2">
+            <input id="coName" required class="rounded-lg border px-3 py-2" placeholder="Name" />
+            <input id="coWhatsapp" required class="rounded-lg border px-3 py-2" placeholder="WhatsApp Number" />
+            <textarea id="coAddress" required class="rounded-lg border px-3 py-2" rows="2" placeholder="Full Address"></textarea>
+            <input id="coPincode" required class="rounded-lg border px-3 py-2" placeholder="Pincode" />
+            <button type="submit" class="rounded-lg bg-[#065f46] py-2 font-semibold text-white">Generate UPI Payment</button>
+          </form>
+          <div id="upiBox" class="mt-3 hidden rounded-xl border border-[#D4AF37] bg-emerald-50 p-3 text-center">
+            <img id="upiQr" alt="UPI QR" class="mx-auto h-40 w-40 rounded" />
+            <a id="upiPayLink" href="#" class="mt-2 inline-block rounded-full bg-[#065f46] px-4 py-2 text-sm font-semibold text-white">Pay via UPI App</a>
+            <button id="paymentDoneBtn" class="mt-2 w-full rounded-lg border border-[#065f46] py-2 text-sm font-semibold text-[#065f46]">I Have Paid</button>
+          </div>
+          <div id="paymentSuccess" class="mt-3 hidden rounded-xl bg-emerald-100 p-3 text-sm font-semibold text-emerald-800">Payment Successful ✅</div>
+          <button id="downloadInvoiceBtn" class="mt-3 hidden w-full rounded-lg bg-[#D4AF37] py-2 font-bold text-[#065f46]">Download Invoice (PDF)</button>
+        </div>
       </div>
     </div>
   </div>
@@ -505,7 +593,7 @@
       scheduleInstallBanner();
     }
 
-    setTimeout(dismissSplashScreen, 5000);
+    setTimeout(dismissSplashScreen, 3000);
     window.addEventListener('load', dismissSplashScreen);
 
     window.addEventListener('beforeinstallprompt', (event) => {
@@ -879,12 +967,66 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     const drawerOverlay = document.getElementById('drawerOverlay');
     const authHubModal = document.getElementById('authHubModal');
     const productModal = document.getElementById('productModal');
+    const floatingCartCount = document.getElementById('floatingCartCount');
+    const checkoutModal = document.getElementById('checkoutModal');
+    let selectedProductForOrder = null;
+    let latestCheckout = null;
+    let currentUser = null;
 
     function bindById(id, eventName, handler){
       const element = document.getElementById(id);
       if(!element) return null;
       element.addEventListener(eventName, handler);
       return element;
+    }
+
+    function loadCurrentUser(){
+      try {
+        return JSON.parse(localStorage.getItem('vmpUserSession') || sessionStorage.getItem('vmpUserSession') || 'null');
+      } catch { return null; }
+    }
+
+    function saveCurrentUser(user, remember=true){
+      const payload = JSON.stringify(user);
+      if(remember){
+        localStorage.setItem('vmpUserSession', payload);
+        sessionStorage.removeItem('vmpUserSession');
+      } else {
+        sessionStorage.setItem('vmpUserSession', payload);
+        localStorage.removeItem('vmpUserSession');
+      }
+      localStorage.setItem('vmpUserProfile', JSON.stringify(user.profile || {}));
+    }
+
+    function loadProfile(){
+      try { return JSON.parse(localStorage.getItem('vmpUserProfile') || '{}'); } catch { return {}; }
+    }
+
+    function saveProfile(profile){
+      localStorage.setItem('vmpUserProfile', JSON.stringify(profile));
+    }
+
+    function orderHistory(){
+      try { return JSON.parse(localStorage.getItem('vmpOrderHistory') || '[]'); } catch { return []; }
+    }
+
+    function pushOrderHistory(order){
+      const history = orderHistory();
+      history.unshift(order);
+      localStorage.setItem('vmpOrderHistory', JSON.stringify(history.slice(0, 20)));
+    }
+
+    function renderProfile(){
+      const profile = loadProfile();
+      document.getElementById('profileName').textContent = `Name: ${profile.name || '-'}`;
+      document.getElementById('profileWhatsapp').textContent = `WhatsApp: ${profile.whatsapp || '-'}`;
+      document.getElementById('profileAddress').textContent = `Address: ${profile.address || '-'}`;
+      document.getElementById('editAddressInput').value = profile.address || '';
+      const history = orderHistory();
+      const last = history[0];
+      document.getElementById('lastOrderBox').textContent = last ? `${last.orderId} | ₹${last.total} | ${last.date}` : 'No previous order yet.';
+      const list = document.getElementById('orderHistoryList');
+      list.innerHTML = history.map(o => `<div class="rounded-lg border p-2">${o.orderId} • ₹${o.total} • ${o.items.length} items</div>`).join('') || '<p>No orders yet.</p>';
     }
 
     function openAuthHub(){
@@ -919,6 +1061,12 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     bindById('closeProductModal', 'click', closeProductDetails);
     bindById('productModal', 'click', (event)=>{
       if(event.target.id === 'productModal') closeProductDetails();
+    });
+
+    bindById('modalOrderWa', 'click', ()=>{
+      if(!selectedProductForOrder) return;
+      const msg = `Hi Veer Mahadev Plastic, I want to order ${selectedProductForOrder.name}. Please confirm today's rate.`;
+      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
     });
 
     function priceForQty(tiers, qty){
@@ -973,6 +1121,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     window.openProductDetails = function(id){
       const product = products.find(item => item.id === id);
       if(!product || !productModal) return;
+      selectedProductForOrder = product;
       const meta = productMeta(product);
       document.getElementById('productModalTitle').textContent = product.name;
       document.getElementById('productModalImage').src = product.image;
@@ -1014,7 +1163,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       productGrid.innerHTML = filteredProducts.map(p => `
         <article onclick="openProductDetails('${p.id}')" class="cursor-pointer overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
           <div class="relative">
-            <img src="${p.image}" alt="${p.name}" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
+            <img src="${p.image}" alt="${p.name}" loading="lazy" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
             <button onclick="event.stopPropagation();shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
               <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="18" cy="5" r="3"></circle>
@@ -1031,7 +1180,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
             <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
             <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
             <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
+              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="10" step="10" value="10" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
               <button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
             </div>
             <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
@@ -1059,10 +1208,13 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     function renderCart(){
       if(!cartCount || !cartSubtotal || !cartItems) return;
       cartCount.textContent = cartTotalQty();
+      if(floatingCartCount) floatingCartCount.textContent = cartTotalQty();
       cartSubtotal.textContent = cartTotalAmount().toFixed(2);
       if(cart.length === 0){
         cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
         updateWhatsappButton();
+    initNotifications();
+    initNotifications();
         return;
       }
       cartItems.innerHTML = cart.map((item, idx) => `
@@ -1085,7 +1237,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     window.addToCart = function(id){
       const p = products.find(x => x.id === id);
-      const qty = Math.max(100, Number(document.getElementById(`qty-${id}`).value || 100));
+      const qty = Math.max(10, Number(document.getElementById(`qty-${id}`).value || 10));
       const unit = priceForQty(p.tiers, qty);
       const existing = cart.find(c => c.id === id && c.unit === unit);
       if(existing) existing.qty += qty;
@@ -1132,7 +1284,19 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(cart.length === 0) return 'Hello, I want to place an order. Please share latest catalog.';
       const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - ₹${(i.qty*i.unit).toFixed(2)}`);
       const subtotal = cartTotalAmount().toFixed(2);
-      return `Hello Veer Mahadev Plastic,%0AName: ${customerName}%0AAddress: ${customerAddress}%0A%0AI want to order:%0A${lines.join('%0A')}%0A%0ASubtotal: ₹${subtotal}%0APlease share final total with shipping estimate.`;
+      const totalQty = cartTotalQty();
+      return [
+        'Hello Veer Mahadev Plastic,',
+        `Customer Name: ${customerName}`,
+        `Customer Address: ${customerAddress}`,
+        '',
+        'I want to place this order:',
+        ...lines,
+        '',
+        `Total Quantity: ${totalQty}`,
+        `Estimated Order Total: ₹${subtotal}`,
+        'Please confirm final amount with shipping and delivery timeline.'
+      ].join('\n');
     }
 
     function cartEmailText(customerName, customerAddress){
@@ -1147,7 +1311,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(!waCartBtn) return;
       const name = (document.getElementById('customerName')?.value || '').trim();
       const address = (document.getElementById('customerAddress')?.value || '').trim();
-      waCartBtn.disabled = !(name && address && cart.length);
+      waCartBtn.disabled = !(name && address);
       waCartBtn.classList.toggle('opacity-40', waCartBtn.disabled);
       waCartBtn.classList.toggle('cursor-not-allowed', waCartBtn.disabled);
     }
@@ -1209,13 +1373,18 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
+      const remember = document.getElementById('rememberMe')?.checked ?? true;
       const loginMsg = document.getElementById('loginMsg');
       if(email && pass.length >= 4){
         b2bLoggedIn = true;
+        const savedProfile = loadProfile();
+        currentUser = { email, profile: savedProfile };
+        saveCurrentUser(currentUser, remember);
         loginMsg.className = 'text-sm mt-2 font-semibold text-emerald-700';
         loginMsg.textContent = 'Login successful. B2B portal unlocked.';
         const portalStatus = document.getElementById('portalStatus');
         if(portalStatus) portalStatus.textContent = `Logged in as ${email}`;
+        renderProfile();
         setTimeout(()=> document.getElementById('loginModal')?.classList.add('hidden'), 600);
       }else{
         loginMsg.className = 'text-sm mt-2 font-semibold text-rose-600';
@@ -1274,8 +1443,19 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       }
     });
 
+    document.querySelectorAll('.quick-chip').forEach((chip)=>{
+      chip.addEventListener('click', ()=>{
+        searchTerm = chip.dataset.chip || '';
+        if(productSearch) productSearch.value = searchTerm;
+        applyProductFilters();
+        document.getElementById('shop')?.scrollIntoView({behavior:'smooth'});
+      });
+    });
+
     // Cart controls
     bindById('openCartTop', 'click', openCart);
+    bindById('floatingCartBtn', 'click', openCart);
+    bindById('openCartBottom', 'click', (e)=>{ e.preventDefault(); openCart(); });
     bindById('openCartFromDash', 'click', openCart);
     bindById('closeCart', 'click', closeCart);
     bindById('drawerOverlay', 'click', closeCart);
@@ -1296,7 +1476,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       }
       const whatsappMsg = cartWhatsappText(details.name, details.address);
       const emailBody = cartEmailText(details.name, details.address);
-      window.open(`https://wa.me/918050389261?text=${whatsappMsg}`,'_blank');
+      const whatsappUrl = `https://wa.me/918050389261?text=${encodeURIComponent(whatsappMsg)}`;
+      window.open(whatsappUrl,'_blank');
       window.location.href = `mailto:veermahadevplastic@gmail.com?subject=${encodeURIComponent(`New order enquiry from ${details.name}`)}&body=${emailBody}`;
     });
 
@@ -1304,6 +1485,113 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       const details = getCustomerDetails();
       if(!details) { openCart(); return; }
       alert(`Order initiated for ${details.name}. Our team will confirm delivery at provided address.`);
+    });
+    bindById('checkoutBtn', 'click', ()=>{
+      if(!cart.length){ alert('Please add items in cart first.'); return; }
+      closeCart();
+      checkoutModal?.classList.remove('hidden');
+      renderCheckout();
+    });
+    bindById('closeCheckout', 'click', ()=> checkoutModal?.classList.add('hidden'));
+    bindById('saveAddressBtn', 'click', ()=>{
+      const profile = loadProfile();
+      const updatedAddress = document.getElementById('editAddressInput').value.trim();
+      profile.address = updatedAddress;
+      saveProfile(profile);
+      if(currentUser){ currentUser.profile = profile; saveCurrentUser(currentUser, localStorage.getItem('vmpUserSession') !== null); }
+      renderProfile();
+    });
+    bindById('logoutBtn', 'click', ()=>{
+      localStorage.removeItem('vmpUserSession');
+      sessionStorage.removeItem('vmpUserSession');
+      b2bLoggedIn = false;
+      currentUser = null;
+      const portalStatus = document.getElementById('portalStatus');
+      if(portalStatus) portalStatus.textContent = 'Please login to access B2B downloads.';
+      alert('Logged out successfully.');
+    });
+    bindById('reorderBtn', 'click', ()=>{
+      const history = orderHistory();
+      if(!history.length) return alert('No previous order found.');
+      const last = history[0];
+      cart = [...last.items];
+      saveCart();
+      renderCart();
+      openCart();
+    });
+
+    function checkoutTotals(){
+      const subtotal = cartTotalAmount();
+      const gst = Number((subtotal * 0.18).toFixed(2));
+      const delivery = subtotal > 0 ? 120 : 0;
+      const total = Number((subtotal + gst + delivery).toFixed(2));
+      return {subtotal, gst, delivery, total};
+    }
+
+    function renderCheckout(){
+      const itemsEl = document.getElementById('checkoutItems');
+      if(itemsEl) itemsEl.innerHTML = cart.map(i => `<p>${i.name} × ${i.qty} = ₹${(i.qty*i.unit).toFixed(2)}</p>`).join('');
+      const totals = checkoutTotals();
+      document.getElementById('coSubtotal').textContent = totals.subtotal.toFixed(2);
+      document.getElementById('coGst').textContent = totals.gst.toFixed(2);
+      document.getElementById('coDelivery').textContent = totals.delivery.toFixed(2);
+      document.getElementById('coTotal').textContent = totals.total.toFixed(2);
+    }
+
+    bindById('checkoutForm', 'submit', (e)=>{
+      e.preventDefault();
+      const totals = checkoutTotals();
+      const details = {
+        name: document.getElementById('coName').value.trim(),
+        whatsapp: document.getElementById('coWhatsapp').value.trim(),
+        address: document.getElementById('coAddress').value.trim(),
+        pincode: document.getElementById('coPincode').value.trim(),
+      };
+      const upiId = '8050389261@upi';
+      const orderId = `VMP${Date.now().toString().slice(-6)}`;
+      const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${totals.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order '+orderId)}`;
+      const qr = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}`;
+      document.getElementById('upiQr').src = qr;
+      const upiPayLink = document.getElementById('upiPayLink');
+      upiPayLink.href = upiUri;
+      document.getElementById('upiBox').classList.remove('hidden');
+      latestCheckout = {orderId, details, totals, cart:[...cart], paymentStatus:'Pending'};
+      const profile = { name: details.name, whatsapp: details.whatsapp, address: details.address + ' - ' + details.pincode };
+      saveProfile(profile);
+      if(currentUser){ currentUser.profile = profile; saveCurrentUser(currentUser, localStorage.getItem('vmpUserSession') !== null); }
+      renderProfile();
+    });
+
+    bindById('paymentDoneBtn', 'click', ()=>{
+      if(!latestCheckout) return;
+      latestCheckout.paymentStatus = 'Paid';
+      document.getElementById('paymentSuccess').classList.remove('hidden');
+      document.getElementById('downloadInvoiceBtn').classList.remove('hidden');
+      pushOrderHistory({ orderId: latestCheckout.orderId, total: latestCheckout.totals.total.toFixed(2), date: new Date().toLocaleString(), items: latestCheckout.cart });
+      renderProfile();
+      const lines = latestCheckout.cart.map((i, n)=>`${n+1}. ${i.name} - ${i.qty} qty - ₹${(i.qty*i.unit).toFixed(2)}`).join('%0A');
+      const adminMsg = `New Order ${latestCheckout.orderId}%0AName: ${latestCheckout.details.name}%0AWhatsApp: ${latestCheckout.details.whatsapp}%0AAddress: ${latestCheckout.details.address} - ${latestCheckout.details.pincode}%0AStatus: ${latestCheckout.paymentStatus}%0ATotal: ₹${latestCheckout.totals.total.toFixed(2)}%0AItems:%0A${lines}`;
+      window.open(`https://wa.me/918050389261?text=${adminMsg}`,'_blank');
+      window.location.href = `mailto:veermahadevplastic@gmail.com?subject=${encodeURIComponent('New Paid Order '+latestCheckout.orderId)}&body=${adminMsg}`;
+    });
+
+    bindById('downloadInvoiceBtn', 'click', ()=>{
+      if(!latestCheckout || !window.jspdf?.jsPDF) return;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(18); doc.text('Veer Mahadev Plastic', 14, 16);
+      doc.setFontSize(10); doc.text('Ahmedabad, Gujarat | WhatsApp: +91 80503 89261', 14, 22);
+      doc.text(`Invoice No: ${latestCheckout.orderId}`, 14, 30);
+      doc.text(`Customer: ${latestCheckout.details.name}`, 14, 36);
+      doc.text(`Address: ${latestCheckout.details.address} - ${latestCheckout.details.pincode}`, 14, 42);
+      let y = 50;
+      latestCheckout.cart.forEach((i, idx)=>{ doc.text(`${idx+1}. ${i.name} (${i.qty}) ₹${(i.qty*i.unit).toFixed(2)}`, 14, y); y += 6; });
+      y += 4;
+      doc.text(`Subtotal: ₹${latestCheckout.totals.subtotal.toFixed(2)}`, 14, y); y += 6;
+      doc.text(`GST: ₹${latestCheckout.totals.gst.toFixed(2)}`, 14, y); y += 6;
+      doc.text(`Delivery: ₹${latestCheckout.totals.delivery.toFixed(2)}`, 14, y); y += 6;
+      doc.setFontSize(12); doc.text(`Total Paid: ₹${latestCheckout.totals.total.toFixed(2)}`, 14, y);
+      doc.save(`invoice-${latestCheckout.orderId}.pdf`);
     });
 
     // Repeat order
@@ -1354,21 +1642,59 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       const text = input.value.trim();
       if(!text) return;
       const msgs = document.getElementById('botMsgs');
-      msgs.innerHTML += `<div class="bg-slate-100 rounded-lg p-2">${text}</div>`;
-      msgs.innerHTML += `<div class="bg-emerald-50 rounded-lg p-2">${aiReply(text)}</div>`;
+      const userMsg = document.createElement('div');
+      userMsg.className = 'bg-slate-100 rounded-lg p-2';
+      userMsg.textContent = text;
+      const botMsg = document.createElement('div');
+      botMsg.className = 'bg-emerald-50 rounded-lg p-2';
+      botMsg.textContent = aiReply(text);
+      msgs.appendChild(userMsg);
+      msgs.appendChild(botMsg);
       msgs.scrollTop = msgs.scrollHeight;
       input.value = '';
     };
+
+
+    async function initNotifications(){
+      if(!window.OneSignal) return;
+      try {
+        await OneSignal.init({
+          appId: 'YOUR-ONESIGNAL-APP-ID',
+          notifyButton: { enable: false },
+          allowLocalhostAsSecureOrigin: true
+        });
+      } catch (error) {
+        console.warn('OneSignal init failed.', error);
+      }
+    }
+
+    bindById('notifyBell', 'click', async ()=>{
+      if(!window.OneSignal) return;
+      await initNotifications();
+      try { await OneSignal.Slidedown.promptPush(); } catch (error) { console.warn('Push prompt failed.', error); }
+    });
 
     // initialize
     renderCategories();
     applyProductFilters();
     renderCart();
+    currentUser = loadCurrentUser();
+    if(currentUser){
+      b2bLoggedIn = true;
+      const portalStatus = document.getElementById('portalStatus');
+      if(portalStatus) portalStatus.textContent = `Logged in as ${currentUser.email}`;
+    }
+    renderProfile();
+    const profile = loadProfile();
+    if(profile.name) document.getElementById('coName').value = profile.name;
+    if(profile.whatsapp) document.getElementById('coWhatsapp').value = profile.whatsapp;
+    if(profile.address) document.getElementById('coAddress').value = profile.address;
     ['customerName','customerAddress'].forEach(id => {
       const element = document.getElementById(id);
       if(element) element.addEventListener('input', updateWhatsappButton);
     });
     updateWhatsappButton();
+    initNotifications();
 
   </script>
   </div>
