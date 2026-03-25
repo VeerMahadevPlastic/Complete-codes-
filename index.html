@@ -81,8 +81,7 @@
       .floating-wa-btn { bottom: 24px; }
     }
   </style>
-</head>
-<body class="bg-[#f5f8f5] text-slate-800">
+</head><body class="bg-[#f5f8f5] text-slate-800 overflow-x-hidden">
   <div id="logoSplash" class="logo-splash fixed inset-0 z-[120] flex items-center justify-center px-6 transition-opacity duration-700">
     <div class="relative text-center">
       <div class="logo-glow absolute inset-0 rounded-[3rem] bg-emerald-200/80 blur-3xl"></div>
@@ -433,7 +432,7 @@
   <button id="notifyBell" class="fixed right-4 top-24 z-[66] h-12 w-12 rounded-full border border-[#D4AF37] bg-emerald-800 text-xl text-[#D4AF37] shadow-xl" aria-label="Enable price update notifications">🔔</button>
   <div class="fixed right-4 bottom-[calc(96px+env(safe-area-inset-bottom))] z-[65]">
   <button id="botToggle" class="h-14 w-14 rounded-full bg-emerald-700 text-white text-2xl shadow-lg">🤖</button>
-  <div id="botPanel" class="hidden mt-2 w-80 bg-white border rounded-xl shadow-2xl overflow-hidden">
+  <div id="botPanel" class="hidden mt-2 w-[min(20rem,calc(100vw-2rem))] bg-white border rounded-xl shadow-2xl overflow-hidden">
     <div class="bg-emerald-700 text-white px-3 py-2 font-semibold flex justify-between"><span>AI Help Bot</span><button id="botClose">✕</button></div>
         <div class="bg-emerald-50 rounded-lg p-2">Hello! I can help with products, wholesale, shipping, stock, and order support.</div>
     <div id="botMsgs" class="h-56 overflow-y-auto p-3 text-sm space-y-2">    
