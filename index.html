@@ -1185,7 +1185,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
             <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
             <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
             <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="10" step="10" value="10" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
+             <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="100" step="100" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
               <button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
             </div>
             <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
