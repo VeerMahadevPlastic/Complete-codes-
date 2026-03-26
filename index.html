@@ -502,9 +502,9 @@
           <div id="checkoutItems" class="mt-2 max-h-48 overflow-y-auto text-sm"></div>
           <div class="mt-3 space-y-1 text-sm">
             <p>Subtotal: ₹<span id="coSubtotal">0</span></p>
-            <p>GST (18%): ₹<span id="coGst">0</span></p>
+           <p>GST: <span id="coGst">Included in rates (Composition)</span></p>
             <p>Delivery: ₹<span id="coDelivery">0</span></p>
-            <p class="text-lg font-black text-[#065f46]">Total: ₹<span id="coTotal">0</span></p>
+            <p class="text-lg font-black text-[#065f46]">Total Payable: ₹<span id="coTotal">0</span></p>
           </div>
         </div>
         <div>
@@ -518,7 +518,8 @@
           <div id="upiBox" class="mt-3 hidden rounded-xl border border-[#D4AF37] bg-emerald-50 p-3 text-center">
             <img id="upiQr" alt="UPI QR" class="mx-auto h-40 w-40 rounded" />
             <a id="upiPayLink" href="#" class="mt-2 inline-block rounded-full bg-[#065f46] px-4 py-2 text-sm font-semibold text-white">Pay via UPI App</a>
-            <button id="paymentDoneBtn" class="mt-2 w-full rounded-lg border border-[#065f46] py-2 text-sm font-semibold text-[#065f46]">I Have Paid</button>
+           <input id="txnIdInput" class="mt-2 w-full rounded-lg border px-3 py-2 text-sm" placeholder="Enter UPI Transaction ID (UTR)" />
+            <button id="paymentDoneBtn" class="mt-2 w-full rounded-lg border border-[#065f46] py-2 text-sm font-semibold text-[#065f46]">Confirm Payment</button>
           </div>
           <div id="paymentSuccess" class="mt-3 hidden rounded-xl bg-emerald-100 p-3 text-sm font-semibold text-emerald-800">Payment Successful ✅</div>
           <button id="downloadInvoiceBtn" class="mt-3 hidden w-full rounded-lg bg-[#D4AF37] py-2 font-bold text-[#065f46]">Download Invoice (PDF)</button>
@@ -532,7 +533,7 @@
     let installBannerTimer = null;
 
     const PRICE_INCREMENT = 1;
-    const MERCHANT_UPI_ID = '8050389261@upi';
+    const MERCHANT_UPI_ID = ''; // add valid UPI ID like name@bank
     const MERCHANT_QR_IMAGE = './images/merchant-upi-qr.png';
     const imageFrom = () => './images/plate.jpg';
     const splash = document.getElementById('logoSplash');
@@ -1526,10 +1527,12 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     function checkoutTotals(){
       const subtotal = cartTotalAmount();
-      const gst = Number((subtotal * 0.18).toFixed(2));
+      const gst = 0; // composition GST already included in product rates
       const delivery = subtotal > 0 ? 120 : 0;
-      const total = Number((subtotal + gst + delivery).toFixed(2));
+      const total = Number((subtotal + delivery).toFixed(2));
       return {subtotal, gst, delivery, total};
+      function isValidUpiId(value){
+      return /^[a-zA-Z0-9._-]{2,256}@[a-zA-Z]{2,64}$/.test((value || '').trim());
     }
 
     function renderCheckout(){
@@ -1537,7 +1540,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(itemsEl) itemsEl.innerHTML = cart.map(i => `<p>${i.name} × ${i.qty} = ₹${(i.qty*i.unit).toFixed(2)}</p>`).join('');
       const totals = checkoutTotals();
       document.getElementById('coSubtotal').textContent = totals.subtotal.toFixed(2);
-      document.getElementById('coGst').textContent = totals.gst.toFixed(2);
+      document.getElementById('coGst').textContent = 'Included in rates';
       document.getElementById('coDelivery').textContent = totals.delivery.toFixed(2);
       document.getElementById('coTotal').textContent = totals.total.toFixed(2);
     }
@@ -1553,12 +1556,26 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       };
      const upiId = MERCHANT_UPI_ID;
       const orderId = `VMP${Date.now().toString().slice(-6)}`;
-      const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${totals.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order '+orderId)}`;
-      const qr = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}`;
-      document.getElementById('upiQr').src = MERCHANT_QR_IMAGE || qr;
-      document.getElementById('upiQr').onerror = function(){ this.src = qr; };
+      const upiUri = validUpi ? `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${totals.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order '+orderId)}` : '';
+      const qr = upiUri ? `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}` : '';
+      const upiQrEl = document.getElementById('upiQr');
+      if(MERCHANT_QR_IMAGE){
+        upiQrEl.src = MERCHANT_QR_IMAGE;
+      } else if(qr){
+        upiQrEl.src = qr;
+      } else {
+        alert('Payment QR config missing. Please set MERCHANT_QR_IMAGE or valid MERCHANT_UPI_ID.');
+        return;
+      }
+      if(qr) upiQrEl.onerror = function(){ this.src = qr; };
       const upiPayLink = document.getElementById('upiPayLink');
-      upiPayLink.href = upiUri;
+       if(validUpi){
+        upiPayLink.href = upiUri;
+        upiPayLink.classList.remove('hidden');
+      } else {
+        upiPayLink.href = '#';
+        upiPayLink.classList.add('hidden');
+      }
       document.getElementById('upiBox').classList.remove('hidden');
       latestCheckout = {orderId, details, totals, cart:[...cart], paymentStatus:'Pending'};
       const profile = { name: details.name, whatsapp: details.whatsapp, address: details.address + ' - ' + details.pincode };
@@ -1569,13 +1586,19 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     bindById('paymentDoneBtn', 'click', ()=>{
       if(!latestCheckout) return;
+       const txnId = document.getElementById('txnIdInput').value.trim();
+      if(!txnId || txnId.length < 6){
+        alert('Please enter valid UPI Transaction ID (UTR).');
+        return;
+      }
       latestCheckout.paymentStatus = 'Paid';
+        latestCheckout.transactionId = txnId;
       document.getElementById('paymentSuccess').classList.remove('hidden');
       document.getElementById('downloadInvoiceBtn').classList.remove('hidden');
       pushOrderHistory({ orderId: latestCheckout.orderId, total: latestCheckout.totals.total.toFixed(2), date: new Date().toLocaleString(), items: latestCheckout.cart });
       renderProfile();
       const lines = latestCheckout.cart.map((i, n)=>`${n+1}. ${i.name} - ${i.qty} qty - ₹${(i.qty*i.unit).toFixed(2)}`).join('%0A');
-      const adminMsg = `New Order ${latestCheckout.orderId}%0AName: ${latestCheckout.details.name}%0AWhatsApp: ${latestCheckout.details.whatsapp}%0AAddress: ${latestCheckout.details.address} - ${latestCheckout.details.pincode}%0AStatus: ${latestCheckout.paymentStatus}%0ATotal: ₹${latestCheckout.totals.total.toFixed(2)}%0AItems:%0A${lines}`;
+      const adminMsg = `New Order ${latestCheckout.orderId}%0AName: ${latestCheckout.details.name}%0AWhatsApp: ${latestCheckout.details.whatsapp}%0AAddress: ${latestCheckout.details.address} - ${latestCheckout.details.pincode}%0AStatus: ${latestCheckout.paymentStatus}%0ATransaction ID: ${latestCheckout.transactionId}%0ATotal: ₹${latestCheckout.totals.total.toFixed(2)}%0AItems:%0A${lines}`;
       window.open(`https://wa.me/918050389261?text=${adminMsg}`,'_blank');
       window.location.href = `mailto:veermahadevplastic@gmail.com?subject=${encodeURIComponent('New Paid Order '+latestCheckout.orderId)}&body=${adminMsg}`;
     });
@@ -1589,11 +1612,13 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       doc.text(`Invoice No: ${latestCheckout.orderId}`, 14, 30);
       doc.text(`Customer: ${latestCheckout.details.name}`, 14, 36);
       doc.text(`Address: ${latestCheckout.details.address} - ${latestCheckout.details.pincode}`, 14, 42);
-      let y = 50;
+      doc.text(`Payment Status: ${latestCheckout.paymentStatus}`, 14, 48);
+      doc.text(`Transaction ID: ${latestCheckout.transactionId || '-'}`, 14, 54);
+      let y = 62;
       latestCheckout.cart.forEach((i, idx)=>{ doc.text(`${idx+1}. ${i.name} (${i.qty}) ₹${(i.qty*i.unit).toFixed(2)}`, 14, y); y += 6; });
       y += 4;
       doc.text(`Subtotal: ₹${latestCheckout.totals.subtotal.toFixed(2)}`, 14, y); y += 6;
-      doc.text(`GST: ₹${latestCheckout.totals.gst.toFixed(2)}`, 14, y); y += 6;
+      doc.text('GST: Included in rates (Composition)', 14, y); y += 6;
       doc.text(`Delivery: ₹${latestCheckout.totals.delivery.toFixed(2)}`, 14, y); y += 6;
       doc.setFontSize(12); doc.text(`Total Paid: ₹${latestCheckout.totals.total.toFixed(2)}`, 14, y);
       doc.save(`invoice-${latestCheckout.orderId}.pdf`);
