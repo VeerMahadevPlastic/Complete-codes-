@@ -64,6 +64,7 @@
     .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); animation: splashFade 3s ease forwards; }
     .install-banner { bottom: calc(88px + env(safe-area-inset-bottom)); }
     .floating-wa-btn { bottom: calc(168px + env(safe-area-inset-bottom)); }
+    .floating-cart-btn { bottom: calc(236px + env(safe-area-inset-bottom)); }
     .floating-edge { right: max(12px, env(safe-area-inset-right)); }
     .logo-card { animation: logoFloat 2.4s ease-in-out infinite; }
     .logo-glow { animation: glowPulse 2.4s ease-in-out infinite; }
@@ -82,6 +83,7 @@
       .app-shell { padding-bottom: 128px; }
       .install-banner { bottom: 20px; }
       .floating-wa-btn { bottom: 24px; }
+      .floating-cart-btn { bottom: 92px; }
     }
   </style>
 </head>
@@ -316,7 +318,7 @@
       <a href="#liveRates" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📈</span><span>Live Rates</span></a>
     </div>
   </nav>
-  <button id="floatingCartBtn" class="floating-edge fixed bottom-[calc(168px+env(safe-area-inset-bottom))] z-[56] inline-flex items-center gap-2 rounded-full bg-[#065f46] px-4 py-3 text-sm font-bold text-white shadow-2xl">
+ <button id="floatingCartBtn" class="floating-cart-btn floating-edge fixed z-[56] inline-flex items-center gap-2 rounded-full bg-[#065f46] px-4 py-3 text-sm font-bold text-white shadow-2xl">
     🛒 Cart <span id="floatingCartCount" class="rounded-full bg-[#D4AF37] px-2 py-0.5 text-xs text-[#065f46]">0</span>
   </button>
 
@@ -530,6 +532,8 @@
     let installBannerTimer = null;
 
     const PRICE_INCREMENT = 1;
+    const MERCHANT_UPI_ID = '8050389261@upi';
+    const MERCHANT_QR_IMAGE = './images/merchant-upi-qr.png';
     const imageFrom = () => './images/plate.jpg';
     const splash = document.getElementById('logoSplash');
     const installBanner = document.getElementById('installBanner');
@@ -1547,11 +1551,12 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         address: document.getElementById('coAddress').value.trim(),
         pincode: document.getElementById('coPincode').value.trim(),
       };
-      const upiId = '8050389261@upi';
+     const upiId = MERCHANT_UPI_ID;
       const orderId = `VMP${Date.now().toString().slice(-6)}`;
       const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${totals.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order '+orderId)}`;
       const qr = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}`;
-      document.getElementById('upiQr').src = qr;
+      document.getElementById('upiQr').src = MERCHANT_QR_IMAGE || qr;
+      document.getElementById('upiQr').onerror = function(){ this.src = qr; };
       const upiPayLink = document.getElementById('upiPayLink');
       upiPayLink.href = upiUri;
       document.getElementById('upiBox').classList.remove('hidden');
