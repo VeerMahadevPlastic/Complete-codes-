@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,6 +53,7 @@
   <title>Veer Mahadev Plastic | Best Disposable Items Wholesaler in Ahmedabad, Gujarat</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
   <style>
     html, body { scroll-behavior: smooth; width: 100%; max-width: 100%; overflow-x: hidden; background: #f5f8f5; }
     .app-shell { width: 100%; }
@@ -115,7 +114,7 @@
       <div id="quickChips" class="flex gap-2 overflow-x-auto whitespace-nowrap pt-1 text-xs font-semibold">
         <button data-chip="MEAL TREY" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Meal Trays</button>
         <button data-chip="CONTAINER" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Containers</button>
-        <button data-chip="Biodegrade glass and bowl" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Biodegrade glass and bowl</button>
+        <button data-chip="SILVER FOIL" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Silver Foil</button>
       </div>
       <div class="flex items-center justify-between gap-3 text-xs font-medium text-slate-600">
         <nav class="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
@@ -123,6 +122,7 @@
           <a href="#shop">Shop All</a>
           <a href="#eco">Eco Range</a>
           <a href="#wholesale">Wholesale</a>
+          <a href="#profile">Profile</a>
           <button id="openAuthHubNav" class="rounded-full border border-transparent px-1 py-1">Login / Sign Up</button>
         </nav>
         <button id="openLogin" class="hidden rounded-full border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50 sm:inline-flex">B2B Portal</button>
@@ -203,6 +203,9 @@
           <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
         </div>
         <button data-cat="eco-range" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
+      </div>
+    </section>
+
       <section class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex items-end justify-between flex-wrap gap-3">
         <div>
@@ -228,7 +231,7 @@
           <p class="mt-2 text-sm text-slate-600">Customers can submit bulk inquiries, use cart-based WhatsApp ordering, and connect with the team for delivery planning and special packaging needs.</p>
         </article>
       </div>
-    </section>
+</section>
 
     <section id="wholesale" class="max-w-7xl mx-auto px-4 pb-12 grid lg:grid-cols-2 gap-6">
       <div class="bg-white rounded-2xl border p-6">
@@ -260,7 +263,38 @@
       </div>
     </section>
 
-    <section id="about" class="max-w-7xl mx-auto px-4 pb-10">
+        <section id="profile" class="max-w-7xl mx-auto px-4 pb-10">
+      <div class="rounded-2xl border border-emerald-200 bg-white p-6">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">User Profile</p>
+            <h3 class="text-2xl font-black text-slate-900">My Account & Order History</h3>
+          </div>
+          <button id="logoutBtn" class="rounded-lg border border-emerald-300 px-4 py-2 text-sm font-semibold text-emerald-700">Logout</button>
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <div class="rounded-xl bg-emerald-50 p-4">
+            <p class="text-sm font-semibold text-emerald-800">Saved Details</p>
+            <p id="profileName" class="mt-2 text-sm text-slate-700">Name: -</p>
+            <p id="profileWhatsapp" class="text-sm text-slate-700">WhatsApp: -</p>
+            <p id="profileAddress" class="text-sm text-slate-700">Address: -</p>
+            <div class="mt-3 grid gap-2">
+              <textarea id="editAddressInput" rows="2" class="rounded-lg border px-3 py-2 text-sm" placeholder="Edit Address"></textarea>
+              <button id="saveAddressBtn" class="rounded-lg bg-[#065f46] py-2 text-sm font-semibold text-white">Edit Address</button>
+            </div>
+          </div>
+          <div class="rounded-xl border p-4">
+            <p class="text-sm font-semibold text-slate-800">Last Order</p>
+            <div id="lastOrderBox" class="mt-2 text-sm text-slate-700">No previous order yet.</div>
+            <p class="mt-4 text-sm font-semibold text-slate-800">Order History</p>
+            <div id="orderHistoryList" class="mt-2 max-h-40 space-y-2 overflow-y-auto text-sm text-slate-700"></div>
+            <button id="reorderBtn" class="mt-3 w-full rounded-lg border border-[#065f46] py-2 text-sm font-semibold text-[#065f46]">Re-order Last</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section id="about" class="max-w-7xl mx-auto px-4 pb-10">
       <div class="bg-emerald-800 text-white rounded-3xl p-8 lg:p-10">
         <h3 class="text-3xl font-extrabold">About Us - Veer Mahadev Plastic</h3>
         <p class="mt-4 text-emerald-50">Started in 2022 as a family business, Veer Mahadev Plastic has grown through trust, quality, and hard work. Today, we proudly serve 10,000+ satisfied customers every month across wholesale and retail channels.</p>
@@ -268,12 +302,12 @@
       </div>
     </section>
 
-     <section class="max-w-7xl mx-auto px-4 pb-10">
+    <section class="max-w-7xl mx-auto px-4 pb-10">
       <h3 class="text-2xl font-extrabold mb-3">Visit Our Shop</h3>
       <div class="rounded-2xl overflow-hidden border bg-white">
-        <iframe title="Shop Location Map" class="w-full h-80" loading="lazy" allowfullscreen
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d918.128940122035!2d72.63732540174827!3d23.004827666533586!2m3!1f0!2f0!3f0!2m3!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e872d2f71fefb%3A0xf3248d09e89dd0dc!2sVeer%20Mahadev%20Plastic!5e0!3m2!1sen!2sin!4v1772378947905!5m2!1sen!2sin" width="200" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
+        <iframe title="Shop Location Map" class="w-full h-80"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d918.128940122035!2d72.63732540174827!3d23.004827666533586!2m3!1f0!2f0!3f0!2m3!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e872d2f71fefb%3A0xf3248d09e89dd0dc!2sVeer%20Mahadev%20Plastic!5e0!3m2!1sen!2sin!4v1772378947905!5m2!1sen!2sin" width="200" height="200" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
     </section>
   </main>
 
@@ -285,6 +319,9 @@
       <a href="#liveRates" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📈</span><span>Live Rates</span></a>
     </div>
   </nav>
+  <button id="floatingCartBtn" class="floating-edge fixed bottom-[calc(168px+env(safe-area-inset-bottom))] z-[56] inline-flex items-center gap-2 rounded-full bg-[#065f46] px-4 py-3 text-sm font-bold text-white shadow-2xl">
+    🛒 Cart <span id="floatingCartCount" class="rounded-full bg-[#D4AF37] px-2 py-0.5 text-xs text-[#065f46]">0</span>
+  </button>
 
   <footer class="border-t bg-white">
     <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-4 gap-6 text-sm">
@@ -331,7 +368,7 @@
     </div>
   </div>
 
-   <a id="waFloating" href="#" class="floating-wa-btn floating-edge pulse-soft fixed z-[57] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition hover:scale-105" aria-label="Chat on WhatsApp">
+  <a id="waFloating" href="#" class="floating-wa-btn floating-edge pulse-soft fixed z-[57] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition hover:scale-105" aria-label="Chat on WhatsApp">
     <svg aria-hidden="true" viewBox="0 0 32 32" class="h-7 w-7 fill-current">
       <path d="M19.11 17.41c-.29-.14-1.71-.84-1.98-.94-.26-.1-.46-.14-.65.15-.19.29-.75.94-.91 1.13-.17.19-.33.22-.62.07-.29-.14-1.21-.45-2.3-1.44-.85-.76-1.42-1.69-1.59-1.98-.17-.29-.02-.45.12-.59.13-.13.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.65-1.57-.89-2.15-.23-.55-.47-.48-.65-.49l-.55-.01c-.19 0-.5.07-.76.36-.26.29-1 1-.1 2.43.9 1.43 2.58 2.82 2.82 3.01.24.19 3.88 5.93 9.41 8.31 1.32.57 2.36.91 3.17 1.17 1.33.42 2.54.36 3.5.22 1.07-.16 3.3-1.35 3.77-2.65.47-1.3.47-2.42.33-2.65-.14-.23-.52-.36-.81-.5zM16.27 3C9.3 3 3.64 8.63 3.64 15.57c0 2.22.58 4.39 1.68 6.3L3 29l7.33-2.29a12.69 12.69 0 0 0 5.94 1.51h.01c6.97 0 12.63-5.63 12.63-12.58C28.91 8.63 23.24 3 16.27 3zm0 22.97h-.01a10.4 10.4 0 0 1-5.29-1.45l-.38-.22-4.35 1.36 1.42-4.23-.25-.43a10.33 10.33 0 0 1-1.58-5.44c0-5.7 4.67-10.34 10.43-10.34 2.79 0 5.41 1.08 7.38 3.04a10.25 10.25 0 0 1 3.06 7.31c0 5.7-4.68 10.4-10.43 10.4z"/>
     </svg>
@@ -355,6 +392,7 @@
         <button id="waCart" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
           <span>💬</span><span>Order by WhatsApp</span>
         </button>
+        <button id="checkoutBtn" class="w-full rounded-lg bg-[#065f46] py-2.5 font-semibold text-white">Proceed to Checkout</button>
         <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Buy Now</button>
       </div>
     </div>
@@ -427,6 +465,7 @@
       <form id="loginForm" class="mt-4 grid gap-3">
         <input id="loginEmail" type="email" required placeholder="Business Email" class="border rounded-lg px-3 py-2"/>
         <input id="loginPass" type="password" required placeholder="Password" class="border rounded-lg px-3 py-2"/>
+        <label class="flex items-center gap-2 text-sm text-slate-700"><input id="rememberMe" type="checkbox" class="h-4 w-4" checked /> Remember Me (Stay Logged In)</label>
         <div class="flex gap-2">
           <button type="submit" class="flex-1 bg-emerald-700 text-white py-2 rounded-lg font-semibold">Login</button>
           <button type="button" id="closeLogin" class="flex-1 border py-2 rounded-lg font-semibold">Close</button>
@@ -447,6 +486,44 @@
       <div class="p-2 border-t flex gap-2">
         <input id="botInput" class="flex-1 border rounded-lg px-2 py-1.5 text-sm" placeholder="Ask your question" />
         <button id="botSend" class="bg-emerald-700 text-white px-3 rounded-lg">Send</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="checkoutModal" class="hidden fixed inset-0 z-[75] bg-black/50 px-4 py-6">
+    <div class="mx-auto max-w-3xl rounded-2xl bg-white shadow-2xl">
+      <div class="flex items-center justify-between border-b p-4">
+        <h4 class="text-xl font-black text-[#065f46]">Secure Checkout</h4>
+        <button id="closeCheckout" class="rounded-full border px-3 py-1">✕</button>
+      </div>
+      <div class="grid gap-5 p-4 md:grid-cols-2">
+        <div>
+          <p class="font-bold">Order Summary</p>
+          <div id="checkoutItems" class="mt-2 max-h-48 overflow-y-auto text-sm"></div>
+          <div class="mt-3 space-y-1 text-sm">
+            <p>Subtotal: ₹<span id="coSubtotal">0</span></p>
+            <p>GST (18%): ₹<span id="coGst">0</span></p>
+            <p>Delivery: ₹<span id="coDelivery">0</span></p>
+            <p class="text-lg font-black text-[#065f46]">Total: ₹<span id="coTotal">0</span></p>
+          </div>
+        </div>
+        <div>
+          <form id="checkoutForm" class="grid gap-2">
+            <input id="coName" required class="rounded-lg border px-3 py-2" placeholder="Name" />
+            <input id="coWhatsapp" required class="rounded-lg border px-3 py-2" placeholder="WhatsApp Number" />
+            <textarea id="coAddress" required class="rounded-lg border px-3 py-2" rows="2" placeholder="Full Address"></textarea>
+            <input id="coPincode" required class="rounded-lg border px-3 py-2" placeholder="Pincode" />
+            <button type="submit" class="rounded-lg bg-[#065f46] py-2 font-semibold text-white">Generate UPI Payment</button>
+          </form>
+          <div id="upiBox" class="mt-3 hidden rounded-xl border border-[#D4AF37] bg-emerald-50 p-3 text-center">
+            <img id="upiQr" alt="UPI QR" class="mx-auto h-40 w-40 rounded" />
+            <a id="upiPayLink" href="#" class="mt-2 inline-block rounded-full bg-[#065f46] px-4 py-2 text-sm font-semibold text-white">Pay via UPI App</a>
+            <button id="paymentDoneBtn" class="mt-2 w-full rounded-lg border border-[#065f46] py-2 text-sm font-semibold text-[#065f46]">I Have Paid</button>
+          </div>
+          <div id="paymentSuccess" class="mt-3 hidden rounded-xl bg-emerald-100 p-3 text-sm font-semibold text-emerald-800">Payment Successful ✅</div>
+          <button id="downloadInvoiceBtn" class="mt-3 hidden w-full rounded-lg bg-[#D4AF37] py-2 font-bold text-[#065f46]">Download Invoice (PDF)</button>
+        </div>
       </div>
     </div>
   </div>
@@ -476,7 +553,7 @@
         localStorage.setItem(key, value);
       } catch (error) {
         console.warn(`Unable to write ${key} to localStorage.`, error);
-      }
+    }
     }
 
     function isInstallBannerDismissed(){
@@ -494,6 +571,8 @@
       installBanner.classList.add('translate-y-8', 'opacity-0');
       setTimeout(() => installBanner.classList.add('hidden'), 500);
     }
+
+    function showInstallBanner(){
 
     function showInstallBanner(){
       if(!installBanner || !deferredPrompt || isAppInstalled() || isInstallBannerDismissed()) return;
@@ -679,8 +758,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 18 PP CONTAINER FB 650ML BLACK / TRANSPERENT (5405) 2000 6600 4.3 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 19 PP ROUND CONTAINER LID 123DIA (5451) 2000 2800 2.4 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 `;
-
-    // Per-product image URLs (id-wise). Add/replace links here.
+// Per-product image URLs (id-wise). Add/replace links here.
     // Example: '3cp-meal-tray-with-lid-7041': 'https://...'
     const PRODUCT_IMAGE_OVERRIDES = {
       // Add custom image URLs here for each product ID.
@@ -735,48 +813,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     }
 
     function loadPriceOverrides(){
-      try {
-        return JSON.parse(readStorage('vmpPriceOverrides') || '{}');
-      } catch (error) {
-        console.warn('Unable to parse price overrides.', error);
-        return {};
-      }
-    }
 
-    const priceOverrides = loadPriceOverrides();
-
-    const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
-
-    const products = PRODUCT_ITEMS.map(item => {
-      const id = slugify(item.name);
-      const overridePrice = Number(priceOverrides[id]);
-      const tiers = Number.isFinite(overridePrice) && overridePrice > 0
-        ? [
-            {min:100, price: Number(overridePrice.toFixed(2))},
-            {min:200, price: Number(Math.max(overridePrice - 1, 0).toFixed(2))},
-            {min:500, price: Number(Math.max(overridePrice - 2, 0).toFixed(2))}
-          ]
-        : item.tiers;
-      return {
-        ...item,
-        id,
-        tiers,
-        image: PRODUCT_IMAGE_OVERRIDES[id] || item.image || imageFrom(item.name)
-      };
-    });
-
-    writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
-      id: product.id,
-      name: product.name,
-      category: product.category,
-      price100: product.tiers[0]?.price || 0
-    }))));
-
-    const categories = ['All', ...new Set(products.map(p => p.category))];
-    let activeCategory = 'All';
-    let searchTerm = '';
-    let filteredProducts = [...products];
-    function loadCart(){
       try {
         const saved = localStorage.getItem('vmpCart');
         return JSON.parse(saved || '[]');
@@ -802,13 +839,66 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     const drawerOverlay = document.getElementById('drawerOverlay');
     const authHubModal = document.getElementById('authHubModal');
     const productModal = document.getElementById('productModal');
+    const floatingCartCount = document.getElementById('floatingCartCount');
+    const checkoutModal = document.getElementById('checkoutModal');
     let selectedProductForOrder = null;
+    let latestCheckout = null;
+    let currentUser = null;
 
     function bindById(id, eventName, handler){
       const element = document.getElementById(id);
       if(!element) return null;
       element.addEventListener(eventName, handler);
       return element;
+    }
+
+    function loadCurrentUser(){
+      try {
+        return JSON.parse(localStorage.getItem('vmpUserSession') || sessionStorage.getItem('vmpUserSession') || 'null');
+      } catch { return null; }
+    }
+
+    function saveCurrentUser(user, remember=true){
+      const payload = JSON.stringify(user);
+      if(remember){
+        localStorage.setItem('vmpUserSession', payload);
+        sessionStorage.removeItem('vmpUserSession');
+      } else {
+        sessionStorage.setItem('vmpUserSession', payload);
+        localStorage.removeItem('vmpUserSession');
+      }
+      localStorage.setItem('vmpUserProfile', JSON.stringify(user.profile || {}));
+    }
+
+    function loadProfile(){
+      try { return JSON.parse(localStorage.getItem('vmpUserProfile') || '{}'); } catch { return {}; }
+    }
+
+    function saveProfile(profile){
+      localStorage.setItem('vmpUserProfile', JSON.stringify(profile));
+    }
+
+    function orderHistory(){
+      try { return JSON.parse(localStorage.getItem('vmpOrderHistory') || '[]'); } catch { return []; }
+    }
+
+    function pushOrderHistory(order){
+      const history = orderHistory();
+      history.unshift(order);
+      localStorage.setItem('vmpOrderHistory', JSON.stringify(history.slice(0, 20)));
+    }
+
+    function renderProfile(){
+      const profile = loadProfile();
+      document.getElementById('profileName').textContent = `Name: ${profile.name || '-'}`;
+      document.getElementById('profileWhatsapp').textContent = `WhatsApp: ${profile.whatsapp || '-'}`;
+      document.getElementById('profileAddress').textContent = `Address: ${profile.address || '-'}`;
+      document.getElementById('editAddressInput').value = profile.address || '';
+      const history = orderHistory();
+      const last = history[0];
+      document.getElementById('lastOrderBox').textContent = last ? `${last.orderId} | ₹${last.total} | ${last.date}` : 'No previous order yet.';
+      const list = document.getElementById('orderHistoryList');
+      list.innerHTML = history.map(o => `<div class="rounded-lg border p-2">${o.orderId} • ₹${o.total} • ${o.items.length} items</div>`).join('') || '<p>No orders yet.</p>';
     }
 
     function openAuthHub(){
@@ -876,7 +966,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     function productMeta(product){
       const name = product.name;
       const sizeMatch = name.match(/(\d+\s?(?:ML|GRM|MM|DIA|OZ|NO|CP))/i);
-      const colorMatch = name.match(/(BLACK|MILKY|WHITE|RED|TRANS|TRANSPARENT|BROWN|GREEN)/i);
+ const colorMatch = name.match(/(BLACK|MILKY|WHITE|RED|TRANS|TRANSPARENT|BROWN|GREEN)/i);
       const category = product.category.toLowerCase();
       let hsn = '3924';
       if(category.includes('paper') || category.includes('cornstarch') || category.includes('biodegradable')) hsn = '4823';
@@ -962,7 +1052,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
             <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
             <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
             <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
+              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="10" step="10" value="10" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
               <button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
             </div>
             <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
@@ -990,12 +1080,11 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     function renderCart(){
       if(!cartCount || !cartSubtotal || !cartItems) return;
       cartCount.textContent = cartTotalQty();
+      if(floatingCartCount) floatingCartCount.textContent = cartTotalQty();
       cartSubtotal.textContent = cartTotalAmount().toFixed(2);
       if(cart.length === 0){
         cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
         updateWhatsappButton();
-    initNotifications();
-    initNotifications();
         return;
       }
       cartItems.innerHTML = cart.map((item, idx) => `
@@ -1018,7 +1107,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
     window.addToCart = function(id){
       const p = products.find(x => x.id === id);
-      const qty = Math.max(100, Number(document.getElementById(`qty-${id}`).value || 100));
+      const qty = Math.max(10, Number(document.getElementById(`qty-${id}`).value || 10));
       const unit = priceForQty(p.tiers, qty);
       const existing = cart.find(c => c.id === id && c.unit === unit);
       if(existing) existing.qty += qty;
@@ -1117,8 +1206,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
     function closeCart(){
       if(cartDrawer) cartDrawer.classList.add('translate-x-full');
-      if(drawerOverlay) drawerOverlay.classList.add('hidden');
-    }
+      if(drawerOverlay) drawerOverlay.classList.add('hidden');   }
 
     // Shipping calculator
     bindById('calcShip', 'click', ()=>{
@@ -1154,13 +1242,18 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
       const pass = document.getElementById('loginPass').value.trim();
+      const remember = document.getElementById('rememberMe')?.checked ?? true;
       const loginMsg = document.getElementById('loginMsg');
       if(email && pass.length >= 4){
         b2bLoggedIn = true;
+        const savedProfile = loadProfile();
+        currentUser = { email, profile: savedProfile };
+        saveCurrentUser(currentUser, remember);
         loginMsg.className = 'text-sm mt-2 font-semibold text-emerald-700';
         loginMsg.textContent = 'Login successful. B2B portal unlocked.';
         const portalStatus = document.getElementById('portalStatus');
         if(portalStatus) portalStatus.textContent = `Logged in as ${email}`;
+        renderProfile();
         setTimeout(()=> document.getElementById('loginModal')?.classList.add('hidden'), 600);
       }else{
         loginMsg.className = 'text-sm mt-2 font-semibold text-rose-600';
@@ -1186,7 +1279,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     });
 
     // Category interactions
-    document.addEventListener('click', (e)=>{
+document.addEventListener('click', (e)=>{
       const target = e.target.closest('.jump-cat');
       if(!target) return;
       const requestedCategory = target.dataset.cat;
@@ -1194,6 +1287,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         activeCategory = categories.find(cat => /bio|cornstarch|eco/i.test(cat)) || 'All';
       } else {
         activeCategory = requestedCategory;
+      }
+
       }
       categoryFilter.value = activeCategory;
       searchTerm = '';
@@ -1230,6 +1325,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
     // Cart controls
     bindById('openCartTop', 'click', openCart);
+    bindById('floatingCartBtn', 'click', openCart);
     bindById('openCartBottom', 'click', (e)=>{ e.preventDefault(); openCart(); });
     bindById('openCartFromDash', 'click', openCart);
     bindById('closeCart', 'click', closeCart);
@@ -1260,6 +1356,113 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       const details = getCustomerDetails();
       if(!details) { openCart(); return; }
       alert(`Order initiated for ${details.name}. Our team will confirm delivery at provided address.`);
+    });
+    bindById('checkoutBtn', 'click', ()=>{
+      if(!cart.length){ alert('Please add items in cart first.'); return; }
+      closeCart();
+      checkoutModal?.classList.remove('hidden');
+      renderCheckout();
+    });
+    bindById('closeCheckout', 'click', ()=> checkoutModal?.classList.add('hidden'));
+    bindById('saveAddressBtn', 'click', ()=>{
+      const profile = loadProfile();
+      const updatedAddress = document.getElementById('editAddressInput').value.trim();
+      profile.address = updatedAddress;
+      saveProfile(profile);
+      if(currentUser){ currentUser.profile = profile; saveCurrentUser(currentUser, localStorage.getItem('vmpUserSession') !== null); }
+      renderProfile();
+    });
+    bindById('logoutBtn', 'click', ()=>{
+      localStorage.removeItem('vmpUserSession');
+      sessionStorage.removeItem('vmpUserSession');
+      b2bLoggedIn = false;
+      currentUser = null;
+      const portalStatus = document.getElementById('portalStatus');
+      if(portalStatus) portalStatus.textContent = 'Please login to access B2B downloads.';
+      alert('Logged out successfully.');
+    });
+    bindById('reorderBtn', 'click', ()=>{
+      const history = orderHistory();
+      if(!history.length) return alert('No previous order found.');
+      const last = history[0];
+      cart = [...last.items];
+      saveCart();
+      renderCart();
+      openCart();
+    });
+
+    function checkoutTotals(){
+      const subtotal = cartTotalAmount();
+      const gst = Number((subtotal * 0.18).toFixed(2));
+      const delivery = subtotal > 0 ? 120 : 0;
+      const total = Number((subtotal + gst + delivery).toFixed(2));
+      return {subtotal, gst, delivery, total};
+    }
+
+    function renderCheckout(){
+      const itemsEl = document.getElementById('checkoutItems');
+      if(itemsEl) itemsEl.innerHTML = cart.map(i => `<p>${i.name} × ${i.qty} = ₹${(i.qty*i.unit).toFixed(2)}</p>`).join('');
+      const totals = checkoutTotals();
+      document.getElementById('coSubtotal').textContent = totals.subtotal.toFixed(2);
+      document.getElementById('coGst').textContent = totals.gst.toFixed(2);
+      document.getElementById('coDelivery').textContent = totals.delivery.toFixed(2);
+      document.getElementById('coTotal').textContent = totals.total.toFixed(2);
+    }
+
+    bindById('checkoutForm', 'submit', (e)=>{
+      e.preventDefault();
+      const totals = checkoutTotals();
+      const details = {
+        name: document.getElementById('coName').value.trim(),
+        whatsapp: document.getElementById('coWhatsapp').value.trim(),
+        address: document.getElementById('coAddress').value.trim(),
+        pincode: document.getElementById('coPincode').value.trim(),
+      };
+      const upiId = '8050389261@upi';
+      const orderId = `VMP${Date.now().toString().slice(-6)}`;
+      const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${totals.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order '+orderId)}`;
+      const qr = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}`;
+      document.getElementById('upiQr').src = qr;
+      const upiPayLink = document.getElementById('upiPayLink');
+      upiPayLink.href = upiUri;
+      document.getElementById('upiBox').classList.remove('hidden');
+      latestCheckout = {orderId, details, totals, cart:[...cart], paymentStatus:'Pending'};
+      const profile = { name: details.name, whatsapp: details.whatsapp, address: details.address + ' - ' + details.pincode };
+      saveProfile(profile);
+      if(currentUser){ currentUser.profile = profile; saveCurrentUser(currentUser, localStorage.getItem('vmpUserSession') !== null); }
+      renderProfile();
+    });
+
+    bindById('paymentDoneBtn', 'click', ()=>{
+      if(!latestCheckout) return;
+      latestCheckout.paymentStatus = 'Paid';
+      document.getElementById('paymentSuccess').classList.remove('hidden');
+      document.getElementById('downloadInvoiceBtn').classList.remove('hidden');
+      pushOrderHistory({ orderId: latestCheckout.orderId, total: latestCheckout.totals.total.toFixed(2), date: new Date().toLocaleString(), items: latestCheckout.cart });
+      renderProfile();
+      const lines = latestCheckout.cart.map((i, n)=>`${n+1}. ${i.name} - ${i.qty} qty - ₹${(i.qty*i.unit).toFixed(2)}`).join('%0A');
+      const adminMsg = `New Order ${latestCheckout.orderId}%0AName: ${latestCheckout.details.name}%0AWhatsApp: ${latestCheckout.details.whatsapp}%0AAddress: ${latestCheckout.details.address} - ${latestCheckout.details.pincode}%0AStatus: ${latestCheckout.paymentStatus}%0ATotal: ₹${latestCheckout.totals.total.toFixed(2)}%0AItems:%0A${lines}`;
+      window.open(`https://wa.me/918050389261?text=${adminMsg}`,'_blank');
+      window.location.href = `mailto:veermahadevplastic@gmail.com?subject=${encodeURIComponent('New Paid Order '+latestCheckout.orderId)}&body=${adminMsg}`;
+    });
+
+    bindById('downloadInvoiceBtn', 'click', ()=>{
+      if(!latestCheckout || !window.jspdf?.jsPDF) return;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(18); doc.text('Veer Mahadev Plastic', 14, 16);
+      doc.setFontSize(10); doc.text('Ahmedabad, Gujarat | WhatsApp: +91 80503 89261', 14, 22);
+      doc.text(`Invoice No: ${latestCheckout.orderId}`, 14, 30);
+      doc.text(`Customer: ${latestCheckout.details.name}`, 14, 36);
+      doc.text(`Address: ${latestCheckout.details.address} - ${latestCheckout.details.pincode}`, 14, 42);
+      let y = 50;
+      latestCheckout.cart.forEach((i, idx)=>{ doc.text(`${idx+1}. ${i.name} (${i.qty}) ₹${(i.qty*i.unit).toFixed(2)}`, 14, y); y += 6; });
+      y += 4;
+      doc.text(`Subtotal: ₹${latestCheckout.totals.subtotal.toFixed(2)}`, 14, y); y += 6;
+      doc.text(`GST: ₹${latestCheckout.totals.gst.toFixed(2)}`, 14, y); y += 6;
+      doc.text(`Delivery: ₹${latestCheckout.totals.delivery.toFixed(2)}`, 14, y); y += 6;
+      doc.setFontSize(12); doc.text(`Total Paid: ₹${latestCheckout.totals.total.toFixed(2)}`, 14, y);
+      doc.save(`invoice-${latestCheckout.orderId}.pdf`);
     });
 
     // Repeat order
@@ -1346,1363 +1549,17 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     renderCategories();
     applyProductFilters();
     renderCart();
-    ['customerName','customerAddress'].forEach(id => {
-      const element = document.getElementById(id);
-      if(element) element.addEventListener('input', updateWhatsappButton);
-    });
-    updateWhatsappButton();
-    initNotifications();
-
-  </script>
-  </div>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#047857" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Veer Mahadev" />
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="./icons/icon-192.svg" />
-  <meta name="description" content="Veer Mahadev Plastic - Leading manufacturer & wholesaler of disposable plates, paper cups, biodegradable glasses, and silver foil in Ahmedabad. Best wholesale prices for catering and events.">
-  <meta name="keywords" content="disposable plate dealer Ahmedabad, paper cup manufacturer Gujarat, biodegradable plates shop, disposable items wholesaler near me, silver foil supplier, wholesale plastic glass dealer, Veer Mahadev Plastic, disposable shop Ahmedabad">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.veermahadevplastic.in/">
-  <meta property="og:title" content="Veer Mahadev Plastic | Wholesale Disposable Expert">
-  <meta property="og:description" content="Get premium quality disposable and biodegradable products at factory rates. Serving Ahmedabad and all over Gujarat.">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WholesaleStore",
-    "name": "Veer Mahadev Plastic",
-    "image": "https://www.veermahadevplastic.in/logo.png",
-    "@id": "https://www.veermahadevplastic.in",
-    "url": "https://www.veermahadevplastic.in",
-    "telephone": "+918050389261",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Wholesale Market Area",
-      "addressLocality": "Ahmedabad",
-      "addressRegion": "GJ",
-      "postalCode": "380001",
-      "addressCountry": "IN"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 23.0225,
-      "longitude": 72.5714
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-      ],
-      "opens": "09:00",
-      "closes": "20:00"
-    }
-  }
-  </script>
-  <title>Veer Mahadev Plastic | Best Disposable Items Wholesaler in Ahmedabad, Gujarat</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <style>
-    html, body { scroll-behavior: smooth; width: 100%; max-width: 100%; overflow-x: hidden; background: #f5f8f5; }
-    .app-shell { width: 100%; }
-    .glass { backdrop-filter: blur(8px); }
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .app-shell { min-height: 100vh; padding-bottom: calc(170px + env(safe-area-inset-bottom)); }
-    .mobile-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
-    .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); animation: splashFade 3s ease forwards; }
-    .install-banner { bottom: calc(88px + env(safe-area-inset-bottom)); }
-    .floating-wa-btn { bottom: calc(168px + env(safe-area-inset-bottom)); }
-    .floating-edge { right: max(12px, env(safe-area-inset-right)); }
-    .logo-card { animation: logoFloat 2.4s ease-in-out infinite; }
-    .logo-glow { animation: glowPulse 2.4s ease-in-out infinite; }
-    .logo-shimmer { position: relative; overflow: hidden; }
-    .pulse-soft { animation: pulseSoft 2s ease-in-out infinite; }
-    .logo-shimmer::after { content: ""; position: absolute; inset: -40%; background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.42) 50%, transparent 65%); animation: shimmer 2.8s linear infinite; }
-    @keyframes logoFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); } }
-    @keyframes glowPulse { 0%,100% { opacity: 0.45; transform: scale(0.96); } 50% { opacity: 0.95; transform: scale(1.03); } }
-    @keyframes shimmer { 0% { transform: translateX(-120%) rotate(12deg); } 100% { transform: translateX(120%) rotate(12deg); } }
-    @keyframes splashFade { 0%, 78% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; pointer-events: none; } }
-    @keyframes pulseSoft {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.35); }
-      50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
-    }
-    @media (min-width: 1024px) {
-      .app-shell { padding-bottom: 128px; }
-      .install-banner { bottom: 20px; }
-      .floating-wa-btn { bottom: 24px; }
-    }
-  </style>
-</head>
-<body class="bg-[#f5f8f5] text-slate-800">
-  <div id="logoSplash" class="logo-splash fixed inset-0 z-[120] flex items-center justify-center px-6 transition-opacity duration-700">
-    <div class="relative text-center">
-      <div class="logo-glow absolute inset-0 rounded-[3rem] bg-emerald-200/80 blur-3xl"></div>
-      <div class="logo-card logo-shimmer relative rounded-[3rem] border-4 border-amber-300 bg-white/75 p-4 shadow-2xl">
-        <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" loading="eager" class="h-64 w-64 max-w-full rounded-[2.2rem] object-contain bg-white" />
-      </div>
-      <p class="mt-6 text-sm font-semibold tracking-[0.35em] text-emerald-700">WELCOME TO THE APP</p>
-    </div>
-  </div>
-  <div class="app-shell">
-  <header class="sticky top-0 z-50 border-b border-emerald-100 bg-white/95 glass">
-    <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
-      <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3">
-        <button id="openAuthHubTop" class="hidden sm:inline-flex items-center rounded-full border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50">Login</button>
-        <a href="#home" class="text-center text-xl font-black tracking-tight text-emerald-800 sm:text-2xl">Veer Mahadev Plastic</a>
-        <button id="openCartTop" class="justify-self-end rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">Cart (<span id="cartCount">0</span>)</button>
-      </div>
-      <div class="flex items-center gap-2">
-        <div class="flex flex-1 items-center rounded-2xl border border-emerald-100 bg-[#f8fbf8] px-3 py-2 shadow-sm">
-          <span class="mr-2 text-emerald-700">🔎</span>
-          <input id="productSearch" class="w-full bg-transparent text-sm outline-none" placeholder="Search plates, cups, spoons, trays..." />
-        </div>
-        <button id="searchBtn" class="rounded-2xl bg-emerald-800 px-4 py-2 text-sm font-semibold text-white">Search</button>
-        <button id="openAuthHubMobile" class="inline-flex items-center rounded-2xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 sm:hidden">Login</button>
-      </div>
-      <div id="quickChips" class="flex gap-2 overflow-x-auto whitespace-nowrap pt-1 text-xs font-semibold">
-        <button data-chip="MEAL TREY" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Meal Trays</button>
-        <button data-chip="CONTAINER" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Containers</button>
-        <button data-chip="Biodegrade glass and bowl" class="quick-chip rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-800">Biodegrade glass and bowl</button>
-      </div>
-      <div class="flex items-center justify-between gap-3 text-xs font-medium text-slate-600">
-        <nav class="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
-          <a href="#categories" class="text-emerald-700">Categories</a>
-          <a href="#shop">Shop All</a>
-          <a href="#eco">Eco Range</a>
-          <a href="#wholesale">Wholesale</a>
-          <button id="openAuthHubNav" class="rounded-full border border-transparent px-1 py-1">Login / Sign Up</button>
-        </nav>
-        <button id="openLogin" class="hidden rounded-full border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50 sm:inline-flex">B2B Portal</button>
-      </div>
-    </div>
-  </header>
-
-  <main id="home">
-    <section class="relative overflow-hidden bg-white border-b border-emerald-100">
-      <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products" loading="lazy"/>
-      <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
-        <div>
-          <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
-            <span class="text-emerald-700">Bharat ka Leading Disposable Hub</span> - Factory Rates, High Quality!
-          </h1>
-          <p class="mt-4 text-lg">Serving <b>10,000+</b> customers monthly since 2022. Best quality for restaurants, cafes, event managers, and households.</p>
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a href="#shop" class="px-6 py-3 rounded-xl bg-emerald-700 text-white font-bold hover:bg-emerald-800">Shop Retail</a>
-            <a href="#wholesale" class="px-6 py-3 rounded-xl border-2 border-emerald-700 text-emerald-700 font-bold hover:bg-emerald-50">Get Wholesale Quote</a>
-          </div>
-        </div>
-        <div class="bg-white/90 border border-emerald-100 rounded-2xl p-5 shadow-sm">
-          <h3 class="text-xl font-bold">Shipping Estimate (Weight/Volume)</h3>
-          <p class="text-sm text-slate-600 mt-1">For bulky products, shipping is calculated on whichever is higher: dead weight or volumetric weight.</p>
-          <div class="grid grid-cols-2 gap-2 mt-4 text-sm">
-            <input id="weight" type="number" step="0.1" placeholder="Weight kg" class="border rounded-lg px-3 py-2"/>
-            <input id="length" type="number" placeholder="Length cm" class="border rounded-lg px-3 py-2"/>
-            <input id="width" type="number" placeholder="Width cm" class="border rounded-lg px-3 py-2"/>
-            <input id="height" type="number" placeholder="Height cm" class="border rounded-lg px-3 py-2"/>
-            <select id="zone" class="border rounded-lg px-3 py-2 col-span-2">
-              <option value="1">Local (Ahmedabad)</option>
-              <option value="1.4">Within Gujarat</option>
-              <option value="1.9">Interstate</option>
-            </select>
-          </div>
-          <button id="calcShip" class="mt-3 w-full bg-emerald-700 text-white py-2.5 rounded-lg font-semibold">Calculate Shipping</button>
-          <p id="shipOut" class="mt-2 text-sm font-semibold text-emerald-700"></p>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-emerald-50 border-y border-emerald-100">
-      <div class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-semibold">
-        <p>✅ 500+ Items in Stock</p>
-        <p>🚚 Same Day Dispatch</p>
-        <p>♻️ Eco-Friendly / Biodegradable Range</p>
-        <p>🧾 GST Invoicing Ready</p>
-      </div>
-    </section>
-
-    
-    <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
-      <div class="flex items-end justify-between flex-wrap gap-2">
-        <h2 class="text-3xl font-extrabold">Shop by Category</h2>
-        <p class="text-sm text-slate-600">Click any category to jump to products and view filtered items.</p>
-      </div>
-      <div id="categoryGrid" class="mt-5 flex gap-3 overflow-x-auto pb-2 text-center"></div>
-    </section>
-
-    <section id="liveRates" class="max-w-7xl mx-auto px-4 pb-2"><p class="text-xs font-semibold text-emerald-700">Live wholesale rates (updated from latest catalog)</p></section>
-
-    <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="flex items-center justify-between flex-wrap gap-3">
-        <h3 class="text-2xl font-extrabold">Products</h3>
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-sm text-slate-600">Filter:</span>
-          <select id="categoryFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
-        </div>
-      </div>
-      <div class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" id="productGrid"></div>
-    </section>
-
-    <section id="eco" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="bg-gradient-to-r from-emerald-100 to-emerald-50 rounded-2xl border border-emerald-200 p-6 lg:p-8 flex items-center justify-between flex-wrap gap-4">
-        <div>
-          <p class="text-sm uppercase tracking-wide text-emerald-700">Eco-Warrior Collection</p>
-          <h3 class="text-3xl font-extrabold">Go Green with Our Biodegradable Range</h3>
-          <p class="mt-2 text-slate-700">Ideal for modern brands looking for clean, responsible and sustainable packaging solutions.</p>
-        </div>
-        <button data-cat="eco-range" class="jump-cat px-5 py-3 rounded-lg bg-emerald-700 text-white font-semibold">Explore Eco Range</button>
-      <section class="max-w-7xl mx-auto px-4 py-10">
-      <div class="flex items-end justify-between flex-wrap gap-3">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Why Businesses Choose Us</p>
-          <h2 class="text-3xl font-extrabold">Professional supply support for retail and wholesale buyers</h2>
-        </div>
-        <p class="max-w-2xl text-sm text-slate-600">From restaurants and caterers to event planners and resellers, we help teams buy faster with transparent pricing, ready stock, and direct WhatsApp ordering support.</p>
-      </div>
-      <div class="mt-6 grid gap-4 md:grid-cols-3">
-        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
-          <p class="text-sm font-semibold text-emerald-700">Fast fulfilment</p>
-          <h3 class="mt-2 text-xl font-bold">Ready inventory with quick dispatch</h3>
-          <p class="mt-2 text-sm text-slate-600">Popular disposable trays, bowls, containers, cups, and lids are organized for faster order confirmation and same-day dispatch support.</p>
-        </article>
-        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
-          <p class="text-sm font-semibold text-emerald-700">Wholesale clarity</p>
-          <h3 class="mt-2 text-xl font-bold">MOQ pricing that feels business-friendly</h3>
-          <p class="mt-2 text-sm text-slate-600">Category filters, search, and tier pricing make it easier for buyers to compare quantity slabs before placing a wholesale or repeat order.</p>
-        </article>
-        <article class="rounded-2xl border border-emerald-100 bg-white p-5 shadow-sm">
-          <p class="text-sm font-semibold text-emerald-700">Trusted support</p>
-          <h3 class="mt-2 text-xl font-bold">Direct assistance for custom requirements</h3>
-          <p class="mt-2 text-sm text-slate-600">Customers can submit bulk inquiries, use cart-based WhatsApp ordering, and connect with the team for delivery planning and special packaging needs.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="wholesale" class="max-w-7xl mx-auto px-4 pb-12 grid lg:grid-cols-2 gap-6">
-      <div class="bg-white rounded-2xl border p-6">
-        <h3 class="text-2xl font-extrabold">Bulk Order / Wholesale Inquiry</h3>
-        <p class="text-sm text-slate-600 mt-1">Upload your requirement list (Excel/PDF/Image) and receive a custom quote.</p>
-        <form id="bulkForm" class="grid gap-3 mt-4">
-          <input required class="border rounded-lg px-3 py-2" placeholder="Business Name"/>
-          <input required class="border rounded-lg px-3 py-2" placeholder="Contact Number / WhatsApp"/>
-          <input required class="border rounded-lg px-3 py-2" placeholder="City + Pincode"/>
-          <input required class="border rounded-lg px-3 py-2" placeholder="Monthly Quantity Requirement"/>
-          <input id="requirementFile" type="file" class="border rounded-lg px-3 py-2"/>
-          <button type="submit" class="bg-emerald-700 text-white py-2.5 rounded-lg font-semibold">Request Wholesale Quote</button>
-          <p id="bulkMsg" class="text-sm font-semibold"></p>
-        </form>
-      </div>
-      <div class="bg-white rounded-2xl border p-6 space-y-4">
-        <h3 class="text-2xl font-extrabold">B2B Buyer Portal</h3>
-        <p class="text-slate-700">Login to download full wholesale price list PDF, MOQ chart, and dispatch schedules.</p>
-        <button id="portalDownloadBtn" class="inline-block px-4 py-2 rounded-lg border border-emerald-300 text-emerald-700 font-semibold">Download Full Price List (PDF)</button>
-        <p id="portalStatus" class="text-sm font-medium text-slate-600">Please login to access B2B downloads.</p>
-        <div id="dashboard" class="mt-3 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
-          <p class="font-bold">Quick Re-order Dashboard</p>
-          <p class="text-sm text-slate-700">Last order: 37 items | ₹12,880 | Delivered 6 days ago</p>
-          <div class="mt-3 flex gap-3">
-            <button id="repeatOrder" class="px-4 py-2 rounded-lg bg-emerald-700 text-white text-sm font-semibold">Repeat Last Order</button>
-            <button id="openCartFromDash" class="px-4 py-2 rounded-lg border text-sm font-semibold">Open Cart</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="about" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="bg-emerald-800 text-white rounded-3xl p-8 lg:p-10">
-        <h3 class="text-3xl font-extrabold">About Us - Veer Mahadev Plastic</h3>
-        <p class="mt-4 text-emerald-50">Started in 2022 as a family business, Veer Mahadev Plastic has grown through trust, quality, and hard work. Today, we proudly serve 10,000+ satisfied customers every month across wholesale and retail channels.</p>
-        <p class="mt-3 text-emerald-100">Our mission is simple: deliver hygienic, food-safe disposable products with fair wholesale pricing, consistent quality, and dependable dispatch. We support local businesses while promoting eco-friendly choices for a better future.</p>
-      </div>
-    </section>
-
-     <section class="max-w-7xl mx-auto px-4 pb-10">
-      <h3 class="text-2xl font-extrabold mb-3">Visit Our Shop</h3>
-      <div class="rounded-2xl overflow-hidden border bg-white">
-        <iframe title="Shop Location Map" class="w-full h-80" loading="lazy" allowfullscreen
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d918.128940122035!2d72.63732540174827!3d23.004827666533586!2m3!1f0!2f0!3f0!2m3!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e872d2f71fefb%3A0xf3248d09e89dd0dc!2sVeer%20Mahadev%20Plastic!5e0!3m2!1sen!2sin!4v1772378947905!5m2!1sen!2sin" width="200" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-    </section>
-  </main>
-
-  <nav class="mobile-nav fixed bottom-0 left-0 right-0 z-40 border-t border-emerald-100 bg-white/95 backdrop-blur lg:hidden">
-    <div class="mx-auto grid max-w-7xl grid-cols-4 px-4 py-2 text-[11px] font-semibold text-slate-600">
-      <a href="#home" class="flex flex-col items-center gap-1 rounded-xl py-2 text-emerald-700"><span>🏠</span><span>Home</span></a>
-      <a href="#shop" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📦</span><span>Products</span></a>
-      <button id="openCartBottom" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>💬</span><span>WhatsApp Order</span></button>
-      <a href="#liveRates" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📈</span><span>Live Rates</span></a>
-    </div>
-  </nav>
-
-  <footer class="border-t bg-white">
-    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-4 gap-6 text-sm">
-      <div>
-        <p class="font-extrabold text-lg text-emerald-700">Veer Mahadev Plastic</p>
-        <p>Quality and trust in every order.</p>
-      </div>
-      <div>
-        <p class="font-bold">Quick Links</p>
-        <ul class="mt-2 space-y-1">
-          <li><a href="#wholesale">Bulk Inquiry</a></li>
-          <li><a href="#">Shipping Policy</a></li>
-          <li><a href="#">GST Invoicing</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="font-bold">Business Details</p>
-        <p>GST No: 24BLLPL0402N1Z6</p>
-        <p>MSME No: UDYAM-GJ-01-0532946</p>
-        <p>Email: veermahadevplastic@gmail.com</p>
-      </div>
-      <div>
-        <p class="font-bold">Follow Us</p>
-        <div class="mt-2 flex gap-3 items-center">
-          <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/instagram" class="h-6 w-6" alt="Instagram"/></a>
-          <a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/youtube" class="h-6 w-6" alt="YouTube"/></a>
-          <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/facebook" class="h-6 w-6" alt="Facebook"/></a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <div id="installBanner" class="install-banner fixed left-1/2 z-[58] hidden w-[calc(100%-1.5rem)] max-w-3xl -translate-x-1/2 translate-y-8 opacity-0 transition-all duration-500">
-    <div class="rounded-2xl border border-[#D4AF37]/70 bg-[#065f46] px-4 py-3 text-[#D4AF37] shadow-2xl">
-      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div class="pr-2">
-          <p class="text-sm font-bold tracking-wide sm:text-base">📱 Install Veer Mahadev App for Live Wholesale Rates!</p>
-        </div>
-        <div class="flex items-center gap-2 self-end sm:self-auto">
-          <button id="installNowBtn" class="rounded-full border border-[#D4AF37] px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10">Install Now</button>
-          <button id="closeInstallBanner" class="rounded-full border border-white/20 px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/10" aria-label="Close install banner">✕</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-   <a id="waFloating" href="#" class="floating-wa-btn floating-edge pulse-soft fixed z-[57] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition hover:scale-105" aria-label="Chat on WhatsApp">
-    <svg aria-hidden="true" viewBox="0 0 32 32" class="h-7 w-7 fill-current">
-      <path d="M19.11 17.41c-.29-.14-1.71-.84-1.98-.94-.26-.1-.46-.14-.65.15-.19.29-.75.94-.91 1.13-.17.19-.33.22-.62.07-.29-.14-1.21-.45-2.3-1.44-.85-.76-1.42-1.69-1.59-1.98-.17-.29-.02-.45.12-.59.13-.13.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.65-1.57-.89-2.15-.23-.55-.47-.48-.65-.49l-.55-.01c-.19 0-.5.07-.76.36-.26.29-1 1-.1 2.43.9 1.43 2.58 2.82 2.82 3.01.24.19 3.88 5.93 9.41 8.31 1.32.57 2.36.91 3.17 1.17 1.33.42 2.54.36 3.5.22 1.07-.16 3.3-1.35 3.77-2.65.47-1.3.47-2.42.33-2.65-.14-.23-.52-.36-.81-.5zM16.27 3C9.3 3 3.64 8.63 3.64 15.57c0 2.22.58 4.39 1.68 6.3L3 29l7.33-2.29a12.69 12.69 0 0 0 5.94 1.51h.01c6.97 0 12.63-5.63 12.63-12.58C28.91 8.63 23.24 3 16.27 3zm0 22.97h-.01a10.4 10.4 0 0 1-5.29-1.45l-.38-.22-4.35 1.36 1.42-4.23-.25-.43a10.33 10.33 0 0 1-1.58-5.44c0-5.7 4.67-10.34 10.43-10.34 2.79 0 5.41 1.08 7.38 3.04a10.25 10.25 0 0 1 3.06 7.31c0 5.7-4.68 10.4-10.43 10.4z"/>
-    </svg>
-  </a>
-
-  <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300 flex flex-col">
-    <div class="p-4 border-b flex justify-between items-center">
-      <h4 class="text-xl font-bold">Your Cart</h4>
-      <button id="closeCart" class="text-xl">✕</button>
-    </div>
-    <div id="cartItems" class="flex-1 min-h-0 overflow-y-auto p-4 hide-scrollbar"></div>
-    <div class="shrink-0 p-4 border-t bg-slate-50">
-      <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
-      <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
-      <div class="mt-3 grid gap-2">
-        <input id="customerName" class="border rounded-lg px-3 py-2 text-sm" placeholder="Customer Name (required)" />
-        <textarea id="customerAddress" class="border rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Full Address with City, State, Pincode (required)"></textarea>
-        <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
-      </div>
-      <div class="mt-3 space-y-2">
-        <button id="waCart" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
-          <span>💬</span><span>Order by WhatsApp</span>
-        </button>
-        <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Buy Now</button>
-      </div>
-    </div>
-  </aside>
-  <div id="drawerOverlay" class="hidden fixed inset-0 bg-black/40 z-50"></div>
-
-  <div id="productModal" class="hidden fixed inset-0 z-[68] bg-black/50 px-4">
-    <div class="mx-auto mt-10 max-w-3xl rounded-[2rem] bg-white shadow-2xl">
-      <div class="flex items-start justify-between gap-3 border-b border-slate-100 px-5 py-4">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Product Details</p>
-          <h4 id="productModalTitle" class="mt-1 text-2xl font-black text-slate-900"></h4>
-        </div>
-        <button id="closeProductModal" class="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600">✕</button>
-      </div>
-      <div class="grid gap-6 px-5 py-5 md:grid-cols-[1fr_1fr]">
-        <img id="productModalImage" src="" alt="" class="h-80 w-full rounded-[1.5rem] bg-slate-50 object-cover" />
-        <div class="space-y-4">
-          <div class="grid grid-cols-2 gap-3 text-sm">
-            <div class="rounded-2xl bg-emerald-50 p-3"><p class="text-xs uppercase text-slate-500">Category</p><p id="productModalCategory" class="mt-1 font-semibold text-slate-800"></p></div>
-            <div class="rounded-2xl bg-emerald-50 p-3"><p class="text-xs uppercase text-slate-500">Stock</p><p id="productModalStock" class="mt-1 font-semibold text-slate-800"></p></div>
-            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">Size / Capacity</p><p id="productModalSize" class="mt-1 font-semibold text-slate-800"></p></div>
-            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">Colour</p><p id="productModalColor" class="mt-1 font-semibold text-slate-800"></p></div>
-            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">HSN Code</p><p id="productModalHsn" class="mt-1 font-semibold text-slate-800"></p></div>
-            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">MOQ</p><p id="productModalMoq" class="mt-1 font-semibold text-slate-800"></p></div>
-          </div>
-          <div class="rounded-[1.5rem] border border-emerald-100 p-4">
-            <p class="text-sm font-semibold text-emerald-800">Tier Pricing</p>
-            <p id="productModalPricing" class="mt-2 text-sm text-slate-700"></p>
-          </div>
-          <div class="rounded-[1.5rem] border border-slate-100 p-4">
-            <p class="text-sm font-semibold text-slate-800">Recommended Use</p>
-            <p id="productModalUse" class="mt-2 text-sm text-slate-600"></p>
-          </div>
-          <button id="modalOrderWa" class="w-full rounded-xl bg-emerald-700 py-2.5 text-sm font-bold text-white">💬 Order this product on WhatsApp</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="authHubModal" class="hidden fixed inset-0 z-[72] bg-black/40 px-4">
-    <div class="mx-auto mt-24 max-w-xl rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-2xl">
-      <div class="flex items-start justify-between gap-3">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Login Hub</p>
-          <h4 class="mt-2 text-2xl font-black text-slate-900">Customer & Admin Access</h4>
-          <p class="mt-2 text-sm text-slate-600">Use the same login button to choose customer sign up/login or owner admin access.</p>
-        </div>
-        <button id="closeAuthHub" class="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600">✕</button>
-      </div>
-      <div class="mt-6 grid gap-4 md:grid-cols-2">
-        <a href="customer.html" class="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5 transition hover:-translate-y-1 hover:shadow-lg">
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Customer</p>
-          <h5 class="mt-2 text-xl font-black text-emerald-900">Login / Sign Up</h5>
-          <p class="mt-2 text-sm text-slate-600">Customers add their name and email to join the wholesale member list.</p>
-        </a>
-        <a href="admin.html" class="rounded-[1.5rem] border border-[#D4AF37]/40 bg-[#065f46] p-5 text-white transition hover:-translate-y-1 hover:shadow-lg">
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">Admin</p>
-          <h5 class="mt-2 text-xl font-black">Owner Dashboard</h5>
-          <p class="mt-2 text-sm text-emerald-50">Admin logs in with username and password to manage prices and campaigns.</p>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div id="loginModal" class="hidden fixed inset-0 z-[70] bg-black/40 px-4">
-    <div class="max-w-md mx-auto mt-24 bg-white rounded-xl border shadow-xl p-5">
-      <h4 class="text-xl font-bold">B2B Portal Login</h4>
-      <p class="text-sm text-slate-600">Login to access wholesale price list and business tools.</p>
-      <form id="loginForm" class="mt-4 grid gap-3">
-        <input id="loginEmail" type="email" required placeholder="Business Email" class="border rounded-lg px-3 py-2"/>
-        <input id="loginPass" type="password" required placeholder="Password" class="border rounded-lg px-3 py-2"/>
-        <div class="flex gap-2">
-          <button type="submit" class="flex-1 bg-emerald-700 text-white py-2 rounded-lg font-semibold">Login</button>
-          <button type="button" id="closeLogin" class="flex-1 border py-2 rounded-lg font-semibold">Close</button>
-        </div>
-      </form>
-      <p id="loginMsg" class="text-sm mt-2 font-semibold"></p>
-    </div>
-  </div>
-
-  <button id="notifyBell" class="floating-edge fixed top-24 z-[66] h-12 w-12 rounded-full border border-[#D4AF37] bg-emerald-800 text-xl text-[#D4AF37] shadow-xl" aria-label="Enable price update notifications">🔔</button>
-  <div class="floating-edge fixed bottom-[calc(96px+env(safe-area-inset-bottom))] z-[65]">
-    <button id="botToggle" class="h-14 w-14 rounded-full bg-emerald-700 text-white text-2xl shadow-lg">🤖</button>
-    <div id="botPanel" class="hidden mt-2 w-[min(20rem,calc(100vw-2rem))] bg-white border rounded-xl shadow-2xl overflow-hidden">
-      <div class="bg-emerald-700 text-white px-3 py-2 font-semibold flex justify-between"><span>AI Help Bot</span><button id="botClose">✕</button></div>
-      <div id="botMsgs" class="h-56 overflow-y-auto p-3 text-sm space-y-2">
-        <div class="bg-emerald-50 rounded-lg p-2">Hello! I can help with products, wholesale, shipping, stock, and order support.</div>
-      </div>
-      <div class="p-2 border-t flex gap-2">
-        <input id="botInput" class="flex-1 border rounded-lg px-2 py-1.5 text-sm" placeholder="Ask your question" />
-        <button id="botSend" class="bg-emerald-700 text-white px-3 rounded-lg">Send</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    let deferredPrompt;
-    let installBannerTimer = null;
-
-    const PRICE_INCREMENT = 1;
-    const imageFrom = () => './images/plate.jpg';
-    const splash = document.getElementById('logoSplash');
-    const installBanner = document.getElementById('installBanner');
-    const INSTALL_BANNER_DISMISS_KEY = 'vmpInstallBannerDismissedAt';
-    const INSTALL_BANNER_HIDE_MS = 24 * 60 * 60 * 1000;
-
-    function readStorage(key){
-      try {
-        return localStorage.getItem(key);
-      } catch (error) {
-        console.warn(`Unable to read ${key} from localStorage.`, error);
-        return null;
-      }
-    }
-
-    function writeStorage(key, value){
-      try {
-        localStorage.setItem(key, value);
-      } catch (error) {
-        console.warn(`Unable to write ${key} to localStorage.`, error);
-      }
-    }
-
-    function isInstallBannerDismissed(){
-      const saved = Number(readStorage(INSTALL_BANNER_DISMISS_KEY) || 0);
-      return Boolean(saved && (Date.now() - saved) < INSTALL_BANNER_HIDE_MS);
-    }
-
-    function isAppInstalled(){
-      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    }
-
-    function hideInstallBanner(saveDismissed = false){
-      if(!installBanner) return;
-      if(saveDismissed) writeStorage(INSTALL_BANNER_DISMISS_KEY, String(Date.now()));
-      installBanner.classList.add('translate-y-8', 'opacity-0');
-      setTimeout(() => installBanner.classList.add('hidden'), 500);
-    }
-
-    function showInstallBanner(){
-      if(!installBanner || !deferredPrompt || isAppInstalled() || isInstallBannerDismissed()) return;
-      installBanner.classList.remove('hidden');
-      requestAnimationFrame(() => {
-        installBanner.classList.remove('translate-y-8', 'opacity-0');
-      });
-    }
-
-    function scheduleInstallBanner(){
-      if(installBannerTimer) clearTimeout(installBannerTimer);
-      installBannerTimer = setTimeout(showInstallBanner, 5000);
-    }
-
-    function dismissSplashScreen(){
-      if(!splash) return;
-      if(splash.dataset.dismissed === 'true') return;
-      splash.dataset.dismissed = 'true';
-      splash.style.opacity = '0';
-      splash.style.visibility = 'hidden';
-      splash.style.pointerEvents = 'none';
-      setTimeout(() => splash.remove(), 900);
-      scheduleInstallBanner();
-    }
-
-    setTimeout(dismissSplashScreen, 3000);
-    window.addEventListener('load', dismissSplashScreen);
-
-    window.addEventListener('beforeinstallprompt', (event) => {
-      event.preventDefault();
-      deferredPrompt = event;
-      if(splash?.dataset.dismissed === 'true') scheduleInstallBanner();
-    });
-
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-      hideInstallBanner();
-    });
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
-      });
-    }
-
-    function slugify(value){
-      return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-    }
-    const RAW_PRICE_DATA = `
-1 3CP MEAL TRAY WITH LID (7041) 400 4600 12.5 || https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg
-2 4CP MEAL TRAY WITH LID (7043) 300 4890 17.3 || https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg
-3 5CP MEAL TRAY WITH LID (7045) 300 5055 17.85 || https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg
-4 8CP MEAL TRAY WITH LID (7048) 200 4700 25.5 || https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg
-
-SR CORNSTARCH ROUND / RECTANGLE CONTAINER PACKING RATE BOX RATE PCS
-1 350ML ROUND CONTAINER WITH LID (7063) 800 3760 5.7 || https://i.postimg.cc/N0pJSSrf/CORNSTARCH-ROUND.jpg
-2 500ML ROUND CONTAINER WITH LID (7065) 800 4800 7 || https://i.postimg.cc/N0pJSSrf/CORNSTARCH-ROUND.jpg
-3 500ML RECTANGLE CONTAINER WITH LID (7084) 600 4170 7.95 || https://i.postimg.cc/N0pJSSrf/CORNSTARCH-ROUND.jpg
-4 750ML RECTANGLE CONTAINER WITH LID (7086) 600 4650 8.75 || https://i.postimg.cc/N0pJSSrf/CORNSTARCH-ROUND.jpg
-5 1000ML RECTANGLE CONTAINER WITH LID (7087) 600 5130 9.55 || https://i.postimg.cc/N0pJSSrf/CORNSTARCH-ROUND.jpg
-
-SR CORNSTARCH BOWL / PLATE / CUTLERY PACKING RATE BOX RATE PCS
-1 160MM SPOON (7055) 3000 3900 2.3 || https://i.postimg.cc/T3gX4DNX/spoon_boidegrade.jpg
-2 180ML BOWL ECO (7001E) 2400 3072 3.28 || https://i.postimg.cc/gk2vBjHZ/eco-bowl.jpg
-3 250ML BOWL (7003) 1800 4356 3.60 || https://i.postimg.cc/gk2vBjHZ/eco-bowl.jpg
-4 6' ROUND PLATE (7016) 2000 3760 2.88 || https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
-5 9' ROUND PLATE (7018) 800 3640 5.55 || https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
-6 9' 3CP ROUND PLATE (7019) 800 3640 5.55 || https://i.postimg.cc/7LLjdSyd/3_compartment_plate_round.png
-7 10' ROUND PLATE (7021) 600 3510 6.85 || https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
-8 10' 3CP ROUND PLATE (7022) 600 3510 6.85 || https://i.postimg.cc/7LLjdSyd/3_compartment_plate_round.png
-9 11' ROUND PLATE (7023) 500 3550 8.1 ||  https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
-10 11' 4CP ROUND PLATE (7025) 500 3550 8.1 || https://i.postimg.cc/Y2GDCmmh/bio_plate_4cp.jpg
-11 12' ROUND PLATE (7026) 500 4275 9.55 ||  https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg
-12 12' 4CP ROUND PLATE (7027) 500 4275 9.55 || https://i.postimg.cc/Y2GDCmmh/bio_plate_4cp.jpg
-13 3CP TRAY ECO (7032E) 500 3010 7.02 ||  https://i.postimg.cc/7LLjdSyd/3_compartment_plate_round.png
-14 4CP TRAY ECO (7034E) 500 4550 10.1 || https://i.postimg.cc/Y2GDCmmh/bio_plate_4cp.jpg
-15 4CP TRAY (7034) 400 3800 10.5 || https://i.postimg.cc/7LLjdSyd/3_compartment_plate_round.png
-16 6CP TRAY ECO (7038E) 400 4120 11.3 || https://i.postimg.cc/wvGbqs05/6CP-PLATE-TRAY-ECO.jpg
-17 6CP TRAY (7038) 400 4240 11.6 || https://i.postimg.cc/wvGbqs05/6CP-PLATE-TRAY-ECO.jpg
-
-SR BIODEGRADABLE GLASS AND BOWL PACKING RATE BOX RATE PCS
-1 100ML BIODEGRADABLE ICECUP MILKY (7201) 6200 4092 1.66 || https://i.postimg.cc/nhT88Mbd/BIODEGRADABLE-ICECUP-MILKY.jpg
-2 200ML BIODEGRADABLE GLASS MILKY (7202) 5000 3300 1.66 || https://i.postimg.cc/nhT88Mbd/BIODEGRADABLE-ICECUP-MILKY.jpg
-3 250ML BIODEGRADABLE GLASS MILKY (7203) 5000 4100 1.82 || https://i.postimg.cc/nhT88Mbd/BIODEGRADABLE-ICECUP-MILKY.jpg
-4 300ML BIODEGRADABLE GLASS MILKY (7204) 5000 4900 1.98 || https://i.postimg.cc/nhT88Mbd/BIODEGRADABLE-ICECUP-MILKY.jpg
-5 350ML BIODEGRADABLE GLASS (7213) 91DIA 3600 5580 2.55 || https://i.postimg.cc/nhT88Mbd/BIODEGRADABLE-ICECUP-MILKY.jpg
-6 200ML COMPOSTABLE SPIRAL GLASS TRANS (7202N) 5000 3650 1.73 || https://i.postimg.cc/vBf3sSxt/COMPOSTABLE-SPIRAL-TRANS.jpg
-7 250ML COMPOSTABLE SPIRAL GLASS TRANS (7203N) 5000 4650 1.93 || https://i.postimg.cc/vBf3sSxt/COMPOSTABLE-SPIRAL-TRANS.jpg
-8 300ML COMPOSTABLE SPIRAL GLASS TRANS (7204N) 5000 5500 2.1 || https://i.postimg.cc/vBf3sSxt/COMPOSTABLE-SPIRAL-TRANS.jpg
-9 300ML COMPOSTABLE PLAIN GLASS TRANS 5G (7202N) 3200 2.19 || https://i.postimg.cc/vBf3sSxt/COMPOSTABLE-SPIRAL-TRANS.jpg
-10 350ML BIODEGRADABLE GLASS (7221) 95DIA 3600 5940 2.65 || https://i.postimg.cc/vBf3sSxt/COMPOSTABLE-SPIRAL-TRANS.jpg
-11 350ML BIODEGRADABLE GLASS TRANS (7221N) 95DIA 3600 6480 2.8 || https://i.postimg.cc/vBf3sSxt/COMPOSTABLE-SPIRAL-TRANS.jpg
-12 400ML BIODEGRADABLE GLASS WINE (7222) 3600 4932 2.37 || https://i.postimg.cc/vBf3sSxt/COMPOSTABLE-SPIRAL-TRANS.jpg
-
-SR MEAL TREY PACKING RATE BOX RATE PCS
-1 2CP MEAL TREY BLACK / MILKY (5601) 1000 7650 8.65 || https://i.postimg.cc/Wzs6PpP7/2CP-MEAL-TREY-BLACK.jpg
-2 3CP MEAL TREY BLACK / MILKY (5602) 1200 9180 8.65 || https://i.postimg.cc/mzn37dTG/3CP-MEAL-TRAY-WITH-LID.jpg
-3 3CP MEAL TRAY RED / BLACK (5602) 1200 9180 8.65 || https://i.postimg.cc/26GvP2pz/3CP-MEAL-TRAY-red.jpg
-4 3CP MEAL TREY LARGE BLACK / MILKY (5612) 800 7200 10 || https://i.postimg.cc/mzn37dTG/3CP-MEAL-TRAY-WITH-LID.jpg
-5 3CP MEAL TRAY XL BLACK / MILKY (5610) 800 8240 11.3 || https://i.postimg.cc/mzn37dTG/3CP-MEAL-TRAY-WITH-LID.jpg
-6 4CP MEAL TREY BLACK / MILKY (5604) 800 8000 11 || https://i.postimg.cc/8kWYt9Pf/5-compartment-plastic-container.png
-7 5CP PLATTER MEAL TRAY BLACK / MILKY (5631) 450 4185 10.3 || https://i.postimg.cc/8kWYt9Pf/5-compartment-plastic-container.png
-8 5CP PLATTER MEAL TRAY BLACK / MILKY (5631) 900 8370 10.3 || https://i.postimg.cc/8kWYt9Pf/5-compartment-plastic-container.png
-9 5CP MINI MEAL TREY BLACK / MILKY (5613) 800 8560 11.7 || https://i.postimg.cc/8kWYt9Pf/5-compartment-plastic-container.png
-10 5CP MEAL TREY BLACK / MILKY (5606) 900 9720 11.8 || https://i.postimg.cc/8kWYt9Pf/5-compartment-plastic-container.png
-11 5CP MEAL TREY BLACK / MILKY STAR NEW (5619) 800 8640 11.8 || https://i.postimg.cc/8kWYt9Pf/5-compartment-plastic-container.png
-12 6CP MEAL TREY BLACK / MILKY (5615) 800 9760 13.2 || https://i.postimg.cc/8kWYt9Pf/5-compartment-plastic-container.png
-15 5CP MEAL TREY BOTTOM SEALABLE (5621) 750 4950 7.6 || https://i.postimg.cc/wvGbqs05/6CP%20PLATE/TRAY%20ECO.jpg
-18 HINGED BOX PP 500ML (5627) 800 5520 7.9 || https://i.postimg.cc/fyDvCkBs/transperent-box.png
-19 HINGED BOX PP 800ML (5628) 800 6240 8.8 || https://i.postimg.cc/fyDvCkBs/transperent-box.png
-20 HINGED BOX PP 1000ML (5629) 800 7040 9.8 || https://i.postimg.cc/fyDvCkBs/transperent-box.png
-
-SR HINGED BOX / SAUCE HINGED / BAKERY HINGED PACKING RATE BOX RATE PCS
-1 HINGED SAUCE CUP SQUARE 35ML (1406) 7500 4125 1.55 || https://i.postimg.cc/C1R0mB7t/HINGED-SAUCE-CUP-SQUARE.jpg
-2 HINGED SAUCE CUP SQUARE 70ML (1407) 5400 4536 1.84 || https://i.postimg.cc/C1R0mB7t/HINGED-SAUCE-CUP-SQUARE.jpg
-3 HINGED SAUCE CUP OVAL 35ML (1408) 7200 4248 1.59 || https://i.postimg.cc/XvXtbM5q/HINGED-SAUCE-CUP-OVAL.jpg
-4 HINGED SAUCE CUP OVAL 70ML (1409) 4800 3792 1.79 || https://i.postimg.cc/XvXtbM5q/HINGED-SAUCE-CUP-OVAL.jpg
-5 HINGED SAUCE CUP ROUND 2OZ (1416) 5400 5562 2.03 || https://i.postimg.cc/cCWD6Pv3/HINGED-SAUCE-CUP-round.jpg
-6 HINGED SAUCE CUP ROUND 3OZ (1417) 3500 5005 2.43 || https://i.postimg.cc/cCWD6Pv3/HINGED-SAUCE-CUP-round.jpg
-7 HINGED SAUCE CUP OVAL 85ML (1418) 4050 4252.5 2.05 ||  https://i.postimg.cc/XvXtbM5q/HINGED-SAUCE-CUP-OVAL.jpg
-8 HINGED ROUND CONTAINER 120ML (1410) 3150 4788 2.52 ||  https://i.postimg.cc/cCWD6Pv3/HINGED-SAUCE-CUP-round.jpg
-9 HINGED SAUCE CUP 2CP (1405) 2500 4400 2.76 || https://i.postimg.cc/3xpcBfDC/Sauce-Cup-2cp.webp
-10 HINGED BOX 80X60MM (1411) 6000 3660 1.61 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-11 HINGED BOX 80X80MM (1412) 5100 4896 1.96 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-12 HINGED BOX 100ML (1413) 2700 3780 2.4 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-13 HINGED BOX 150ML (1420) 1800 3870 3.15 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-14 HINGED BOX 250ML (1421) 1500 4500 4 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-15 HINGED BOX 375ML (1422) 1500 5055 4.37 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-16 HINGED BOX 500ML (1423) 1500 5625 4.75 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-17 HINGED BOX 500ML FLAT (1425) 900 4374 5.86 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-18 HINGED BOX 600ML (1427) 900 4725 6.25 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-19 HINGED BOX 750ML (1428) 900 5400 7 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-20 HINGED BOX 1000ML (1429) 900 6075 7.75 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-21 HINGED BOX 1000ML FLAT (1430) 720 5940 9.25 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-22 HINGED BOX 1000ML FLAT (1419) 600 4560 8.6 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-23 HINGED BOX 1250ML (1431) 600 5238 9.73 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-24 HINGED BOX 1500ML (1432) 600 5700 10.5 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-25 HINGED BOX 2000ML (1434) 480 5640 12.75 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-26 HINGED BOX 2250ML (1435) 480 6240 14 ||https://i.postimg.cc/fyDvCkBs/transperent-box.png
-27 HINGED BOX 250ML HI LID (1421A) 1500 4500 4 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-28 HINGED BOX 375ML HI LID (1422A) 1500 5055 4.37 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-29 HINGED BOX 500ML HI LID (1423A) 1500 5625 4.75 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-30 HINGED BOX 600ML HI LID (1427A) 900 4950 6.5 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-31 HINGED BOX 750ML HI LID (1428A) 900 5400 7 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-32 HINGED BOX 1000ML HI LID (1429A) 900 6300 8 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-33 HINGED BOX 1250ML HI LID (1431A) 600 5550 10.25 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-34 HINGED BOX 1500ML HI LID (1432A) 600 5700 10.5 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-35 HINGED BOX 2000ML HI LID (1434A) 480 5640 12.75 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-36 HINGED BOX 2250ML HI LID (1435A) 480 6240 14 || https://i.postimg.cc/J7TJs9Dp/HINGED-BOX-HI-LID.jpg
-37 HINGED BOX 4CP 35H DRY FRUIT (1436) 600 7050 12.75 || https://i.postimg.cc/FFndr3wX/transperent-box-packing-of-dry-fruits-4cp.jpg
-38 HINGED BOX 4CP 52H DRY FRUIT (1437) 600 7710 13.85 || https://i.postimg.cc/FFndr3wX/transperent-box-packing-of-dry-fruits-4cp.jpg
-39 HINGED BOX 190X140X42MM (1481) 600 3900 7.5 || https://i.postimg.cc/FFndr3wX/transperent-box-packing-of-dry-fruits-4cp.jpg
-40 HINGED BOX 190X140X52MM (1482) 600 4170 7.95 || https://i.postimg.cc/FFndr3wX/transperent-box-packing-of-dry-fruits-4cp.jpg
-41 HINGED BOX 190X140X63MM (1483) 600 4452 8.42 || https://i.postimg.cc/FFndr3wX/transperent-box-packing-of-dry-fruits-4cp.jpg
-42 HINGED BOX 190X140X90MM (1485) 600 4860 9.1 || https://i.postimg.cc/FFndr3wX/transperent-box-packing-of-dry-fruits-4cp.jpg
-
-SR BAKERY HINGED PACKING RATE BOX RATE PCS
-1 SANDWICH BOX MED (1404) 1260 4410 4.5 || https://i.postimg.cc/Rh5Bhxcj/SANDWICH-BOX.jpg
-2 BURGER BOX (1402) 1500 5250 4.5 || https://i.postimg.cc/Rh5Bhxcj/SANDWICH-BOX.jpg
-3 HINGED BOX CUP CAKE DOME (1414) 2850 4560 2.6 || https://i.postimg.cc/vm4FvZh2/HINGED-BOX-CUP-CAKE-DOME.jpg
-4 HINGED BOX BROWNIE (1415) 2250 5287.5 3.35 || https://i.postimg.cc/gjT3840z/HINGED-BOX-BROWNIE.jpg
-5 HINGED BOX 200X110X10 (1438) 900 6120 7.8 || https://i.postimg.cc/V67tP4nk/HINGED-BOX.jpg
-6 HINGED BOX 234X114X40 CAKE (1439) 900 4950 6.5 || https://i.postimg.cc/jjtnWBhJ/HINGED-BOX-CAKE.jpg
-7 HINGED BOX 200X110X65 CAKE (1440) 1200 5100 5.25 || https://i.postimg.cc/jjtnWBhJ/HINGED-BOX-CAKE.jpg
-8 HINGED BOX 190X110X60 CAKE (1441) 1400 5320 4.8 || https://i.postimg.cc/jjtnWBhJ/HINGED-BOX-CAKE.jpg
-9 HINGED BOX 195X110X67 CAKE TRIANGLE (1442) 1200 5100 5.25 || https://i.postimg.cc/C5qxr4Ng/HINGED-BOX-CAKE-TRINGLE.jpg
-10 HINGED BOX 235X110X60 BIG CAKE (1443) 900 4203 5.67 || https://i.postimg.cc/jjtnWBhJ/HINGED-BOX-CAKE.jpg
-11 HINGED BOX 180X150X60 2 CUP CAKE (1444) 1500 4425 3.95 || https://i.postimg.cc/RCW5tRGY/HINGED-BOX-2-CUP-CAKE.webp
-12 HINGED BOX 155X155X60 4 CUP CAKE (1445) 900 5265 6.85 || https://i.postimg.cc/kGKTcB2b/HINGED-BOX-4-CUP-CAKE.jpg
-13 HINGED BOX 215X160X60 6 CUP CAKE (1446) 500 4000 9 || https://i.postimg.cc/cJzTGQYv/6cp-cup-cake-hinged-container.webp
-14 HINGED BOX 6 CUP CAKE (1…1786 tokens truncated… (1356) 1000 5050 6.05 || https://i.postimg.cc/cJzTGQYv/6cp-cup-cake-hinged-container.webp
-7 PET ROUND CONTAINER 1200ML (1357) 1000 5550 6.55 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-8 PET ROUND CONTAINER LID 120DIA (1241) 2000 2520 2.26 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-9 PP ROUND CONTAINER 200ML (5411) 2000 3200 2.6 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-10 PP ROUND CONTAINER 300ML (5412) 2000 3200 2.6 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-11 PP ROUND CONTAINER 500ML (5414) 2000 5320 3.66 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-12 PP ROUND CONTAINER 750ML (5415) 2000 6400 4.2 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-13 PP ROUND CONTAINER 1000ML (5416) 1000 4260 5.26 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-14 PP ROUND CONTAINER 1200ML (5417) 1000 4800 5.8 || https://i.postimg.cc/L6kP3z8x/PET-ROUND-CONTAINER-LID.jpg
-15 PP CONTAINER FB 300ML BLACK / TRANSPERENT (5402) 2000 3840 2.92 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-16 PP CONTAINER FB 400ML BLACK / TRANSPERENT (5403) 2000 4360 3.18 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-17 PP CONTAINER FB 500ML BLACK / TRANSPERENT (5404) 2000 5460 3.73 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-18 PP CONTAINER FB 650ML BLACK / TRANSPERENT (5405) 2000 6600 4.3 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-19 PP ROUND CONTAINER LID 123DIA (5451) 2000 2800 2.4 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-`;
-
-    // Per-product image URLs (id-wise). Add/replace links here.
-    // Example: '3cp-meal-tray-with-lid-7041': 'https://...'
-    const PRODUCT_IMAGE_OVERRIDES = {
-      // Add custom image URLs here for each product ID.
-    };
-
-    function parsePriceData(rawText){
-      const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
-      const items = [];
-      let section = 'General';
-
-      for (const line of lines){
-        if (/^SR\b/i.test(line)){
-          section = line.replace(/^SR\s*/i, '').replace(/\s+PACKING[\s\S]*$/i, '').trim();
-          continue;
-        }
-        if (!/^\d+\s+/.test(line)) continue;
-
-        const [linePart, imagePartRaw] = line.split('||').map(v => (v || '').trim());
-        const imagePart = (imagePartRaw || '').replace(/^image\s*['"]?/i, '').replace(/['"]$/,'').trim();
-        const noSr = linePart.replace(/^\d+\s+/, '').trim();
-        const mLast = noSr.match(/(\d+(?:\.\d+)?)\s*$/);
-        if (!mLast) continue;
-
-        const pcs = Number(mLast[1]);
-        const updatedPcs = Number.isFinite(pcs) ? Number((pcs + PRICE_INCREMENT).toFixed(2)) : PRICE_INCREMENT;
-        const tier500 = Number((updatedPcs * 0.92).toFixed(2));
-        const tier200 = Number((tier500 + 1).toFixed(2));
-        const tier100 = Number((tier500 + 2).toFixed(2));
-
-        let name = noSr.slice(0, mLast.index).trim();
-        name = name
-          .replace(/\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?\s*$/,'')
-          .replace(/\s+\d+(?:\.\d+)?\s*$/,'')
-          .replace(/\s{2,}/g,' ')
-          .trim();
-
-        if (!name) continue;
-
-        items.push({
-          name,
-          category: section,
-          image: imagePart || '',
-          stock: 200,
-          tiers: [
-            {min:100, price: tier100},
-            {min:200, price: tier200},
-            {min:500, price: tier500}
-          ]
-        });
-      }
-      return items;
-    }
-
-    function loadPriceOverrides(){
-      try {
-        return JSON.parse(readStorage('vmpPriceOverrides') || '{}');
-      } catch (error) {
-        console.warn('Unable to parse price overrides.', error);
-        return {};
-      }
-    }
-
-    const priceOverrides = loadPriceOverrides();
-
-    const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
-
-    const products = PRODUCT_ITEMS.map(item => {
-      const id = slugify(item.name);
-      const overridePrice = Number(priceOverrides[id]);
-      const tiers = Number.isFinite(overridePrice) && overridePrice > 0
-        ? [
-            {min:100, price: Number(overridePrice.toFixed(2))},
-            {min:200, price: Number(Math.max(overridePrice - 1, 0).toFixed(2))},
-            {min:500, price: Number(Math.max(overridePrice - 2, 0).toFixed(2))}
-          ]
-        : item.tiers;
-      return {
-        ...item,
-        id,
-        tiers,
-        image: PRODUCT_IMAGE_OVERRIDES[id] || item.image || imageFrom(item.name)
-      };
-    });
-
-    writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
-      id: product.id,
-      name: product.name,
-      category: product.category,
-      price100: product.tiers[0]?.price || 0
-    }))));
-
-    const categories = ['All', ...new Set(products.map(p => p.category))];
-    let activeCategory = 'All';
-    let searchTerm = '';
-    let filteredProducts = [...products];
-    function loadCart(){
-      try {
-        const saved = localStorage.getItem('vmpCart');
-        return JSON.parse(saved || '[]');
-      } catch (error) {
-        console.warn('Unable to read cart from localStorage.', error);
-        return [];
-      }
-    }
-
-    let cart = loadCart();
-    let b2bLoggedIn = false;
-
-    const productGrid = document.getElementById('productGrid');
-    const categoryGrid = document.getElementById('categoryGrid');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const cartCount = document.getElementById('cartCount');
-    const cartItems = document.getElementById('cartItems');
-    const cartSubtotal = document.getElementById('cartSubtotal');
-    const productSearch = document.getElementById('productSearch');
-    const searchBtn = document.getElementById('searchBtn');
-    const waCartBtn = document.getElementById('waCart');
-    const cartDrawer = document.getElementById('cartDrawer');
-    const drawerOverlay = document.getElementById('drawerOverlay');
-    const authHubModal = document.getElementById('authHubModal');
-    const productModal = document.getElementById('productModal');
-    let selectedProductForOrder = null;
-
-    function bindById(id, eventName, handler){
-      const element = document.getElementById(id);
-      if(!element) return null;
-      element.addEventListener(eventName, handler);
-      return element;
-    }
-
-    function openAuthHub(){
-      authHubModal?.classList.remove('hidden');
-    }
-
-    function closeAuthHub(){
-      authHubModal?.classList.add('hidden');
-    }
-
-    function closeProductDetails(){
-      productModal?.classList.add('hidden');
-    }
-
-    bindById('installNowBtn', 'click', async ()=>{
-      if(!deferredPrompt) return;
-      hideInstallBanner();
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      if(choice.outcome === 'dismissed') scheduleInstallBanner();
-      deferredPrompt = null;
-    });
-
-    bindById('closeInstallBanner', 'click', ()=> hideInstallBanner(true));
-    bindById('openAuthHubTop', 'click', openAuthHub);
-    bindById('openAuthHubMobile', 'click', openAuthHub);
-    bindById('openAuthHubNav', 'click', openAuthHub);
-    bindById('closeAuthHub', 'click', closeAuthHub);
-    bindById('authHubModal', 'click', (event)=>{
-      if(event.target.id === 'authHubModal') closeAuthHub();
-    });
-    bindById('closeProductModal', 'click', closeProductDetails);
-    bindById('productModal', 'click', (event)=>{
-      if(event.target.id === 'productModal') closeProductDetails();
-    });
-
-    bindById('modalOrderWa', 'click', ()=>{
-      if(!selectedProductForOrder) return;
-      const msg = `Hi Veer Mahadev Plastic, I want to order ${selectedProductForOrder.name}. Please confirm today's rate.`;
-      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
-    });
-
-    function priceForQty(tiers, qty){
-      let unit = tiers[0].price;
-      for(const tier of tiers) if(qty >= tier.min) unit = tier.price;
-      return unit;
-    }
-
-    function stockBadge(stock){
-      if(stock === 0) return '<span class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded">Out of Stock</span>';
-      if(stock < 80) return '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">Low Stock</span>';
-      return '<span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">In Stock</span>';
-    }
-
-    function categoryIcon(category){
-      const value = category.toLowerCase();
-      if(value.includes('glass')) return '🥤';
-      if(value.includes('plate') || value.includes('tray')) return '🍽️';
-      if(value.includes('spoon') || value.includes('cutlery')) return '🥄';
-      if(value.includes('bowl')) return '🥣';
-      if(value.includes('container') || value.includes('box')) return '📦';
-      return '🛍️';
-    }
-
-    function productMeta(product){
-      const name = product.name;
-      const sizeMatch = name.match(/(\d+\s?(?:ML|GRM|MM|DIA|OZ|NO|CP))/i);
-      const colorMatch = name.match(/(BLACK|MILKY|WHITE|RED|TRANS|TRANSPARENT|BROWN|GREEN)/i);
-      const category = product.category.toLowerCase();
-      let hsn = '3924';
-      if(category.includes('paper') || category.includes('cornstarch') || category.includes('biodegradable')) hsn = '4823';
-      if(category.includes('glass')) hsn = '3923';
-      if(category.includes('spoon') || category.includes('cutlery')) hsn = '3924';
-      let use = 'Suitable for wholesale supply, events, food service, catering, takeaway, and retail packaging.';
-      if(category.includes('glass')) use = 'Ideal for beverages, mocktails, water service, dessert serving, and party use.';
-      if(category.includes('plate') || category.includes('tray')) use = 'Best for meal service, catering packs, takeaway combos, and event dining.';
-      if(category.includes('container') || category.includes('box')) use = 'Good for takeaway packing, sweets, bakery items, meal storage, and delivery use.';
-      let color = 'As per product specification';
-      if(colorMatch){
-        color = colorMatch[1].toUpperCase();
-        if(color === 'TRANS') color = 'Transparent';
-      }
-      return {
-        size: sizeMatch ? sizeMatch[1].toUpperCase() : 'Standard Wholesale Size',
-        color,
-        hsn,
-        moq: `${product.tiers[0]?.min || 100}+ pcs`,
-        use
-      };
-    }
-
-    window.openProductDetails = function(id){
-      const product = products.find(item => item.id === id);
-      if(!product || !productModal) return;
-      selectedProductForOrder = product;
-      const meta = productMeta(product);
-      document.getElementById('productModalTitle').textContent = product.name;
-      document.getElementById('productModalImage').src = product.image;
-      document.getElementById('productModalImage').alt = product.name;
-      document.getElementById('productModalCategory').textContent = product.category;
-      document.getElementById('productModalStock').textContent = product.stock > 0 ? `${product.stock} packs ready` : 'Currently unavailable';
-      document.getElementById('productModalSize').textContent = meta.size;
-      document.getElementById('productModalColor').textContent = meta.color;
-      document.getElementById('productModalHsn').textContent = meta.hsn;
-      document.getElementById('productModalMoq').textContent = meta.moq;
-      document.getElementById('productModalPricing').textContent = product.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ');
-      document.getElementById('productModalUse').textContent = meta.use;
-      productModal.classList.remove('hidden');
-    }
-
-    function renderCategories(){
-      if(!categoryGrid || !categoryFilter) return;
-      categoryGrid.innerHTML = categories.slice(1).map(cat => `
-        <button data-cat="${cat}" class="jump-cat min-w-[92px] rounded-3xl border border-emerald-100 bg-white px-3 py-3 shadow-sm hover:border-emerald-400 hover:bg-emerald-50">
-          <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-2xl">${categoryIcon(cat)}</span>
-          <span class="mt-2 block text-xs font-semibold leading-tight text-slate-700">${cat}</span>
-        </button>
-      `).join('');
-      categoryFilter.innerHTML = categories.map(cat => `<option>${cat}</option>`).join('');
-      categoryFilter.value = activeCategory;
-    }
-
-    function applyProductFilters(){
-      filteredProducts = products.filter(p => {
-        const categoryOk = activeCategory === 'All' || p.category === activeCategory;
-        const searchOk = !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase());
-        return categoryOk && searchOk;
-      });
-      renderProducts();
-    }
-
-    function renderProducts(){
-      if(!productGrid) return;
-      productGrid.innerHTML = filteredProducts.map(p => `
-        <article onclick="openProductDetails('${p.id}')" class="cursor-pointer overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-          <div class="relative">
-            <img src="${p.image}" alt="${p.name}" loading="lazy" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
-            <button onclick="event.stopPropagation();shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
-              <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="18" cy="5" r="3"></circle>
-                <circle cx="6" cy="12" r="3"></circle>
-                <circle cx="18" cy="19" r="3"></circle>
-                <path d="M8.59 13.51 15.42 17.49"></path>
-                <path d="M15.41 6.51 8.59 10.49"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="space-y-3 p-3">
-            <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${p.name}</h4>${stockBadge(p.stock)}</div>
-            <p class="text-[11px] text-slate-500">${p.category}</p>
-            <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
-            <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
-            <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
-              <button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
-            </div>
-            <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
-          </div>
-        </article>
-      `).join('') || '<p class="text-sm text-slate-600">No products found. Try another category or search keyword.</p>';
-    }
-
-    function saveCart(){
-      try {
-        localStorage.setItem('vmpCart', JSON.stringify(cart));
-      } catch (error) {
-        console.warn('Unable to save cart to localStorage.', error);
-      }
-    }
-
-    function cartTotalQty(){
-      return cart.reduce((sum, item) => sum + item.qty, 0);
-    }
-
-    function cartTotalAmount(){
-      return cart.reduce((sum, item) => sum + (item.qty * item.unit), 0);
-    }
-
-    function renderCart(){
-      if(!cartCount || !cartSubtotal || !cartItems) return;
-      cartCount.textContent = cartTotalQty();
-      cartSubtotal.textContent = cartTotalAmount().toFixed(2);
-      if(cart.length === 0){
-        cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
-        updateWhatsappButton();
-    initNotifications();
-    initNotifications();
-        return;
-      }
-      cartItems.innerHTML = cart.map((item, idx) => `
-        <div class="border rounded-xl p-3 mb-2">
-          <div class="flex justify-between gap-2">
-            <p class="font-semibold">${item.name}</p>
-            <button onclick="removeCartItem(${idx})" class="text-rose-600 text-sm">Remove</button>
-          </div>
-          <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
-        </div>
-      `).join('');
-      updateWhatsappButton();
-    }
-
-    window.removeCartItem = function(idx){
-      cart.splice(idx, 1);
-      saveCart();
-      renderCart();
-    }
-
-    window.addToCart = function(id){
-      const p = products.find(x => x.id === id);
-      const qty = Math.max(100, Number(document.getElementById(`qty-${id}`).value || 100));
-      const unit = priceForQty(p.tiers, qty);
-      const existing = cart.find(c => c.id === id && c.unit === unit);
-      if(existing) existing.qty += qty;
-      else cart.push({id, name:p.name, qty, unit});
-      saveCart();
-      renderCart();
-    }
-
-    window.buyNow = function(id){
-      addToCart(id);
-      openCart();
-    }
-
-    window.shareProduct = async function(id){
-      const product = products.find(item => item.id === id);
-      if(!product) return;
-      const productUrl = window.location.href.split('#')[0];
-      const shareText = `Check out ${product.name} from Veer Mahadev Plastic! See rates here: ${productUrl}`;
-
-      if(navigator.share){
-        try {
-          await navigator.share({
-            title: product.name,
-            text: shareText,
-            url: productUrl
-          });
-          return;
-        } catch (error) {
-          if(error?.name === 'AbortError') return;
-        }
-      }
-
-      if(navigator.clipboard?.writeText){
-        navigator.clipboard.writeText(shareText)
-          .then(() => alert('Product share message copied. Paste it in WhatsApp or anywhere you want to share.'))
-          .catch(() => window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank'));
-        return;
-      }
-
-      window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
-    }
-
-    function cartWhatsappText(customerName, customerAddress){
-      if(cart.length === 0) return 'Hello, I want to place an order. Please share latest catalog.';
-      const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - ₹${(i.qty*i.unit).toFixed(2)}`);
-      const subtotal = cartTotalAmount().toFixed(2);
-      const totalQty = cartTotalQty();
-      return [
-        'Hello Veer Mahadev Plastic,',
-        `Customer Name: ${customerName}`,
-        `Customer Address: ${customerAddress}`,
-        '',
-        'I want to place this order:',
-        ...lines,
-        '',
-        `Total Quantity: ${totalQty}`,
-        `Estimated Order Total: ₹${subtotal}`,
-        'Please confirm final amount with shipping and delivery timeline.'
-      ].join('\n');
-    }
-
-    function cartEmailText(customerName, customerAddress){
-      if(cart.length === 0) return 'Hello Veer Mahadev Plastic,%0A%0AI want to place an order. Please share the latest catalog.';
-      const lines = cart.map((i, n) => `${n+1}. ${i.name} - Qty ${i.qty} - Amount ₹${(i.qty*i.unit).toFixed(2)}`);
-      const subtotal = cartTotalAmount().toFixed(2);
-      const totalQty = cartTotalQty();
-      return `Hello Veer Mahadev Plastic,%0A%0AName: ${customerName}%0AAddress: ${customerAddress}%0ATotal Items Qty: ${totalQty}%0AOrder Amount: ₹${subtotal}%0A%0AOrder Details:%0A${lines.join('%0A')}%0A%0APlease confirm availability, final total, and delivery details.`;
-    }
-
-    function updateWhatsappButton(){
-      if(!waCartBtn) return;
-      const name = (document.getElementById('customerName')?.value || '').trim();
-      const address = (document.getElementById('customerAddress')?.value || '').trim();
-      waCartBtn.disabled = !(name && address);
-      waCartBtn.classList.toggle('opacity-40', waCartBtn.disabled);
-      waCartBtn.classList.toggle('cursor-not-allowed', waCartBtn.disabled);
-    }
-
-    function getCustomerDetails(){
-      const name = (document.getElementById('customerName')?.value || '').trim();
-      const address = (document.getElementById('customerAddress')?.value || '').trim();
-      const msg = document.getElementById('cartCustomerMsg');
-      if(!name || !address){
-        if(msg) msg.textContent = 'Please enter customer name and full address before placing order.';
-        return null;
-      }
-      if(msg) msg.textContent = '';
-      updateWhatsappButton();
-      return {name, address};
-    }
-
-    function openCart(){
-      if(cartDrawer) cartDrawer.classList.remove('translate-x-full');
-      if(drawerOverlay) drawerOverlay.classList.remove('hidden');
-    }
-
-    function closeCart(){
-      if(cartDrawer) cartDrawer.classList.add('translate-x-full');
-      if(drawerOverlay) drawerOverlay.classList.add('hidden');
-    }
-
-    // Shipping calculator
-    bindById('calcShip', 'click', ()=>{
-      const w = Number(document.getElementById('weight').value||0);
-      const l = Number(document.getElementById('length').value||0);
-      const wi = Number(document.getElementById('width').value||0);
-      const h = Number(document.getElementById('height').value||0);
-      const zone = Number(document.getElementById('zone').value||1);
-      if(!w && !(l&&wi&&h)){
-        document.getElementById('shipOut').textContent = 'Please enter weight or dimensions.';
-        return;
-      }
-      const volumetric = (l*wi*h)/5000;
-      const chargeable = Math.max(w, volumetric || 0);
-      const cost = Math.max(60, chargeable * 32 * zone);
-      document.getElementById('shipOut').textContent = `Chargeable Weight: ${chargeable.toFixed(2)} kg | Estimated Shipping: ₹${cost.toFixed(0)}`;
-    });
-
-    // Bulk inquiry
-    bindById('bulkForm', 'submit', (e)=>{
-      e.preventDefault();
-      const fileName = document.getElementById('requirementFile').files[0]?.name || 'No file';
-      const msg = document.getElementById('bulkMsg');
-      msg.className = 'text-sm font-semibold text-emerald-700';
-      msg.textContent = `Inquiry submitted successfully. Our team will contact you shortly. File: ${fileName}`;
-      e.target.reset();
-    });
-
-    // B2B login
-    bindById('openLogin', 'click', ()=> document.getElementById('loginModal')?.classList.remove('hidden'));
-    bindById('closeLogin', 'click', ()=> document.getElementById('loginModal')?.classList.add('hidden'));
-    bindById('loginForm', 'submit', (e)=>{
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
-      const loginMsg = document.getElementById('loginMsg');
-      if(email && pass.length >= 4){
-        b2bLoggedIn = true;
-        loginMsg.className = 'text-sm mt-2 font-semibold text-emerald-700';
-        loginMsg.textContent = 'Login successful. B2B portal unlocked.';
-        const portalStatus = document.getElementById('portalStatus');
-        if(portalStatus) portalStatus.textContent = `Logged in as ${email}`;
-        setTimeout(()=> document.getElementById('loginModal')?.classList.add('hidden'), 600);
-      }else{
-        loginMsg.className = 'text-sm mt-2 font-semibold text-rose-600';
-        loginMsg.textContent = 'Please enter valid email and password.';
-      }
-    });
-
-    // B2B download access control
-    bindById('portalDownloadBtn', 'click', ()=>{
+    currentUser = loadCurrentUser();
+    if(currentUser){
+      b2bLoggedIn = true;
       const portalStatus = document.getElementById('portalStatus');
-      if(!b2bLoggedIn){
-        if(portalStatus) portalStatus.textContent = 'Please login first to download price list.';
-        document.getElementById('openLogin')?.click();
-        return;
-      }
-      const a = document.createElement('a');
-      a.href = './wholesale-price-list.pdf';
-      a.download = 'wholesale-price-list.pdf';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      if(portalStatus) portalStatus.textContent = 'Price list downloaded successfully.';
-    });
-
-    // Category interactions
-    document.addEventListener('click', (e)=>{
-      const target = e.target.closest('.jump-cat');
-      if(!target) return;
-      const requestedCategory = target.dataset.cat;
-      if(requestedCategory === 'eco-range'){
-        activeCategory = categories.find(cat => /bio|cornstarch|eco/i.test(cat)) || 'All';
-      } else {
-        activeCategory = requestedCategory;
-      }
-      categoryFilter.value = activeCategory;
-      searchTerm = '';
-      if(productSearch) productSearch.value = '';
-      applyProductFilters();
-      document.getElementById('shop').scrollIntoView({behavior:'smooth'});
-    });
-    if(categoryFilter) categoryFilter.addEventListener('change', ()=>{
-      activeCategory = categoryFilter.value;
-      applyProductFilters();
-    });
-
-    if(searchBtn) searchBtn.addEventListener('click', ()=>{
-      searchTerm = productSearch.value.trim();
-      applyProductFilters();
-    });
-
-    if(productSearch) productSearch.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter'){
-        e.preventDefault();
-        searchTerm = productSearch.value.trim();
-        applyProductFilters();
-      }
-    });
-
-    document.querySelectorAll('.quick-chip').forEach((chip)=>{
-      chip.addEventListener('click', ()=>{
-        searchTerm = chip.dataset.chip || '';
-        if(productSearch) productSearch.value = searchTerm;
-        applyProductFilters();
-        document.getElementById('shop')?.scrollIntoView({behavior:'smooth'});
-      });
-    });
-
-    // Cart controls
-    bindById('openCartTop', 'click', openCart);
-    bindById('openCartBottom', 'click', (e)=>{ e.preventDefault(); openCart(); });
-    bindById('openCartFromDash', 'click', openCart);
-    bindById('closeCart', 'click', closeCart);
-    bindById('drawerOverlay', 'click', closeCart);
-
-    // WhatsApp actions (floating + cart)
-    bindById('waFloating', 'click', (e)=>{
-      e.preventDefault();
-      const msg = 'Hi Karan bhai, I am interested in some products from Veer Mahadev Plastic. Please guide me.';
-      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
-    });
-    bindById('waCart', 'click', ()=>{
-      const details = getCustomerDetails();
-      if(!details) { openCart(); return; }
-      if(cart.length === 0){
-        alert('Please add products to the cart before placing the order.');
-        updateWhatsappButton();
-        return;
-      }
-      const whatsappMsg = cartWhatsappText(details.name, details.address);
-      const emailBody = cartEmailText(details.name, details.address);
-      const whatsappUrl = `https://wa.me/918050389261?text=${encodeURIComponent(whatsappMsg)}`;
-      window.open(whatsappUrl,'_blank');
-      window.location.href = `mailto:veermahadevplastic@gmail.com?subject=${encodeURIComponent(`New order enquiry from ${details.name}`)}&body=${emailBody}`;
-    });
-
-    bindById('buyNowCart', 'click', ()=>{
-      const details = getCustomerDetails();
-      if(!details) { openCart(); return; }
-      alert(`Order initiated for ${details.name}. Our team will confirm delivery at provided address.`);
-    });
-
-    // Repeat order
-    bindById('repeatOrder', 'click', ()=>{
-      const lastOrder = [
-        {id:'3cp-meal-tray-with-lid-7041', qty:200},
-        {id:'500ml-round-container-with-lid-7065', qty:500},
-        {id:'160mm-spoon-7055', qty:250},
-      ];
-      for(const l of lastOrder){
-        const p = products.find(x=>x.id===l.id);
-        if(!p) continue;
-        const unit = priceForQty(p.tiers, l.qty);
-        cart.push({id:p.id, name:p.name, qty:l.qty, unit});
-      }
-      saveCart();
-      renderCart();
-      openCart();
-    });
-
-    // AI bot (improved contextual replies)
-    const botPanel = document.getElementById('botPanel');
-    const botToggle = document.getElementById('botToggle');
-    const botClose = document.getElementById('botClose');
-    if(botToggle && botPanel) botToggle.onclick = ()=> botPanel.classList.toggle('hidden');
-    if(botClose && botPanel) botClose.onclick = ()=> botPanel.classList.add('hidden');
-
-    function aiReply(text){
-      const q = text.toLowerCase();
-      const productMatch = products.find(p => q.includes(p.name.toLowerCase()));
-      if(productMatch){
-        return `${productMatch.name} ka rate: ${productMatch.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')}. Category: ${productMatch.category}.`;
-      }
-      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'Bulk tier pricing active hai: 100+, 200+, 500+ quantity slabs. 500+ sabse kam rate (minimum price) rakha gaya hai.';
-      if(q.includes('shipping') || q.includes('delivery') || q.includes('dispatch')) return 'Shipping dead weight vs volumetric weight (jo zyada ho) par calculate hoti hai. Local/Gujarat/Interstate zones available hain.';
-      if(q.includes('stock') || q.includes('available')) return 'Product cards par live stock badge dikh raha hai: In Stock, Low Stock, Out of Stock.';
-      if(q.includes('eco') || q.includes('biodegradable')) return 'Haan ji, eco-friendly biodegradable range available hai. Aap "Eco" ya product name type karein to rate details mil jayengi.';
-      if(q.includes('b2b') || q.includes('login') || q.includes('portal')) return 'Top bar se B2B login karke full wholesale price list PDF directly download kar sakte hain.';
-      if(q.includes('cart') || q.includes('order') || q.includes('whatsapp')) return `Cart summary: ${cartTotalQty()} qty items | Subtotal ₹${cartTotalAmount().toFixed(2)}. Name + Address bharne ke baad WhatsApp Order button active ho jata hai.`;
-      if(q.includes('search')) return 'Products bahut saare hain, isliye Shop section mein search box + button diya gaya hai. Product name type karke Search karein.';
-      if(q.includes('about') || q.includes('company')) return 'Veer Mahadev Plastic 2022 se wholesale disposable products supply kar raha hai, Ahmedabad aur Gujarat mein strong delivery support ke saath.';
-      return 'Main website related sab help kar sakta hoon: product rate, MOQ, stock, shipping, B2B login, PDF download, cart aur WhatsApp order.';
+      if(portalStatus) portalStatus.textContent = `Logged in as ${currentUser.email}`;
     }
-
-    const botSend = document.getElementById('botSend');
-    if(botSend) botSend.onclick = ()=>{
-      const input = document.getElementById('botInput');
-      const text = input.value.trim();
-      if(!text) return;
-      const msgs = document.getElementById('botMsgs');
-      const userMsg = document.createElement('div');
-      userMsg.className = 'bg-slate-100 rounded-lg p-2';
-      userMsg.textContent = text;
-      const botMsg = document.createElement('div');
-      botMsg.className = 'bg-emerald-50 rounded-lg p-2';
-      botMsg.textContent = aiReply(text);
-      msgs.appendChild(userMsg);
-      msgs.appendChild(botMsg);
-      msgs.scrollTop = msgs.scrollHeight;
-      input.value = '';
-    };
-
-
-    async function initNotifications(){
-      if(!window.OneSignal) return;
-      try {
-        await OneSignal.init({
-          appId: 'YOUR-ONESIGNAL-APP-ID',
-          notifyButton: { enable: false },
-          allowLocalhostAsSecureOrigin: true
-        });
-      } catch (error) {
-        console.warn('OneSignal init failed.', error);
-      }
-    }
-
-    bindById('notifyBell', 'click', async ()=>{
-      if(!window.OneSignal) return;
-      await initNotifications();
-      try { await OneSignal.Slidedown.promptPush(); } catch (error) { console.warn('Push prompt failed.', error); }
-    });
-
-    // initialize
-    renderCategories();
-    applyProductFilters();
-    renderCart();
+    renderProfile();
+    const profile = loadProfile();
+    if(profile.name) document.getElementById('coName').value = profile.name;
+    if(profile.whatsapp) document.getElementById('coWhatsapp').value = profile.whatsapp;
+    if(profile.address) document.getElementById('coAddress').value = profile.address;
     ['customerName','customerAddress'].forEach(id => {
       const element = document.getElementById(id);
       if(element) element.addEventListener('input', updateWhatsappButton);
@@ -2714,3 +1571,4 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
   </div>
 </body>
 </html>
+last-rat
