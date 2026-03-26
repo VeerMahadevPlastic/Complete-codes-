@@ -428,6 +428,177 @@
         </div>
       </div>
     </div>
+    </div>
+    </section>
+
+        <section id="profile" class="max-w-7xl mx-auto px-4 pb-10">
+      <div class="rounded-2xl border border-emerald-200 bg-white p-6">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">User Profile</p>
+            <h3 class="text-2xl font-black text-slate-900">My Account & Order History</h3>
+          </div>
+          <button id="logoutBtn" class="rounded-lg border border-emerald-300 px-4 py-2 text-sm font-semibold text-emerald-700">Logout</button>
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <div class="rounded-xl bg-emerald-50 p-4">
+            <p class="text-sm font-semibold text-emerald-800">Saved Details</p>
+            <p id="profileName" class="mt-2 text-sm text-slate-700">Name: -</p>
+            <p id="profileWhatsapp" class="text-sm text-slate-700">WhatsApp: -</p>
+            <p id="profileAddress" class="text-sm text-slate-700">Address: -</p>
+            <div class="mt-3 grid gap-2">
+              <textarea id="editAddressInput" rows="2" class="rounded-lg border px-3 py-2 text-sm" placeholder="Edit Address"></textarea>
+              <button id="saveAddressBtn" class="rounded-lg bg-[#065f46] py-2 text-sm font-semibold text-white">Edit Address</button>
+            </div>
+          </div>
+          <div class="rounded-xl border p-4">
+            <p class="text-sm font-semibold text-slate-800">Last Order</p>
+            <div id="lastOrderBox" class="mt-2 text-sm text-slate-700">No previous order yet.</div>
+            <p class="mt-4 text-sm font-semibold text-slate-800">Order History</p>
+            <div id="orderHistoryList" class="mt-2 max-h-40 space-y-2 overflow-y-auto text-sm text-slate-700"></div>
+            <button id="reorderBtn" class="mt-3 w-full rounded-lg border border-[#065f46] py-2 text-sm font-semibold text-[#065f46]">Re-order Last</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section id="about" class="max-w-7xl mx-auto px-4 pb-10">
+      <div class="bg-emerald-800 text-white rounded-3xl p-8 lg:p-10">
+        <h3 class="text-3xl font-extrabold">About Us - Veer Mahadev Plastic</h3>
+        <p class="mt-4 text-emerald-50">Started in 2022 as a family business, Veer Mahadev Plastic has grown through trust, quality, and hard work. Today, we proudly serve 10,000+ satisfied customers every month across wholesale and retail channels.</p>
+        <p class="mt-3 text-emerald-100">Our mission is simple: deliver hygienic, food-safe disposable products with fair wholesale pricing, consistent quality, and dependable dispatch. We support local businesses while promoting eco-friendly choices for a better future.</p>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 pb-10">
+      <h3 class="text-2xl font-extrabold mb-3">Visit Our Shop</h3>
+      <div class="rounded-2xl overflow-hidden border bg-white">
+        <iframe title="Shop Location Map" class="w-full h-80" loading="lazy" allowfullscreen
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d918.128940122035!2d72.63732540174827!3d23.004827666533586!2m3!1f0!2f0!3f0!2m3!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e872d2f71fefb%3A0xf3248d09e89dd0dc!2sVeer%20Mahadev%20Plastic!5e0!3m2!1sen!2sin!4v1772378947905!5m2!1sen!2sin" width="200" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <nav class="mobile-nav fixed bottom-0 left-0 right-0 z-40 border-t border-emerald-100 bg-white/95 backdrop-blur lg:hidden">
+    <div class="mx-auto grid max-w-7xl grid-cols-4 px-4 py-2 text-[11px] font-semibold text-slate-600">
+      <a href="#home" class="flex flex-col items-center gap-1 rounded-xl py-2 text-emerald-700"><span>🏠</span><span>Home</span></a>
+      <a href="#shop" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📦</span><span>Products</span></a>
+      <button id="openCartBottom" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>💬</span><span>WhatsApp Order</span></button>
+      <a href="#liveRates" class="flex flex-col items-center gap-1 rounded-xl py-2"><span>📈</span><span>Live Rates</span></a>
+    </div>
+  </nav>
+  <button id="floatingCartBtn" class="floating-edge fixed bottom-[calc(168px+env(safe-area-inset-bottom))] z-[56] inline-flex items-center gap-2 rounded-full bg-[#065f46] px-4 py-3 text-sm font-bold text-white shadow-2xl">
+    🛒 Cart <span id="floatingCartCount" class="rounded-full bg-[#D4AF37] px-2 py-0.5 text-xs text-[#065f46]">0</span>
+  </button>
+
+  <footer class="border-t bg-white">
+    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-4 gap-6 text-sm">
+      <div>
+        <p class="font-extrabold text-lg text-emerald-700">Veer Mahadev Plastic</p>
+        <p>Quality and trust in every order.</p>
+      </div>
+      <div>
+        <p class="font-bold">Quick Links</p>
+        <ul class="mt-2 space-y-1">
+          <li><a href="#wholesale">Bulk Inquiry</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">GST Invoicing</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-bold">Business Details</p>
+        <p>GST No: 24BLLPL0402N1Z6</p>
+        <p>MSME No: UDYAM-GJ-01-0532946</p>
+        <p>Email: veermahadevplastic@gmail.com</p>
+      </div>
+      <div>
+        <p class="font-bold">Follow Us</p>
+        <div class="mt-2 flex gap-3 items-center">
+          <a href="https://www.instagram.com/veermahadevplastic.in/" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/instagram" class="h-6 w-6" alt="Instagram"/></a>
+          <a href="https://www.youtube.com/@veermahadevplastic" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/youtube" class="h-6 w-6" alt="YouTube"/></a>
+          <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/facebook" class="h-6 w-6" alt="Facebook"/></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="installBanner" class="install-banner fixed left-1/2 z-[58] hidden w-[calc(100%-1.5rem)] max-w-3xl -translate-x-1/2 translate-y-8 opacity-0 transition-all duration-500">
+    <div class="rounded-2xl border border-[#D4AF37]/70 bg-[#065f46] px-4 py-3 text-[#D4AF37] shadow-2xl">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div class="pr-2">
+          <p class="text-sm font-bold tracking-wide sm:text-base">📱 Install Veer Mahadev App for Live Wholesale Rates!</p>
+        </div>
+        <div class="flex items-center gap-2 self-end sm:self-auto">
+          <button id="installNowBtn" class="rounded-full border border-[#D4AF37] px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10">Install Now</button>
+          <button id="closeInstallBanner" class="rounded-full border border-white/20 px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/10" aria-label="Close install banner">✕</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a id="waFloating" href="#" class="floating-wa-btn floating-edge pulse-soft fixed z-[57] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-2xl transition hover:scale-105" aria-label="Chat on WhatsApp">
+    <svg aria-hidden="true" viewBox="0 0 32 32" class="h-7 w-7 fill-current">
+      <path d="M19.11 17.41c-.29-.14-1.71-.84-1.98-.94-.26-.1-.46-.14-.65.15-.19.29-.75.94-.91 1.13-.17.19-.33.22-.62.07-.29-.14-1.21-.45-2.3-1.44-.85-.76-1.42-1.69-1.59-1.98-.17-.29-.02-.45.12-.59.13-.13.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.65-1.57-.89-2.15-.23-.55-.47-.48-.65-.49l-.55-.01c-.19 0-.5.07-.76.36-.26.29-1 1-.1 2.43.9 1.43 2.58 2.82 2.82 3.01.24.19 3.88 5.93 9.41 8.31 1.32.57 2.36.91 3.17 1.17 1.33.42 2.54.36 3.5.22 1.07-.16 3.3-1.35 3.77-2.65.47-1.3.47-2.42.33-2.65-.14-.23-.52-.36-.81-.5zM16.27 3C9.3 3 3.64 8.63 3.64 15.57c0 2.22.58 4.39 1.68 6.3L3 29l7.33-2.29a12.69 12.69 0 0 0 5.94 1.51h.01c6.97 0 12.63-5.63 12.63-12.58C28.91 8.63 23.24 3 16.27 3zm0 22.97h-.01a10.4 10.4 0 0 1-5.29-1.45l-.38-.22-4.35 1.36 1.42-4.23-.25-.43a10.33 10.33 0 0 1-1.58-5.44c0-5.7 4.67-10.34 10.43-10.34 2.79 0 5.41 1.08 7.38 3.04a10.25 10.25 0 0 1 3.06 7.31c0 5.7-4.68 10.4-10.43 10.4z"/>
+    </svg>
+  </a>
+
+  <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h4 class="text-xl font-bold">Your Cart</h4>
+      <button id="closeCart" class="text-xl">✕</button>
+    </div>
+    <div id="cartItems" class="flex-1 min-h-0 overflow-y-auto p-4 hide-scrollbar"></div>
+    <div class="shrink-0 p-4 border-t bg-slate-50">
+      <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
+      <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
+      <div class="mt-3 grid gap-2">
+        <input id="customerName" class="border rounded-lg px-3 py-2 text-sm" placeholder="Customer Name (required)" />
+        <textarea id="customerAddress" class="border rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Full Address with City, State, Pincode (required)"></textarea>
+        <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
+      </div>
+      <div class="mt-3 space-y-2">
+        <button id="waCart" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
+          <span>💬</span><span>Order by WhatsApp</span>
+        </button>
+        <button id="checkoutBtn" class="w-full rounded-lg bg-[#065f46] py-2.5 font-semibold text-white">Proceed to Checkout</button>
+        <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Buy Now</button>
+      </div>
+    </div>
+  </aside>
+  <div id="drawerOverlay" class="hidden fixed inset-0 bg-black/40 z-50"></div>
+
+  <div id="productModal" class="hidden fixed inset-0 z-[68] bg-black/50 px-4">
+    <div class="mx-auto mt-10 max-w-3xl rounded-[2rem] bg-white shadow-2xl">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-100 px-5 py-4">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Product Details</p>
+          <h4 id="productModalTitle" class="mt-1 text-2xl font-black text-slate-900"></h4>
+        </div>
+        <button id="closeProductModal" class="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600">✕</button>
+      </div>
+      <div class="grid gap-6 px-5 py-5 md:grid-cols-[1fr_1fr]">
+        <img id="productModalImage" src="" alt="" class="h-80 w-full rounded-[1.5rem] bg-slate-50 object-cover" />
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-3 text-sm">
+            <div class="rounded-2xl bg-emerald-50 p-3"><p class="text-xs uppercase text-slate-500">Category</p><p id="productModalCategory" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-emerald-50 p-3"><p class="text-xs uppercase text-slate-500">Stock</p><p id="productModalStock" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">Size / Capacity</p><p id="productModalSize" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">Colour</p><p id="productModalColor" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">HSN Code</p><p id="productModalHsn" class="mt-1 font-semibold text-slate-800"></p></div>
+            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">MOQ</p><p id="productModalMoq" class="mt-1 font-semibold text-slate-800"></p></div>
+          </div>
+          <div class="rounded-[1.5rem] border border-emerald-100 p-4">
+            <p class="text-sm font-semibold text-emerald-800">Tier Pricing</p>
+            <p id="productModalPricing" class="mt-2 text-sm text-slate-700"></p>
+          </div>
+          <div class="rounded-[1.5rem] border border-slate-100 p-4">
+            <p class="text-sm font-semibold text-slate-800">Recommended Use</p>
+            <p id="productModalUse" class="mt-2 text-sm text-slate-600"></p>
+          </div>
+          <button id="modalOrderWa" class="w-full rounded-xl bg-emerald-700 py-2.5 text-sm font-bold text-white">💬 Order this product on WhatsApp</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="authHubModal" class="hidden fixed inset-0 z-[72] bg-black/40 px-4">
@@ -764,9 +935,10 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
       const items = [];
       let section = 'General';
+
       for (const line of lines){
         if (/^SR\b/i.test(line)){
-      section = line.replace(/^SR\s*/i, '').replace(/\s+PACKING[\s\S]*$/i, '').trim();
+          section = line.replace(/^SR\s*/i, '').replace(/\s+PACKING[\s\S]*$/i, '').trim();
           continue;
         }
         if (!/^\d+\s+/.test(line)) continue;
@@ -1145,6 +1317,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
     window.addToCart = function(id){
       const p = products.find(x => x.id === id);
+      const qty = Math.max(10, Number(document.getElementById(`qty-${id}`).value || 10));
       const qty = Math.max(10, Number(document.getElementById(`qty-${id}`).value || 10));
       const unit = priceForQty(p.tiers, qty);
       const existing = cart.find(c => c.id === id && c.unit === unit);
