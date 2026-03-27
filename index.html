@@ -499,7 +499,7 @@
           <div id="checkoutItems" class="mt-2 max-h-48 overflow-y-auto text-sm"></div>
           <div class="mt-3 space-y-1 text-sm">
             <p>Subtotal: ₹<span id="coSubtotal">0</span></p>
-            <p>GST (18%): ₹<span id="coGst">0</span></p>
+            <p>GST (0%): ₹<span id="coGst">0</span></p>
             <p>Delivery: ₹<span id="coDelivery">0</span></p>
             <p class="text-lg font-black text-[#065f46]">Total: ₹<span id="coTotal">0</span></p>
           </div>
@@ -1430,8 +1430,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
     function checkoutTotals(){
       const subtotal = cartTotalAmount();
-      const gst = Number((subtotal * 0.18).toFixed(2));
-      const delivery = subtotal > 0 ? 120 : 0;
+      const gst = Number((subtotal * 0.0).toFixed(2));
+      const delivery = subtotal > 0 ? 150 : 0;
       const total = Number((subtotal + gst + delivery).toFixed(2));
       return {subtotal, gst, delivery, total};
     }
