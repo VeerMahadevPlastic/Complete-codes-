@@ -53,6 +53,11 @@
   <title>Veer Mahadev Plastic | Best Disposable Items Wholesaler in Ahmedabad, Gujarat</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.ONE_SIGNAL_APP_ID = '50913d3e-e5df-443c-99f5-148a351b91fb';
+    window.ONE_SIGNAL_SAFARI_WEB_ID = 'web.onesignal.auto.571cab93-0309-4674-850d-02fe7b657956';
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
   <style>
     html, body { scroll-behavior: smooth; width: 100%; max-width: 100%; overflow-x: hidden; background: #f5f8f5; }
@@ -534,6 +539,15 @@
     const installBanner = document.getElementById('installBanner');
     const INSTALL_BANNER_DISMISS_KEY = 'vmpInstallBannerDismissedAt';
     const INSTALL_BANNER_HIDE_MS = 24 * 60 * 60 * 1000;
+   const FIREBASE_CONFIG = {
+      apiKey: 'AIzaSyAGfZVese3tqFf_Uw_pJUQbSR5p6sohRmo',
+      authDomain: 'veermahadev--codes.firebaseapp.com',
+      projectId: 'veermahadev--codes',
+      storageBucket: 'veermahadev--codes.firebasestorage.app',
+      messagingSenderId: '380308449387',
+      appId: '1:380308449387:web:964942c3eb82a4c742292e',
+      measurementId: 'G-R2DHXNS9TF'
+    };
 
     function readStorage(key){
       try {
@@ -590,6 +604,16 @@
       splash.style.pointerEvents = 'none';
       setTimeout(() => splash.remove(), 900);
       scheduleInstallBanner();
+      function initFirebaseAnalytics(){
+      if(!window.firebase || typeof window.firebase.initializeApp !== 'function') return;
+      try {
+        const app = window.firebase.apps?.length ? window.firebase.app() : window.firebase.initializeApp(FIREBASE_CONFIG);
+        if(typeof window.firebase.analytics === 'function'){
+          window.firebase.analytics(app);
+        }
+      } catch (error) {
+        console.warn('Firebase analytics init failed.', error);
+      }
     }
 
     setTimeout(dismissSplashScreen, 3000);
@@ -605,8 +629,9 @@
       deferredPrompt = null;
       hideInstallBanner();
     });
+     window.addEventListener('load', initFirebaseAnalytics);
 
-    if ('serviceWorker' in navigator) {
+     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js');
       });
@@ -1562,24 +1587,49 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       input.value = '';
     };
 
-
+   let oneSignalInitPromise = null;
     async function initNotifications(){
       if(!window.OneSignal) return;
       try {
-        await OneSignal.init({
-          appId: 'YOUR-ONESIGNAL-APP-ID',
-          notifyButton: { enable: false },
-          allowLocalhostAsSecureOrigin: true
-        });
-      } catch (error) {
-        console.warn('OneSignal init failed.', error);
+         const oneSignalSafariWebId = (window.ONE_SIGNAL_SAFARI_WEB_ID || '').trim();
+      if(!oneSignalAppId){
+        const notifyBell = document.getElementById('notifyBell');
+        if(notifyBell){
+          notifyBell.title = 'Notifications are not configured yet';
+          notifyBell.classList.add('opacity-60', 'cursor-not-allowed');
+        }
+        return;
       }
+      if(oneSignalInitPromise) return oneSignalInitPromise;
+
+      oneSignalInitPromise = new Promise((resolve) => {
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        window.OneSignalDeferred.push(async (OneSignal) => {
+          try {
+            await OneSignal.init({
+              appId: oneSignalAppId,
+              safari_web_id: oneSignalSafariWebId || undefined,
+              notifyButton: { enable: true },
+              allowLocalhostAsSecureOrigin: true
+            });
+          } catch (error) {
+            console.warn('OneSignal init failed.', error);
+          } finally {
+            resolve();
+          }
+        });
+      });
+      return oneSignalInitPromise;
     }
 
     bindById('notifyBell', 'click', async ()=>{
-      if(!window.OneSignal) return;
+      if(!(window.ONE_SIGNAL_APP_ID || '').trim()) {
+        alert('Notifications are not configured yet. Please add ONE_SIGNAL_APP_ID in production.');
+        return;
+      }
       await initNotifications();
-      try { await OneSignal.Slidedown.promptPush(); } catch (error) { console.warn('Push prompt failed.', error); }
+      if(!window.OneSignal?.Slidedown) return;
+      try { await window.OneSignal.Slidedown.promptPush(); } catch (error) { console.warn('Push prompt failed.', error); }
     });
 
     // initialize
@@ -1604,6 +1654,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     updateWhatsappButton();
     initNotifications();
 
+  </script>
   </script>
   </div>
 </body>
