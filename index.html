@@ -1592,10 +1592,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     function checkoutTotals(){
       const subtotal = cartTotalAmount();
-      const gst = Number((subtotal * 0).toFixed(2));
-      const delivery = DEPENDS ON LOCATION
-      const total = Number((subtotal + gst + delivery).toFixed(2));
-      return {subtotal, gst, delivery, total};
+      const gst = Number((subtotal * 0.18).toFixed(2));
+      const total = Number((subtotal + gst ).toFixed(2));
+      return {subtotal, gst, total};
     }
 
     function renderCheckout(){
