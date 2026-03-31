@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard | Veer Mahadev Plastic</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js" defer></script>
 </head>
 <body class="min-h-screen bg-[#f7faf8] text-slate-800">
-  <div class="mx-auto max-w-6xl px-4 py-10">
+  <div class="mx-auto max-w-7xl px-4 py-10">
     <section id="adminLoginView" class="mx-auto max-w-lg rounded-[2rem] border border-[#D4AF37]/40 bg-white p-8 shadow-2xl">
       <p class="text-sm font-semibold uppercase tracking-[0.3em] text-[#065f46]">Owner Access</p>
       <h1 class="mt-3 text-3xl font-black text-[#065f46]">Admin Login</h1>
-      <p class="mt-2 text-sm text-slate-600">Use your owner credentials to manage pricing and campaigns.</p>
+      <p class="mt-2 text-sm text-slate-600">Secure dashboard for orders, inventory, revenue and customers.</p>
       <form id="adminLoginForm" class="mt-8 space-y-4">
         <input id="adminUsername" required class="w-full rounded-2xl border border-slate-200 px-4 py-3" placeholder="Username" />
         <input id="adminPassword" required type="password" class="w-full rounded-2xl border border-slate-200 px-4 py-3" placeholder="Password" />
@@ -23,33 +26,47 @@
     <section id="adminDashboard" class="hidden space-y-6">
       <div class="rounded-[2rem] bg-[#065f46] p-8 text-white shadow-2xl">
         <p class="text-sm font-semibold uppercase tracking-[0.3em] text-[#D4AF37]">Veer Mahadev Plastic</p>
-        <h2 class="mt-3 text-4xl font-black">Owner Dashboard</h2>
-        <p class="mt-3 max-w-3xl text-sm text-emerald-50">Manage product prices saved from the storefront and draft campaigns for all logged-in customers.</p>
+        <h2 class="mt-3 text-4xl font-black">Wholesale Control Center</h2>
+        <p class="mt-3 max-w-3xl text-sm text-emerald-50">Real-time orders, customer list, revenue insights and stock updates.</p>
       </div>
 
-      <div class="grid gap-6 lg:grid-cols-[1.3fr_0.7fr]">
-        <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-          <div class="flex items-center justify-between gap-3">
-            <div>
-              <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Price Control</p>
-              <h3 class="text-2xl font-black text-slate-900">Product Price Manager</h3>
+      <div class="grid gap-4 md:grid-cols-4">
+        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Total Orders</p><p id="metricOrders" class="mt-1 text-3xl font-black text-slate-900">0</p></article>
+        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Revenue</p><p id="metricRevenue" class="mt-1 text-3xl font-black text-slate-900">₹0</p></article>
+        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Customers</p><p id="metricCustomers" class="mt-1 text-3xl font-black text-slate-900">0</p></article>
+        <article id="metricLowStockCard" class="rounded-2xl border border-rose-200 bg-rose-50 p-4 shadow-sm"><p class="text-xs uppercase text-rose-700">Low Stock Alerts</p><p id="metricLowStock" class="mt-1 text-3xl font-black text-rose-700">0</p></article>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <div class="space-y-6">
+          <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Inventory</p>
+                <h3 class="text-2xl font-black text-slate-900">Stock Manager</h3>
+              </div>
+              <button id="reloadInventory" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800">Refresh</button>
             </div>
-            <button id="reloadProducts" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800">Refresh</button>
+            <div id="inventoryList" class="mt-5 space-y-3"></div>
           </div>
-          <div id="productAdminList" class="mt-6 space-y-3"></div>
+
+          <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
+            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Orders</p>
+            <h3 class="mt-1 text-2xl font-black text-slate-900">Recent Paid Orders</h3>
+            <div id="orderList" class="mt-4 space-y-3"></div>
+          </div>
         </div>
 
         <div class="space-y-6">
           <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Campaign Manager</p>
-            <h3 class="mt-2 text-2xl font-black text-slate-900">Send to Logged-in Customers</h3>
-            <textarea id="campaignMessage" class="mt-4 min-h-[180px] w-full rounded-2xl border border-slate-200 px-4 py-3" placeholder="Type your campaign message here..."></textarea>
-            <button id="sendCampaign" class="mt-4 w-full rounded-2xl bg-[#065f46] px-4 py-3 font-semibold text-white">Send Campaign</button>
-            <p id="campaignMsg" class="mt-3 text-sm font-semibold"></p>
+            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Customers</p>
+            <h3 class="mt-1 text-2xl font-black text-slate-900">Buyer List</h3>
+            <div id="customerList" class="mt-4 space-y-2 text-sm"></div>
           </div>
-          <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Captured Customers</p>
-            <div id="customerList" class="mt-4 space-y-2 text-sm text-slate-700"></div>
+
+          <div class="rounded-[2rem] border border-rose-200 bg-rose-50 p-6 shadow-sm">
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-rose-700">Low Stock Red Alert</p>
+            <div id="lowStockList" class="mt-3 space-y-2 text-sm text-rose-700"></div>
           </div>
         </div>
       </div>
@@ -59,63 +76,117 @@
   <script>
     const ADMIN_USERNAME = 'Mr.karan@admin';
     const ADMIN_PASSWORD = 'Mr.karankumar@7';
+    const LOW_STOCK_THRESHOLD = 10;
+    const FIREBASE_CONFIG = {
+      apiKey: 'AIzaSyAGfZVese3tqFf_Uw_pJUQbSR5p6sohRmo',
+      authDomain: 'veermahadev--codes.firebaseapp.com',
+      projectId: 'veermahadev--codes',
+      storageBucket: 'veermahadev--codes.firebasestorage.app',
+      messagingSenderId: '380308449387',
+      appId: '1:380308449387:web:964942c3eb82a4c742292e',
+      measurementId: 'G-R2DHXNS9TF'
+    };
 
     function readJson(key, fallback){
-      try {
-        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
-      } catch {
-        return fallback;
-      }
+      try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+      catch { return fallback; }
     }
 
-    function writeJson(key, value){
-      localStorage.setItem(key, JSON.stringify(value));
+    function writeJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+
+    function getDb(){
+      if(!window.firebase?.firestore) return null;
+      const app = window.firebase.apps?.length ? window.firebase.app() : window.firebase.initializeApp(FIREBASE_CONFIG);
+      return window.firebase.firestore(app);
     }
 
-    function renderProducts(){
-      const list = document.getElementById('productAdminList');
-      const products = readJson('vmpProductSnapshot', []);
-      const overrides = readJson('vmpPriceOverrides', {});
-
-      if (!products.length) {
-        list.innerHTML = '<p class="text-sm text-slate-500">Open the storefront once to sync products here.</p>';
-        return;
+    function safeNotifyLowStock(names){
+      if(!names.length) return;
+      const msg = `Low stock alert: ${names.join(', ')}`;
+      if(window.Notification && Notification.permission === 'granted') {
+        new Notification('Veer Mahadev Low Stock', { body: msg });
       }
-
-      list.innerHTML = products.map(product => `
-        <div class="flex flex-col gap-3 rounded-2xl border border-slate-100 p-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p class="font-semibold text-slate-900">${product.name}</p>
-            <p class="text-xs text-slate-500">${product.category} • Current 100+ price: ₹${overrides[product.id] || product.price100}</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <input id="price-${product.id}" type="number" step="0.01" min="0" value="${overrides[product.id] || product.price100}" class="w-28 rounded-xl border border-slate-200 px-3 py-2 text-sm" />
-            <button data-id="${product.id}" class="save-price rounded-xl bg-[#065f46] px-4 py-2 text-sm font-semibold text-white">Edit Price</button>
-          </div>
-        </div>
-      `).join('');
-
-      document.querySelectorAll('.save-price').forEach((button) => {
-        button.addEventListener('click', () => {
-          const overridesMap = readJson('vmpPriceOverrides', {});
-          const id = button.dataset.id;
-          const value = Number(document.getElementById(`price-${id}`).value);
-          if (!Number.isFinite(value) || value <= 0) return;
-          overridesMap[id] = value;
-          writeJson('vmpPriceOverrides', overridesMap);
-          renderProducts();
-        });
-      });
+      if(window.OneSignal?.Slidedown?.promptPush){
+        window.OneSignal.Slidedown.promptPush().catch(()=>{});
+      }
     }
 
     function renderCustomers(){
       const customers = readJson('vmpCustomers', []);
-      const container = document.getElementById('customerList');
-      if (!customers.length) {
-        container.innerHTML = '<p>No customer logins yet.</p>';
+      document.getElementById('metricCustomers').textContent = customers.length;
+      document.getElementById('customerList').innerHTML = customers.length
+        ? customers.map((c) => `<div class="rounded-xl border border-slate-100 px-3 py-2"><p class="font-semibold text-slate-900">${c.name}</p><p class="text-slate-600">${c.email}</p></div>`).join('')
+        : '<p class="text-slate-500">No customers captured yet.</p>';
+    }
+
+    function renderOrders(orders){
+      const totalRevenue = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+      document.getElementById('metricOrders').textContent = String(orders.length);
+      document.getElementById('metricRevenue').textContent = `₹${totalRevenue.toFixed(2)}`;
+      document.getElementById('orderList').innerHTML = orders.length
+        ? orders.slice(0, 30).map((o) => `<article class="rounded-xl border border-slate-100 p-3"><p class="font-semibold text-slate-900">${o.orderId}</p><p class="text-xs text-slate-500">${o.date || ''} • ${o.status || 'Order Placed'}</p><p class="mt-1 text-sm text-slate-700">Customer: ${o.details?.name || '-'} | ₹${o.total}</p></article>`).join('')
+        : '<p class="text-slate-500">No paid orders yet.</p>';
+    }
+
+    function renderInventory(products, inventoryMap = {}){
+      const list = document.getElementById('inventoryList');
+      if(!products.length){
+        list.innerHTML = '<p class="text-slate-500">Open storefront once to sync products.</p>';
         return;
       }
-      container.innerHTML = customers.map(customer => `<div class="rounded-xl border border-slate-100 px-3 py-2"><p class="font-semibold">${customer.name}</p><p>${customer.email}</p></div>`).join('');
+      list.innerHTML = products.map((p) => {
+        const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
+        const alert = stock < LOW_STOCK_THRESHOLD;
+        return `<div class="rounded-xl border ${alert ? 'border-rose-300 bg-rose-50' : 'border-slate-100'} p-3"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="font-semibold text-slate-900">${p.name}</p><p class="text-xs text-slate-500">${p.category}</p></div><div class="flex items-center gap-2"><input id="stock-${p.id}" type="number" min="0" value="${stock}" class="w-24 rounded-lg border px-2 py-1.5 text-sm" /><button data-id="${p.id}" class="save-stock rounded-lg bg-[#065f46] px-3 py-1.5 text-xs font-semibold text-white">Update</button></div></div>${alert ? '<p class="mt-2 text-xs font-bold text-rose-700">RED ALERT: Low stock</p>' : ''}</div>`;
+      }).join('');
+
+      document.querySelectorAll('.save-stock').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const id = button.dataset.id;
+          const value = Number(document.getElementById(`stock-${id}`).value);
+          if(!Number.isFinite(value) || value < 0) return;
+          const db = getDb();
+          if(db){
+            await db.collection('inventory').doc(id).set({ stock: value }, { merge: true });
+          }
+          const localMap = readJson('vmpInventoryOverrides', {});
+          localMap[id] = { stock: value };
+          writeJson('vmpInventoryOverrides', localMap);
+          loadDashboardData();
+        });
+      });
+    }
+
+    async function loadDashboardData(){
+      const db = getDb();
+      const products = readJson('vmpProductSnapshot', []);
+      let orders = readJson('vmpOrderHistory', []);
+      let inventoryMap = readJson('vmpInventoryOverrides', {});
+
+      if(db){
+        try {
+          const [ordersSnap, inventorySnap] = await Promise.all([
+            db.collection('orders').orderBy('createdAt', 'desc').limit(100).get(),
+            db.collection('inventory').get()
+          ]);
+          orders = ordersSnap.docs.map((doc) => ({ ...doc.data(), orderId: doc.id, total: doc.data().total || doc.data().totals?.total || 0 }));
+          inventoryMap = {};
+          inventorySnap.forEach((doc) => { inventoryMap[doc.id] = doc.data(); });
+        } catch (error) {
+          console.warn('Firestore dashboard fetch failed, using local cache.', error);
+        }
+      }
+
+      renderCustomers();
+      renderOrders(orders);
+      renderInventory(products, inventoryMap);
+
+      const lowStockItems = products.filter((p) => Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200) < LOW_STOCK_THRESHOLD);
+      document.getElementById('metricLowStock').textContent = String(lowStockItems.length);
+      document.getElementById('lowStockList').innerHTML = lowStockItems.length
+        ? lowStockItems.map((p) => `<p>• ${p.name}</p>`).join('')
+        : '<p>No low-stock alerts.</p>';
+      safeNotifyLowStock(lowStockItems.map((i) => i.name));
     }
 
     document.getElementById('adminLoginForm').addEventListener('submit', (event) => {
@@ -123,33 +194,23 @@
       const username = document.getElementById('adminUsername').value.trim();
       const password = document.getElementById('adminPassword').value.trim();
       const msg = document.getElementById('adminLoginMsg');
-      if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+      if(username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD){
         msg.className = 'mt-4 text-sm font-semibold text-rose-600';
-        msg.textContent = 'Unauthorized Access. This is for the Owner only.';
+        msg.textContent = 'Unauthorized Access. This is for owner only.';
         return;
       }
       document.getElementById('adminLoginView').classList.add('hidden');
       document.getElementById('adminDashboard').classList.remove('hidden');
-      renderProducts();
-      renderCustomers();
-    });
+      loadDashboardData();
 
-    document.getElementById('reloadProducts').addEventListener('click', renderProducts);
-
-    document.getElementById('sendCampaign').addEventListener('click', () => {
-      const customers = readJson('vmpCustomers', []);
-      const emails = customers.map(customer => customer.email).filter(Boolean);
-      const message = document.getElementById('campaignMessage').value.trim();
-      const out = document.getElementById('campaignMsg');
-      if (!emails.length || !message) {
-        out.className = 'mt-3 text-sm font-semibold text-rose-600';
-        out.textContent = 'Add a campaign message and capture at least one customer first.';
-        return;
+      const db = getDb();
+      if(db){
+        db.collection('orders').onSnapshot(() => loadDashboardData());
+        db.collection('inventory').onSnapshot(() => loadDashboardData());
       }
-      window.location.href = `mailto:${emails.join(',')}?subject=${encodeURIComponent('Veer Mahadev Plastic Campaign')}&body=${encodeURIComponent(message)}`;
-      out.className = 'mt-3 text-sm font-semibold text-emerald-700';
-      out.textContent = 'Campaign draft opened in your email app for all logged-in customers.';
     });
+
+    document.getElementById('reloadInventory').addEventListener('click', loadDashboardData);
   </script>
 </body>
 </html>
