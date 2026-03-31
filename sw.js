@@ -1,8 +1,8 @@
-importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
-const CACHE_NAME = 'veer-mahadev-app-v3';
+const CACHE_NAME = 'veer-mahadev-app-v5';
 const ASSETS = [
   './',
   './index.html',
+  './live-tracking.html',
   './manifest.json',
   './sw.js',
   './icons/logo.svg',
@@ -29,9 +29,24 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const requestUrl = new URL(event.request.url);
+  if (requestUrl.origin !== self.location.origin) return;
   if (requestUrl.pathname.endsWith('/last-rates.json')) {
     event.respondWith(
       caches.match('./last-rates.json').then((cached) => cached || fetch('./last-rates.json'))
+    );
+    return;
+  }
+
+  const isHtmlRequest = event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html');
+  if (isHtmlRequest) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./index.html')))
     );
     return;
   }
@@ -44,7 +59,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           return response;
         })
-        .catch(() => cached || caches.match('./index.html'));
+        .catch(() => cached);
 
       return cached || networkFetch;
     })
