@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Order Tracking | Veer Mahadev Plastic</title>
+  <link rel="canonical" href="https://www.veermahadevplastic.in/live-tracking.html" />
+  <meta name="description" content="Track your Veer Mahadev Plastic order live with AWB number and delivery timeline." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #f4f7f5; }
+    .timeline-track { background: linear-gradient(90deg, #10b981 var(--progress, 0%), #d1d5db var(--progress, 0%)); }
+  </style>
+</head>
+<body class="text-slate-800">
+  <main class="mx-auto max-w-5xl px-4 py-8 md:py-12">
+    <header class="mb-6 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">Live Shipment Tracking</p>
+        <h1 class="mt-1 text-3xl font-black text-slate-900">Track Your Order</h1>
+      </div>
+      <a href="./index.html" class="rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">← Back to Store</a>
+    </header>
+
+    <section class="rounded-3xl border border-emerald-100 bg-white p-5 shadow-sm md:p-6">
+      <form id="trackForm" class="grid gap-3 md:grid-cols-[1fr_1fr_auto]">
+        <input id="awbInput" required class="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500" placeholder="Enter AWB number (e.g. 21252062791690)" />
+        <select id="carrierSelect" class="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500">
+          <option value="delhivery">Delhivery</option>
+          <option value="shiprocket">Shiprocket</option>
+        </select>
+        <button type="submit" class="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800">Track Live</button>
+      </form>
+      <p id="trackMsg" class="mt-3 text-sm font-medium text-slate-600"></p>
+    </section>
+
+    <section id="trackingCard" class="mt-6 hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+      <div class="border-b px-5 py-4 md:px-6">
+        <div class="grid gap-3 md:grid-cols-3">
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-500">Order ID</p>
+            <p id="orderIdText" class="text-xl font-black text-slate-900">—</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-500">AWB</p>
+            <p id="awbText" class="text-xl font-black text-slate-900">—</p>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-wide text-slate-500">Expected Delivery</p>
+            <p id="eddText" class="text-xl font-black text-emerald-700">—</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-5 py-5 md:px-6">
+        <div class="mb-3 flex items-center justify-between">
+          <p class="text-xs uppercase tracking-wide text-slate-500">Current Status</p>
+          <p id="statusText" class="text-lg font-black text-emerald-700">In Transit</p>
+        </div>
+        <p id="currentLocationText" class="mb-5 text-sm text-slate-600">Location: —</p>
+
+        <div class="mb-2 grid grid-cols-4 text-center text-[11px] font-semibold text-slate-500">
+          <p>Order Placed</p><p>Dispatched</p><p>In Transit</p><p>Delivered</p>
+        </div>
+        <div class="timeline-track relative h-2 rounded-full" id="timelineTrack">
+          <div id="step-0" class="absolute -top-1 h-4 w-4 rounded-full border-2 border-white bg-slate-300 shadow" style="left:0%"></div>
+          <div id="step-1" class="absolute -top-1 h-4 w-4 rounded-full border-2 border-white bg-slate-300 shadow" style="left:33%"></div>
+          <div id="step-2" class="absolute -top-1 h-4 w-4 rounded-full border-2 border-white bg-slate-300 shadow" style="left:66%"></div>
+          <div id="step-3" class="absolute -top-1 h-4 w-4 rounded-full border-2 border-white bg-slate-300 shadow" style="left:100%"></div>
+        </div>
+
+        <div class="mt-6">
+          <h2 class="mb-3 text-sm font-bold uppercase tracking-wide text-slate-500">Tracking History</h2>
+          <div id="historyList" class="space-y-3"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const statusOrder = ['Order Placed', 'Dispatched', 'In Transit', 'Delivered'];
+    const trackForm = document.getElementById('trackForm');
+    const trackMsg = document.getElementById('trackMsg');
+    const trackingCard = document.getElementById('trackingCard');
+
+    function normalizeStatus(raw){
+      const value = String(raw || '').toLowerCase();
+      if(value.includes('deliver')) return 'Delivered';
+      if(value.includes('transit') || value.includes('trip') || value.includes('depart')) return 'In Transit';
+      if(value.includes('dispatch') || value.includes('ship')) return 'Dispatched';
+      return 'Order Placed';
+    }
+
+    function statusStep(status){
+      return statusOrder.indexOf(status);
+    }
+
+    function formatDateTime(value){
+      if(!value) return '—';
+      const date = new Date(value);
+      if(Number.isNaN(date.getTime())) return value;
+      return date.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    function renderTracking(data){
+      trackingCard.classList.remove('hidden');
+      document.getElementById('orderIdText').textContent = data.orderId || '—';
+      document.getElementById('awbText').textContent = data.awb || '—';
+      document.getElementById('eddText').textContent = data.expectedDelivery || '—';
+      document.getElementById('statusText').textContent = data.currentStatus;
+      document.getElementById('currentLocationText').textContent = `Location: ${data.currentLocation || '—'}`;
+
+      const step = Math.max(0, statusStep(data.currentStatus));
+      const progress = step === 0 ? 0 : step === 1 ? 33 : step === 2 ? 66 : 100;
+      document.getElementById('timelineTrack').style.setProperty('--progress', `${progress}%`);
+      for(let i = 0; i < 4; i++){
+        const node = document.getElementById(`step-${i}`);
+        node.className = `absolute -top-1 h-4 w-4 rounded-full border-2 border-white shadow ${i <= step ? 'bg-emerald-500' : 'bg-slate-300'}`;
+      }
+
+      const history = Array.isArray(data.history) ? data.history : [];
+      document.getElementById('historyList').innerHTML = history.map((item) => `
+        <article class="rounded-2xl border border-slate-200 px-4 py-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <p class="text-sm font-bold text-slate-900">${item.status}</p>
+            <p class="text-xs font-medium text-slate-500">${formatDateTime(item.timestamp)}</p>
+          </div>
+          <p class="mt-1 text-sm text-slate-600">${item.location || 'Location not available'}</p>
+        </article>
+      `).join('') || '<p class="text-sm text-slate-500">No tracking history available yet.</p>';
+    }
+
+    async function fetchTrackingFromBackend(awb, carrier){
+      const response = await fetch(`/api/track-shipment?awb=${encodeURIComponent(awb)}&carrier=${encodeURIComponent(carrier)}`);
+      if(!response.ok) throw new Error('Unable to fetch live tracking from API');
+      return response.json();
+    }
+
+    function mockTracking(awb){
+      return {
+        orderId: `VMP${awb.slice(-6)}`,
+        awb,
+        currentStatus: 'In Transit',
+        expectedDelivery: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN'),
+        currentLocation: 'Bangalore_Hoskote_GW (Karnataka)',
+        history: [
+          { status: 'Order Placed', location: 'Ahmedabad Hub', timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString() },
+          { status: 'Dispatched', location: 'Ahmedabad Dispatch Center', timestamp: new Date(Date.now() - 32 * 60 * 60 * 1000).toISOString() },
+          { status: 'In Transit', location: 'Bangalore_Hoskote_GW (Karnataka)', timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString() }
+        ]
+      };
+    }
+
+    trackForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const awb = document.getElementById('awbInput').value.trim();
+      const carrier = document.getElementById('carrierSelect').value;
+      if(!awb){
+        trackMsg.textContent = 'Please enter AWB number.';
+        trackMsg.className = 'mt-3 text-sm font-medium text-rose-600';
+        return;
+      }
+      trackMsg.textContent = 'Fetching live status...';
+      trackMsg.className = 'mt-3 text-sm font-medium text-slate-600';
+
+      try {
+        let data = await fetchTrackingFromBackend(awb, carrier);
+        data.currentStatus = normalizeStatus(data.currentStatus);
+        data.history = (data.history || []).map((eventItem) => ({ ...eventItem, status: normalizeStatus(eventItem.status) }));
+        renderTracking(data);
+        trackMsg.textContent = 'Live tracking updated.';
+        trackMsg.className = 'mt-3 text-sm font-medium text-emerald-700';
+      } catch (error) {
+        const fallback = mockTracking(awb);
+        renderTracking(fallback);
+        trackMsg.textContent = 'Live API unavailable. Showing demo tracking preview. Connect Shiprocket/Delhivery API to enable live data.';
+        trackMsg.className = 'mt-3 text-sm font-medium text-amber-700';
+      }
+    });
+  </script>
+</body>
+</html>
