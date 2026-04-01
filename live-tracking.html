@@ -177,6 +177,15 @@
         trackMsg.className = 'mt-3 text-sm font-medium text-amber-700';
       }
     });
+
+    const params = new URLSearchParams(window.location.search);
+    const prefillAwb = params.get('awb');
+    const prefillCarrier = params.get('carrier');
+    if(prefillAwb){
+      document.getElementById('awbInput').value = prefillAwb;
+      if(prefillCarrier) document.getElementById('carrierSelect').value = prefillCarrier;
+      trackForm.dispatchEvent(new Event('submit'));
+    }
   </script>
 </body>
 </html>
