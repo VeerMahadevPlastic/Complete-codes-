@@ -1098,7 +1098,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
             product.stock = Number(data.stock);
           }
         });
-                applyProductFilters();
+        applyProductFilters();
         const lowStockItems = products.filter((product) => Number(product.stock) < LOW_STOCK_THRESHOLD);
         if(lowStockItems.length && window.OneSignal){
           console.warn('Low stock alert', lowStockItems.map((item) => item.name));
