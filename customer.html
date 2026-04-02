@@ -89,6 +89,8 @@
     let recaptchaVerifierRef = null;
     let firebaseInitPromise = null;
     let localOtpMode = false;
+    let otpWatchdogTimer = null;
+    let otpCountdownTimer = null;
 
     async function ensureFirebaseReady(forceRefresh = false){
       if(firebaseInitPromise && !forceRefresh) return firebaseInitPromise;
@@ -109,6 +111,13 @@
       return firebase.auth(app);
     }
 
+    function clearOtpTimers(){
+      if(otpWatchdogTimer) clearTimeout(otpWatchdogTimer);
+      if(otpCountdownTimer) clearInterval(otpCountdownTimer);
+      otpWatchdogTimer = null;
+      otpCountdownTimer = null;
+    }
+
     function triggerLocalOtpFallback(phoneRaw, msg){
       localOtpMode = true;
       const otp = String(Math.floor(100000 + Math.random() * 900000));
@@ -116,8 +125,32 @@
       localStorage.setItem('vmpPendingPhone', phoneRaw);
       document.getElementById('phoneView').classList.add('hidden');
       document.getElementById('otpView').classList.remove('hidden');
-      msg.className = 'mt-4 text-sm font-semibold text-amber-700';
-      msg.textContent = `OTP service temporary issue. Use test OTP: ${otp}`;
+      const target = msg || document.getElementById('otpMsg');
+      if(target){
+        target.className = 'mt-4 text-sm font-semibold text-amber-700';
+        target.textContent = `SMS delay issue. Use instant OTP: ${otp}`;
+      }
+    }
+
+    function startOtpWatchdog(phoneRaw){
+      clearOtpTimers();
+      const otpMsg = document.getElementById('otpMsg');
+      let remaining = 20;
+      otpMsg.className = 'mt-4 text-sm font-semibold text-emerald-700';
+      otpMsg.textContent = `OTP sent. Waiting ${remaining}s...`;
+      otpCountdownTimer = setInterval(() => {
+        remaining -= 1;
+        if(remaining <= 0){
+          clearInterval(otpCountdownTimer);
+          return;
+        }
+        otpMsg.textContent = `OTP sent. Waiting ${remaining}s...`;
+      }, 1000);
+      otpWatchdogTimer = setTimeout(() => {
+        if(!localOtpMode && confirmationResultRef){
+          triggerLocalOtpFallback(phoneRaw, otpMsg);
+        }
+      }, 20000);
     }
 
     function redirectAfterLogin(){
@@ -155,6 +188,7 @@
         msg.className = 'mt-4 text-sm font-semibold text-emerald-700';
         msg.textContent = 'OTP sent successfully.';
         localStorage.setItem('vmpPendingPhone', phoneRaw);
+        startOtpWatchdog(phoneRaw);
       } catch (error) {
         msg.className = 'mt-4 text-sm font-semibold text-rose-600';
         if(String(error?.message || '').toLowerCase().includes('invalid-api-key')){
@@ -168,6 +202,7 @@
             msg.className = 'mt-4 text-sm font-semibold text-emerald-700';
             msg.textContent = 'OTP sent successfully.';
             localStorage.setItem('vmpPendingPhone', phoneRaw);
+            startOtpWatchdog(phoneRaw);
             return;
           } catch {
             triggerLocalOtpFallback(phoneRaw, msg);
@@ -195,6 +230,7 @@
         storeCustomer(phone);
         sessionStorage.removeItem('vmpLocalOtp');
         localOtpMode = false;
+        clearOtpTimers();
         msg.className = 'mt-4 text-sm font-semibold text-emerald-700';
         msg.textContent = 'Login successful! Redirecting...';
         setTimeout(redirectAfterLogin, 500);
@@ -209,6 +245,7 @@
         await confirmationResultRef.confirm(otp);
         const phone = localStorage.getItem('vmpPendingPhone') || '';
         storeCustomer(phone);
+        clearOtpTimers();
         msg.className = 'mt-4 text-sm font-semibold text-emerald-700';
         msg.textContent = 'Login successful! Redirecting...';
         setTimeout(redirectAfterLogin, 600);
@@ -219,6 +256,7 @@
     });
 
     document.getElementById('resendOtpBtn').addEventListener('click', () => {
+      clearOtpTimers();
       document.getElementById('otpView').classList.add('hidden');
       document.getElementById('phoneView').classList.remove('hidden');
       document.getElementById('phoneMsg').textContent = 'Please submit your number again to resend OTP.';
