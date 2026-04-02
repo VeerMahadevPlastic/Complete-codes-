@@ -96,6 +96,34 @@
       .install-banner { bottom: 20px; }
       .floating-wa-btn { bottom: 24px; }
     }
+    @media (max-width: 768px) {
+      .app-shell { padding-bottom: calc(230px + env(safe-area-inset-bottom)); }
+      .install-banner { bottom: calc(132px + env(safe-area-inset-bottom)); }
+      #notifyBell { display: none; }
+      #floatingCartBtn {
+        bottom: calc(92px + env(safe-area-inset-bottom));
+        right: 12px;
+        padding: 10px 12px;
+        font-size: 12px;
+      }
+      .floating-wa-btn {
+        bottom: calc(92px + env(safe-area-inset-bottom));
+        right: 84px;
+        height: 52px;
+        width: 52px;
+      }
+      #botDock {
+        left: 12px;
+        right: auto;
+        bottom: calc(92px + env(safe-area-inset-bottom));
+      }
+      #botToggle { height: 52px; width: 52px; font-size: 22px; }
+      header .grid { grid-template-columns: 1fr; }
+      header .grid > a { font-size: 2rem; }
+      #searchBtn { padding: 0.55rem 0.75rem; font-size: 0.75rem; }
+      #home h1 { font-size: 2.2rem; line-height: 1.15; }
+      .mobile-nav .grid { padding-left: 8px; padding-right: 8px; }
+    }
   </style>
 </head>
 <body class="bg-[#f5f8f5] text-slate-800">
@@ -525,7 +553,7 @@
   </div>
 
   <button id="notifyBell" class="floating-edge fixed top-24 z-[66] h-12 w-12 rounded-full border border-[#D4AF37] bg-emerald-800 text-xl text-[#D4AF37] shadow-xl" aria-label="Enable price update notifications">🔔</button>
-  <div class="floating-edge fixed bottom-[calc(96px+env(safe-area-inset-bottom))] z-[65]">
+  <div id="botDock" class="floating-edge fixed bottom-[calc(96px+env(safe-area-inset-bottom))] z-[65]">
     <button id="botToggle" class="h-14 w-14 rounded-full bg-emerald-700 text-white text-2xl shadow-lg">🤖</button>
     <div id="botPanel" class="hidden mt-2 w-[min(20rem,calc(100vw-2rem))] bg-white border rounded-xl shadow-2xl overflow-hidden">
       <div class="bg-emerald-700 text-white px-3 py-2 font-semibold flex justify-between"><span>AI Help Bot</span><button id="botClose">✕</button></div>
@@ -597,7 +625,7 @@
             <div class="flex justify-between text-emerald-700"><span>Total Discounts</span><span>- ₹<span id="coGst">0</span></span></div>
             <hr />
             <div class="flex justify-between text-lg font-black text-[#065f46]"><span>Order Total</span><span>₹<span id="coTotal">0</span></span></div>
-            <p class="text-xs text-slate-500">Include GST Rate (0%) • Freight ₹<span id="coDelivery">0</span></p>
+            <p id="freightNote" class="text-xs text-slate-500">Include GST Rate (0%) • Freight ₹<span id="coDelivery">0</span></p>
           </div>
         </aside>
       </div>
@@ -624,6 +652,7 @@
       measurementId: 'G-R2DHXNS9TF'
     };
     const LOW_STOCK_THRESHOLD = 10;
+    const MIN_ORDER_QTY = 150;
     let firestoreDb = null;
 
     function readStorage(key){
@@ -1017,9 +1046,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           image: imagePart || '',
           stock: 200,
           tiers: [
-            {min:100, price: tier100},
-            {min:200, price: tier200},
-            {min:500, price: tier500}
+            {min:150, price: tier100},
+            {min:300, price: tier200},
+            {min:600, price: tier500}
           ]
         });
       }
@@ -1044,9 +1073,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       const overridePrice = Number(priceOverrides[id]);
       const tiers = Number.isFinite(overridePrice) && overridePrice > 0
         ? [
-            {min:100, price: Number(overridePrice.toFixed(2))},
-            {min:200, price: Number(Math.max(overridePrice - 1, 0).toFixed(2))},
-            {min:500, price: Number(Math.max(overridePrice - 2, 0).toFixed(2))}
+            {min:150, price: Number(overridePrice.toFixed(2))},
+            {min:300, price: Number(Math.max(overridePrice - 1, 0).toFixed(2))},
+            {min:600, price: Number(Math.max(overridePrice - 2, 0).toFixed(2))}
           ]
         : item.tiers;
       return {
@@ -1069,7 +1098,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
             product.stock = Number(data.stock);
           }
         });
-        applyProductFilters();
+                applyProductFilters();
         const lowStockItems = products.filter((product) => Number(product.stock) < LOW_STOCK_THRESHOLD);
         if(lowStockItems.length && window.OneSignal){
           console.warn('Low stock alert', lowStockItems.map((item) => item.name));
@@ -1091,12 +1120,16 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     function loadCart(){
       try {
         const saved = localStorage.getItem('vmpCart');
-        return JSON.parse(saved || '[]');
+        const parsed = JSON.parse(saved || '[]');
+        return Array.isArray(parsed)
+          ? parsed.map((item) => ({ ...item, qty: Math.max(MIN_ORDER_QTY, Number(item.qty) || MIN_ORDER_QTY) }))
+          : [];
       } catch (error) {
         console.warn('Unable to read cart from localStorage.', error);
         return [];
       }
     }
+
     let cart = loadCart();
     let b2bLoggedIn = false;
 
@@ -1404,7 +1437,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         size: sizeMatch ? sizeMatch[1].toUpperCase() : 'Standard Wholesale Size',
         color,
         hsn,
-        moq: `${product.tiers[0]?.min || 100}+ pcs`,
+        moq: `${product.tiers[0]?.min || MIN_ORDER_QTY}+ pcs`,
         use
       };
     }
@@ -1475,14 +1508,14 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           <div class="space-y-3 p-3">
             <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${p.name}</h4>${stockBadge(p.stock)}</div>
             <p class="text-[11px] text-slate-500">${p.category}</p>
-            <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
-            <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
+            <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for ${p.tiers[0].min}+ pcs</span></p>
+            <p class="text-[11px] text-slate-500">${p.tiers[1].min}+ @ ₹${p.tiers[1].price} • ${p.tiers[2].min}+ @ ₹${p.tiers[2].price}</p>
             <div class="flex items-center justify-between text-[11px]">
               <span class="rounded-full bg-emerald-100 px-2 py-0.5 font-semibold text-emerald-700">Pack Size: 100 pcs</span>
               <span class="font-semibold text-slate-600">⭐ ${productRating(p).rating} (${productRating(p).reviews})</span>
             </div>
             <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="10" step="10" value="10" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
+              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="${MIN_ORDER_QTY}" step="10" value="${MIN_ORDER_QTY}" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
               <button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
             </div>
             <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
@@ -1538,8 +1571,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     window.addToCart = function(id){
       const p = products.find(x => x.id === id);
       const qtyInput = document.getElementById(`qty-${id}`);
-      const rawQty = Number(qtyInput?.value || 10);
-      const qty = Math.max(10, Math.ceil(rawQty / 10) * 10);
+      const rawQty = Number(qtyInput?.value || MIN_ORDER_QTY);
+      const qty = Math.max(MIN_ORDER_QTY, Math.ceil(rawQty / 10) * 10);
       if(qtyInput) qtyInput.value = String(qty);
       const unit = priceForQty(p.tiers, qty);
       const existing = cart.find(c => c.id === id && c.unit === unit);
@@ -1841,12 +1874,22 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       openCart();
     });
 
+    function freightChargeByOrder(){
+      const totalQty = cartTotalQty();
+      if(totalQty <= 0) return { delivery: 0, parcels: 0 };
+      const parcels = Math.max(1, Math.ceil(totalQty / 180));
+      const qtyBandCharge = totalQty <= 300 ? 180 : totalQty <= 800 ? 320 : totalQty <= 1500 ? 520 : 760;
+      const parcelHandling = parcels * 35;
+      return { delivery: qtyBandCharge + parcelHandling, parcels };
+    }
+
     function checkoutTotals(){
       const subtotal = cartTotalAmount();
       const gst = 0;
-      const delivery = subtotal > 0 ? 120 : 0;
+      const freight = freightChargeByOrder();
+      const delivery = subtotal > 0 ? freight.delivery : 0;
       const total = Number((subtotal + gst + delivery).toFixed(2));
-      return {subtotal, gst, delivery, total};
+      return {subtotal, gst, delivery, total, parcels: freight.parcels};
     }
 
     function renderCheckout(){
@@ -1857,10 +1900,16 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       document.getElementById('coGst').textContent = totals.gst.toFixed(2);
       document.getElementById('coDelivery').textContent = totals.delivery.toFixed(2);
       document.getElementById('coTotal').textContent = totals.total.toFixed(2);
+      const freightNote = document.getElementById('freightNote');
+      if(freightNote) freightNote.textContent = `Include GST Rate (0%) • Freight ₹${totals.delivery.toFixed(2)} (${totals.parcels || 0} parcels est.)`;
     }
 
     bindById('checkoutForm', 'submit', (e)=>{
       e.preventDefault();
+      if(cart.some((item) => Number(item.qty) < MIN_ORDER_QTY)){
+        alert(`Each product requires minimum ${MIN_ORDER_QTY} qty.`);
+        return;
+      }
       const totals = checkoutTotals();
       const details = {
         name: document.getElementById('coName').value.trim(),
@@ -1985,7 +2034,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(productMatch){
         return `${productMatch.name} ka rate: ${productMatch.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')}. Category: ${productMatch.category}.`;
       }
-      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'Bulk tier pricing active hai: 100+, 200+, 500+ quantity slabs. 500+ sabse kam rate (minimum price) rakha gaya hai.';
+      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'Bulk tier pricing active hai: 150+, 300+, 600+ quantity slabs. 600+ par best wholesale rate apply hota hai.';
       if(q.includes('shipping') || q.includes('delivery') || q.includes('dispatch')) return 'Shipping dead weight vs volumetric weight (jo zyada ho) par calculate hoti hai. Local/Gujarat/Interstate zones available hain.';
       if(q.includes('stock') || q.includes('available')) return 'Product cards par live stock badge dikh raha hai: In Stock, Low Stock, Out of Stock.';
       if(q.includes('eco') || q.includes('biodegradable')) return 'Haan ji, eco-friendly biodegradable range available hai. Aap "Eco" ya product name type karein to rate details mil jayengi.';
