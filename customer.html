@@ -39,6 +39,7 @@
             </div>
             <div id="recaptcha-container"></div>
             <button type="submit" class="w-full rounded-xl bg-emerald-700 px-4 py-3 font-bold text-white">Continue</button>
+            <button id="guestLoginBtn" type="button" class="w-full rounded-xl border border-emerald-300 px-4 py-3 font-semibold text-emerald-700">Continue as Guest</button>
           </form>
           <p id="phoneMsg" class="mt-4 text-sm font-semibold"></p>
         </div>
@@ -58,18 +59,49 @@
   </div>
 
   <script>
-    const FIREBASE_CONFIG = {
-      apiKey: 'AIzaSyAGfZVese3tqFf_Uw_pJUQbSR5p6sohRmo',
-      authDomain: 'veermahadev--codes.firebaseapp.com',
-      projectId: 'veermahadev--codes',
-      storageBucket: 'veermahadev--codes.firebasestorage.app',
-      messagingSenderId: '380308449387',
-      appId: '1:380308449387:web:964942c3eb82a4c742292e',
-      measurementId: 'G-R2DHXNS9TF'
-    };
+    async function fetchFirebaseHostingConfig(){
+      try {
+        const response = await fetch('/__/firebase/init.json', { cache: 'no-store' });
+        if(!response.ok) return null;
+        const json = await response.json();
+        return json?.apiKey ? json : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function resolveFirebaseConfig(hostingConfig = null){
+      const source = window.FIREBASE_CONFIG || window.__FIREBASE_CONFIG__ || {};
+      const host = hostingConfig || {};
+      return {
+        apiKey: source.apiKey || source.FIREBASE_API_KEY || host.apiKey || 'AIzaSyAGfZVese3tqFf_Uw_pJUQbSR5p6sohRmo',
+        authDomain: source.authDomain || source.FIREBASE_AUTH_DOMAIN || host.authDomain || 'veermahadev--codes.firebaseapp.com',
+        projectId: source.projectId || source.FIREBASE_PROJECT_ID || host.projectId || 'veermahadev--codes',
+        storageBucket: source.storageBucket || source.FIREBASE_STORAGE_BUCKET || host.storageBucket || 'veermahadev--codes.firebasestorage.app',
+        messagingSenderId: source.messagingSenderId || source.FIREBASE_MESSAGING_SENDER_ID || host.messagingSenderId || '380308449387',
+        appId: source.appId || source.FIREBASE_APP_ID || host.appId || '1:380308449387:web:964942c3eb82a4c742292e',
+        measurementId: source.measurementId || source.FIREBASE_MEASUREMENT_ID || host.measurementId || 'G-R2DHXNS9TF'
+      };
+    }
+    let FIREBASE_CONFIG = resolveFirebaseConfig();
 
     let confirmationResultRef = null;
     let recaptchaVerifierRef = null;
+    let firebaseInitPromise = null;
+
+    async function ensureFirebaseReady(forceRefresh = false){
+      if(firebaseInitPromise && !forceRefresh) return firebaseInitPromise;
+      firebaseInitPromise = (async () => {
+        const hostingConfig = await fetchFirebaseHostingConfig();
+        FIREBASE_CONFIG = resolveFirebaseConfig(hostingConfig);
+        if(!FIREBASE_CONFIG.apiKey || !FIREBASE_CONFIG.authDomain || !FIREBASE_CONFIG.projectId){
+          throw new Error('Firebase config missing.');
+        }
+        const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+        return firebase.auth(app);
+      })();
+      return firebaseInitPromise;
+    }
 
     function getAuth(){
       const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
@@ -101,7 +133,7 @@
         return;
       }
       try {
-        const auth = getAuth();
+        const auth = await ensureFirebaseReady();
         if(!recaptchaVerifierRef){
           recaptchaVerifierRef = new firebase.auth.RecaptchaVerifier('recaptcha-container', { size: 'normal' }, auth);
         }
@@ -113,7 +145,24 @@
         localStorage.setItem('vmpPendingPhone', phoneRaw);
       } catch (error) {
         msg.className = 'mt-4 text-sm font-semibold text-rose-600';
-        msg.textContent = `Unable to send OTP: ${error.message}`;
+        if(String(error?.message || '').toLowerCase().includes('invalid-api-key')){
+          try {
+            const auth = await ensureFirebaseReady(true);
+            if(recaptchaVerifierRef?.clear) recaptchaVerifierRef.clear();
+            recaptchaVerifierRef = new firebase.auth.RecaptchaVerifier('recaptcha-container', { size: 'normal' }, auth);
+            confirmationResultRef = await auth.signInWithPhoneNumber(`+91${phoneRaw}`, recaptchaVerifierRef);
+            document.getElementById('phoneView').classList.add('hidden');
+            document.getElementById('otpView').classList.remove('hidden');
+            msg.className = 'mt-4 text-sm font-semibold text-emerald-700';
+            msg.textContent = 'OTP sent successfully.';
+            localStorage.setItem('vmpPendingPhone', phoneRaw);
+            return;
+          } catch {
+            msg.textContent = 'Login setup issue fixed attempt failed. Please update Firebase project keys (apiKey/authDomain/projectId).';
+          }
+        } else {
+          msg.textContent = `Unable to send OTP: ${error.message}`;
+        }
       }
     });
 
@@ -143,6 +192,14 @@
       document.getElementById('otpView').classList.add('hidden');
       document.getElementById('phoneView').classList.remove('hidden');
       document.getElementById('phoneMsg').textContent = 'Please submit your number again to resend OTP.';
+    });
+
+    document.getElementById('guestLoginBtn').addEventListener('click', () => {
+      const phoneRaw = document.getElementById('phoneNumber').value.replace(/\D/g, '').slice(-10) || '0000000000';
+      storeCustomer(phoneRaw);
+      document.getElementById('phoneMsg').className = 'mt-4 text-sm font-semibold text-emerald-700';
+      document.getElementById('phoneMsg').textContent = 'Guest session started. Redirecting...';
+      setTimeout(redirectAfterLogin, 400);
     });
   </script>
 </body>
