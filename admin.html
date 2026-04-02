@@ -78,6 +78,10 @@
     const ADMIN_USERNAME = 'Mr.karan@admin';
     const ADMIN_PASSWORD = 'Mr.karankumar@7';
     const LOW_STOCK_THRESHOLD = 10;
+    const AISENSY_API_URL = 'https://backend.aisensy.com/campaign/t1/api/v2';
+    const AISENSY_API_KEY = localStorage.getItem('vmpAisensyApiKey') || '';
+    const AISENSY_CAMPAIGN_NAME = localStorage.getItem('vmpAisensyCampaign') || 'post_purchase_updates';
+    let dashboardReloadTimer = null;
     const FIREBASE_CONFIG = {
       apiKey: 'AIzaSyAGfZVese3tqFf_Uw_pJUQbSR5p6sohRmo',
       authDomain: 'veermahadev--codes.firebaseapp.com',
@@ -94,6 +98,11 @@
     }
 
     function writeJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+
+    function queueDashboardReload(delay = 250){
+      if(dashboardReloadTimer) clearTimeout(dashboardReloadTimer);
+      dashboardReloadTimer = setTimeout(() => loadDashboardData(), delay);
+    }
 
     function getDb(){
       if(!window.firebase?.firestore) return null;
@@ -112,6 +121,57 @@
       }
     }
 
+    function buildTrackingLink(tracking = {}){
+      const awb = String(tracking.awb || '').trim();
+      const carrier = String(tracking.carrier || 'delhivery').toLowerCase();
+      if(!awb) return './live-tracking.html';
+      if(carrier.includes('shiprocket')) return `https://shiprocket.co/tracking/${encodeURIComponent(awb)}`;
+      return `https://www.delhivery.com/track/package/${encodeURIComponent(awb)}`;
+    }
+
+    async function resolveTrackingLink(order, carrier, awb){
+      try {
+        const response = await fetch(`/api/generate-tracking-link?carrier=${encodeURIComponent(carrier)}&awb=${encodeURIComponent(awb)}&orderId=${encodeURIComponent(order.orderId)}`);
+        if(response.ok){
+          const payload = await response.json();
+          if(payload?.trackingLink) return payload.trackingLink;
+        }
+      } catch (error) {
+        console.warn('Tracking API unavailable. Using fallback URL.', error);
+      }
+      return buildTrackingLink({ carrier, awb });
+    }
+
+    async function sendAiSensyUpdate(order, status){
+      if(!AISENSY_API_KEY) return;
+      const whatsapp = String(order.details?.whatsapp || '').replace(/\D/g, '');
+      if(whatsapp.length < 10) return;
+      const trackingUrl = order.trackingLink || buildTrackingLink(order.tracking);
+      const isDelivered = String(status || '').toLowerCase().includes('deliver');
+      const message = isDelivered
+        ? `Hey ${order.details?.name || 'Customer'}, aapka order successfully deliver ho gaya hai. Track: ${trackingUrl}. Upload Unboxing Video & Get Extra Discount.`
+        : `Hey ${order.details?.name || 'Customer'}, aapka order aaj dispatch ho gaya hai 🚚. Live tracking: ${trackingUrl}`;
+      try {
+        await fetch(AISENSY_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${AISENSY_API_KEY}`
+          },
+          body: JSON.stringify({
+            apiKey: AISENSY_API_KEY,
+            campaignName: AISENSY_CAMPAIGN_NAME,
+            destination: `91${whatsapp.slice(-10)}`,
+            userName: order.details?.name || 'Customer',
+            templateParams: [order.orderId, status, trackingUrl, 'Upload Unboxing Video & Get Extra Discount'],
+            message
+          })
+        });
+      } catch (error) {
+        console.warn('AiSensy webhook failed.', error);
+      }
+    }
+
     function renderCustomers(){
       const customers = readJson('vmpCustomers', []);
       document.getElementById('metricCustomers').textContent = customers.length;
@@ -125,35 +185,91 @@
       document.getElementById('metricOrders').textContent = String(orders.length);
       document.getElementById('metricRevenue').textContent = `₹${totalRevenue.toFixed(2)}`;
       document.getElementById('orderList').innerHTML = orders.length
-        ? orders.slice(0, 30).map((o) => `<article class="rounded-xl border border-slate-100 p-3"><p class="font-semibold text-slate-900">${o.orderId}</p><p class="text-xs text-slate-500">${o.date || ''} • ${o.status || 'Order Placed'}</p><p class="mt-1 text-sm text-slate-700">Customer: ${o.details?.name || '-'} | ₹${o.total}</p></article>`).join('')
+        ? orders.slice(0, 30).map((o) => `<article class="rounded-xl border border-slate-100 p-3">
+            <p class="font-semibold text-slate-900">${o.orderId}</p>
+            <p class="text-xs text-slate-500">${o.date || ''} • ${o.status || 'Order Placed'}</p>
+            <p class="mt-1 text-sm text-slate-700">Customer: ${o.details?.name || '-'} | ₹${o.total}</p>
+            <div class="mt-2 grid gap-2 sm:grid-cols-3">
+              <input id="awb-${o.orderId}" class="rounded-lg border px-2 py-1 text-xs" placeholder="AWB Number" value="${o.tracking?.awb || ''}" />
+              <select id="carrier-${o.orderId}" class="rounded-lg border px-2 py-1 text-xs">
+                <option value="delhivery" ${(o.tracking?.carrier || '').includes('delhivery') ? 'selected' : ''}>Delhivery</option>
+                <option value="shiprocket" ${(o.tracking?.carrier || '').includes('shiprocket') ? 'selected' : ''}>Shiprocket</option>
+              </select>
+              <select id="status-${o.orderId}" class="rounded-lg border px-2 py-1 text-xs">
+                <option ${(o.status || '').includes('Order') ? 'selected' : ''}>Order Placed</option>
+                <option ${(o.status || '').includes('Dispatch') ? 'selected' : ''}>Dispatched</option>
+                <option ${(o.status || '').includes('Transit') ? 'selected' : ''}>In Transit</option>
+                <option ${(o.status || '').includes('Deliver') ? 'selected' : ''}>Delivered</option>
+              </select>
+            </div>
+            <div class="mt-2 flex items-center justify-between">
+              <a class="text-xs font-semibold text-emerald-700 underline" href="${o.trackingLink || buildTrackingLink(o.tracking)}" target="_blank" rel="noopener">Tracking Link</a>
+              <button data-order="${o.orderId}" class="update-order rounded-lg bg-[#065f46] px-3 py-1.5 text-xs font-semibold text-white">Update Status</button>
+            </div>
+          </article>`).join('')
         : '<p class="text-slate-500">No paid orders yet.</p>';
+
+      document.querySelectorAll('.update-order').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const orderId = button.dataset.order;
+          const status = document.getElementById(`status-${orderId}`)?.value || 'Order Placed';
+          const awb = document.getElementById(`awb-${orderId}`)?.value.trim();
+          const carrier = document.getElementById(`carrier-${orderId}`)?.value || 'delhivery';
+          const trackingLink = awb ? await resolveTrackingLink({ orderId }, carrier, awb) : './live-tracking.html';
+          const db = getDb();
+          if(db){
+            await db.collection('orders').doc(orderId).set({
+              status,
+              tracking: { awb, carrier },
+              trackingLink,
+              updatedAt: window.firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+          }
+          const history = readJson('vmpOrderHistory', []);
+          const index = history.findIndex((item) => item.orderId === orderId);
+          if(index !== -1){
+            history[index] = { ...history[index], status, tracking: { awb, carrier }, trackingLink };
+            writeJson('vmpOrderHistory', history);
+            if(status === 'Dispatched' || status === 'Delivered') await sendAiSensyUpdate(history[index], status);
+          }
+          loadDashboardData();
+        });
+      });
     }
 
-    function renderInventory(products, inventoryMap = {}){
+    function renderInventory(products, inventoryMap = {}, priceMap = {}){
       const list = document.getElementById('inventoryList');
       if(!products.length){
-        list.innerHTML = '<p class="text-slate-500">Open storefront once to sync products.</p>';
+        list.innerHTML = '<p class="text-slate-500">Products loading... Storefront sync ho jaate hi yahan stock/rate update options aa jayenge.</p>';
         return;
       }
       list.innerHTML = products.map((p) => {
         const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
+        const rate = Number(priceMap[p.id]?.price100 ?? p.price100 ?? p.tiers?.[0]?.price ?? 0);
         const alert = stock < LOW_STOCK_THRESHOLD;
-        return `<div class="rounded-xl border ${alert ? 'border-rose-300 bg-rose-50' : 'border-slate-100'} p-3"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="font-semibold text-slate-900">${p.name}</p><p class="text-xs text-slate-500">${p.category}</p></div><div class="flex items-center gap-2"><input id="stock-${p.id}" type="number" min="0" value="${stock}" class="w-24 rounded-lg border px-2 py-1.5 text-sm" /><button data-id="${p.id}" class="save-stock rounded-lg bg-[#065f46] px-3 py-1.5 text-xs font-semibold text-white">Update</button></div></div>${alert ? '<p class="mt-2 text-xs font-bold text-rose-700">RED ALERT: Low stock</p>' : ''}</div>`;
+        return `<div class="rounded-xl border ${alert ? 'border-rose-300 bg-rose-50' : 'border-slate-100'} p-3"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="font-semibold text-slate-900">${p.name}</p><p class="text-xs text-slate-500">${p.category}</p></div><div class="flex flex-wrap items-center gap-2"><input id="stock-${p.id}" type="number" min="0" value="${stock}" class="w-20 rounded-lg border px-2 py-1.5 text-sm" title="Stock" /><input id="price-${p.id}" type="number" min="0" step="0.01" value="${rate.toFixed(2)}" class="w-24 rounded-lg border px-2 py-1.5 text-sm" title="Rate" /><button data-id="${p.id}" class="save-stock rounded-lg bg-[#065f46] px-3 py-1.5 text-xs font-semibold text-white">Update</button></div></div>${alert ? '<p class="mt-2 text-xs font-bold text-rose-700">RED ALERT: Low stock</p>' : ''}</div>`;
       }).join('');
 
       document.querySelectorAll('.save-stock').forEach((button) => {
         button.addEventListener('click', async () => {
           const id = button.dataset.id;
           const value = Number(document.getElementById(`stock-${id}`).value);
-          if(!Number.isFinite(value) || value < 0) return;
+          const rate = Number(document.getElementById(`price-${id}`).value);
+          if(!Number.isFinite(value) || value < 0 || !Number.isFinite(rate) || rate < 0) return;
           const db = getDb();
           if(db){
-            await db.collection('inventory').doc(id).set({ stock: value }, { merge: true });
+            await Promise.all([
+              db.collection('inventory').doc(id).set({ stock: value }, { merge: true }),
+              db.collection('pricing').doc(id).set({ price100: Number(rate.toFixed(2)) }, { merge: true })
+            ]);
           }
           const localMap = readJson('vmpInventoryOverrides', {});
           localMap[id] = { stock: value };
           writeJson('vmpInventoryOverrides', localMap);
-          loadDashboardData();
+          const localPrices = readJson('vmpPriceOverrides', {});
+          localPrices[id] = Number(rate.toFixed(2));
+          writeJson('vmpPriceOverrides', localPrices);
+          queueDashboardReload(50);
         });
       });
     }
@@ -163,16 +279,27 @@
       const products = readJson('vmpProductSnapshot', []);
       let orders = readJson('vmpOrderHistory', []);
       let inventoryMap = readJson('vmpInventoryOverrides', {});
+      let priceMap = Object.entries(readJson('vmpPriceOverrides', {})).reduce((acc, [id, price]) => {
+        acc[id] = { price100: Number(price) };
+        return acc;
+      }, {});
+
+      renderCustomers();
+      renderOrders(orders);
+      renderInventory(products, inventoryMap, priceMap);
 
       if(db){
         try {
-          const [ordersSnap, inventorySnap] = await Promise.all([
+          const [ordersSnap, inventorySnap, pricingSnap] = await Promise.all([
             db.collection('orders').orderBy('createdAt', 'desc').limit(100).get(),
-            db.collection('inventory').get()
+            db.collection('inventory').get(),
+            db.collection('pricing').get()
           ]);
           orders = ordersSnap.docs.map((doc) => ({ ...doc.data(), orderId: doc.id, total: doc.data().total || doc.data().totals?.total || 0 }));
           inventoryMap = {};
           inventorySnap.forEach((doc) => { inventoryMap[doc.id] = doc.data(); });
+          priceMap = {};
+          pricingSnap.forEach((doc) => { priceMap[doc.id] = doc.data(); });
         } catch (error) {
           console.warn('Firestore dashboard fetch failed, using local cache.', error);
         }
@@ -180,10 +307,10 @@
 
       renderCustomers();
       renderOrders(orders);
-      renderInventory(products, inventoryMap);
+      renderInventory(products, inventoryMap, priceMap);
       const inventoryValue = products.reduce((sum, p) => {
         const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
-        const unit = Number(p.price100 || 0);
+        const unit = Number(priceMap[p.id]?.price100 ?? p.price100 ?? p.tiers?.[0]?.price ?? 0);
         return sum + (stock * unit);
       }, 0);
       document.getElementById('metricInventoryValue').textContent = `₹${inventoryValue.toFixed(2)}`;
@@ -212,8 +339,9 @@
 
       const db = getDb();
       if(db){
-        db.collection('orders').onSnapshot(() => loadDashboardData());
-        db.collection('inventory').onSnapshot(() => loadDashboardData());
+        db.collection('orders').onSnapshot(() => queueDashboardReload());
+        db.collection('inventory').onSnapshot(() => queueDashboardReload());
+        db.collection('pricing').onSnapshot(() => queueDashboardReload());
       }
     });
 
