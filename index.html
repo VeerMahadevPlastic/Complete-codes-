@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -74,7 +73,7 @@
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .app-shell { min-height: 100vh; padding-bottom: calc(170px + env(safe-area-inset-bottom)); }
     .mobile-nav { padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
-    .logo-splash { background: radial-gradient(circle at center, rgba(212,175,55,0.16), transparent 30%), linear-gradient(180deg, #f5f8f5 0%, #ffffff 100%); animation: splashFade 3s ease forwards; }
+    .logo-splash { background: linear-gradient(145deg, #064e3b 0%, #0f766e 48%, #10b981 100%); }
     .install-banner { bottom: calc(88px + env(safe-area-inset-bottom)); }
     .floating-wa-btn { bottom: calc(168px + env(safe-area-inset-bottom)); }
     .floating-edge { right: max(12px, env(safe-area-inset-right)); }
@@ -83,10 +82,16 @@
     .logo-shimmer { position: relative; overflow: hidden; }
     .pulse-soft { animation: pulseSoft 2s ease-in-out infinite; }
     .logo-shimmer::after { content: ""; position: absolute; inset: -40%; background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.42) 50%, transparent 65%); animation: shimmer 2.8s linear infinite; }
+    .splash-tagline { animation: taglineReveal 1.3s ease 0.6s both; }
+    .splash-item { animation: itemReveal 1s ease both; }
+    .splash-item:nth-child(1) { animation-delay: 0.25s; }
+    .splash-item:nth-child(2) { animation-delay: 0.45s; }
+    .splash-item:nth-child(3) { animation-delay: 0.65s; }
     @keyframes logoFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); } }
     @keyframes glowPulse { 0%,100% { opacity: 0.45; transform: scale(0.96); } 50% { opacity: 0.95; transform: scale(1.03); } }
     @keyframes shimmer { 0% { transform: translateX(-120%) rotate(12deg); } 100% { transform: translateX(120%) rotate(12deg); } }
-    @keyframes splashFade { 0%, 78% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; pointer-events: none; } }
+    @keyframes taglineReveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes itemReveal { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
     @keyframes pulseSoft {
       0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.35); }
       50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
@@ -100,24 +105,49 @@
       .app-shell { padding-bottom: calc(230px + env(safe-area-inset-bottom)); }
       .install-banner { bottom: calc(132px + env(safe-area-inset-bottom)); }
       #notifyBell { display: none; }
+      #mobileFabBackdrop {
+        display: block;
+        z-index: 54;
+        bottom: calc(90px + env(safe-area-inset-bottom));
+      }
       #floatingCartBtn {
-        bottom: calc(92px + env(safe-area-inset-bottom));
-        right: 12px;
-        padding: 10px 12px;
-        font-size: 12px;
+        left: 50%;
+        right: auto;
+        transform: translateX(34px);
+        bottom: calc(98px + env(safe-area-inset-bottom));
+        height: 38px;
+        padding: 0 12px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        background: #f3e3a6;
+        color: #065f46;
+        box-shadow: 0 8px 22px rgba(6,95,70,0.16);
+      }
+      #floatingCartCount {
+        background: #e8c861;
+        color: #065f46;
+        font-size: 10px;
       }
       .floating-wa-btn {
-        bottom: calc(92px + env(safe-area-inset-bottom));
-        right: 84px;
-        height: 52px;
-        width: 52px;
-      }
-      #botDock {
-        left: 12px;
+        left: 50%;
         right: auto;
-        bottom: calc(92px + env(safe-area-inset-bottom));
+        transform: translateX(-25px);
+        bottom: calc(98px + env(safe-area-inset-bottom));
+        height: 38px;
+        width: 38px;
+        box-shadow: 0 8px 20px rgba(6,95,70,0.2);
       }
-      #botToggle { height: 52px; width: 52px; font-size: 22px; }
+      .floating-wa-btn svg { height: 18px; width: 18px; }
+      .floating-wa-btn.pulse-soft { animation: none; }
+      #botDock {
+        left: 50%;
+        right: auto;
+        transform: translateX(-96px);
+        bottom: calc(98px + env(safe-area-inset-bottom));
+      }
+      #botToggle { height: 38px; width: 38px; font-size: 16px; box-shadow: 0 8px 20px rgba(6,95,70,0.2); }
+      #botPanel { margin-top: 8px; width: min(18rem, calc(100vw - 2rem)); }
       header .grid { grid-template-columns: 1fr; }
       header .grid > a { font-size: 2rem; }
       #searchBtn { padding: 0.55rem 0.75rem; font-size: 0.75rem; }
@@ -127,13 +157,35 @@
   </style>
 </head>
 <body class="bg-[#f5f8f5] text-slate-800">
-  <div id="logoSplash" class="logo-splash fixed inset-0 z-[120] flex items-center justify-center px-6 transition-opacity duration-700">
-    <div class="relative text-center">
-      <div class="logo-glow absolute inset-0 rounded-[3rem] bg-emerald-200/80 blur-3xl"></div>
-      <div class="logo-card logo-shimmer relative rounded-[3rem] border-4 border-amber-300 bg-white/75 p-4 shadow-2xl">
-        <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" loading="eager" class="h-64 w-64 max-w-full rounded-[2.2rem] object-contain bg-white" />
+  <div id="logoSplash" class="logo-splash fixed inset-0 z-[120] flex items-center justify-center px-5 transition-opacity duration-700">
+    <div class="w-full max-w-4xl rounded-[2.2rem] border border-white/30 bg-white/10 p-5 shadow-2xl backdrop-blur-sm md:p-7">
+      <div class="grid items-center gap-5 md:grid-cols-[1.1fr_0.9fr]">
+        <div class="relative text-center md:text-left">
+          <div class="logo-glow absolute inset-0 rounded-[2rem] bg-emerald-200/30 blur-3xl"></div>
+          <div class="logo-card logo-shimmer relative inline-flex items-center rounded-[2rem] border border-[#D4AF37]/70 bg-[#0b5d49]/80 p-4 shadow-2xl">
+            <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" loading="eager" class="h-24 w-24 rounded-2xl bg-white p-2 object-contain" />
+            <div class="ml-3 text-left text-white">
+              <p class="text-xl font-black leading-tight">Veer Mahadev</p>
+              <p class="text-sm font-semibold tracking-wide text-emerald-100">Plastic Wholesale</p>
+            </div>
+          </div>
+          <p class="splash-tagline mt-4 text-sm font-semibold text-emerald-50 md:text-base">Ahmedabad's Trust for Quality Catering Disposables since 2022</p>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-3 md:grid-cols-1">
+          <article class="splash-item rounded-2xl border border-white/40 bg-white/85 p-2">
+            <img src="https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg" alt="3CP Meal Tray" class="h-16 w-full rounded-xl object-cover" loading="eager" />
+            <p class="mt-1 text-[11px] font-bold text-[#065f46]">Top Seller: Meal Trays</p>
+          </article>
+          <article class="splash-item rounded-2xl border border-white/40 bg-white/85 p-2">
+            <img src="https://i.postimg.cc/nhT88Mbd/BIODEGRADABLE-ICECUP-MILKY.jpg" alt="Disposable Cups" class="h-16 w-full rounded-xl object-cover" loading="eager" />
+            <p class="mt-1 text-[11px] font-bold text-[#065f46]">Top Seller: Cups</p>
+          </article>
+          <article class="splash-item rounded-2xl border border-white/40 bg-white/85 p-2">
+            <img src="https://i.postimg.cc/fyDvCkBs/transperent-box.png" alt="Takeaway Boxes" class="h-16 w-full rounded-xl object-cover" loading="eager" />
+            <p class="mt-1 text-[11px] font-bold text-[#065f46]">Top Seller: Boxes</p>
+          </article>
+        </div>
       </div>
-      <p class="mt-6 text-sm font-semibold tracking-[0.35em] text-emerald-700">WELCOME TO THE APP</p>
     </div>
   </div>
   <div class="app-shell">
@@ -363,6 +415,7 @@
     </section>
   </main>
 
+  <div id="mobileFabBackdrop" class="pointer-events-none fixed left-1/2 hidden h-12 w-[min(280px,calc(100vw-2rem))] -translate-x-1/2 rounded-full border border-emerald-200/80 bg-white/92 shadow-[0_8px_24px_rgba(6,95,70,0.22)] lg:hidden"></div>
   <nav class="mobile-nav fixed bottom-0 left-0 right-0 z-40 border-t border-emerald-100 bg-white/95 backdrop-blur lg:hidden">
     <div class="mx-auto grid max-w-7xl grid-cols-4 px-4 py-2 text-[11px] font-semibold text-slate-600">
       <a href="#home" class="flex flex-col items-center gap-1 rounded-xl py-2 text-emerald-700"><span>🏠</span><span>Home</span></a>
@@ -372,8 +425,21 @@
     </div>
   </nav>
   <button id="floatingCartBtn" class="floating-edge fixed bottom-[calc(168px+env(safe-area-inset-bottom))] z-[56] inline-flex items-center gap-2 rounded-full bg-[#065f46] px-4 py-3 text-sm font-bold text-white shadow-2xl">
-    🛒 Cart <span id="floatingCartCount" class="rounded-full bg-[#D4AF37] px-2 py-0.5 text-xs text-[#065f46]">0</span>
+    Cart <span id="floatingCartCount" class="rounded-full bg-[#D4AF37] px-2 py-0.5 text-xs text-[#065f46]">0</span>
   </button>
+
+  <section id="googleReviews" class="mx-auto mt-6 max-w-7xl px-4 pb-8">
+    <div class="rounded-[2rem] border border-emerald-200 bg-[#fffdf4] p-6 shadow-sm">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Google Reviews</p>
+      <h3 class="mt-2 text-2xl font-black text-slate-900">What Buyers Say About Veer Mahadev Plastic</h3>
+      <p id="reviewStatus" class="mt-2 text-sm text-slate-600">Loading latest reviews...</p>
+      <div id="reviewsGrid" class="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+      <div class="mt-5">
+        <a id="writeGoogleReviewBtn" href="https://www.google.com/maps/search/?api=1&query=Veer+Mahadev+Plastic+Ahmedabad" target="_blank" rel="noopener" class="inline-flex rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white shadow hover:bg-emerald-800">Share Your Experience - Write a Review on Google</a>
+      </div>
+      <div id="gmapsServiceNode" class="hidden"></div>
+    </div>
+  </section>
 
   <footer class="border-t border-emerald-100 bg-gradient-to-b from-[#dff3ef] to-[#e9f7f3]">
     <div class="mx-auto max-w-7xl px-4 py-10">
@@ -393,9 +459,9 @@
           <h5 class="text-base font-black text-emerald-900">Important Links</h5>
           <ul class="mt-3 space-y-2">
             <li><a href="./shipping-returns.html" class="transition hover:text-emerald-700">Shipping &amp; Returns</a></li>
-<li><a href="./terms-conditions.html" class="transition hover:text-emerald-700">Terms &amp; Conditions</a></li>
-<li><a href="./privacy-policy.html" class="transition hover:text-emerald-700">Privacy Policy</a></li>
-<li><a href="./refund-policy.html" class="transition hover:text-emerald-700">Refund Policy</a></li>
+            <li><a href="./terms-conditions.html" class="transition hover:text-emerald-700">Terms &amp; Conditions</a></li>
+            <li><a href="./privacy-policy.html" class="transition hover:text-emerald-700">Privacy Policy</a></li>
+            <li><a href="./refund-policy.html" class="transition hover:text-emerald-700">Refund Policy</a></li>
             <li>
               <button id="footerDownloadAppBtn" class="inline-flex items-center gap-2 font-semibold text-slate-900 transition hover:text-emerald-700">
                 Download App
@@ -747,8 +813,7 @@
       }
     }
 
-    setTimeout(dismissSplashScreen, 3000);
-    window.addEventListener('load', dismissSplashScreen);
+    setTimeout(dismissSplashScreen, 4800);
 
     window.addEventListener('beforeinstallprompt', (event) => {
       event.preventDefault();
@@ -1082,7 +1147,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         ...item,
         id,
         tiers,
-        hsn: /paper|cornstarch|biodegradable/i.test(item.category) ? '4823' : (/glass/i.test(item.category) ? '3923' : '3924'),
+         hsn: /paper|cornstarch|biodegradable/i.test(item.category) ? '4823' : (/glass/i.test(item.category) ? '3923' : '3924'),
         image: PRODUCT_IMAGE_OVERRIDES[id] || item.image || imageFrom(item.name)
       };
     });
@@ -2108,6 +2173,90 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       try { await window.OneSignal.Slidedown.promptPush(); } catch (error) { console.warn('Push prompt failed.', error); }
     });
 
+    let googleMapsReadyPromise = null;
+    function loadGoogleMapsPlacesScript(){
+      if(window.google?.maps?.places) return Promise.resolve();
+      if(googleMapsReadyPromise) return googleMapsReadyPromise;
+      const key = (window.GOOGLE_MAPS_API_KEY || localStorage.getItem('vmpGoogleMapsApiKey') || '').trim();
+      if(!key) return Promise.reject(new Error('Google Maps API key missing'));
+      googleMapsReadyPromise = new Promise((resolve, reject) => {
+        const callbackName = `vmpGmapsInit_${Date.now()}`;
+        window[callbackName] = () => { resolve(); delete window[callbackName]; };
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&libraries=places&callback=${callbackName}`;
+        script.async = true;
+        script.defer = true;
+        script.onerror = () => reject(new Error('Google Maps script failed'));
+        document.head.appendChild(script);
+      });
+      return googleMapsReadyPromise;
+    }
+
+    function starRow(rating){
+      const filled = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
+      return `${'★'.repeat(filled)}${'☆'.repeat(5 - filled)}`;
+    }
+
+    function renderGoogleReviews(reviews = []){
+      const grid = document.getElementById('reviewsGrid');
+      const status = document.getElementById('reviewStatus');
+      if(!grid || !status) return;
+      if(!reviews.length){
+        status.textContent = 'Reviews are not available right now. Please check again shortly.';
+        grid.innerHTML = '';
+        return;
+      }
+      status.textContent = 'Latest positive reviews from Google Maps';
+      grid.innerHTML = reviews.map((review) => `
+        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm">
+          <div class="flex items-center gap-3">
+            <img src="${review.profile_photo_url || './icons/logo.svg'}" alt="${review.author_name || 'Reviewer'}" class="h-10 w-10 rounded-full border object-cover" loading="lazy" />
+            <div>
+              <p class="font-semibold text-slate-900">${review.author_name || 'Google User'}</p>
+              <p class="text-xs tracking-wide text-[#D4AF37]">${starRow(review.rating)} <span class="text-slate-500">(${review.rating || 0}/5)</span></p>
+            </div>
+          </div>
+          <p class="mt-3 line-clamp-4 text-sm text-slate-700">${(review.text || '').slice(0, 260) || 'Great service and product quality.'}</p>
+        </article>
+      `).join('');
+    }
+
+    async function initGoogleReviewsWidget(){
+      const status = document.getElementById('reviewStatus');
+      const writeBtn = document.getElementById('writeGoogleReviewBtn');
+      try {
+        await loadGoogleMapsPlacesScript();
+        const serviceNode = document.getElementById('gmapsServiceNode');
+        const service = new google.maps.places.PlacesService(serviceNode);
+        service.textSearch({ query: 'Veer Mahadev Plastic Ahmedabad' }, (results, searchStatus) => {
+          if(searchStatus !== google.maps.places.PlacesServiceStatus.OK || !results?.length){
+            renderGoogleReviews([]);
+            return;
+          }
+          const place = results[0];
+          if(place.place_id && writeBtn){
+            writeBtn.href = `https://search.google.com/local/writereview?placeid=${encodeURIComponent(place.place_id)}`;
+          }
+          service.getDetails(
+            { placeId: place.place_id, fields: ['name', 'place_id', 'reviews', 'rating'] },
+            (details, detailStatus) => {
+              if(detailStatus !== google.maps.places.PlacesServiceStatus.OK){
+                renderGoogleReviews([]);
+                return;
+              }
+              const reviews = (details?.reviews || [])
+                .filter((review) => Number(review.rating || 0) >= 4)
+                .sort((a, b) => Number(b.time || 0) - Number(a.time || 0))
+                .slice(0, 5);
+              renderGoogleReviews(reviews);
+            }
+          );
+        });
+      } catch (error) {
+        if(status) status.textContent = 'Google reviews unavailable right now.';
+      }
+    }
+
     // initialize
     renderCategories();
     applyProductFilters();
@@ -2130,6 +2279,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     });
     updateWhatsappButton();
     initNotifications();
+    initGoogleReviewsWidget();
     const footerYear = document.getElementById('footerYear');
     if(footerYear) footerYear.textContent = String(new Date().getFullYear());
 
