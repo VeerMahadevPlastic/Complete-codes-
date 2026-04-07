@@ -1,7 +1,10 @@
-const CACHE_NAME = 'veer-mahadev-app-v6';
+const CACHE_NAME = 'veer-mahadev-app-v7';
 const ASSETS = [
   './',
   './index.html',
+  './my-orders.html',
+  './vmp-admin.html',
+  './vmp-admin',
   './live-tracking.html',
   './shipping-returns.html',
   './terms-conditions.html',
