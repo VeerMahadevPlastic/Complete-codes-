@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard | Veer Mahadev Plastic</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./js/vmp-config.js"></script>
+  <script src="./js/ui.js"></script>
+  <script src="./js/auth.js"></script>
+  <script src="./js/tracking.js"></script>
+  <script src="./js/vmp-app.js"></script>
+  <script src="./js/vmp-modules.js"></script>
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js" defer></script>
@@ -82,7 +88,7 @@
     const AISENSY_API_KEY = localStorage.getItem('vmpAisensyApiKey') || '';
     const AISENSY_CAMPAIGN_NAME = localStorage.getItem('vmpAisensyCampaign') || 'post_purchase_updates';
     let dashboardReloadTimer = null;
-    const FIREBASE_CONFIG = {
+    const FIREBASE_CONFIG = (window.VMP_CONFIG?.firebase) || (window.VMP_APP?.config?.firebase) || {
       apiKey: 'AIzaSyAGfZVese3tqFf_Uw_pJUQbSR5p6sohRmo',
       authDomain: 'veermahadev--codes.firebaseapp.com',
       projectId: 'veermahadev--codes',
