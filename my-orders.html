@@ -44,7 +44,9 @@
       if(!window.jspdf?.jsPDF) return null;
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
+      const green = [122, 173, 101];
       doc.setFontSize(18);
+      doc.setTextColor(22,22,22);
       doc.text('Veer Mahadev Plastic', 14, 16);
       doc.setFontSize(10);
       doc.text('GSTIN: 24BLLPL0402N1Z6', 14, 23);
@@ -52,13 +54,30 @@
       doc.text(`Date: ${order.date || '-'}`, 14, 36);
       doc.text(`Customer: ${order.details?.name || '-'}`, 14, 42);
       doc.text(`Billing: ${(order.details?.address || '-') + ' ' + (order.details?.pincode || '')}`, 14, 48, { maxWidth: 180 });
-      let y = 60;
+      doc.setFillColor(...green);
+      doc.rect(14, 54, 182, 7, 'F');
+      doc.setTextColor(255,255,255);
+      doc.text('DESCRIPTION', 16, 59);
+      doc.text('QTY', 140, 59, { align: 'right' });
+      doc.text('UNIT', 165, 59, { align: 'right' });
+      doc.text('TOTAL', 194, 59, { align: 'right' });
+      doc.setTextColor(22,22,22);
+      let y = 68;
       (order.items || []).forEach((item, idx) => {
-        doc.text(`${idx + 1}. ${item.name} | Qty ${item.qty} | ₹${(item.qty * item.unit).toFixed(2)}`, 14, y);
-        y += 7;
+        const qty = Number(item.qty || 0);
+        const unit = Number(item.unit || 0);
+        const lines = doc.splitTextToSize(`${idx + 1}. ${item.name}`, 116);
+        doc.text(lines, 16, y);
+        doc.text(String(qty), 140, y, { align: 'right' });
+        doc.text(unit.toFixed(2), 165, y, { align: 'right' });
+        doc.text((qty * unit).toFixed(2), 194, y, { align: 'right' });
+        y += Math.max(7, lines.length * 5);
       });
       y += 4;
-      doc.text(`Total: ₹${Number(order.total || order.totals?.total || 0).toFixed(2)}`, 14, y);
+      doc.setFillColor(...green);
+      doc.rect(132, y - 4, 64, 8, 'F');
+      doc.setTextColor(255,255,255);
+      doc.text(`TOTAL: ₹${Number(order.total || order.totals?.total || 0).toFixed(2)}`, 194, y + 1, { align: 'right' });
       return doc;
     }
 
