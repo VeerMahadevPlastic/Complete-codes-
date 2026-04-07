@@ -141,7 +141,7 @@
     function startOtpWatchdog(phoneRaw){
       clearOtpTimers();
       const otpMsg = document.getElementById('otpMsg');
-      let remaining = 20;
+      let remaining = 15;
       otpMsg.className = 'mt-4 text-sm font-semibold text-emerald-700';
       otpMsg.textContent = `OTP sent. Waiting ${remaining}s...`;
       otpCountdownTimer = setInterval(() => {
@@ -156,7 +156,7 @@
         if(!localOtpMode && confirmationResultRef){
           triggerLocalOtpFallback(phoneRaw, otpMsg);
         }
-      }, 20000);
+      }, 15000);
     }
 
     function redirectAfterLogin(){
@@ -186,7 +186,12 @@
       try {
         const auth = await ensureFirebaseReady();
         if(!recaptchaVerifierRef){
-          recaptchaVerifierRef = new firebase.auth.RecaptchaVerifier('recaptcha-container', { size: 'normal' }, auth);
+          recaptchaVerifierRef = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            size: 'invisible',
+            callback: () => {},
+            'expired-callback': () => {}
+          }, auth);
+          await recaptchaVerifierRef.render();
         }
         confirmationResultRef = await auth.signInWithPhoneNumber(`+91${phoneRaw}`, recaptchaVerifierRef);
         document.getElementById('phoneView').classList.add('hidden');
@@ -201,7 +206,12 @@
           try {
             const auth = await ensureFirebaseReady(true);
             if(recaptchaVerifierRef?.clear) recaptchaVerifierRef.clear();
-            recaptchaVerifierRef = new firebase.auth.RecaptchaVerifier('recaptcha-container', { size: 'normal' }, auth);
+            recaptchaVerifierRef = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+              size: 'invisible',
+              callback: () => {},
+              'expired-callback': () => {}
+            }, auth);
+            await recaptchaVerifierRef.render();
             confirmationResultRef = await auth.signInWithPhoneNumber(`+91${phoneRaw}`, recaptchaVerifierRef);
             document.getElementById('phoneView').classList.add('hidden');
             document.getElementById('otpView').classList.remove('hidden');
@@ -265,7 +275,8 @@
       clearOtpTimers();
       document.getElementById('otpView').classList.add('hidden');
       document.getElementById('phoneView').classList.remove('hidden');
-      document.getElementById('phoneMsg').textContent = 'Please submit your number again to resend OTP.';
+      document.getElementById('phoneMsg').textContent = 'Resending OTP...';
+      setTimeout(() => document.getElementById('phoneForm').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })), 50);
     });
 
     document.getElementById('guestLoginBtn').addEventListener('click', () => {
