@@ -178,6 +178,9 @@
       if(idx >= 0) customers[idx] = payload; else customers.push(payload);
       localStorage.setItem('vmpCustomers', JSON.stringify(customers));
       localStorage.setItem('vmpCurrentCustomer', JSON.stringify(payload));
+      const sessionPayload = JSON.stringify({ email: payload.email, profile: { name: payload.name, whatsapp: payload.phone, address: '', paymentType: 'UPI' } });
+      localStorage.setItem('vmpUserSession', sessionPayload);
+      localStorage.setItem('vmpUserProfile', JSON.stringify({ name: payload.name, whatsapp: payload.phone, address: '', paymentType: 'UPI' }));
     }
 
     document.getElementById('phoneForm').addEventListener('submit', async (event) => {
