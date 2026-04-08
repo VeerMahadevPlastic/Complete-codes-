@@ -97,6 +97,7 @@
     let localOtpMode = false;
     let otpWatchdogTimer = null;
     let otpCountdownTimer = null;
+    let otpFallbackIssued = false;
 
     async function ensureFirebaseReady(forceRefresh = false){
       if(firebaseInitPromise && !forceRefresh) return firebaseInitPromise;
@@ -126,6 +127,7 @@
 
     function triggerLocalOtpFallback(phoneRaw, msg){
       localOtpMode = true;
+      otpFallbackIssued = true;
       const otp = String(Math.floor(100000 + Math.random() * 900000));
       sessionStorage.setItem('vmpLocalOtp', otp);
       localStorage.setItem('vmpPendingPhone', phoneRaw);
@@ -134,12 +136,16 @@
       const target = msg || document.getElementById('otpMsg');
       if(target){
         target.className = 'mt-4 text-sm font-semibold text-amber-700';
-        target.textContent = `SMS delay issue. Use instant OTP: ${otp}`;
+        target.textContent = `Auto OTP generated. Enter this OTP: ${otp}`;
+      }
+      if(window.VMP_UI?.showPopup){
+        window.VMP_UI.showPopup(`Auto OTP generated: ${otp}`, 'info');
       }
     }
 
     function startOtpWatchdog(phoneRaw){
       clearOtpTimers();
+      otpFallbackIssued = false;
       const otpMsg = document.getElementById('otpMsg');
       let remaining = 15;
       otpMsg.className = 'mt-4 text-sm font-semibold text-emerald-700';
@@ -153,7 +159,7 @@
         otpMsg.textContent = `OTP sent. Waiting ${remaining}s...`;
       }, 1000);
       otpWatchdogTimer = setTimeout(() => {
-        if(!localOtpMode && confirmationResultRef){
+        if(!otpFallbackIssued){
           triggerLocalOtpFallback(phoneRaw, otpMsg);
         }
       }, 15000);
@@ -185,6 +191,7 @@
       }
       try {
         const auth = await ensureFirebaseReady();
+        localOtpMode = false;
         if(!recaptchaVerifierRef){
           recaptchaVerifierRef = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
             size: 'invisible',
@@ -273,10 +280,14 @@
 
     document.getElementById('resendOtpBtn').addEventListener('click', () => {
       clearOtpTimers();
-      document.getElementById('otpView').classList.add('hidden');
-      document.getElementById('phoneView').classList.remove('hidden');
-      document.getElementById('phoneMsg').textContent = 'Resending OTP...';
-      setTimeout(() => document.getElementById('phoneForm').dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })), 50);
+      const phoneRaw = document.getElementById('phoneNumber').value.replace(/\D/g, '').slice(-10) || localStorage.getItem('vmpPendingPhone') || '';
+      if(!/^[6-9]\d{9}$/.test(phoneRaw)){
+        document.getElementById('otpMsg').className = 'mt-4 text-sm font-semibold text-rose-600';
+        document.getElementById('otpMsg').textContent = 'Please enter valid mobile number to resend OTP.';
+        return;
+      }
+      localStorage.setItem('vmpPendingPhone', phoneRaw);
+      triggerLocalOtpFallback(phoneRaw, document.getElementById('otpMsg'));
     });
 
     document.getElementById('guestLoginBtn').addEventListener('click', () => {
