@@ -392,15 +392,23 @@
         <div class="mt-4 space-y-4">
           <div class="rounded-2xl border bg-slate-50 p-4">
             <div class="flex items-center gap-3">
-              <div class="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-2xl">👤</div>
+              <img id="profilePhotoPreview" src="./icons/logo.svg" alt="Profile" class="h-14 w-14 rounded-full border bg-white object-cover" />
               <div>
                 <p id="profileName" class="text-2xl font-black text-slate-900">-</p>
                 <p id="profileWhatsapp" class="text-sm text-slate-600">-</p>
               </div>
             </div>
             <p id="profileAddress" class="mt-3 text-sm text-slate-700">Address: -</p>
+            <p id="profilePaymentType" class="text-sm text-slate-700">Payment: UPI</p>
             <div class="mt-3 grid gap-2">
+              <input id="editPhotoInput" class="rounded-lg border px-3 py-2 text-sm" placeholder="Profile Photo URL" />
               <textarea id="editAddressInput" rows="2" class="rounded-lg border px-3 py-2 text-sm" placeholder="Edit Address"></textarea>
+              <select id="editPaymentType" class="rounded-lg border px-3 py-2 text-sm">
+                <option value="UPI">UPI</option>
+                <option value="Cash">Cash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Card">Card</option>
+              </select>
               <button id="saveAddressBtn" class="rounded-lg bg-[#065f46] py-2 text-sm font-semibold text-white">Save Address</button>
             </div>
           </div>
@@ -722,6 +730,12 @@
               <input id="coName" required class="rounded-lg border px-3 py-2" placeholder="Name" />
               <input id="coWhatsapp" required inputmode="numeric" minlength="10" maxlength="15" class="rounded-lg border px-3 py-2" placeholder="WhatsApp Number" />
               <textarea id="coAddress" required class="rounded-lg border px-3 py-2" rows="2" placeholder="Full Address"></textarea>
+              <select id="coPaymentType" class="rounded-lg border px-3 py-2">
+                <option value="UPI">UPI</option>
+                <option value="Cash">Cash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Card">Card</option>
+              </select>
               <input id="coPincode" required inputmode="numeric" minlength="6" maxlength="6" class="rounded-lg border px-3 py-2" placeholder="Pincode" />
               <button type="submit" class="rounded-lg bg-[#065f46] py-2 font-semibold text-white">Deliver to this Address</button>
             </form>
@@ -1376,7 +1390,11 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       document.getElementById('profileName').textContent = profile.name || 'Guest User';
       document.getElementById('profileWhatsapp').textContent = profile.whatsapp || '-';
       document.getElementById('profileAddress').textContent = `Address: ${profile.address || '-'}`;
+      document.getElementById('profilePaymentType').textContent = `Payment: ${profile.paymentType || 'UPI'}`;
+      document.getElementById('profilePhotoPreview').src = profile.photo || './icons/logo.svg';
+      document.getElementById('editPhotoInput').value = profile.photo || '';
       document.getElementById('editAddressInput').value = profile.address || '';
+      document.getElementById('editPaymentType').value = profile.paymentType || 'UPI';
       const history = orderHistory();
       const last = history[0];
       document.getElementById('lastOrderBox').textContent = last ? `${last.orderId} | ₹${last.total} | ${last.date}` : 'No previous order yet.';
@@ -2075,7 +2093,11 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     bindById('saveAddressBtn', 'click', ()=>{
       const profile = loadProfile();
       const updatedAddress = document.getElementById('editAddressInput').value.trim();
+      const paymentType = document.getElementById('editPaymentType').value;
+      const photo = document.getElementById('editPhotoInput').value.trim();
       profile.address = updatedAddress;
+      profile.paymentType = paymentType;
+      if(photo) profile.photo = photo;
       saveProfile(profile);
       if(currentUser){ currentUser.profile = profile; saveCurrentUser(currentUser, localStorage.getItem('vmpUserSession') !== null); }
       renderProfile();
@@ -2170,6 +2192,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         whatsapp: normalizeIndianPhone(document.getElementById('coWhatsapp').value.trim()),
         address: document.getElementById('coAddress').value.trim(),
         pincode: document.getElementById('coPincode').value.trim(),
+        paymentType: document.getElementById('coPaymentType').value,
       };
       if(details.name.length < 2){
         alert('Please enter a valid customer name.');
@@ -2201,7 +2224,14 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       upiPayLink.href = upiUri;
       document.getElementById('upiBox').classList.remove('hidden');
       latestCheckout = {orderId, details, totals, cart:[...cart], paymentStatus:'Pending'};
-      const profile = { name: details.name, whatsapp: details.whatsapp, address: details.address + ' - ' + details.pincode };
+      const oldProfile = loadProfile();
+      const profile = {
+        ...oldProfile,
+        name: details.name,
+        whatsapp: details.whatsapp,
+        address: details.address + ' - ' + details.pincode,
+        paymentType: details.paymentType
+      };
       saveProfile(profile);
       if(currentUser){ currentUser.profile = profile; saveCurrentUser(currentUser, localStorage.getItem('vmpUserSession') !== null); }
       renderProfile();
@@ -2464,6 +2494,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     if(profile.name) document.getElementById('coName').value = profile.name;
     if(profile.whatsapp) document.getElementById('coWhatsapp').value = profile.whatsapp;
     if(profile.address) document.getElementById('coAddress').value = profile.address;
+    if(profile.paymentType) document.getElementById('coPaymentType').value = profile.paymentType;
+    if(profile.name && document.getElementById('customerName')) document.getElementById('customerName').value = profile.name;
+    if(profile.address && document.getElementById('customerAddress')) document.getElementById('customerAddress').value = profile.address;
     ['customerName','customerAddress'].forEach(id => {
       const element = document.getElementById(id);
       if(element) element.addEventListener('input', updateWhatsappButton);
