@@ -36,3 +36,44 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
 });
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
+  const requestUrl = new URL(event.request.url);
+  if (requestUrl.origin !== self.location.origin) return;
+  if (requestUrl.pathname.endsWith('/last-rates.json')) {
+    event.respondWith(
+      caches.match('./last-rates.json').then((cached) => cached || fetch('./last-rates.json'))
+    );
+    return;
+  }
+
+  const isHtmlRequest = event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html');
+  if (isHtmlRequest) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  event.respondWith(
+    caches.match(event.request).then((cached) => {
+      const networkFetch = fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => cached);
+
+      return cached || networkFetch;
+    })
+  );
+});
