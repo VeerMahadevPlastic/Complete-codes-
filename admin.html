@@ -88,15 +88,7 @@
     const AISENSY_API_KEY = localStorage.getItem('vmpAisensyApiKey') || '';
     const AISENSY_CAMPAIGN_NAME = localStorage.getItem('vmpAisensyCampaign') || 'post_purchase_updates';
     let dashboardReloadTimer = null;
-    const FIREBASE_CONFIG = (window.VMP_CONFIG?.firebase) || (window.VMP_APP?.config?.firebase) || {
-      apiKey: 'AIzaSyAGfZVese3tqFf_Uw_pJUQbSR5p6sohRmo',
-      authDomain: 'veermahadev--codes.firebaseapp.com',
-      projectId: 'veermahadev--codes',
-      storageBucket: 'veermahadev--codes.firebasestorage.app',
-      messagingSenderId: '380308449387',
-      appId: '1:380308449387:web:964942c3eb82a4c742292e',
-      measurementId: 'G-R2DHXNS9TF'
-    };
+    const FIREBASE_CONFIG = (window.__FIREBASE_CONFIG__) || (window.VMP_CONFIG?.firebase) || (window.VMP_APP?.config?.firebase) || {};
 
     function readJson(key, fallback){
       try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
