@@ -10,6 +10,13 @@
   - `POST /api/entries/cash-sales`
   - `POST /api/entries/bank`
   - `POST /api/entries/purchase-bills` (with OCR)
+  - `POST /api/compute/reconcile` (background compute trigger)
+
+## Flask endpoints for VMP Accounts UI
+- `POST /add_entry` → save Daybook entry (Date, Mode, Type, Amount, Narration) and return updated summary.
+- `POST /purchase_bill` → save purchase with optional bill image upload to Firebase Storage.
+- `POST /stock_adjust` → adjust inventory stock (+/-).
+- `GET /get_summary` → Today Sales, 7-Day Trend, Monthly Growth, Order Status counters.
 
 ## Run
 ```bash
@@ -18,6 +25,12 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
+```
+
+### Run Flask adapter
+```bash
+cd backend
+flask --app flask_app run --port 8000 --debug
 ```
 
 ## Firebase
