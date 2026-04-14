@@ -80,13 +80,13 @@
       const source = window.FIREBASE_CONFIG || window.__FIREBASE_CONFIG__ || {};
       const host = hostingConfig || {};
       return {
-        apiKey: source.apiKey || source.FIREBASE_API_KEY || host.apiKey || 'AIzaSyAGfZVese3tqFf_Uw_pJUQbSR5p6sohRmo',
-        authDomain: source.authDomain || source.FIREBASE_AUTH_DOMAIN || host.authDomain || 'veermahadev--codes.firebaseapp.com',
-        projectId: source.projectId || source.FIREBASE_PROJECT_ID || host.projectId || 'veermahadev--codes',
-        storageBucket: source.storageBucket || source.FIREBASE_STORAGE_BUCKET || host.storageBucket || 'veermahadev--codes.firebasestorage.app',
-        messagingSenderId: source.messagingSenderId || source.FIREBASE_MESSAGING_SENDER_ID || host.messagingSenderId || '380308449387',
-        appId: source.appId || source.FIREBASE_APP_ID || host.appId || '1:380308449387:web:964942c3eb82a4c742292e',
-        measurementId: source.measurementId || source.FIREBASE_MEASUREMENT_ID || host.measurementId || 'G-R2DHXNS9TF'
+        apiKey: source.apiKey || source.FIREBASE_API_KEY || host.apiKey || '',
+        authDomain: source.authDomain || source.FIREBASE_AUTH_DOMAIN || host.authDomain || '',
+        projectId: source.projectId || source.FIREBASE_PROJECT_ID || host.projectId || '',
+        storageBucket: source.storageBucket || source.FIREBASE_STORAGE_BUCKET || host.storageBucket || '',
+        messagingSenderId: source.messagingSenderId || source.FIREBASE_MESSAGING_SENDER_ID || host.messagingSenderId || '',
+        appId: source.appId || source.FIREBASE_APP_ID || host.appId || '',
+        measurementId: source.measurementId || source.FIREBASE_MEASUREMENT_ID || host.measurementId || ''
       };
     }
     let FIREBASE_CONFIG = resolveFirebaseConfig();
