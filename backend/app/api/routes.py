@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, BackgroundTasks
 from fastapi.responses import Response
 from datetime import date
 
@@ -17,6 +17,16 @@ from app.config import settings
 
 router = APIRouter()
 repo = FirebaseRepository()
+
+
+def run_background_reconcile() -> None:
+    """Lightweight background compute hook so UI calls return instantly."""
+    orders = repo.list("orders")
+    inventory = repo.list("inventory")
+    _ = business_pulse(orders)
+    _ = order_status_center(orders)
+    _ = stock_insights(inventory)
+    _ = urgency_alerts(orders)
 
 
 @router.get("/health")
@@ -96,3 +106,9 @@ async def create_purchase_bill(
     payload = PurchaseBillEntry(material=material, supplier=supplier, amount=amount, ocr_text=text).model_dump()
     repo.add("purchase_bills", payload)
     return {"ok": True, "ocr_text": text, "message": "Purchase bill recorded"}
+
+
+@router.post("/compute/reconcile")
+def reconcile_in_background(background_tasks: BackgroundTasks):
+    background_tasks.add_task(run_background_reconcile)
+    return {"ok": True, "message": "Background reconciliation started"}
