@@ -1,60 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Veer Mahadev Plastic</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #f4f4f4;
-      font-family: Arial, sans-serif;
-    }
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Veer Mahadev Plastic Wholesale logo">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b5a46"/>
+      <stop offset="55%" stop-color="#0e7a5f"/>
+      <stop offset="100%" stop-color="#063b31"/>
+    </linearGradient>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="65%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.35"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e6d18a"/>
+      <stop offset="45%" stop-color="#c9a859"/>
+      <stop offset="70%" stop-color="#f1df9e"/>
+      <stop offset="100%" stop-color="#b88e45"/>
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
 
-    .card {
-      background: #0f5e3a;
-      border-radius: 30px;
-      padding: 30px;
-      text-align: center;
-      color: gold;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      width: 320px;
-    }
+  <!-- Outer badge -->
+  <rect x="12" y="12" width="776" height="776" rx="105" fill="url(#bgGrad)"/>
+  <rect x="12" y="12" width="776" height="776" rx="105" fill="url(#vignette)"/>
+  <rect x="14" y="14" width="772" height="772" rx="103" fill="none" stroke="url(#gold)" stroke-width="10"/>
+  <rect x="26" y="26" width="748" height="748" rx="95" fill="none" stroke="url(#gold)" stroke-width="2" opacity="0.55"/>
 
-    .card img {
-      width: 120px;
-      margin-bottom: 20px;
-    }
+  <!-- Monogram ring -->
+  <g fill="none" stroke="url(#gold)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" filter="url(#softGlow)">
+    <circle cx="400" cy="330" r="140"/>
+    <path d="M305 225a142 142 0 0 1 190 0"/>
+    <path d="M290 350a142 142 0 0 0 220 0"/>
+    <path d="M215 225v45M215 225h45M585 225v45M585 225h-45M215 495v-45M215 495h45M585 495v-45M585 495h-45"/>
 
-    .title {
-      font-size: 24px;
-      font-weight: bold;
-      letter-spacing: 2px;
-    }
+    <!-- Crown -->
+    <path d="M250 430l28-120 90 88 32-64 32 64 90-88 28 120z"/>
+    <path d="M295 430h210"/>
+    <circle cx="350" cy="315" r="12"/>
+    <circle cx="400" cy="295" r="12"/>
+    <circle cx="450" cy="315" r="12"/>
+    <path d="M350 327l-14 25M400 307v34M450 327l14 25"/>
+  </g>
 
-    .subtitle {
-      font-size: 20px;
-      margin-top: 5px;
-    }
-
-    .tagline {
-      font-size: 14px;
-      margin-top: 10px;
-      letter-spacing: 2px;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="card">
-    <img src="your-image.png" alt="Logo">
-    <div class="title">VEER MAHADEV</div>
-    <div class="subtitle">PLASTIC</div>
-    <div class="tagline">WHOLESALE</div>
-  </div>
-
-</body>
-</html>
+  <!-- Brand text -->
+  <g fill="url(#gold)" font-family="'Montserrat', 'Poppins', 'Arial Black', sans-serif" text-anchor="middle" letter-spacing="2">
+    <text x="400" y="610" font-size="74" font-weight="800">VEER MAHADEV</text>
+    <text x="400" y="690" font-size="74" font-weight="800">PLASTIC</text>
+    <text x="400" y="750" font-size="52" font-weight="700" letter-spacing="4">WHOLESALE</text>
+  </g>
+</svg>
