@@ -1,68 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Veer Mahadev Plastic Wholesale logo">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0f6b52"/>
-      <stop offset="0.55" stop-color="#0e765b"/>
-      <stop offset="1" stop-color="#084536"/>
-    </linearGradient>
+<svg width="200" height="200" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="500" height="500" rx="80" fill="#065F46"/>
+  
+  <rect x="15" y="15" width="470" height="470" rx="70" stroke="#D4AF37" stroke-width="12"/>
 
-    <radialGradient id="bgLight" cx="48%" cy="38%" r="80%">
-      <stop offset="0" stop-color="#1d8f6d" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="#000" stop-opacity="0"/>
-    </radialGradient>
-
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f5e7a8"/>
-      <stop offset="0.35" stop-color="#dcc177"/>
-      <stop offset="0.7" stop-color="#ba934b"/>
-      <stop offset="1" stop-color="#f0dc98"/>
-    </linearGradient>
-
-    <filter id="emboss" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#2e1f06" flood-opacity="0.45"/>
-    </filter>
-  </defs>
-
-  <!-- badge -->
-  <rect x="46" y="46" width="932" height="932" rx="136" fill="url(#bg)"/>
-  <rect x="46" y="46" width="932" height="932" rx="136" fill="url(#bgLight)"/>
-  <rect x="46" y="46" width="932" height="932" rx="136" fill="none" stroke="url(#gold)" stroke-width="12"/>
-  <rect x="58" y="58" width="908" height="908" rx="124" fill="none" stroke="#8d6a2e" stroke-opacity="0.55" stroke-width="2"/>
-
-  <!-- ABSTRACT HIDDEN 666 ICON -->
-  <g transform="translate(512 360)" fill="none" stroke="url(#gold)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" filter="url(#emboss)">
-    
-    <!-- Curve 1 -->
-    <path d="
-      M0 -120
-      C80 -120, 120 -40, 60 0
-      C0 40, -60 0, -20 -50
-    "/>
-
-    <!-- Curve 2 -->
-    <g transform="rotate(120)">
-      <path d="
-        M0 -120
-        C80 -120, 120 -40, 60 0
-        C0 40, -60 0, -20 -50
-      "/>
-    </g>
-
-    <!-- Curve 3 -->
-    <g transform="rotate(240)">
-      <path d="
-        M0 -120
-        C80 -120, 120 -40, 60 0
-        C0 40, -60 0, -20 -50
-      "/>
-    </g>
-
+  <g id="Symbol" transform="translate(150, 80) scale(0.8)">
+    <path d="M125 0C110 0 100 15 110 30L140 80H110C50 80 0 130 0 190C0 250 50 300 110 300H140L110 350C100 365 110 380 125 380C140 380 150 365 160 350L190 300H220C280 300 330 250 330 190C330 130 280 80 220 80H190L220 30C230 15 220 0 205 0H125Z" fill="#D4AF37"/>
+    <circle cx="125" cy="190" r="40" stroke="#065F46" stroke-width="15"/>
+    <circle cx="205" cy="190" r="40" stroke="#065F46" stroke-width="15"/>
   </g>
 
-  <!-- text -->
-  <g fill="url(#gold)" font-family="'Montserrat', 'Poppins', 'Arial Black', sans-serif" text-anchor="middle" filter="url(#emboss)">
-    <text x="512" y="682" font-size="92" font-weight="800" letter-spacing="2">VEER MAHADEV</text>
-    <text x="512" y="784" font-size="92" font-weight="800" letter-spacing="2">PLASTIC</text>
-    <text x="512" y="855" font-size="60" font-weight="700" letter-spacing="3">WHOLESALE</text>
-  </g>
+  <text x="50%" y="360" text-anchor="middle" fill="#D4AF37" font-family="Montserrat, Arial, sans-serif" font-weight="bold" font-size="38">VEER MAHADEV</text>
+  <text x="50%" y="410" text-anchor="middle" fill="#D4AF37" font-family="Montserrat, Arial, sans-serif" font-weight="bold" font-size="45" letter-spacing="2">PLASTIC</text>
+  
+  <text x="50%" y="455" text-anchor="middle" fill="#E5E7EB" font-family="Arial, sans-serif" font-weight="600" font-size="22" letter-spacing="4">WHOLESALE</text>
 </svg>
