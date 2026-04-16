@@ -1,34 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Veer Mahadev Plastic Wholesale logo">
   <defs>
-    <linearGradient id="bg" x1="0" x2="1">
-      <stop offset="0%" stop-color="#0b5a43"/>
-      <stop offset="100%" stop-color="#06392b"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f6b52"/>
+      <stop offset="0.55" stop-color="#0e765b"/>
+      <stop offset="1" stop-color="#084536"/>
     </linearGradient>
-    <linearGradient id="gold" x1="0" x2="1">
-      <stop offset="0%" stop-color="#c79a2b"/>
-      <stop offset="50%" stop-color="#f5df8c"/>
-      <stop offset="100%" stop-color="#b9871e"/>
+
+    <radialGradient id="bgLight" cx="48%" cy="38%" r="80%">
+      <stop offset="0" stop-color="#1d8f6d" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5e7a8"/>
+      <stop offset="0.35" stop-color="#dcc177"/>
+      <stop offset="0.7" stop-color="#ba934b"/>
+      <stop offset="1" stop-color="#f0dc98"/>
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000" flood-opacity="0.28"/>
+
+    <filter id="emboss" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#2e1f06" flood-opacity="0.45"/>
     </filter>
   </defs>
-  <rect width="512" height="512" fill="#f4f1ea"/>
-  <g filter="url(#shadow)">
-    <rect x="82" y="52" width="348" height="408" rx="56" fill="url(#bg)" stroke="url(#gold)" stroke-width="8"/>
+
+  <!-- badge -->
+  <rect x="46" y="46" width="932" height="932" rx="136" fill="url(#bg)"/>
+  <rect x="46" y="46" width="932" height="932" rx="136" fill="url(#bgLight)"/>
+  <rect x="46" y="46" width="932" height="932" rx="136" fill="none" stroke="url(#gold)" stroke-width="12"/>
+  <rect x="58" y="58" width="908" height="908" rx="124" fill="none" stroke="#8d6a2e" stroke-opacity="0.55" stroke-width="2"/>
+
+  <!-- ABSTRACT HIDDEN 666 ICON -->
+  <g transform="translate(512 360)" fill="none" stroke="url(#gold)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" filter="url(#emboss)">
+    
+    <!-- Curve 1 -->
+    <path d="
+      M0 -120
+      C80 -120, 120 -40, 60 0
+      C0 40, -60 0, -20 -50
+    "/>
+
+    <!-- Curve 2 -->
+    <g transform="rotate(120)">
+      <path d="
+        M0 -120
+        C80 -120, 120 -40, 60 0
+        C0 40, -60 0, -20 -50
+      "/>
+    </g>
+
+    <!-- Curve 3 -->
+    <g transform="rotate(240)">
+      <path d="
+        M0 -120
+        C80 -120, 120 -40, 60 0
+        C0 40, -60 0, -20 -50
+      "/>
+    </g>
+
   </g>
-  <g fill="none" stroke="url(#gold)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="256" cy="158" r="76" opacity="0.95"/>
-    <path d="M166 196l24-74 66 54 66-54 24 74"/>
-    <path d="M194 150l22 32 40-56 40 56 22-32"/>
-    <circle cx="216" cy="114" r="8" fill="url(#gold)"/>
-    <circle cx="256" cy="92" r="8" fill="url(#gold)"/>
-    <circle cx="296" cy="114" r="8" fill="url(#gold)"/>
-    <path d="M164 138h24M324 138h24" opacity="0.8"/>
-  </g>
-  <g fill="url(#gold)" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
-    <text x="256" y="286" font-size="36" font-weight="700">VEER MAHADEV</text>
-    <text x="256" y="332" font-size="54" font-weight="800">PLASTIC</text>
-    <text x="256" y="382" font-size="26" letter-spacing="5">WHOLESALE</text>
+
+  <!-- text -->
+  <g fill="url(#gold)" font-family="'Montserrat', 'Poppins', 'Arial Black', sans-serif" text-anchor="middle" filter="url(#emboss)">
+    <text x="512" y="682" font-size="92" font-weight="800" letter-spacing="2">VEER MAHADEV</text>
+    <text x="512" y="784" font-size="92" font-weight="800" letter-spacing="2">PLASTIC</text>
+    <text x="512" y="855" font-size="60" font-weight="700" letter-spacing="3">WHOLESALE</text>
   </g>
 </svg>
