@@ -1,57 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-label="Veer Mahadev Plastic Wholesale logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Veer Mahadev Plastic Wholesale logo">
   <defs>
-    <linearGradient id="badgeGreen" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0a5b46"/>
-      <stop offset="0.55" stop-color="#0d7c5f"/>
-      <stop offset="1" stop-color="#083f32"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f6b52"/>
+      <stop offset="0.55" stop-color="#0e765b"/>
+      <stop offset="1" stop-color="#084536"/>
     </linearGradient>
-    <radialGradient id="innerLight" cx="48%" cy="42%" r="72%">
-      <stop offset="0" stop-color="#22a177" stop-opacity="0.40"/>
-      <stop offset="1" stop-color="#0b4f3e" stop-opacity="0"/>
+
+    <radialGradient id="bgLight" cx="48%" cy="38%" r="80%">
+      <stop offset="0" stop-color="#1d8f6d" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
     </radialGradient>
+
     <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f9ecb3"/>
-      <stop offset="0.3" stop-color="#e1c776"/>
-      <stop offset="0.65" stop-color="#ba944a"/>
-      <stop offset="1" stop-color="#f1dd99"/>
+      <stop offset="0" stop-color="#f5e7a8"/>
+      <stop offset="0.35" stop-color="#dcc177"/>
+      <stop offset="0.7" stop-color="#ba934b"/>
+      <stop offset="1" stop-color="#f0dc98"/>
     </linearGradient>
-    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="6" stdDeviation="4" flood-color="#231704" flood-opacity="0.5"/>
+
+    <filter id="emboss" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#2e1f06" flood-opacity="0.45"/>
     </filter>
-    <marker id="arr" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
-      <path d="M0 0L12 6L0 12Z" fill="url(#gold)"/>
-    </marker>
   </defs>
 
-  <!-- Badge -->
-  <rect x="40" y="40" width="820" height="820" rx="118" fill="url(#badgeGreen)"/>
-  <rect x="40" y="40" width="820" height="820" rx="118" fill="url(#innerLight)"/>
-  <rect x="40" y="40" width="820" height="820" rx="118" fill="none" stroke="url(#gold)" stroke-width="10"/>
-  <rect x="50" y="50" width="800" height="800" rx="108" fill="none" stroke="#866427" stroke-opacity="0.6" stroke-width="2"/>
+  <!-- badge -->
+  <rect x="46" y="46" width="932" height="932" rx="136" fill="url(#bg)"/>
+  <rect x="46" y="46" width="932" height="932" rx="136" fill="url(#bgLight)"/>
+  <rect x="46" y="46" width="932" height="932" rx="136" fill="none" stroke="url(#gold)" stroke-width="12"/>
+  <rect x="58" y="58" width="908" height="908" rx="124" fill="none" stroke="#8d6a2e" stroke-opacity="0.55" stroke-width="2"/>
 
-  <!-- Emblem (closer to reference tri-6 symbol) -->
-  <g transform="translate(450 315)" filter="url(#shadow)">
-    <g fill="none" stroke="url(#gold)" stroke-width="23" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="0" cy="-92" r="44"/>
-      <path d="M36 -180C-6 -136-26 -98-22 -65C-18 -33 3 -12 33 -2C67 10 106 7 139-14"/>
-      <path d="M-30 -58C-73 -20-88 26-75 71C-60 121-25 157 29 169C75 179 116 170 150 144" marker-end="url(#arr)"/>
+  <!-- ABSTRACT HIDDEN 666 ICON -->
+  <g transform="translate(512 360)" fill="none" stroke="url(#gold)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" filter="url(#emboss)">
+    
+    <!-- Curve 1 -->
+    <path d="
+      M0 -120
+      C80 -120, 120 -40, 60 0
+      C0 40, -60 0, -20 -50
+    "/>
+
+    <!-- Curve 2 -->
+    <g transform="rotate(120)">
+      <path d="
+        M0 -120
+        C80 -120, 120 -40, 60 0
+        C0 40, -60 0, -20 -50
+      "/>
     </g>
-    <g transform="rotate(120)" fill="none" stroke="url(#gold)" stroke-width="23" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="0" cy="-92" r="44"/>
-      <path d="M36 -180C-6 -136-26 -98-22 -65C-18 -33 3 -12 33 -2C67 10 106 7 139-14"/>
-      <path d="M-30 -58C-73 -20-88 26-75 71C-60 121-25 157 29 169C75 179 116 170 150 144" marker-end="url(#arr)"/>
+
+    <!-- Curve 3 -->
+    <g transform="rotate(240)">
+      <path d="
+        M0 -120
+        C80 -120, 120 -40, 60 0
+        C0 40, -60 0, -20 -50
+      "/>
     </g>
-    <g transform="rotate(240)" fill="none" stroke="url(#gold)" stroke-width="23" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="0" cy="-92" r="44"/>
-      <path d="M36 -180C-6 -136-26 -98-22 -65C-18 -33 3 -12 33 -2C67 10 106 7 139-14"/>
-      <path d="M-30 -58C-73 -20-88 26-75 71C-60 121-25 157 29 169C75 179 116 170 150 144" marker-end="url(#arr)"/>
-    </g>
+
   </g>
 
-  <!-- Text -->
-  <g fill="url(#gold)" text-anchor="middle" font-family="'Montserrat', 'Poppins', 'Arial Black', sans-serif" filter="url(#shadow)">
-    <text x="450" y="610" font-size="74" font-weight="800" letter-spacing="1.5">VEER MAHADEV</text>
-    <text x="450" y="690" font-size="74" font-weight="800" letter-spacing="1.5">PLASTIC</text>
-    <text x="450" y="748" font-size="50" font-weight="700" letter-spacing="2.5">WHOLESALE</text>
+  <!-- text -->
+  <g fill="url(#gold)" font-family="'Montserrat', 'Poppins', 'Arial Black', sans-serif" text-anchor="middle" filter="url(#emboss)">
+    <text x="512" y="682" font-size="92" font-weight="800" letter-spacing="2">VEER MAHADEV</text>
+    <text x="512" y="784" font-size="92" font-weight="800" letter-spacing="2">PLASTIC</text>
+    <text x="512" y="855" font-size="60" font-weight="700" letter-spacing="3">WHOLESALE</text>
   </g>
 </svg>
