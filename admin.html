@@ -44,6 +44,54 @@
         <article id="metricLowStockCard" class="rounded-2xl border border-rose-200 bg-rose-50 p-4 shadow-sm"><p class="text-xs uppercase text-rose-700">Low Stock Alerts</p><p id="metricLowStock" class="mt-1 text-3xl font-black text-rose-700">0</p></article>
       </div>
 
+      <div class="grid gap-6 lg:grid-cols-2">
+        <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Zerodha-Style Analytics</p>
+          <h3 class="mt-1 text-2xl font-black text-slate-900">Live Profit / Loss</h3>
+          <div class="mt-3 flex flex-wrap gap-2 text-xs">
+            <span class="rounded-full bg-emerald-100 px-3 py-1 font-semibold text-emerald-700">Sales (Green)</span>
+            <span class="rounded-full bg-rose-100 px-3 py-1 font-semibold text-rose-700">Expenses (Red)</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700">Daily Expense Base: ₹2,500</span>
+          </div>
+          <svg id="plChart" viewBox="0 0 420 180" class="mt-4 h-48 w-full rounded-xl bg-slate-50 p-2"></svg>
+          <div class="mt-4 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-xl border border-slate-200 p-3"><p class="text-xs text-slate-500">Today's Sales</p><p id="todaySales" class="text-2xl font-black text-emerald-800">₹0</p></div>
+            <div class="rounded-xl border border-slate-200 p-3"><p class="text-xs text-slate-500">Today's Expenses</p><p id="todayExpense" class="text-2xl font-black text-rose-700">₹2,500</p></div>
+            <div class="rounded-xl border border-slate-200 p-3"><p class="text-xs text-slate-500">Live P/L</p><p id="todayPL" class="text-2xl font-black text-slate-900">₹0</p></div>
+          </div>
+          <p id="targetAlert" class="mt-3 text-sm font-semibold"></p>
+        </div>
+
+        <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Vyapar-Style POS</p>
+          <h3 class="mt-1 text-2xl font-black text-slate-900">Quick Entry Retail Billing</h3>
+          <div id="posGrid" class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3"></div>
+          <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3">
+            <p class="text-sm font-semibold text-slate-800">POS Cart</p>
+            <div id="posCart" class="mt-2 space-y-2 text-sm text-slate-700"></div>
+            <div class="mt-3 text-sm">
+              <p>Subtotal: ₹<span id="posSubtotal">0.00</span></p>
+              <p>GST (5%): ₹<span id="posGst">0.00</span></p>
+              <p class="font-bold">Bill of Supply: ₹<span id="posTotal">0.00</span></p>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <button id="clearPos" class="rounded-lg border px-3 py-2 text-xs font-semibold">Clear</button>
+              <button id="savePosSale" class="rounded-lg bg-[#065f46] px-3 py-2 text-xs font-semibold text-white">Save Sale & Deduct Stock</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
+        <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">VMP AI Assistant</p>
+        <h3 class="mt-1 text-2xl font-black text-slate-900">Ask business questions</h3>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <input id="aiQuestion" class="w-full max-w-xl rounded-xl border border-slate-200 px-4 py-3 text-sm" placeholder="Ask: What is today's total sale? / Which item is low in stock?" />
+          <button id="askAi" class="rounded-xl bg-[#065f46] px-4 py-3 text-sm font-semibold text-white">Ask AI</button>
+        </div>
+        <p id="aiReply" class="mt-3 rounded-xl bg-emerald-50 p-3 text-sm text-slate-700">AI assistant ready.</p>
+      </div>
+
       <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <div class="space-y-6">
           <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
@@ -87,7 +135,13 @@
     const AISENSY_API_URL = 'https://backend.aisensy.com/campaign/t1/api/v2';
     const AISENSY_API_KEY = localStorage.getItem('vmpAisensyApiKey') || '';
     const AISENSY_CAMPAIGN_NAME = localStorage.getItem('vmpAisensyCampaign') || 'post_purchase_updates';
+    const DAILY_EXPENSE = 2500;
+    const WARNING_THRESHOLD = 10000;
     let dashboardReloadTimer = null;
+    let latestOrders = [];
+    let latestProducts = [];
+    let latestInventoryMap = {};
+    let posCart = {};
     const FIREBASE_CONFIG = (window.__FIREBASE_CONFIG__) || (window.VMP_CONFIG?.firebase) || (window.VMP_APP?.config?.firebase) || {};
 
     function readJson(key, fallback){
@@ -272,6 +326,109 @@
       });
     }
 
+    function renderPos(products, inventoryMap = {}){
+      latestProducts = products;
+      latestInventoryMap = inventoryMap;
+      const grid = document.getElementById('posGrid');
+      if(!grid) return;
+      grid.innerHTML = products.slice(0, 12).map((p) => `
+        <button data-pos-id="${p.id}" class="rounded-xl border border-emerald-100 bg-white p-3 text-left shadow-sm hover:border-emerald-300">
+          <p class="text-xs text-slate-500">${p.category}</p>
+          <p class="mt-1 text-sm font-bold text-slate-900">${p.name}</p>
+        </button>
+      `).join('');
+
+      document.querySelectorAll('[data-pos-id]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.posId;
+          posCart[id] = (posCart[id] || 0) + 1;
+          updatePosCart();
+        });
+      });
+      updatePosCart();
+    }
+
+    function updatePosCart(){
+      const list = document.getElementById('posCart');
+      if(!list) return;
+      const rows = Object.entries(posCart);
+      if(!rows.length){
+        list.innerHTML = '<p class="text-slate-500">No items added.</p>';
+        document.getElementById('posSubtotal').textContent = '0.00';
+        document.getElementById('posGst').textContent = '0.00';
+        document.getElementById('posTotal').textContent = '0.00';
+        return;
+      }
+      let subtotal = 0;
+      list.innerHTML = rows.map(([id, qty]) => {
+        const p = latestProducts.find((item) => item.id === id);
+        const unit = Number(p?.tiers?.[0]?.price || 0);
+        const line = qty * unit;
+        subtotal += line;
+        return `<p class="flex items-center justify-between"><span>${p?.name || id} × ${qty}</span><span>₹${line.toFixed(2)}</span></p>`;
+      }).join('');
+      const gst = subtotal * 0.05;
+      const total = subtotal + gst;
+      document.getElementById('posSubtotal').textContent = subtotal.toFixed(2);
+      document.getElementById('posGst').textContent = gst.toFixed(2);
+      document.getElementById('posTotal').textContent = total.toFixed(2);
+    }
+
+    function renderBusinessHealth(orders){
+      latestOrders = orders;
+      const today = new Date().toISOString().slice(0, 10);
+      const todaySales = orders
+        .filter((o) => String(o.date || o.createdAt || '').slice(0, 10) === today || !o.date)
+        .reduce((sum, o) => sum + Number(o.total || 0), 0);
+      const pl = todaySales - DAILY_EXPENSE;
+      document.getElementById('todaySales').textContent = `₹${todaySales.toFixed(2)}`;
+      document.getElementById('todayExpense').textContent = `₹${DAILY_EXPENSE.toFixed(2)}`;
+      const plEl = document.getElementById('todayPL');
+      plEl.textContent = `₹${pl.toFixed(2)}`;
+      plEl.className = `text-2xl font-black ${pl >= 0 ? 'text-emerald-800' : 'text-rose-700'}`;
+      const alertEl = document.getElementById('targetAlert');
+      if(todaySales < WARNING_THRESHOLD){
+        alertEl.className = 'mt-3 text-sm font-semibold text-rose-700';
+        alertEl.textContent = 'Warning: Not meeting daily expense targets.';
+      } else {
+        alertEl.className = 'mt-3 text-sm font-semibold text-emerald-700';
+        alertEl.textContent = 'Healthy: daily sales are above warning threshold.';
+      }
+      renderPlChart(orders);
+    }
+
+    function renderPlChart(orders){
+      const chart = document.getElementById('plChart');
+      if(!chart) return;
+      const recent = [...orders].slice(0, 7).reverse();
+      const sales = recent.map((o) => Number(o.total || 0));
+      const max = Math.max(DAILY_EXPENSE, ...sales, 1);
+      const toY = (v) => 150 - (v / max) * 110;
+      const step = recent.length > 1 ? 320 / (recent.length - 1) : 320;
+      const salesPoints = sales.map((v, i) => `${50 + i * step},${toY(v)}`).join(' ');
+      const expensePoints = sales.map((_, i) => `${50 + i * step},${toY(DAILY_EXPENSE)}`).join(' ');
+      chart.innerHTML = `
+        <line x1="40" y1="20" x2="40" y2="155" stroke="#94a3b8" stroke-width="1"/>
+        <line x1="40" y1="155" x2="390" y2="155" stroke="#94a3b8" stroke-width="1"/>
+        <polyline points="${expensePoints}" fill="none" stroke="#dc2626" stroke-width="3"/>
+        <polyline points="${salesPoints}" fill="none" stroke="#059669" stroke-width="3"/>
+      `;
+    }
+
+    function answerAi(question){
+      const q = String(question || '').toLowerCase();
+      if(!q) return 'Please ask a question.';
+      if(q.includes('today') && q.includes('sale')){
+        const value = latestOrders.reduce((sum, item) => sum + Number(item.total || 0), 0);
+        return `Today's tracked total sale is around ₹${value.toFixed(2)}.`;
+      }
+      if(q.includes('low') && q.includes('stock')){
+        const low = latestProducts.filter((p) => Number(latestInventoryMap[p.id]?.stock ?? p.stock ?? 0) < LOW_STOCK_THRESHOLD);
+        return low.length ? `Low stock items: ${low.slice(0, 5).map((item) => item.name).join(', ')}.` : 'No low stock items right now.';
+      }
+      return 'I can answer sales, low stock, profit/loss, and order trend related questions.';
+    }
+
     async function loadDashboardData(){
       const db = getDb();
       const products = readJson('vmpProductSnapshot', []);
@@ -285,6 +442,8 @@
       renderCustomers();
       renderOrders(orders);
       renderInventory(products, inventoryMap, priceMap);
+      renderPos(products, inventoryMap);
+      renderBusinessHealth(orders);
 
       if(db){
         try {
@@ -306,6 +465,8 @@
       renderCustomers();
       renderOrders(orders);
       renderInventory(products, inventoryMap, priceMap);
+      renderPos(products, inventoryMap);
+      renderBusinessHealth(orders);
       const inventoryValue = products.reduce((sum, p) => {
         const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
         const unit = Number(priceMap[p.id]?.price100 ?? p.price100 ?? p.tiers?.[0]?.price ?? 0);
@@ -344,6 +505,30 @@
     });
 
     document.getElementById('reloadInventory').addEventListener('click', loadDashboardData);
+    document.getElementById('clearPos').addEventListener('click', () => {
+      posCart = {};
+      updatePosCart();
+    });
+    document.getElementById('savePosSale').addEventListener('click', async () => {
+      const updates = Object.entries(posCart);
+      if(!updates.length) return;
+      const db = getDb();
+      updates.forEach(([id, qty]) => {
+        const current = Number(latestInventoryMap[id]?.stock ?? 0);
+        latestInventoryMap[id] = { stock: Math.max(0, current - qty) };
+      });
+      writeJson('vmpInventoryOverrides', latestInventoryMap);
+      if(db){
+        await Promise.all(updates.map(([id]) => db.collection('inventory').doc(id).set({ stock: latestInventoryMap[id].stock }, { merge: true })));
+      }
+      posCart = {};
+      updatePosCart();
+      queueDashboardReload(100);
+    });
+    document.getElementById('askAi').addEventListener('click', () => {
+      const question = document.getElementById('aiQuestion').value;
+      document.getElementById('aiReply').textContent = answerAi(question);
+    });
   </script>
 </body>
 </html>
