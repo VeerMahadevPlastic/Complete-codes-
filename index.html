@@ -333,25 +333,30 @@
 
   <main id="home">
     <section class="border-b border-emerald-100 bg-white">
-      <div class="mx-auto grid max-w-7xl gap-4 px-4 py-8 lg:grid-cols-[1fr_280px]">
-        <div class="overflow-hidden rounded-[2rem] border border-emerald-100 bg-gradient-to-r from-emerald-100 via-amber-50 to-emerald-50 p-7">
-          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-700">Maha Indian Catering Sale</p>
-          <h1 class="mt-3 text-4xl font-black text-slate-900 lg:text-5xl">Smart Wholesale Shopping for Catering Businesses</h1>
-          <p class="mt-3 max-w-2xl text-base text-slate-700">Factory-direct pricing on disposable plates, catering trays, takeaway containers and premium bulk packs.</p>
-          <div class="mt-5 flex flex-wrap gap-3">
-            <a href="#shop" class="rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white">Shop Wholesale</a>
-            <a href="#wholesale" class="rounded-xl border border-emerald-400 px-5 py-3 text-sm font-bold text-emerald-800">Get Supplier Pricing</a>
-            <a href="https://www.indiamart.com/veer-mahadev-plastic/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-xl border border-[#D4AF37]/70 bg-white px-5 py-3 text-sm font-bold text-slate-900">
-              <span class="rounded-full bg-[#065f46] px-2 py-1 text-[10px] font-black uppercase tracking-wide text-[#D4AF37]">Verified</span>
-              IndiaMART Store
-            </a>
+      <div class="mx-auto max-w-7xl px-4 py-8">
+        <div class="overflow-hidden rounded-[2rem] border border-[#D4AF37]/40 bg-gradient-to-r from-[#064e3b] via-[#0f766e] to-[#7f1d1d] p-5 text-white shadow-xl lg:p-7">
+          <div class="grid gap-5 lg:grid-cols-[1.1fr_1fr_0.9fr] lg:items-center">
+            <div>
+              <p id="seasonBadge" class="text-xs font-black uppercase tracking-[0.28em] text-[#facc15]">MAHA INDIAN CATERING SALE</p>
+              <h1 id="heroHeading" class="mt-3 text-3xl font-black leading-tight text-white lg:text-4xl">Get Premium Catering Disposables at Factory Prices!</h1>
+              <p id="heroDescription" class="mt-3 text-sm text-emerald-50">Ahmedabad's Best! Direct Factory Rates on all catering packs. Trust the Prajapati family business since 2022.</p>
+              <p class="mt-3 rounded-xl border border-[#fbbf24]/40 bg-white/10 px-3 py-2 text-sm font-semibold text-[#fde68a]">Special Combo: Free Delivery on Wedding Orders Over ₹50,000!</p>
+              <p class="mt-2 text-xs font-semibold text-emerald-100">Meal Trays | Catering Bags | Wedding Bill Books | Eco-Friendly Ware</p>
+              <p class="mt-2 text-sm font-bold text-emerald-100">Ahmedabad ke Caterers ki pehli pasand! Direct Factory rates par.</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <img src="image_563fab.jpg" alt="Meal Trays" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
+              <img src="image_563fab.jpg" alt="Catering Bags" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
+              <img src="image_563fab.jpg" alt="Cups and Glasses" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
+              <img src="image_563fab.jpg" alt="Stationery Bill Books" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
+            </div>
+            <div class="rounded-2xl border border-white/30 bg-white/10 p-4 text-center backdrop-blur-sm">
+              <p class="text-xs font-black uppercase tracking-[0.2em] text-[#facc15]">Download App</p>
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fwww.veermahadevplastic.in%2F" alt="Veer Mahadev App QR" class="mx-auto mt-2 h-36 w-36 rounded-xl border border-white/30 bg-white p-2" loading="lazy"/>
+              <a id="heroPrimaryCta" href="#shop" class="pulse-soft mt-3 inline-flex w-full items-center justify-center rounded-xl bg-[#facc15] px-4 py-3 text-sm font-black text-[#065f46]">Shop Wholesale</a>
+              <a id="heroSecondaryCta" href="#wholesale" class="mt-2 inline-flex w-full items-center justify-center rounded-xl border border-white/40 px-4 py-2 text-xs font-bold text-white">Get Supplier Pricing</a>
+            </div>
           </div>
-        </div>
-        <div class="rounded-[2rem] border border-emerald-100 bg-white p-5 text-center shadow-sm">
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Download App</p>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fwww.veermahadevplastic.in%2F" alt="Veer Mahadev App QR" class="mx-auto mt-3 h-44 w-44 rounded-xl border border-slate-100 bg-white p-2" loading="lazy"/>
-          <p class="mt-2 text-sm font-bold text-slate-800">Only on App</p>
-          <p class="text-xs text-slate-500">Instant alerts, live rates & repeat orders</p>
         </div>
       </div>
     </section>
@@ -1576,6 +1581,47 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       }, (error) => console.warn('Retail pricing sync failed.', error));
     }
 
+    function applySeasonBanner(mode){
+      const badge = document.getElementById('seasonBadge');
+      const heading = document.getElementById('heroHeading');
+      const desc = document.getElementById('heroDescription');
+      const primary = document.getElementById('heroPrimaryCta');
+      const secondary = document.getElementById('heroSecondaryCta');
+      if(!badge || !heading || !desc || !primary || !secondary) return;
+      if(mode === 'wedding'){
+        badge.textContent = 'MAHA INDIAN CATERING SALE • WEDDING SEASON';
+        heading.textContent = 'Premium Meal Trays & Wedding Catering Combos';
+        desc.textContent = 'Ahmedabad wedding dispatch special: direct factory rates on premium trays, bags and event packs.';
+        primary.textContent = 'Shop Wedding Combos';
+        secondary.textContent = 'View Premium Meal Trays';
+        secondary.setAttribute('href', '#shop');
+        return;
+      }
+      if(mode === 'festival'){
+        badge.textContent = 'MAHA INDIAN CATERING SALE • FESTIVAL SEASON';
+        heading.textContent = 'Eco-Friendly Paper Plates & Takeaway Boxes';
+        desc.textContent = 'Festival-ready sustainable range for Ahmedabad caterers, food stalls and takeaway operations.';
+        primary.textContent = 'Shop Eco Range';
+        secondary.textContent = 'Get Festival Stock';
+        secondary.setAttribute('href', '#eco');
+        return;
+      }
+      badge.textContent = 'MAHA INDIAN CATERING SALE';
+      heading.textContent = 'Get Premium Catering Disposables at Factory Prices!';
+      desc.textContent = 'Ahmedabad\'s Best! Direct Factory Rates on all catering packs. Trust the Prajapati family business since 2022.';
+      primary.textContent = 'Shop Wholesale';
+      secondary.textContent = 'Get Supplier Pricing';
+      secondary.setAttribute('href', '#wholesale');
+    }
+
+    function syncSeasonBannerRealtime(){
+      const db = getFirestoreDb();
+      if(!db) return;
+      db.collection('appSettings').doc('seasonMode').onSnapshot((doc) => {
+        applySeasonBanner(doc.data()?.mode || 'normal');
+      }, () => applySeasonBanner('normal'));
+    }
+
     writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
       id: product.id,
       name: product.name,
@@ -2631,21 +2677,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return /^\d{6}$/.test(String(value || '').trim());
     }
 
-    function normalizeIndianPhone(value){
-      const digits = String(value || '').replace(/\D/g, '');
-      if(digits.length === 12 && digits.startsWith('91')) return digits.slice(2);
-      if(digits.length === 11 && digits.startsWith('0')) return digits.slice(1);
-      return digits;
-    }
-
-    function isValidIndianPhone(value){
-      return /^[6-9]\d{9}$/.test(normalizeIndianPhone(value));
-    }
-
-    function isValidPincode(value){
-      return /^\d{6}$/.test(String(value || '').trim());
-    }
-
     function openCart(){
       if(cartDrawer) cartDrawer.classList.remove('translate-x-full');
       if(drawerOverlay) drawerOverlay.classList.remove('hidden');
@@ -3240,6 +3271,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     renderGuestEstimator();
     syncInventoryRealtime();
     syncRetailPricingRealtime();
+    syncSeasonBannerRealtime();
     renderCart();
     currentUser = loadCurrentUser();
     if(currentUser){

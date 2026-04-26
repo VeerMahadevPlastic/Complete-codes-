@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, Switch } from 'react-native';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, doc, onSnapshot, query, setDoc, where } from 'firebase/firestore';
 import * as Notifications from 'expo-notifications';
 import { db } from '../services/firebase';
 import { COLORS } from '../theme/colors';
@@ -11,6 +11,7 @@ export default function DashboardScreen() {
   const [aiEnabled, setAiEnabled] = useState(false);
   const [inventory, setInventory] = useState([]);
   const [paidOrders, setPaidOrders] = useState([]);
+  const [seasonMode, setSeasonMode] = useState('normal');
 
   useEffect(() => {
     const q = query(collection(db, 'transactions'));
@@ -46,6 +47,19 @@ export default function DashboardScreen() {
   useEffect(() => onSnapshot(collection(db, 'inventory'), (snap) => {
     setInventory(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
   }), []);
+
+  useEffect(() => onSnapshot(collection(db, 'appSettings'), (snap) => {
+    const seasonDoc = snap.docs.find((d) => d.id === 'seasonMode');
+    if (seasonDoc) setSeasonMode(seasonDoc.data()?.mode || 'normal');
+  }), []);
+
+  const setSeason = async (mode) => {
+    setSeasonMode(mode);
+    await setDoc(doc(db, 'appSettings', 'seasonMode'), {
+      mode,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+  };
 
   const aiSuggestions = useMemo(() => {
     if (!aiEnabled) return { lowStock: [], topSelling: [] };
@@ -87,6 +101,33 @@ export default function DashboardScreen() {
           <Text style={{ color: '#64748B', fontSize: 12 }}>Low stock + top sellers (Ahmedabad)</Text>
         </View>
         <Switch value={aiEnabled} onValueChange={setAiEnabled} />
+      </View>
+      <View style={{ marginTop: 10, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#DCFCE7', padding: 10 }}>
+        <Text style={{ fontWeight: '700', color: '#065F46' }}>Season Mode</Text>
+        <View style={{ marginTop: 8, flexDirection: 'row', gap: 8 }}>
+          {[
+            { key: 'wedding', label: 'Wedding Season' },
+            { key: 'festival', label: 'Festival Season' },
+            { key: 'normal', label: 'Normal' }
+          ].map((item) => (
+            <Text
+              key={item.key}
+              onPress={() => setSeason(item.key)}
+              style={{
+                paddingVertical: 7,
+                paddingHorizontal: 10,
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: '#A7F3D0',
+                backgroundColor: seasonMode === item.key ? '#ECFDF5' : '#fff',
+                color: seasonMode === item.key ? '#065F46' : '#475569',
+                fontWeight: '700'
+              }}
+            >
+              {item.label}
+            </Text>
+          ))}
+        </View>
       </View>
       <View style={{ flexDirection: 'row', gap: 10, marginTop: 14 }}>
         {card("Today's Sales", summary.sales)}
