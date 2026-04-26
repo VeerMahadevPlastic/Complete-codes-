@@ -240,6 +240,25 @@
         <a href="#shop" class="hover:text-emerald-700">Plates</a>
         <a href="#shop" class="hover:text-emerald-700">Cups & Glass</a>
         <a href="#shop" class="hover:text-emerald-700">Bowls & Trays</a>
+        <details class="group relative">
+          <summary class="list-none cursor-pointer hover:text-emerald-700">Bags ▾</summary>
+          <div class="absolute left-0 top-7 z-40 w-56 rounded-xl border border-emerald-100 bg-white p-2 shadow-xl">
+            <button data-chip="Plastic Carry Bag" class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50">Plastic Bags</button>
+            <button data-chip="Sari Packing Bag" class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50">Sari Packing Bags</button>
+            <button data-chip="Paper Bag" class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50">Paper Bags</button>
+            <button data-chip="Biodegradable Carry Bag" class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50">Biodegradable Bags</button>
+            <button data-chip="Printed Bag" class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50">Printed Bags</button>
+          </div>
+        </details>
+        <details class="group relative">
+          <summary class="list-none cursor-pointer hover:text-emerald-700">Stationery ▾</summary>
+          <div class="absolute left-0 top-7 z-40 w-56 rounded-xl border border-emerald-100 bg-white p-2 shadow-xl">
+            <button data-chip="Printed Business Book" class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50">Printed Business Books</button>
+            <button data-chip="Duplicate Bill Book" class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50">Duplicate</button>
+            <button data-chip="Triplicate Invoice Book" class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50">Triplicate</button>
+            <button data-chip="Single Page Pad" class="block w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-emerald-50">Single Page Pads</button>
+          </div>
+        </details>
         <a href="#shop" class="hover:text-emerald-700">Catering Supplies</a>
         <a href="#shop" class="hover:text-emerald-700">Takeaway Boxes</a>
         <a href="#eco" class="hover:text-emerald-700">Eco-friendly</a>
@@ -249,6 +268,25 @@
       </nav>
       <nav id="mobilePrimaryMenu" class="mt-3 hidden space-y-2 rounded-2xl border border-emerald-100 bg-white p-3 text-sm font-semibold text-slate-700 md:hidden">
         <a href="#shop" class="block rounded-lg px-2 py-2 hover:bg-emerald-50">Products</a>
+        <details class="rounded-lg border border-emerald-100 p-2">
+          <summary class="cursor-pointer">Bags</summary>
+          <div class="mt-2 grid gap-1 text-xs font-medium">
+            <button data-chip="Plastic Carry Bag" class="rounded px-2 py-1 text-left hover:bg-emerald-50">Plastic Bags</button>
+            <button data-chip="Sari Packing Bag" class="rounded px-2 py-1 text-left hover:bg-emerald-50">Sari Packing Bags</button>
+            <button data-chip="Paper Bag" class="rounded px-2 py-1 text-left hover:bg-emerald-50">Paper Bags</button>
+            <button data-chip="Biodegradable Carry Bag" class="rounded px-2 py-1 text-left hover:bg-emerald-50">Biodegradable Bags</button>
+            <button data-chip="Printed Bag" class="rounded px-2 py-1 text-left hover:bg-emerald-50">Printed Bags</button>
+          </div>
+        </details>
+        <details class="rounded-lg border border-emerald-100 p-2">
+          <summary class="cursor-pointer">Stationery</summary>
+          <div class="mt-2 grid gap-1 text-xs font-medium">
+            <button data-chip="Printed Business Book" class="rounded px-2 py-1 text-left hover:bg-emerald-50">Printed Business Books</button>
+            <button data-chip="Duplicate Bill Book" class="rounded px-2 py-1 text-left hover:bg-emerald-50">Duplicate</button>
+            <button data-chip="Triplicate Invoice Book" class="rounded px-2 py-1 text-left hover:bg-emerald-50">Triplicate</button>
+            <button data-chip="Single Page Pad" class="rounded px-2 py-1 text-left hover:bg-emerald-50">Single Page Pads</button>
+          </div>
+        </details>
         <a href="#wholesale" class="block rounded-lg px-2 py-2 hover:bg-emerald-50">B2B Inquiry</a>
         <a href="#googleReviews" class="block rounded-lg px-2 py-2 hover:bg-emerald-50">Google Reviews</a>
         <a href="./customer-care.html" class="block rounded-lg px-2 py-2 hover:bg-emerald-50">Customer Care</a>
@@ -483,7 +521,7 @@
     <section id="founder-story" class="mx-auto max-w-7xl px-4 pb-10">
       <div class="founder-story grid gap-6 rounded-[2rem] p-6 text-white shadow-2xl lg:grid-cols-[1fr_1.2fr] lg:p-10">
         <div class="overflow-hidden rounded-[1.5rem] border border-white/25 bg-white/10">
-          <img src="https://i.postimg.cc/4dRvJm4q/I-am-Karan-Prajapati.jpg?auto=format&fit=crop&w=1200&q=80" alt="Founder portrait placeholder in suit" class="h-full min-h-[340px] w-full object-cover" loading="lazy" />
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=1200&q=80" alt="Founder portrait placeholder in suit" class="h-full min-h-[340px] w-full object-cover" loading="lazy" />
         </div>
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-200">Founder's Story</p>
@@ -716,9 +754,29 @@
             </div>
             <div id="modalAlsoBought" class="mt-3 flex gap-2 overflow-x-auto pb-1"></div>
           </div>
+          <button id="customPrintingBtn" class="hidden w-full rounded-xl border border-[#065f46] py-2.5 text-sm font-bold text-[#065f46]">🖨️ Request Custom Printing</button>
           <button id="modalOrderWa" class="w-full rounded-xl bg-emerald-700 py-2.5 text-sm font-bold text-white">💬 Order this product on WhatsApp</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div id="customPrintModal" class="hidden fixed inset-0 z-[72] bg-black/50 px-4">
+    <div class="mx-auto mt-12 max-w-lg rounded-3xl bg-white p-6 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h4 class="text-xl font-black text-slate-900">Request Custom Printing</h4>
+        <button id="closeCustomPrintModal" class="rounded-full border px-3 py-1 text-sm">✕</button>
+      </div>
+      <form id="customPrintForm" class="mt-4 space-y-3">
+        <input id="printCompanyName" required class="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Company Name" />
+        <input id="printGst" required class="w-full rounded-lg border px-3 py-2 text-sm" placeholder="GST Number" />
+        <input id="printWhatsapp" required class="w-full rounded-lg border px-3 py-2 text-sm" placeholder="WhatsApp Number" />
+        <input id="printLogo" type="file" accept=".png,.jpg,.jpeg,.svg,.pdf" class="w-full rounded-lg border px-3 py-2 text-sm" />
+        <textarea id="printNotes" rows="3" class="w-full rounded-lg border px-3 py-2 text-sm" placeholder="Printing details, quantity, colors, size"></textarea>
+        <button type="submit" class="w-full rounded-lg bg-[#065f46] py-2.5 text-sm font-bold text-white">Submit for Custom Quote</button>
+        <a href="./admin.html" class="inline-flex text-sm font-semibold text-emerald-700 underline">Open VMP Admin Dashboard</a>
+        <p id="customPrintMsg" class="text-xs font-semibold text-slate-600"></p>
+      </form>
     </div>
   </div>
 
@@ -1297,9 +1355,38 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     const priceOverrides = loadPriceOverrides();
 
+    async function loadExtendedCatalog(){
+      try {
+        const response = await fetch('./catalog/vmp-catalog-bags-stationery.json', { cache: 'no-store' });
+        if(!response.ok) return [];
+        const payload = await response.json();
+        const slabs = Array.isArray(payload.wholesale_price_slab) ? payload.wholesale_price_slab : [];
+        return (payload.categories || []).flatMap((mainCategory) =>
+          (mainCategory.sub_categories || []).flatMap((subCategory) =>
+            (subCategory.products || []).map((item) => ({
+              name: item.name,
+              category: `${mainCategory.name} - ${subCategory.name}`,
+              image: item.image || '',
+              stock: 300,
+              hsn: item.hsn || '3923',
+              supportsCustomPrinting: Boolean(item.supports_custom_printing),
+              tiers: slabs.map((slab) => ({
+                min: Number(slab.min_qty || 0),
+                price: Number((Number(item.base_price || 0) * Number(slab.price_factor || 1)).toFixed(2))
+              })).filter((tier) => tier.min > 0 && tier.price > 0)
+            }))
+          )
+        );
+      } catch (error) {
+        console.warn('Extended Bags/Stationery catalog load failed.', error);
+        return [];
+      }
+    }
+
     const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
 
-    const products = PRODUCT_ITEMS.map(item => {
+    function mapProductItems(items){
+      return items.map(item => {
       const id = slugify(item.name);
       const overridePrice = Number(priceOverrides[id]);
       const tiers = Number.isFinite(overridePrice) && overridePrice > 0
@@ -1313,9 +1400,28 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         ...item,
         id,
         tiers,
-        hsn: /paper|cornstarch|biodegradable/i.test(item.category) ? '4823' : (/glass/i.test(item.category) ? '3923' : '3924'),
+        hsn: item.hsn || (/paper|cornstarch|biodegradable|stationery/i.test(item.category) ? '4823' : (/glass|bag/i.test(item.category) ? '3923' : '3924')),
+        supportsCustomPrinting: Boolean(item.supportsCustomPrinting),
         image: PRODUCT_IMAGE_OVERRIDES[id] || item.image || imageFrom(item.name)
       };
+    });
+    }
+
+    const products = mapProductItems(PRODUCT_ITEMS);
+    loadExtendedCatalog().then((extraItems) => {
+      if(!extraItems.length) return;
+      const extraProducts = mapProductItems(extraItems);
+      products.push(...extraProducts);
+      writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        price100: product.tiers[0]?.price || 0
+      }))));
+      const dynamicCategories = ['All', ...new Set(products.map((p) => p.category))];
+      categories.splice(0, categories.length, ...dynamicCategories);
+      renderCategories();
+      applyProductFilters();
     });
 
     function syncInventoryRealtime(){
@@ -1724,6 +1830,51 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     bindById('productModal', 'click', (event)=>{
       if(event.target.id === 'productModal') closeProductDetails();
     });
+    bindById('customPrintingBtn', 'click', ()=>{
+      document.getElementById('customPrintModal')?.classList.remove('hidden');
+    });
+    bindById('closeCustomPrintModal', 'click', ()=>{
+      document.getElementById('customPrintModal')?.classList.add('hidden');
+    });
+    bindById('customPrintModal', 'click', (event)=>{
+      if(event.target.id === 'customPrintModal') event.target.classList.add('hidden');
+    });
+    bindById('customPrintForm', 'submit', async (event)=>{
+      event.preventDefault();
+      const msg = document.getElementById('customPrintMsg');
+      if(!selectedProductForOrder || !msg) return;
+      const requestItem = {
+        id: `CP-${Date.now()}`,
+        productId: selectedProductForOrder.id,
+        productName: selectedProductForOrder.name,
+        companyName: document.getElementById('printCompanyName')?.value.trim() || '',
+        gstNumber: document.getElementById('printGst')?.value.trim() || '',
+        whatsapp: document.getElementById('printWhatsapp')?.value.trim() || '',
+        notes: document.getElementById('printNotes')?.value.trim() || '',
+        logoFileName: document.getElementById('printLogo')?.files?.[0]?.name || '',
+        createdAt: new Date().toISOString(),
+        status: 'Pending Quote'
+      };
+      try {
+        const previous = JSON.parse(localStorage.getItem('vmpCustomPrintRequests') || '[]');
+        previous.unshift(requestItem);
+        localStorage.setItem('vmpCustomPrintRequests', JSON.stringify(previous.slice(0, 100)));
+      } catch (error) {
+        console.warn('Unable to save custom print request locally.', error);
+      }
+      try {
+        await fetch('/api/custom-print-requests', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestItem)
+        });
+      } catch (error) {
+        console.warn('Custom print request API unavailable.', error);
+      }
+      msg.className = 'text-xs font-semibold text-emerald-700';
+      msg.textContent = 'Request submitted. Please check VMP Admin dashboard for quote workflow.';
+      event.target.reset();
+    });
 
     bindById('modalOrderWa', 'click', ()=>{
       if(!selectedProductForOrder) return;
@@ -1745,6 +1896,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     function categoryIcon(category){
       const value = category.toLowerCase();
+      if(value.includes('bag')) return '🛍️';
+      if(value.includes('stationery') || value.includes('book') || value.includes('pad')) return '📘';
       if(value.includes('glass')) return '🥤';
       if(value.includes('plate') || value.includes('tray')) return '🍽️';
       if(value.includes('spoon') || value.includes('cutlery')) return '🥄';
@@ -1796,6 +1949,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       document.getElementById('productModalMoq').textContent = meta.moq;
       document.getElementById('productModalPricing').textContent = product.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ');
       document.getElementById('productModalUse').textContent = meta.use;
+      const showCustomPrint = Boolean(product.supportsCustomPrinting) || /printed bag|printed business book/i.test(product.name);
+      document.getElementById('customPrintingBtn')?.classList.toggle('hidden', !showCustomPrint);
       renderAlsoBought(product);
       productModal.classList.remove('hidden');
     }
@@ -2136,7 +2291,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       }
     });
 
-    document.querySelectorAll('.quick-chip').forEach((chip)=>{
+    document.querySelectorAll('[data-chip]').forEach((chip)=>{
       chip.addEventListener('click', ()=>{
         searchTerm = chip.dataset.chip || '';
         if(productSearch) productSearch.value = searchTerm;
