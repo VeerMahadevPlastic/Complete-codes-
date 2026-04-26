@@ -62,6 +62,8 @@ def create_order(order: OrderCreate):
     payload = order.model_dump()
     payload["created_at"] = order.created_at.isoformat()
     repo.set_doc("orders", order.order_id, payload)
+    for item in order.items:
+        repo.decrement_inventory(item.id, item.qty)
 
     invoice_bytes = generate_gst_invoice_pdf(
         payload,
@@ -80,6 +82,13 @@ def create_order(order: OrderCreate):
         media_type="application/pdf",
         headers={"Content-Disposition": f"inline; filename=invoice-{order.order_id}.pdf"},
     )
+
+
+@router.post("/custom-print-requests")
+def create_custom_print_request(payload: dict):
+    record = {**payload, "status": payload.get("status", "Pending Quote")}
+    repo.add("custom_print_requests", record)
+    return {"ok": True, "message": "Custom print request saved"}
 
 
 @router.post("/entries/cash-sales")
