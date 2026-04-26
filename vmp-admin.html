@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#065f46" />
+  <link rel="manifest" href="./vmp-admin-manifest.json" />
+  <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
   <title>VMP Admin | Financial & Inventory Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="./js/vmp-config.js"></script>
@@ -14,6 +17,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-database-compat.js" defer></script>
 </head>
 <body class="bg-[#f5f8f5] text-slate-800">
   <div id="adminGate" class="fixed inset-0 z-[120] flex items-center justify-center bg-black/50 p-4">
@@ -134,7 +138,7 @@
         </div>
         <div class="mt-4 overflow-x-auto rounded-xl border">
           <table class="min-w-full text-sm">
-            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Product</th><th class="px-3 py-2">Current Stock</th><th class="px-3 py-2">Wholesale Rate</th><th class="px-3 py-2">Retail Settings</th><th class="px-3 py-2">Action</th></tr></thead>
+            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Product</th><th class="px-3 py-2">Current Stock</th><th class="px-3 py-2">Wholesale Rate</th><th class="px-3 py-2">Retail Settings</th><th class="px-3 py-2">Add Photo</th><th class="px-3 py-2">Action</th></tr></thead>
             <tbody id="inventoryControllerRows"></tbody>
           </table>
         </div>
@@ -209,6 +213,7 @@
       </div>
     </div>
   </div>
+  <input id="productPhotoInput" type="file" accept="image/*" capture="environment" class="hidden" />
 
   <script>
     const FIREBASE_CONFIG = (window.VMP_CONFIG?.firebase) || {};
@@ -219,12 +224,14 @@
     let productsCache = [];
     let inventorySearchTerm = '';
     let retailConfigProductId = '';
+    let pendingPhotoProductId = '';
     let daybookUnsub = null;
     let productsUnsub = null;
 
     function getApp(){ return firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG); }
     function getDb(){ return firebase.firestore(getApp()); }
     function getStorage(){ return firebase.storage(getApp()); }
+    function getRealtimeDb(){ return firebase.database(getApp()); }
     function money(n){ return `₹${Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`; }
     function showMsg(id, text, ok = true){
       const el = document.getElementById(id);
@@ -459,10 +466,11 @@
             <td class="px-3 py-2"><input id="stock-input-${item.id}" type="number" value="${Number(item.currentStock ?? item.stock ?? 0)}" class="w-28 rounded-lg border px-2 py-1" /></td>
             <td class="px-3 py-2"><input id="rate-input-${item.id}" type="number" step="0.01" value="${Number(item.liveWholesaleRate ?? item.price100 ?? item.tiers?.[0]?.price ?? 0)}" class="w-28 rounded-lg border px-2 py-1" /></td>
             <td class="px-3 py-2"><button onclick="openRetailConfig('${item.id}')" class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800">Retail Packet</button></td>
+            <td class="px-3 py-2"><button onclick="triggerProductPhoto('${item.id}')" class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-800">Add Photo</button></td>
             <td class="px-3 py-2"><button onclick="saveLiveInventoryRow('${item.id}')" class="rounded-lg bg-emerald-700 px-3 py-1 text-xs font-bold text-white">Update Live</button></td>
           </tr>
         `);
-      tbody.innerHTML = rows.join('') || '<tr><td colspan="5" class="px-3 py-2 text-slate-500">No products found.</td></tr>';
+      tbody.innerHTML = rows.join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No products found.</td></tr>';
     }
 
     window.saveLiveInventoryRow = async function(productId){
@@ -479,7 +487,23 @@
         ],
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
+      await getRealtimeDb().ref(`products/${productId}`).update({
+        currentStock: Math.max(0, stock),
+        stock: Math.max(0, stock),
+        liveWholesaleRate: Math.max(0, wholesaleRate),
+        wholesale_price_slabs: {
+          tier_150: { min: 150, price: Math.max(0, wholesaleRate) },
+          tier_300: { min: 300, price: Number((Math.max(0, wholesaleRate) * 0.93).toFixed(2)) },
+          tier_600: { min: 600, price: Number((Math.max(0, wholesaleRate) * 0.86).toFixed(2)) }
+        },
+        updatedAt: Date.now()
+      });
       showMsg('stockMsg', 'Live stock/rate updated successfully.');
+    }
+
+    window.triggerProductPhoto = function(productId){
+      pendingPhotoProductId = productId;
+      document.getElementById('productPhotoInput').click();
     }
 
     window.openRetailConfig = function(productId){
@@ -543,51 +567,9 @@
     }
 
     function renderDaybook(entries){
-      const daybookRowsEl = document.getElementById('daybookRows');
-      daybookRowsEl.innerHTML = '';
-
-      if(!entries.length){
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = 6;
-        td.className = 'px-3 py-2 text-slate-500';
-        td.textContent = 'No entries.';
-        tr.appendChild(td);
-        daybookRowsEl.appendChild(tr);
-        return;
-      }
-
-      for(const e of entries){
-        const tr = document.createElement('tr');
-        tr.className = 'border-t';
-
-        const dateTd = document.createElement('td');
-        dateTd.className = 'px-3 py-2';
-        dateTd.textContent = e.date || '-';
-
-        const modeTd = document.createElement('td');
-        modeTd.className = 'px-3 py-2 uppercase';
-        modeTd.textContent = e.mode || '-';
-
-        const typeTd = document.createElement('td');
-        typeTd.className = 'px-3 py-2';
-        typeTd.textContent = e.type === 'sale' ? 'Sale In' : 'Expense Out';
-
-        const amountTd = document.createElement('td');
-        amountTd.className = 'px-3 py-2';
-        amountTd.textContent = money(e.amount);
-
-        const txnTd = document.createElement('td');
-        txnTd.className = 'px-3 py-2';
-        txnTd.textContent = e.txnId || '-';
-
-        const noteTd = document.createElement('td');
-        noteTd.className = 'px-3 py-2';
-        noteTd.textContent = e.note || '-';
-
-        tr.append(dateTd, modeTd, typeTd, amountTd, txnTd, noteTd);
-        daybookRowsEl.appendChild(tr);
-      }
+      document.getElementById('daybookRows').innerHTML = entries.map((e) => `
+        <tr class="border-t"><td class="px-3 py-2">${e.date || '-'}</td><td class="px-3 py-2 uppercase">${e.mode}</td><td class="px-3 py-2">${e.type === 'sale' ? 'Sale In' : 'Expense Out'}</td><td class="px-3 py-2">${money(e.amount)}</td><td class="px-3 py-2">${e.txnId || '-'}</td><td class="px-3 py-2">${e.note || '-'}</td></tr>
+      `).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No entries.</td></tr>';
     }
 
     async function loadDaybook(){
@@ -863,6 +845,9 @@
     });
 
     document.getElementById('reportFilter').addEventListener('change', loadSummary);
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('./vmp-admin-sw.js').catch(() => {});
+    }
     document.getElementById('inventorySearch').addEventListener('input', (e) => {
       inventorySearchTerm = e.target.value.trim().toLowerCase();
       renderInventoryController();
@@ -880,8 +865,42 @@
         retail_moq: retailMoq,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
+      await getRealtimeDb().ref(`products/${retailConfigProductId}`).update({
+        retail_price: Math.max(0, retailPrice),
+        retail_moq: retailMoq,
+        updatedAt: Date.now()
+      });
       document.getElementById('retailConfigModal').classList.add('hidden');
       showMsg('stockMsg', 'Retail packet settings updated.');
+    });
+    document.getElementById('productPhotoInput').addEventListener('change', async (event) => {
+      const file = event.target.files?.[0];
+      if(!file || !pendingPhotoProductId) return;
+      try {
+        const storageRef = getStorage().ref().child(`product-gallery/${pendingPhotoProductId}-${Date.now()}.jpg`);
+        await storageRef.put(file, { contentType: file.type || 'image/jpeg' });
+        const imageUrl = await storageRef.getDownloadURL();
+        const productRef = getDb().collection('products').doc(pendingPhotoProductId);
+        const product = productsCache.find((item) => item.id === pendingPhotoProductId) || {};
+        const previousGallery = Array.isArray(product.gallery_images) ? product.gallery_images : [];
+        const nextGallery = [imageUrl, ...previousGallery].slice(0, 12);
+        await productRef.set({
+          image: imageUrl,
+          gallery_images: nextGallery,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        await getRealtimeDb().ref(`products/${pendingPhotoProductId}`).update({
+          image: imageUrl,
+          gallery_images: nextGallery,
+          updatedAt: Date.now()
+        });
+        showMsg('stockMsg', 'Product photo uploaded and gallery updated.');
+      } catch (error) {
+        showMsg('stockMsg', `Photo upload failed: ${error.message}`, false);
+      } finally {
+        pendingPhotoProductId = '';
+        event.target.value = '';
+      }
     });
 
     (async function init(){
