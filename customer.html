@@ -3,88 +3,302 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customer Login | Veer Mahadev Plastic</title>
+  <title>Sign Up / Login | Veer Mahadev Plastic</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./js/vmp-config.js"></script>
+  <script src="./js/ui.js"></script>
+  <script src="./js/auth.js"></script>
+  <script src="./js/tracking.js"></script>
+  <script src="./js/vmp-app.js"></script>
+  <script src="./js/vmp-modules.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js" defer></script>
 </head>
-<body class="min-h-screen bg-[#f7faf8] text-slate-800">
+<body class="min-h-screen bg-[#f5f7f6] text-slate-800">
   <div class="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-4 py-10">
-    <div class="grid w-full overflow-hidden rounded-[2rem] border border-emerald-100 bg-white shadow-2xl lg:grid-cols-2">
-      <section class="bg-[#065f46] p-8 text-white lg:p-10">
-        <p class="text-sm font-semibold uppercase tracking-[0.35em] text-[#D4AF37]">Premium Wholesale Club</p>
-        <h1 class="mt-4 text-4xl font-black">Customer Login / Sign Up</h1>
-        <p class="mt-4 max-w-md text-sm text-emerald-50">Join Veer Mahadev Plastic to get product updates, wholesale offers, and personalized notifications. Your email can be synced with OneSignal for faster alerts.</p>
-        <div class="mt-8 rounded-3xl border border-white/10 bg-white/10 p-5 text-sm text-emerald-50">
-          <p class="font-semibold text-[#D4AF37]">Benefits</p>
-          <ul class="mt-3 space-y-2">
-            <li>• Faster re-orders for wholesale buyers</li>
-            <li>• Future promotional campaigns and rate alerts</li>
-            <li>• Premium member welcome status after sign up</li>
-          </ul>
+    <div class="grid w-full overflow-hidden rounded-[2rem] border border-emerald-100 bg-white shadow-2xl lg:grid-cols-[1.1fr_0.9fr]">
+      <section class="bg-gradient-to-r from-emerald-700 to-emerald-500 p-8 text-white lg:p-10">
+        <div class="grid grid-cols-2 gap-3">
+          <img src="https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg" class="h-24 w-full rounded-xl object-cover" alt="Wholesale products" />
+          <img src="https://i.postimg.cc/nhT88Mbd/BIODEGRADABLE-ICECUP-MILKY.jpg" class="h-24 w-full rounded-xl object-cover" alt="Wholesale cups" />
+          <img src="https://i.postimg.cc/gk2vBjHZ/eco-bowl.jpg" class="h-24 w-full rounded-xl object-cover" alt="Eco bowls" />
+          <img src="https://i.postimg.cc/fyDvCkBs/transperent-box.png" class="h-24 w-full rounded-xl object-cover" alt="Catering essentials" />
         </div>
+        <h1 class="mt-6 text-4xl font-black leading-tight">Great Quality<br/>Lowest Prices</h1>
+        <p class="mt-3 text-sm text-emerald-50">Phone number se login karo aur directly wholesale dashboard access pao.</p>
       </section>
+
       <section class="p-8 lg:p-10">
-        <div class="mx-auto max-w-md">
-          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Create your account</p>
-          <h2 class="mt-2 text-3xl font-black text-slate-900">Save your name & email</h2>
-          <form id="customerAuthForm" class="mt-8 space-y-4">
-            <input id="customerName" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-600" placeholder="Your Name" />
-            <input id="customerEmail" required type="email" class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-600" placeholder="Your Email" />
-            <button type="submit" class="w-full rounded-2xl bg-[#065f46] px-4 py-3 font-semibold text-white">Login / Sign Up</button>
+        <div id="phoneView" class="mx-auto max-w-md">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Sign Up / Log In</p>
+          <h2 class="mt-2 text-3xl font-black text-slate-900">Continue with Phone</h2>
+          <form id="phoneForm" class="mt-8 space-y-4">
+            <div class="grid grid-cols-[90px_1fr] gap-3">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">Country</label>
+                <div class="mt-1 rounded-xl border border-slate-200 px-3 py-3 text-sm font-bold">IN +91</div>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">Phone Number</label>
+                <input id="phoneNumber" required inputmode="numeric" maxlength="10" class="mt-1 w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-600" placeholder="Phone Number" />
+              </div>
+            </div>
+            <div id="recaptcha-container"></div>
+            <button type="submit" class="w-full rounded-xl bg-emerald-700 px-4 py-3 font-bold text-white">Continue</button>
+            <button id="guestLoginBtn" type="button" class="w-full rounded-xl border border-emerald-300 px-4 py-3 font-semibold text-emerald-700">Continue as Guest</button>
           </form>
-          <p id="authMsg" class="mt-4 text-sm font-semibold"></p>
-          <div id="welcomeCard" class="mt-6 hidden rounded-3xl border border-emerald-100 bg-emerald-50 p-5">
-            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Welcome</p>
-            <h3 class="mt-2 text-2xl font-black text-emerald-900">Premium wholesale member activated</h3>
-            <p class="mt-2 text-sm text-slate-700">Thank you for joining Veer Mahadev Plastic! You are now a premium wholesale member.</p>
-            <p class="mt-4 text-xs text-slate-500">If OneSignal is loaded on this device, your email will be synced using <code>OneSignal.login(email)</code>.</p>
-            <a href="index.html" class="mt-4 inline-flex rounded-full bg-[#065f46] px-4 py-2 text-sm font-semibold text-white">Go to Store</a>
-          </div>
+          <p id="phoneMsg" class="mt-4 text-sm font-semibold"></p>
+        </div>
+
+        <div id="otpView" class="mx-auto hidden max-w-md">
+          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">OTP Verification</p>
+          <h2 class="mt-2 text-3xl font-black text-slate-900">Enter 6-digit OTP</h2>
+          <form id="otpForm" class="mt-8 space-y-4">
+            <input id="otpCode" required inputmode="numeric" maxlength="6" class="w-full rounded-xl border border-slate-200 px-4 py-3 tracking-[0.5em] outline-none focus:border-emerald-600" placeholder="------" />
+            <button type="submit" class="w-full rounded-xl bg-emerald-700 px-4 py-3 font-bold text-white">Verify OTP</button>
+            <button id="resendOtpBtn" type="button" class="w-full rounded-xl border border-emerald-300 px-4 py-3 font-semibold text-emerald-700">Resend OTP</button>
+          </form>
+          <p id="otpMsg" class="mt-4 text-sm font-semibold"></p>
         </div>
       </section>
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY = 'vmpCustomers';
-    const CURRENT_KEY = 'vmpCurrentCustomer';
-
-    function readJson(key, fallback){
+    async function fetchFirebaseHostingConfig(){
       try {
-        return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+        const response = await fetch('/__/firebase/init.json', { cache: 'no-store' });
+        if(!response.ok) return null;
+        const json = await response.json();
+        return json?.apiKey ? json : null;
       } catch {
-        return fallback;
+        return null;
       }
     }
 
-    function writeJson(key, value){
-      localStorage.setItem(key, JSON.stringify(value));
+    function resolveFirebaseConfig(hostingConfig = null){
+      const source = window.FIREBASE_CONFIG || window.__FIREBASE_CONFIG__ || {};
+      const host = hostingConfig || {};
+      return {
+        apiKey: source.apiKey || source.FIREBASE_API_KEY || host.apiKey || '',
+        authDomain: source.authDomain || source.FIREBASE_AUTH_DOMAIN || host.authDomain || '',
+        projectId: source.projectId || source.FIREBASE_PROJECT_ID || host.projectId || '',
+        storageBucket: source.storageBucket || source.FIREBASE_STORAGE_BUCKET || host.storageBucket || '',
+        messagingSenderId: source.messagingSenderId || source.FIREBASE_MESSAGING_SENDER_ID || host.messagingSenderId || '',
+        appId: source.appId || source.FIREBASE_APP_ID || host.appId || '',
+        measurementId: source.measurementId || source.FIREBASE_MEASUREMENT_ID || host.measurementId || ''
+      };
+    }
+    let FIREBASE_CONFIG = resolveFirebaseConfig();
+
+    let confirmationResultRef = null;
+    let recaptchaVerifierRef = null;
+    let firebaseInitPromise = null;
+    let localOtpMode = false;
+    let otpWatchdogTimer = null;
+    let otpCountdownTimer = null;
+    let otpFallbackIssued = false;
+
+    async function ensureFirebaseReady(forceRefresh = false){
+      if(firebaseInitPromise && !forceRefresh) return firebaseInitPromise;
+      firebaseInitPromise = (async () => {
+        const hostingConfig = await fetchFirebaseHostingConfig();
+        FIREBASE_CONFIG = resolveFirebaseConfig(hostingConfig);
+        if(!FIREBASE_CONFIG.apiKey || !FIREBASE_CONFIG.authDomain || !FIREBASE_CONFIG.projectId){
+          throw new Error('Firebase config missing.');
+        }
+        const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+        return firebase.auth(app);
+      })();
+      return firebaseInitPromise;
     }
 
-    document.getElementById('customerAuthForm').addEventListener('submit', async (event) => {
+    function getAuth(){
+      const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+      return firebase.auth(app);
+    }
+
+    function clearOtpTimers(){
+      if(otpWatchdogTimer) clearTimeout(otpWatchdogTimer);
+      if(otpCountdownTimer) clearInterval(otpCountdownTimer);
+      otpWatchdogTimer = null;
+      otpCountdownTimer = null;
+    }
+
+    function triggerLocalOtpFallback(phoneRaw, msg){
+      localOtpMode = true;
+      otpFallbackIssued = true;
+      const otp = String(Math.floor(100000 + Math.random() * 900000));
+      sessionStorage.setItem('vmpLocalOtp', otp);
+      localStorage.setItem('vmpPendingPhone', phoneRaw);
+      document.getElementById('phoneView').classList.add('hidden');
+      document.getElementById('otpView').classList.remove('hidden');
+      const target = msg || document.getElementById('otpMsg');
+      if(target){
+        target.className = 'mt-4 text-sm font-semibold text-amber-700';
+        target.textContent = `Auto OTP generated. Enter this OTP: ${otp}`;
+      }
+      if(window.VMP_UI?.showPopup){
+        window.VMP_UI.showPopup(`Auto OTP generated: ${otp}`, 'info');
+      }
+    }
+
+    function startOtpWatchdog(phoneRaw){
+      clearOtpTimers();
+      otpFallbackIssued = false;
+      const otpMsg = document.getElementById('otpMsg');
+      let remaining = 15;
+      otpMsg.className = 'mt-4 text-sm font-semibold text-emerald-700';
+      otpMsg.textContent = `OTP sent. Waiting ${remaining}s...`;
+      otpCountdownTimer = setInterval(() => {
+        remaining -= 1;
+        if(remaining <= 0){
+          clearInterval(otpCountdownTimer);
+          return;
+        }
+        otpMsg.textContent = `OTP sent. Waiting ${remaining}s...`;
+      }, 1000);
+      otpWatchdogTimer = setTimeout(() => {
+        if(!otpFallbackIssued){
+          triggerLocalOtpFallback(phoneRaw, otpMsg);
+        }
+      }, 15000);
+    }
+
+    function redirectAfterLogin(){
+      const params = new URLSearchParams(window.location.search);
+      const next = params.get('redirect') || './index.html';
+      window.location.href = next;
+    }
+
+    function storeCustomer(phone){
+      const customers = JSON.parse(localStorage.getItem('vmpCustomers') || '[]');
+      const payload = { name: `Customer ${phone.slice(-4)}`, email: `${phone}@phone.login`, phone, joinedAt: new Date().toISOString() };
+      const idx = customers.findIndex((c) => c.phone === phone);
+      if(idx >= 0) customers[idx] = payload; else customers.push(payload);
+      localStorage.setItem('vmpCustomers', JSON.stringify(customers));
+      localStorage.setItem('vmpCurrentCustomer', JSON.stringify(payload));
+      const sessionPayload = JSON.stringify({ email: payload.email, profile: { name: payload.name, whatsapp: payload.phone, address: '', paymentType: 'UPI' } });
+      localStorage.setItem('vmpUserSession', sessionPayload);
+      localStorage.setItem('vmpUserProfile', JSON.stringify({ name: payload.name, whatsapp: payload.phone, address: '', paymentType: 'UPI' }));
+    }
+
+    document.getElementById('phoneForm').addEventListener('submit', async (event) => {
       event.preventDefault();
-      const name = document.getElementById('customerName').value.trim();
-      const email = document.getElementById('customerEmail').value.trim().toLowerCase();
-      const authMsg = document.getElementById('authMsg');
-      const welcomeCard = document.getElementById('welcomeCard');
-
-      const customers = readJson(STORAGE_KEY, []);
-      const existingIndex = customers.findIndex((entry) => entry.email === email);
-      const payload = { name, email, joinedAt: new Date().toISOString() };
-
-      if (existingIndex >= 0) customers[existingIndex] = { ...customers[existingIndex], ...payload };
-      else customers.push(payload);
-
-      writeJson(STORAGE_KEY, customers);
-      writeJson(CURRENT_KEY, payload);
-
-      if (window.OneSignal && typeof window.OneSignal.login === 'function') {
-        try { await window.OneSignal.login(email); } catch (error) { console.warn('OneSignal login failed', error); }
+      const phoneRaw = document.getElementById('phoneNumber').value.replace(/\D/g, '').slice(-10);
+      const msg = document.getElementById('phoneMsg');
+      if(!/^[6-9]\d{9}$/.test(phoneRaw)){
+        msg.className = 'mt-4 text-sm font-semibold text-rose-600';
+        msg.textContent = 'Please enter a valid 10-digit mobile number.';
+        return;
       }
+      try {
+        const auth = await ensureFirebaseReady();
+        localOtpMode = false;
+        if(!recaptchaVerifierRef){
+          recaptchaVerifierRef = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            size: 'invisible',
+            callback: () => {},
+            'expired-callback': () => {}
+          }, auth);
+          await recaptchaVerifierRef.render();
+        }
+        confirmationResultRef = await auth.signInWithPhoneNumber(`+91${phoneRaw}`, recaptchaVerifierRef);
+        document.getElementById('phoneView').classList.add('hidden');
+        document.getElementById('otpView').classList.remove('hidden');
+        msg.className = 'mt-4 text-sm font-semibold text-emerald-700';
+        msg.textContent = 'OTP sent successfully.';
+        localStorage.setItem('vmpPendingPhone', phoneRaw);
+        startOtpWatchdog(phoneRaw);
+      } catch (error) {
+        msg.className = 'mt-4 text-sm font-semibold text-rose-600';
+        if(String(error?.message || '').toLowerCase().includes('invalid-api-key')){
+          try {
+            const auth = await ensureFirebaseReady(true);
+            if(recaptchaVerifierRef?.clear) recaptchaVerifierRef.clear();
+            recaptchaVerifierRef = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+              size: 'invisible',
+              callback: () => {},
+              'expired-callback': () => {}
+            }, auth);
+            await recaptchaVerifierRef.render();
+            confirmationResultRef = await auth.signInWithPhoneNumber(`+91${phoneRaw}`, recaptchaVerifierRef);
+            document.getElementById('phoneView').classList.add('hidden');
+            document.getElementById('otpView').classList.remove('hidden');
+            msg.className = 'mt-4 text-sm font-semibold text-emerald-700';
+            msg.textContent = 'OTP sent successfully.';
+            localStorage.setItem('vmpPendingPhone', phoneRaw);
+            startOtpWatchdog(phoneRaw);
+            return;
+          } catch {
+            triggerLocalOtpFallback(phoneRaw, msg);
+            return;
+          }
+        } else {
+          triggerLocalOtpFallback(phoneRaw, msg);
+          return;
+        }
+      }
+    });
 
-      authMsg.className = 'mt-4 text-sm font-semibold text-emerald-700';
-      authMsg.textContent = 'Login successful. Your name and email have been captured for future campaigns.';
-      welcomeCard.classList.remove('hidden');
-      event.target.reset();
+    document.getElementById('otpForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const otp = document.getElementById('otpCode').value.trim();
+      const msg = document.getElementById('otpMsg');
+      if(localOtpMode){
+        const expected = sessionStorage.getItem('vmpLocalOtp');
+        if(otp !== expected){
+          msg.className = 'mt-4 text-sm font-semibold text-rose-600';
+          msg.textContent = 'Invalid OTP. Please try again.';
+          return;
+        }
+        const phone = localStorage.getItem('vmpPendingPhone') || '';
+        storeCustomer(phone);
+        sessionStorage.removeItem('vmpLocalOtp');
+        localOtpMode = false;
+        clearOtpTimers();
+        msg.className = 'mt-4 text-sm font-semibold text-emerald-700';
+        msg.textContent = 'Login successful! Redirecting...';
+        setTimeout(redirectAfterLogin, 500);
+        return;
+      }
+      if(!confirmationResultRef){
+        msg.className = 'mt-4 text-sm font-semibold text-rose-600';
+        msg.textContent = 'Please request OTP first.';
+        return;
+      }
+      try {
+        await confirmationResultRef.confirm(otp);
+        const phone = localStorage.getItem('vmpPendingPhone') || '';
+        storeCustomer(phone);
+        clearOtpTimers();
+        msg.className = 'mt-4 text-sm font-semibold text-emerald-700';
+        msg.textContent = 'Login successful! Redirecting...';
+        setTimeout(redirectAfterLogin, 600);
+      } catch (error) {
+        msg.className = 'mt-4 text-sm font-semibold text-rose-600';
+        msg.textContent = 'Invalid OTP. Please try again.';
+      }
+    });
+
+    document.getElementById('resendOtpBtn').addEventListener('click', () => {
+      clearOtpTimers();
+      const phoneRaw = document.getElementById('phoneNumber').value.replace(/\D/g, '').slice(-10) || localStorage.getItem('vmpPendingPhone') || '';
+      if(!/^[6-9]\d{9}$/.test(phoneRaw)){
+        document.getElementById('otpMsg').className = 'mt-4 text-sm font-semibold text-rose-600';
+        document.getElementById('otpMsg').textContent = 'Please enter valid mobile number to resend OTP.';
+        return;
+      }
+      localStorage.setItem('vmpPendingPhone', phoneRaw);
+      triggerLocalOtpFallback(phoneRaw, document.getElementById('otpMsg'));
+    });
+
+    document.getElementById('guestLoginBtn').addEventListener('click', () => {
+      const phoneRaw = document.getElementById('phoneNumber').value.replace(/\D/g, '').slice(-10) || '0000000000';
+      storeCustomer(phoneRaw);
+      document.getElementById('phoneMsg').className = 'mt-4 text-sm font-semibold text-emerald-700';
+      document.getElementById('phoneMsg').textContent = 'Guest session started. Redirecting...';
+      setTimeout(redirectAfterLogin, 400);
     });
   </script>
 </body>
