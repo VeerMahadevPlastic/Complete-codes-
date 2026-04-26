@@ -138,7 +138,7 @@
         </div>
         <div class="mt-4 overflow-x-auto rounded-xl border">
           <table class="min-w-full text-sm">
-            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Product</th><th class="px-3 py-2">Current Stock</th><th class="px-3 py-2">Wholesale Rate</th><th class="px-3 py-2">Retail Settings</th><th class="px-3 py-2">Add Photo</th><th class="px-3 py-2">Action</th></tr></thead>
+            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Product</th><th class="px-3 py-2">Current Stock</th><th class="px-3 py-2">Wholesale Rate</th><th class="px-3 py-2">Description</th><th class="px-3 py-2">Retail Settings</th><th class="px-3 py-2">Add Photo</th><th class="px-3 py-2">Action</th></tr></thead>
             <tbody id="inventoryControllerRows"></tbody>
           </table>
         </div>
@@ -531,21 +531,25 @@
             <td class="px-3 py-2 font-semibold text-slate-800">${item.name || item.id}</td>
             <td class="px-3 py-2"><input id="stock-input-${item.id}" type="number" value="${Number(item.currentStock ?? item.stock ?? 0)}" class="w-28 rounded-lg border px-2 py-1" /></td>
             <td class="px-3 py-2"><input id="rate-input-${item.id}" type="number" step="0.01" value="${Number(item.liveWholesaleRate ?? item.price100 ?? item.tiers?.[0]?.price ?? 0)}" class="w-28 rounded-lg border px-2 py-1" /></td>
+            <td class="px-3 py-2"><textarea id="desc-input-${item.id}" rows="2" class="w-52 rounded-lg border px-2 py-1 text-xs">${item.description || item.desc || ''}</textarea></td>
             <td class="px-3 py-2"><button onclick="openRetailConfig('${item.id}')" class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800">Retail Packet</button></td>
             <td class="px-3 py-2"><button onclick="triggerProductPhoto('${item.id}')" class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-800">Add Photo</button></td>
             <td class="px-3 py-2"><button onclick="saveLiveInventoryRow('${item.id}')" class="rounded-lg bg-emerald-700 px-3 py-1 text-xs font-bold text-white">Update Live</button></td>
           </tr>
         `);
-      tbody.innerHTML = rows.join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No products found.</td></tr>';
+      tbody.innerHTML = rows.join('') || '<tr><td colspan="7" class="px-3 py-2 text-slate-500">No products found.</td></tr>';
     }
 
     window.saveLiveInventoryRow = async function(productId){
       const stock = Number(document.getElementById(`stock-input-${productId}`)?.value || 0);
       const wholesaleRate = Number(document.getElementById(`rate-input-${productId}`)?.value || 0);
+      const description = document.getElementById(`desc-input-${productId}`)?.value.trim() || '';
       await getDb().collection('products').doc(productId).set({
         currentStock: Math.max(0, stock),
         stock: Math.max(0, stock),
         liveWholesaleRate: Math.max(0, wholesaleRate),
+        description,
+        desc: description,
         wholesale_price_slabs: [
           { min: 150, price: Math.max(0, wholesaleRate) },
           { min: 300, price: Number((Math.max(0, wholesaleRate) * 0.93).toFixed(2)) },
@@ -557,6 +561,8 @@
         currentStock: Math.max(0, stock),
         stock: Math.max(0, stock),
         liveWholesaleRate: Math.max(0, wholesaleRate),
+        description,
+        desc: description,
         wholesale_price_slabs: {
           tier_150: { min: 150, price: Math.max(0, wholesaleRate) },
           tier_300: { min: 300, price: Number((Math.max(0, wholesaleRate) * 0.93).toFixed(2)) },
@@ -633,57 +639,9 @@
     }
 
     function renderDaybook(entries){
-      const daybookRows = document.getElementById('daybookRows');
-      daybookRows.textContent = '';
-
-      if(!entries.length){
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        tr.className = 'border-t';
-        td.colSpan = 6;
-        td.className = 'px-3 py-2 text-slate-500';
-        td.textContent = 'No entries.';
-        tr.appendChild(td);
-        daybookRows.appendChild(tr);
-        return;
-      }
-
-      entries.forEach((e) => {
-        const tr = document.createElement('tr');
-        tr.className = 'border-t';
-
-        const tdDate = document.createElement('td');
-        tdDate.className = 'px-3 py-2';
-        tdDate.textContent = e.date || '-';
-
-        const tdMode = document.createElement('td');
-        tdMode.className = 'px-3 py-2 uppercase';
-        tdMode.textContent = e.mode || '';
-
-        const tdType = document.createElement('td');
-        tdType.className = 'px-3 py-2';
-        tdType.textContent = e.type === 'sale' ? 'Sale In' : 'Expense Out';
-
-        const tdAmount = document.createElement('td');
-        tdAmount.className = 'px-3 py-2';
-        tdAmount.textContent = money(e.amount);
-
-        const tdTxn = document.createElement('td');
-        tdTxn.className = 'px-3 py-2';
-        tdTxn.textContent = e.txnId || '-';
-
-        const tdNote = document.createElement('td');
-        tdNote.className = 'px-3 py-2';
-        tdNote.textContent = e.note || '-';
-
-        tr.appendChild(tdDate);
-        tr.appendChild(tdMode);
-        tr.appendChild(tdType);
-        tr.appendChild(tdAmount);
-        tr.appendChild(tdTxn);
-        tr.appendChild(tdNote);
-        daybookRows.appendChild(tr);
-      });
+      document.getElementById('daybookRows').innerHTML = entries.map((e) => `
+        <tr class="border-t"><td class="px-3 py-2">${e.date || '-'}</td><td class="px-3 py-2 uppercase">${e.mode}</td><td class="px-3 py-2">${e.type === 'sale' ? 'Sale In' : 'Expense Out'}</td><td class="px-3 py-2">${money(e.amount)}</td><td class="px-3 py-2">${e.txnId || '-'}</td><td class="px-3 py-2">${e.note || '-'}</td></tr>
+      `).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No entries.</td></tr>';
     }
 
     async function loadDaybook(){
