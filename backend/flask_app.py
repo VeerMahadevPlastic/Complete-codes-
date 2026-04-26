@@ -18,6 +18,8 @@ MEMORY = {
     "purchase_bills": [],
     "orders": [],
     "inventory": {},
+    "live_rates_catalog": {},
+    "custom_print_requests": [],
 }
 
 
@@ -95,6 +97,16 @@ def _adjust_stock(product_id: str, delta: int):
         return
     existing = MEMORY["inventory"].setdefault(product_id, {"stock": 0, "currentStock": 0, "name": product_id})
     existing["currentStock"] = max(int(existing.get("currentStock", 0)) + delta, 0)
+    existing["stock"] = existing["currentStock"]
+
+
+def _sync_live_rate_stock(product_id: str):
+    row = MEMORY["inventory"].get(product_id)
+    if not row:
+        return
+    entry = MEMORY["live_rates_catalog"].setdefault(product_id, {"id": product_id, "currentStock": 0, "updatedAt": None})
+    entry["currentStock"] = int(row.get("currentStock", row.get("stock", 0)))
+    entry["updatedAt"] = datetime.utcnow().isoformat()
 
 
 def _calc_summary():
@@ -179,8 +191,10 @@ def add_entry():
     qty = int(payload.get("qty", 0))
     if payload.get("source") == "manual_cash_sale" and product_id and qty > 0:
         _adjust_stock(product_id, -qty)
+        _sync_live_rate_stock(product_id)
     if payload.get("source") == "stock_in" and product_id and qty > 0:
         _adjust_stock(product_id, qty)
+        _sync_live_rate_stock(product_id)
 
     return jsonify({"ok": True, "entry": record, "summary": _calc_summary()})
 
@@ -220,6 +234,31 @@ def get_summary():
     return jsonify(_calc_summary())
 
 
+@app.post('/confirm_b2b_order')
+def confirm_b2b_order():
+    payload = request.get_json(force=True) or {}
+    items = payload.get("items") or []
+    order_id = payload.get("order_id") or f"B2B-{uuid.uuid4().hex[:8]}"
+    for item in items:
+        product_id = str(item.get("id", "")).strip()
+        qty = int(item.get("qty", 0) or 0)
+        if product_id and qty > 0:
+            _adjust_stock(product_id, -qty)
+            _sync_live_rate_stock(product_id)
+    MEMORY["orders"].append({
+        "orderId": order_id,
+        "status": "Confirmed",
+        "items": items,
+        "createdAt": datetime.utcnow().isoformat(),
+    })
+    return jsonify({"ok": True, "order_id": order_id, "inventory": _list_inventory(), "live_rates_catalog": list(MEMORY["live_rates_catalog"].values())})
+
+
+@app.get('/live_rates_catalog')
+def live_rates_catalog():
+    return jsonify({"ok": True, "catalog": list(MEMORY["live_rates_catalog"].values())})
+
+
 @app.post('/stock_adjust')
 def stock_adjust():
     payload = request.get_json(force=True)
@@ -228,6 +267,7 @@ def stock_adjust():
     if not product_id:
         return jsonify({"ok": False, "error": "product_id is required"}), 400
     _adjust_stock(product_id, delta)
+    _sync_live_rate_stock(product_id)
     return jsonify({"ok": True})
 
 
