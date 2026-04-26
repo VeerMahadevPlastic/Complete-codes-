@@ -981,7 +981,7 @@
             <div class="flex justify-between text-emerald-700"><span>Total Discounts</span><span>- ₹<span id="coGst">0</span></span></div>
             <hr />
             <div class="flex justify-between text-lg font-black text-[#065f46]"><span>Order Total</span><span>₹<span id="coTotal">0</span></span></div>
-            <p id="freightNote" class="text-xs text-slate-500">Include GST Rate (0%) • Freight ₹<span id="coDelivery">0</span></p>
+            <p id="freightNote" class="text-xs text-slate-500">Include GST Rate (18%) • Freight ₹<span id="coDelivery">0</span></p>
           </div>
         </aside>
       </div>
@@ -1921,7 +1921,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       });
       y += 4;
       doc.text(`Subtotal: ₹${Number(order.totals?.subtotal || 0).toFixed(2)}`, right, y, { align: 'right' }); y += 6;
-      doc.text(`Include GST Rate (0%): ₹${Number(order.totals?.gst || 0).toFixed(2)}`, right, y, { align: 'right' }); y += 6;
+      doc.text(`Include GST Rate (18%): ₹${Number(order.totals?.gst || 0).toFixed(2)}`, right, y, { align: 'right' }); y += 6;
       doc.text(`Freight: ₹${Number(order.totals?.delivery || 0).toFixed(2)}`, right, y, { align: 'right' }); y += 6;
       doc.setFillColor(...green);
       doc.rect(140, y - 4, 56, 8, 'F');
@@ -2924,7 +2924,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     function checkoutTotals(){
       const subtotal = cartTotalAmount();
-      const gst = 0;
+      const gst = 18%;
       const freight = freightChargeByOrder();
       const delivery = subtotal > 0 ? freight.delivery : 0;
       const total = Number((subtotal + gst + delivery).toFixed(2));
@@ -2940,7 +2940,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       document.getElementById('coDelivery').textContent = totals.delivery.toFixed(2);
       document.getElementById('coTotal').textContent = totals.total.toFixed(2);
       const freightNote = document.getElementById('freightNote');
-      if(freightNote) freightNote.textContent = `Include GST Rate (0%) • Freight ₹${totals.delivery.toFixed(2)} (${totals.parcels || 0} parcels est.)`;
+      if(freightNote) freightNote.textContent = `Include GST Rate (18%) • Freight ₹${totals.delivery.toFixed(2)} (${totals.parcels || 0} parcels est.)`;
     }
 
     bindById('checkoutForm', 'submit', (e)=>{
