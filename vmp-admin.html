@@ -384,21 +384,22 @@
     }
 
     function renderDaybook(entries){
-      const daybookRows = document.getElementById('daybookRows');
-      daybookRows.innerHTML = '';
+      const tbody = document.getElementById('daybookRows');
+      tbody.textContent = '';
 
       if(!entries.length){
         const tr = document.createElement('tr');
         const td = document.createElement('td');
+        tr.className = 'border-t';
         td.colSpan = 6;
         td.className = 'px-3 py-2 text-slate-500';
         td.textContent = 'No entries.';
         tr.appendChild(td);
-        daybookRows.appendChild(tr);
+        tbody.appendChild(tr);
         return;
       }
 
-      entries.forEach((e) => {
+      for(const e of entries){
         const tr = document.createElement('tr');
         tr.className = 'border-t';
 
@@ -432,8 +433,8 @@
         tr.appendChild(amountTd);
         tr.appendChild(txnTd);
         tr.appendChild(noteTd);
-        daybookRows.appendChild(tr);
-      });
+        tbody.appendChild(tr);
+      }
     }
 
     async function loadDaybook(){

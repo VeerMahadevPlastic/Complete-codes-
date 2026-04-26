@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { View, Text, Switch } from 'react-native';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import * as Notifications from 'expo-notifications';
 import { db } from '../services/firebase';
@@ -8,6 +8,9 @@ import { COLORS } from '../theme/colors';
 export default function DashboardScreen() {
   const [summary, setSummary] = useState({ sales: 0, purchases: 0, profit: 0 });
   const [lastOrderCount, setLastOrderCount] = useState(0);
+  const [aiEnabled, setAiEnabled] = useState(false);
+  const [inventory, setInventory] = useState([]);
+  const [paidOrders, setPaidOrders] = useState([]);
 
   useEffect(() => {
     const q = query(collection(db, 'transactions'));
@@ -27,6 +30,8 @@ export default function DashboardScreen() {
   useEffect(() => {
     const q = query(collection(db, 'orders'), where('paymentStatus', '==', 'Paid'));
     const unsub = onSnapshot(q, async (snap) => {
+      const rows = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      setPaidOrders(rows);
       if (lastOrderCount !== 0 && snap.size > lastOrderCount) {
         await Notifications.scheduleNotificationAsync({
           content: { title: 'New Wholesale Order', body: 'A new paid wholesale order just arrived.' },
@@ -37,6 +42,33 @@ export default function DashboardScreen() {
     });
     return unsub;
   }, [lastOrderCount]);
+
+  useEffect(() => onSnapshot(collection(db, 'inventory'), (snap) => {
+    setInventory(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+  }), []);
+
+  const aiSuggestions = useMemo(() => {
+    if (!aiEnabled) return { lowStock: [], topSelling: [] };
+    const lowStock = inventory
+      .map((item) => ({ id: item.id, stock: Number(item.currentStock ?? item.stock ?? 0) }))
+      .filter((item) => item.stock <= 80)
+      .sort((a, b) => a.stock - b.stock)
+      .slice(0, 5);
+
+    const salesMap = {};
+    paidOrders
+      .filter((order) => String(order.details?.address || '').toLowerCase().includes('ahmedabad'))
+      .forEach((order) => {
+        (order.items || []).forEach((item) => {
+          salesMap[item.id] = (salesMap[item.id] || 0) + Number(item.qty || 0);
+        });
+      });
+    const topSelling = Object.entries(salesMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([id, qty]) => ({ id, qty }));
+    return { lowStock, topSelling };
+  }, [aiEnabled, inventory, paidOrders]);
 
   const card = (label, value) => (
     <View style={{ flex: 1, backgroundColor: COLORS.white, padding: 14, borderRadius: 14, borderWidth: 1, borderColor: '#D1FAE5' }}>
@@ -49,11 +81,31 @@ export default function DashboardScreen() {
     <View style={{ flex: 1, backgroundColor: COLORS.bg, padding: 16 }}>
       <Text style={{ fontSize: 22, fontWeight: '800', color: COLORS.emerald }}>Business Summary</Text>
       <Text style={{ color: '#475569', marginTop: 4 }}>Real-time card from Firestore transactions</Text>
+      <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#fff', padding: 10, borderRadius: 12, borderWidth: 1, borderColor: '#DCFCE7' }}>
+        <View>
+          <Text style={{ fontWeight: '700', color: '#065F46' }}>AI Suggestions</Text>
+          <Text style={{ color: '#64748B', fontSize: 12 }}>Low stock + top sellers (Ahmedabad)</Text>
+        </View>
+        <Switch value={aiEnabled} onValueChange={setAiEnabled} />
+      </View>
       <View style={{ flexDirection: 'row', gap: 10, marginTop: 14 }}>
         {card("Today's Sales", summary.sales)}
         {card('Total Purchases', summary.purchases)}
       </View>
       <View style={{ marginTop: 10 }}>{card('Net Profit', summary.profit)}</View>
+      {aiEnabled && (
+        <View style={{ marginTop: 12, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#DCFCE7', padding: 12 }}>
+          <Text style={{ color: '#047857', fontWeight: '800' }}>Low Stock Suggestions</Text>
+          {aiSuggestions.lowStock.length ? aiSuggestions.lowStock.map((item) => (
+            <Text key={`low-${item.id}`} style={{ marginTop: 4, color: '#334155' }}>• {item.id} → stock {item.stock}</Text>
+          )) : <Text style={{ marginTop: 4, color: '#64748B' }}>No urgent low-stock alerts.</Text>}
+
+          <Text style={{ marginTop: 10, color: '#047857', fontWeight: '800' }}>Top Selling Items (Ahmedabad)</Text>
+          {aiSuggestions.topSelling.length ? aiSuggestions.topSelling.map((item) => (
+            <Text key={`top-${item.id}`} style={{ marginTop: 4, color: '#334155' }}>• {item.id} → sold {item.qty}</Text>
+          )) : <Text style={{ marginTop: 4, color: '#64748B' }}>No Ahmedabad sales trend yet.</Text>}
+        </View>
+      )}
     </View>
   );
 }

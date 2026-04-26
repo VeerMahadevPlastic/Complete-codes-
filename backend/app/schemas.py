@@ -9,8 +9,23 @@ class OrderItem(BaseModel):
     qty: int = Field(ge=1)
     unit_price: float = Field(ge=0)
     retail_price: Optional[float] = Field(default=None, ge=0)
+    retail_unit: Optional[str] = "Packet"
+    retail_moq: Optional[int] = Field(default=1, ge=1)
+    pieces_per_unit: Optional[int] = Field(default=1, ge=1)
     wholesale_price_slabs: Optional[List[dict]] = None
     hsn: str = "3924"
+
+
+class ProductRetailSettings(BaseModel):
+    id: str
+    name: str
+    retail_enabled: bool = True
+    retail_unit: str = "Packet"
+    retail_moq: int = Field(default=1, ge=1)
+    pieces_per_unit: int = Field(default=1, ge=1)
+    retail_price: float = Field(default=0, ge=0)
+    wholesale_price: float = Field(default=0, ge=0)
+    wholesale_price_slabs: Optional[List[dict]] = None
 
 
 class CustomerProfile(BaseModel):

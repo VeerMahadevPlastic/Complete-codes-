@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Notifications from 'expo-notifications';
 import DashboardScreen from './screens/DashboardScreen';
 import InventoryScreen from './screens/InventoryScreen';
+import RetailSettingsScreen from './screens/RetailSettingsScreen';
 import OrdersScreen from './screens/OrdersScreen';
 import DaybookScreen from './screens/DaybookScreen';
 import PinBiometricGate from './components/PinBiometricGate';
@@ -35,6 +36,7 @@ export default function App() {
         >
           <Tab.Screen name="Dashboard" component={DashboardScreen} />
           <Tab.Screen name="Inventory" component={InventoryScreen} />
+          <Tab.Screen name="Retail Settings" component={RetailSettingsScreen} />
           <Tab.Screen name="Orders" component={OrdersScreen} />
           <Tab.Screen name="Daybook" component={DaybookScreen} />
         </Tab.Navigator>
