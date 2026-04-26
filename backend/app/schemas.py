@@ -8,6 +8,8 @@ class OrderItem(BaseModel):
     name: str
     qty: int = Field(ge=1)
     unit_price: float = Field(ge=0)
+    retail_price: Optional[float] = Field(default=None, ge=0)
+    wholesale_price_slabs: Optional[List[dict]] = None
     hsn: str = "3924"
 
 
@@ -23,6 +25,7 @@ class OrderCreate(BaseModel):
     order_id: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
     status: Literal["Pending", "In-Dispatch", "Delivered"] = "Pending"
+    order_type: Literal["retail", "wholesale"] = "retail"
     customer: CustomerProfile
     items: List[OrderItem]
     delivery_charge: float = 0
