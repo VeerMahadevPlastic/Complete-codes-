@@ -384,9 +384,57 @@
     }
 
     function renderDaybook(entries){
-      document.getElementById('daybookRows').innerHTML = entries.map((e) => `
-        <tr class="border-t"><td class="px-3 py-2">${e.date || '-'}</td><td class="px-3 py-2 uppercase">${e.mode}</td><td class="px-3 py-2">${e.type === 'sale' ? 'Sale In' : 'Expense Out'}</td><td class="px-3 py-2">${money(e.amount)}</td><td class="px-3 py-2">${e.txnId || '-'}</td><td class="px-3 py-2">${e.note || '-'}</td></tr>
-      `).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No entries.</td></tr>';
+      const tbody = document.getElementById('daybookRows');
+      tbody.textContent = '';
+
+      if(!entries.length){
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        tr.className = 'border-t';
+        td.colSpan = 6;
+        td.className = 'px-3 py-2 text-slate-500';
+        td.textContent = 'No entries.';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+
+      for(const e of entries){
+        const tr = document.createElement('tr');
+        tr.className = 'border-t';
+
+        const dateTd = document.createElement('td');
+        dateTd.className = 'px-3 py-2';
+        dateTd.textContent = e.date || '-';
+
+        const modeTd = document.createElement('td');
+        modeTd.className = 'px-3 py-2 uppercase';
+        modeTd.textContent = e.mode || '-';
+
+        const typeTd = document.createElement('td');
+        typeTd.className = 'px-3 py-2';
+        typeTd.textContent = e.type === 'sale' ? 'Sale In' : 'Expense Out';
+
+        const amountTd = document.createElement('td');
+        amountTd.className = 'px-3 py-2';
+        amountTd.textContent = money(e.amount);
+
+        const txnTd = document.createElement('td');
+        txnTd.className = 'px-3 py-2';
+        txnTd.textContent = e.txnId || '-';
+
+        const noteTd = document.createElement('td');
+        noteTd.className = 'px-3 py-2';
+        noteTd.textContent = e.note || '-';
+
+        tr.appendChild(dateTd);
+        tr.appendChild(modeTd);
+        tr.appendChild(typeTd);
+        tr.appendChild(amountTd);
+        tr.appendChild(txnTd);
+        tr.appendChild(noteTd);
+        tbody.appendChild(tr);
+      }
     }
 
     async function loadDaybook(){
