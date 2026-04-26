@@ -1,4 +1,3 @@
-
 from io import BytesIO
 from datetime import datetime
 from reportlab.lib.pagesizes import A4
