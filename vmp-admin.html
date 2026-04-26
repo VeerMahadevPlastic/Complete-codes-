@@ -420,8 +420,74 @@
       const tbody = document.getElementById('dailyOrdersRows');
       if(!tbody) return;
       tbody.innerHTML = rows.map((order) => `
-        <tr class="border-t"><td class="px-3 py-2">${order.orderId || order.id || '-'}</td><td class="px-3 py-2">${order.details?.name || '-'}</td><td class="px-3 py-2">${money(order.totals?.total || order.total || 0)}</td><td class="px-3 py-2">${order.status || '-'}</td><td class="px-3 py-2">${order.date || '-'}</td></tr>
+        <tr class="border-t">
+          <td class="px-3 py-2">${order.orderId || order.id || '-'}</td>
+          <td class="px-3 py-2">${order.details?.name || '-'}</td>
+          <td class="px-3 py-2">${money(order.totals?.total || order.total || 0)}</td>
+          <td class="px-3 py-2">
+            <select onchange="updateOrderStatus('${order.id || order.orderId}','${encodeURIComponent(order.details?.name || '')}','${order.details?.whatsapp || ''}', this.value)" class="rounded-lg border px-2 py-1 text-xs font-semibold">
+              ${['Order Confirmed','Packed','Out for Delivery','Delivered'].map((status) => `<option value="${status}" ${String(order.status || '').toLowerCase() === status.toLowerCase() ? 'selected' : ''}>${status}</option>`).join('')}
+            </select>
+          </td>
+          <td class="px-3 py-2">${order.date || '-'}</td>
+        </tr>
       `).join('') || '<tr><td colspan="5" class="px-3 py-2 text-slate-500">No orders found.</td></tr>';
+    }
+
+    async function triggerOrderNotifications(payload){
+      const webhookUrl = (window.VMP_CONFIG?.automation?.orderStatusWebhook || localStorage.getItem('vmpOrderStatusWebhook') || '').trim();
+      const smsWebhookUrl = (window.VMP_CONFIG?.automation?.smsWebhook || localStorage.getItem('vmpSmsWebhook') || '').trim();
+      if(webhookUrl){
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+      }
+      if(smsWebhookUrl){
+        await fetch(smsWebhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+      }
+    }
+
+    window.updateOrderStatus = async function(orderId, encodedName, mobile, nextStatus){
+      const customerName = decodeURIComponent(encodedName || '');
+      await getDb().collection('orders').doc(orderId).set({
+        status: nextStatus,
+        statusUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      const orderDoc = await getDb().collection('orders').doc(orderId).get().catch(() => null);
+      const orderData = orderDoc?.data?.() || {};
+      const deliveryAddress = orderData.details?.address || 'your location';
+      const staffNumber = (window.VMP_CONFIG?.operations?.deliveryStaffNumber || localStorage.getItem('vmpDeliveryStaffNumber') || '+91 80503 89261');
+      const templateMap = {
+        'Order Confirmed': `Order Confirmed! Hi ${customerName}, your order #${orderId} has been successfully placed at Veer Mahadev Plastic. We are processing it now. Thank you!`,
+        'Packed': `Ready for Dispatch! Your order #${orderId} is packed and quality-checked. We’ll notify you once it’s out for delivery.`,
+        'Out for Delivery': `Your order is on the way! Our delivery partner is heading to ${deliveryAddress}. You can contact them at ${staffNumber}.`,
+        'Delivered': `Delivered! Hope you liked our products. Please visit veermahadevplastic.in for your next order. Have a great day!`
+      };
+      const message = templateMap[nextStatus];
+      if(!message){
+        showMsg('stockMsg', `Order ${orderId} status updated to ${nextStatus}.`);
+        return;
+      }
+      const phone = String(mobile || '').replace(/\D/g, '').replace(/^91/, '');
+      const payload = {
+        orderId,
+        customerName,
+        mobile: phone,
+        status: nextStatus,
+        message
+      };
+      await triggerOrderNotifications(payload);
+      if(phone.length === 10){
+        window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(message)}`, '_blank');
+      }
+      showMsg('stockMsg', `Status updated and customer notification triggered (${nextStatus}).`);
     }
 
     function listenDailyOrders(){
