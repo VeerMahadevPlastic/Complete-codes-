@@ -2631,6 +2631,21 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return /^\d{6}$/.test(String(value || '').trim());
     }
 
+    function normalizeIndianPhone(value){
+      const digits = String(value || '').replace(/\D/g, '');
+      if(digits.length === 12 && digits.startsWith('91')) return digits.slice(2);
+      if(digits.length === 11 && digits.startsWith('0')) return digits.slice(1);
+      return digits;
+    }
+
+    function isValidIndianPhone(value){
+      return /^[6-9]\d{9}$/.test(normalizeIndianPhone(value));
+    }
+
+    function isValidPincode(value){
+      return /^\d{6}$/.test(String(value || '').trim());
+    }
+
     function openCart(){
       if(cartDrawer) cartDrawer.classList.remove('translate-x-full');
       if(drawerOverlay) drawerOverlay.classList.remove('hidden');
