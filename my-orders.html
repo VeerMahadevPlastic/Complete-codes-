@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Orders | Veer Mahadev Plastic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./js/vmp-config.js"></script>
+  <script src="./js/ui.js"></script>
+  <script src="./js/auth.js"></script>
+  <script src="./js/tracking.js"></script>
+  <script src="./js/vmp-app.js"></script>
+  <script src="./js/vmp-modules.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+</head>
+<body class="bg-[#f5f8f5] text-slate-800">
+  <main class="mx-auto max-w-6xl px-4 py-8">
+    <div class="mb-6 flex items-center justify-between gap-3">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">My Orders</p>
+        <h1 class="text-3xl font-black text-[#065f46]">Order History & Invoices</h1>
+      </div>
+      <a href="./index.html#profile" class="rounded-full border border-emerald-300 px-4 py-2 text-sm font-semibold text-emerald-700">← Back</a>
+    </div>
+
+    <section id="ordersWrap" class="space-y-3"></section>
+  </main>
+
+  <script>
+    function orderHistory(){
+      try { return JSON.parse(localStorage.getItem('vmpOrderHistory') || '[]'); }
+      catch { return []; }
+    }
+
+    function buildTrackingLink(tracking = {}){
+      const awb = String(tracking.awb || '').trim();
+      const carrier = String(tracking.carrier || 'delhivery').toLowerCase();
+      if(!awb) return './live-tracking.html';
+      if(carrier.includes('shiprocket')) return `https://shiprocket.co/tracking/${encodeURIComponent(awb)}`;
+      return `https://www.delhivery.com/track/package/${encodeURIComponent(awb)}`;
+    }
+
+    async function buildInvoicePdf(order){
+      if(!window.jspdf?.jsPDF) return null;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const green = [122, 173, 101];
+      doc.setFontSize(18);
+      doc.setTextColor(22,22,22);
+      doc.text('Veer Mahadev Plastic', 14, 16);
+      doc.setFontSize(10);
+      doc.text('GSTIN: 24BLLPL0402N1Z6', 14, 23);
+      doc.text(`Order ID: ${order.orderId}`, 14, 30);
+      doc.text(`Date: ${order.date || '-'}`, 14, 36);
+      doc.text(`Customer: ${order.details?.name || '-'}`, 14, 42);
+      doc.text(`Billing: ${(order.details?.address || '-') + ' ' + (order.details?.pincode || '')}`, 14, 48, { maxWidth: 180 });
+      doc.setFillColor(...green);
+      doc.rect(14, 54, 182, 7, 'F');
+      doc.setTextColor(255,255,255);
+      doc.text('DESCRIPTION', 16, 59);
+      doc.text('QTY', 140, 59, { align: 'right' });
+      doc.text('UNIT', 165, 59, { align: 'right' });
+      doc.text('TOTAL', 194, 59, { align: 'right' });
+      doc.setTextColor(22,22,22);
+      let y = 68;
+      (order.items || []).forEach((item, idx) => {
+        const qty = Number(item.qty || 0);
+        const unit = Number(item.unit || 0);
+        const lines = doc.splitTextToSize(`${idx + 1}. ${item.name}`, 116);
+        doc.text(lines, 16, y);
+        doc.text(String(qty), 140, y, { align: 'right' });
+        doc.text(unit.toFixed(2), 165, y, { align: 'right' });
+        doc.text((qty * unit).toFixed(2), 194, y, { align: 'right' });
+        y += Math.max(7, lines.length * 5);
+      });
+      y += 4;
+      doc.setFillColor(...green);
+      doc.rect(132, y - 4, 64, 8, 'F');
+      doc.setTextColor(255,255,255);
+      doc.text(`TOTAL: ₹${Number(order.total || order.totals?.total || 0).toFixed(2)}`, 194, y + 1, { align: 'right' });
+      return doc;
+    }
+
+    window.downloadInvoice = async function(orderId){
+      const order = orderHistory().find((item) => item.orderId === orderId);
+      if(!order) return;
+      const doc = await buildInvoicePdf(order);
+      if(doc) doc.save(`invoice-${order.orderId}.pdf`);
+    };
+
+    function renderOrders(){
+      const wrap = document.getElementById('ordersWrap');
+      const orders = orderHistory();
+      if(!orders.length){
+        wrap.innerHTML = '<p class="rounded-xl border border-emerald-100 bg-white p-4 text-sm text-slate-500">No past orders yet.</p>';
+        return;
+      }
+      wrap.innerHTML = orders.map((order) => `
+        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm">
+          <div class="grid gap-2 text-sm md:grid-cols-[1fr_auto] md:items-center">
+            <div>
+              <p class="font-bold text-slate-900">${order.orderId}</p>
+              <p class="text-slate-600">Date: ${order.date || '-'} | Total: ₹${Number(order.total || order.totals?.total || 0).toFixed(2)} | Status: ${order.status || 'Order Placed'}</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <a href="${order.trackingLink || buildTrackingLink(order.tracking)}" target="_blank" rel="noopener" class="rounded-lg border border-emerald-300 px-3 py-1 text-xs font-semibold text-emerald-700">Track Live</a>
+              ${(order.paymentStatus === 'Paid' || String(order.status || '').toLowerCase().includes('deliver')) ? `<button onclick="downloadInvoice('${order.orderId}')" class="rounded-lg bg-[#065f46] px-3 py-1 text-xs font-semibold text-white">Download Invoice</button>` : ''}
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    renderOrders();
+  </script>
+</body>
+</html>
