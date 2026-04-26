@@ -209,6 +209,91 @@
     }
     function fmtDate(d){ return d.toISOString().slice(0,10); }
     function parseDate(value){ return new Date(`${value}T00:00:00`); }
+    let transactionsCache = [];
+
+    function setSummaryLoading(loading = true){
+      const ids = ['sumSales', 'sumPurchase', 'sumExpense', 'sumProfit'];
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        if(loading){
+          el.innerHTML = '<span class="inline-flex items-center gap-2 text-sm"><span class="h-3 w-3 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-700"></span>Syncing Data...</span>';
+        }
+      });
+    }
+
+    async function saveTransaction(payload){
+      await getDb().collection('transactions').add({
+        ...payload,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        admin_id: 'Karan_VMP_01'
+      });
+    }
+
+    function renderTransactionsTables(rows = []){
+      const daybookRows = rows
+        .filter((tx) => tx.kind === 'cash_sale' || tx.kind === 'cash_out')
+        .sort((a, b) => (b.createdAt?.toMillis?.() || Date.parse(b.date || '1970-01-01')) - (a.createdAt?.toMillis?.() || Date.parse(a.date || '1970-01-01')));
+      renderDaybook(daybookRows.map((row) => ({
+        date: row.date,
+        mode: row.mode || 'cash',
+        type: row.kind === 'cash_sale' ? 'sale' : 'out',
+        amount: Number(row.amount || 0),
+        txnId: row.txnId || '',
+        note: row.note || ''
+      })));
+      const purchaseRows = rows
+        .filter((tx) => tx.kind === 'purchase_bill')
+        .sort((a, b) => (b.createdAt?.toMillis?.() || Date.parse(b.date || '1970-01-01')) - (a.createdAt?.toMillis?.() || Date.parse(a.date || '1970-01-01')));
+      document.getElementById('purchaseRows').innerHTML = purchaseRows.map((p) => `
+        <tr class="border-t"><td class="px-3 py-2">${p.date || '-'}</td><td class="px-3 py-2">${p.material || '-'}</td><td class="px-3 py-2">${p.supplier || '-'}</td><td class="px-3 py-2">${money(p.amount)}</td><td class="px-3 py-2">${p.billUrl ? `<a class="text-emerald-700 underline" href="${p.billUrl}" target="_blank">View Bill</a>` : '-'}</td></tr>
+      `).join('') || '<tr><td colspan="5" class="px-3 py-2 text-slate-500">No purchase bills.</td></tr>';
+    }
+
+    function recalcSummaryFromTransactions(rows = [], orderRows = [], extraExpenses = []){
+      let sales = 0; let purchaseTotal = 0; let expenseTotal = 0;
+      rows.forEach((row) => {
+        if(!inReportWindow(row.date)) return;
+        if(row.kind === 'cash_sale') sales += Number(row.amount || 0);
+        if(row.kind === 'cash_out') expenseTotal += Number(row.amount || 0);
+        if(row.kind === 'purchase_bill') purchaseTotal += Number(row.amount || 0);
+      });
+      orderRows.forEach((row) => {
+        const date = row.date || (row.createdAt?.toDate ? fmtDate(row.createdAt.toDate()) : '');
+        if(inReportWindow(date)) sales += Number(row.total || row.totals?.total || 0);
+      });
+      extraExpenses.forEach((row) => {
+        if(inReportWindow(row.date)) expenseTotal += Number(row.amount || 0);
+      });
+      const profit = sales - (purchaseTotal + expenseTotal);
+      document.getElementById('sumSales').textContent = money(sales);
+      document.getElementById('sumPurchase').textContent = money(purchaseTotal);
+      document.getElementById('sumExpense').textContent = money(expenseTotal);
+      document.getElementById('sumProfit').textContent = money(profit);
+    }
+
+    function startTransactionsListener(){
+      getDb().collection('transactions').orderBy('timestamp', 'desc').limit(500).onSnapshot((snap) => {
+        transactionsCache = snap.docs.map((d) => d.data());
+        renderTransactionsTables(transactionsCache);
+      });
+    }
+
+    function syncVMPData(){
+      setSummaryLoading(true);
+      startTransactionsListener();
+      loadSummary().catch(() => {});
+      loadBusinessPulse().catch(() => {});
+    }
+
+    async function saveVMPTransaction(entryData){
+      try {
+        await saveTransaction(entryData);
+      } catch (e) {
+        alert('Error saving data: ' + (e?.message || e));
+      }
+    }
 
     function inReportWindow(dateText){
       if(!dateText) return false;
@@ -339,39 +424,18 @@
     }
 
     async function loadSummary(){
-      const [daybook, purchases, orders, expenses] = await Promise.all([
-        getDb().collection('daybookEntries').get(),
-        getDb().collection('purchases').get(),
+      setSummaryLoading(true);
+      const [transactionsSnap, orders, expenses] = await Promise.all([
+        getDb().collection('transactions').get(),
         getDb().collection('orders').get(),
         getDb().collection('dailyExpenses').get()
       ]);
-
-      let sales = 0; let purchaseTotal = 0; let expenseTotal = 0;
-      daybook.docs.forEach((d) => {
-        const row = d.data();
-        if(!inReportWindow(row.date)) return;
-        if(row.type === 'sale') sales += Number(row.amount || 0);
-        else expenseTotal += Number(row.amount || 0);
-      });
-      orders.docs.forEach((d) => {
-        const row = d.data();
-        const date = row.date || (row.createdAt?.toDate ? fmtDate(row.createdAt.toDate()) : '');
-        if(inReportWindow(date)) sales += Number(row.total || row.totals?.total || 0);
-      });
-      purchases.docs.forEach((d) => {
-        const row = d.data();
-        if(inReportWindow(row.date)) purchaseTotal += Number(row.amount || 0);
-      });
-      expenses.docs.forEach((d) => {
-        const row = d.data();
-        if(inReportWindow(row.date)) expenseTotal += Number(row.amount || 0);
-      });
-
-      const profit = sales - (purchaseTotal + expenseTotal);
-      document.getElementById('sumSales').textContent = money(sales);
-      document.getElementById('sumPurchase').textContent = money(purchaseTotal);
-      document.getElementById('sumExpense').textContent = money(expenseTotal);
-      document.getElementById('sumProfit').textContent = money(profit);
+      const txRows = transactionsSnap.docs.map((d) => d.data());
+      const orderRows = orders.docs.map((d) => d.data());
+      const expenseRows = expenses.docs.map((d) => d.data());
+      transactionsCache = txRows;
+      renderTransactionsTables(transactionsCache);
+      recalcSummaryFromTransactions(txRows, orderRows, expenseRows);
     }
 
     async function loadBusinessPulse(){
@@ -462,6 +526,15 @@
       setButtonLoading('daybookSubmitBtn', true);
       e.target.reset();
       document.getElementById('entryDate').valueAsDate = new Date();
+      saveVMPTransaction({
+        kind: payload.type === 'sale' ? 'cash_sale' : 'cash_out',
+        date: payload.date,
+        mode: payload.mode,
+        amount: payload.amount,
+        txnId: payload.txnId,
+        note: payload.note
+      }).catch(() => {});
+      getDb().collection('daybookEntries').add(payload).catch(() => {});
       fetch('/add_entry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -515,6 +588,14 @@
           amount: Number(document.getElementById('purchaseAmount').value || 0),
           billUrl: result.purchase?.billUrl || '',
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        await saveVMPTransaction({
+          kind: 'purchase_bill',
+          date: document.getElementById('purchaseDate').value,
+          material: document.getElementById('purchaseMaterial').value.trim(),
+          supplier: document.getElementById('purchaseSupplier').value.trim(),
+          amount: Number(document.getElementById('purchaseAmount').value || 0),
+          billUrl: result.purchase?.billUrl || ''
         });
         showMsg('purchaseMsg', 'Purchase bill logged.');
         e.target.reset();
@@ -586,6 +667,7 @@
       try {
         document.getElementById('entryDate').valueAsDate = new Date();
         document.getElementById('purchaseDate').valueAsDate = new Date();
+        setSummaryLoading(true);
         await processWebsiteSales();
         await Promise.all([loadProducts(), loadPurchases(), loadSummary(), loadBusinessPulse()]);
         listenProductsRealtime();
@@ -594,6 +676,7 @@
         (window.VMP_UI?.showPopup || (() => {}))('Dashboard data unavailable. Please retry.', 'error');
       }
     })();
+    window.onload = syncVMPData;
   </script>
 </body>
 </html>
