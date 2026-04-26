@@ -21,6 +21,7 @@ class FirebaseRepository:
             "purchase_bills": [],
             "bank_entries": [],
             "inventory": [],
+            "custom_print_requests": [],
         }
         if firebase_admin and firestore:
             try:
@@ -55,3 +56,30 @@ class FirebaseRepository:
             docs = self._db.collection(collection).stream()
             return [{"id": d.id, **d.to_dict()} for d in docs]
         return list(self._memory.get(collection, []))
+
+    def decrement_inventory(self, item_id: str, qty: int) -> None:
+        qty = max(int(qty or 0), 0)
+        if qty == 0:
+            return
+        if self._db:
+            ref = self._db.collection("inventory").document(item_id)
+            snap = ref.get()
+            existing = snap.to_dict() or {}
+            current = int(existing.get("stock", existing.get("currentStock", 0)))
+            next_stock = max(current - qty, 0)
+            ref.set({
+                "stock": next_stock,
+                "currentStock": next_stock,
+                "updated_at": datetime.utcnow().isoformat(),
+            }, merge=True)
+            return
+        inventory = self._memory.setdefault("inventory", [])
+        row = next((x for x in inventory if x.get("id") == item_id), None)
+        if not row:
+            row = {"id": item_id, "stock": 0, "currentStock": 0}
+            inventory.append(row)
+        current = int(row.get("stock", row.get("currentStock", 0)))
+        next_stock = max(current - qty, 0)
+        row["stock"] = next_stock
+        row["currentStock"] = next_stock
+        row["updated_at"] = datetime.utcnow().isoformat()
