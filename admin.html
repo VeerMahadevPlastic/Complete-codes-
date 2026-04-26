@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+]<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -90,6 +90,17 @@
           <button id="askAi" class="rounded-xl bg-[#065f46] px-4 py-3 text-sm font-semibold text-white">Ask AI</button>
         </div>
         <p id="aiReply" class="mt-3 rounded-xl bg-emerald-50 p-3 text-sm text-slate-700">AI assistant ready.</p>
+      </div>
+
+      <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Custom Branding Requests</p>
+            <h3 class="mt-1 text-2xl font-black text-slate-900">Printed Bags / Books Quote Desk</h3>
+          </div>
+          <button id="reloadPrintRequests" class="rounded-lg border border-emerald-200 px-3 py-2 text-xs font-semibold">Refresh</button>
+        </div>
+        <div id="customPrintRequestList" class="mt-4 space-y-2 text-sm"></div>
       </div>
 
       <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
@@ -429,6 +440,37 @@
       return 'I can answer sales, low stock, profit/loss, and order trend related questions.';
     }
 
+    function renderCustomPrintRequests(){
+      const list = document.getElementById('customPrintRequestList');
+      if(!list) return;
+      const rows = readJson('vmpCustomPrintRequests', []);
+      list.innerHTML = rows.length ? rows.slice(0, 30).map((item, idx) => `
+        <article class="rounded-xl border border-slate-200 p-3">
+          <p class="font-semibold text-slate-900">${item.productName}</p>
+          <p class="text-xs text-slate-500">${item.companyName} • GST: ${item.gstNumber} • ${item.whatsapp}</p>
+          <p class="mt-1 text-xs text-slate-600">Logo: ${item.logoFileName || 'Not uploaded'} | Notes: ${item.notes || '-'}</p>
+          <div class="mt-2 flex items-center gap-2">
+            <select data-cp-index="${idx}" class="cp-status rounded-lg border px-2 py-1 text-xs">
+              <option ${item.status === 'Pending Quote' ? 'selected' : ''}>Pending Quote</option>
+              <option ${item.status === 'Quoted' ? 'selected' : ''}>Quoted</option>
+              <option ${item.status === 'Closed' ? 'selected' : ''}>Closed</option>
+            </select>
+            <span class="text-xs text-slate-500">${item.createdAt || ''}</span>
+          </div>
+        </article>
+      `).join('') : '<p class="text-slate-500">No custom printing requests yet.</p>';
+
+      document.querySelectorAll('.cp-status').forEach((select) => {
+        select.addEventListener('change', () => {
+          const index = Number(select.dataset.cpIndex);
+          const all = readJson('vmpCustomPrintRequests', []);
+          if(!all[index]) return;
+          all[index].status = select.value;
+          writeJson('vmpCustomPrintRequests', all);
+        });
+      });
+    }
+
     async function loadDashboardData(){
       const db = getDb();
       const products = readJson('vmpProductSnapshot', []);
@@ -444,6 +486,7 @@
       renderInventory(products, inventoryMap, priceMap);
       renderPos(products, inventoryMap);
       renderBusinessHealth(orders);
+      renderCustomPrintRequests();
 
       if(db){
         try {
@@ -467,6 +510,7 @@
       renderInventory(products, inventoryMap, priceMap);
       renderPos(products, inventoryMap);
       renderBusinessHealth(orders);
+      renderCustomPrintRequests();
       const inventoryValue = products.reduce((sum, p) => {
         const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
         const unit = Number(priceMap[p.id]?.price100 ?? p.price100 ?? p.tiers?.[0]?.price ?? 0);
@@ -529,6 +573,7 @@
       const question = document.getElementById('aiQuestion').value;
       document.getElementById('aiReply').textContent = answerAi(question);
     });
+    document.getElementById('reloadPrintRequests').addEventListener('click', renderCustomPrintRequests);
   </script>
 </body>
 </html>
