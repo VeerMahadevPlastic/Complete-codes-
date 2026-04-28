@@ -145,6 +145,32 @@
             <tbody id="inventoryControllerRows"></tbody>
           </table>
         </div>
+        <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p class="text-sm font-black text-[#065f46]">Category MOQ Controller (Bags / Books / Trays)</p>
+              <p class="text-xs text-slate-600">Set different MOQ rules by category if needed. Defaults: Retail 100, Wholesale 5000.</p>
+            </div>
+            <button id="saveCategoryMoqBtn" class="rounded-lg bg-[#065f46] px-3 py-2 text-xs font-bold text-white">Save Category Limits</button>
+          </div>
+          <div class="mt-3 grid gap-2 md:grid-cols-3">
+            <div class="rounded-lg border bg-white p-3">
+              <p class="text-xs font-bold text-slate-700">Bags</p>
+              <input id="bagsRetailMoq" type="number" min="100" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="100" placeholder="Retail MOQ" />
+              <input id="bagsWholesaleMoq" type="number" min="5000" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="5000" placeholder="Wholesale MOQ" />
+            </div>
+            <div class="rounded-lg border bg-white p-3">
+              <p class="text-xs font-bold text-slate-700">Books</p>
+              <input id="booksRetailMoq" type="number" min="100" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="100" placeholder="Retail MOQ" />
+              <input id="booksWholesaleMoq" type="number" min="5000" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="5000" placeholder="Wholesale MOQ" />
+            </div>
+            <div class="rounded-lg border bg-white p-3">
+              <p class="text-xs font-bold text-slate-700">Trays</p>
+              <input id="traysRetailMoq" type="number" min="100" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="100" placeholder="Retail MOQ" />
+              <input id="traysWholesaleMoq" type="number" min="5000" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="5000" placeholder="Wholesale MOQ" />
+            </div>
+          </div>
+        </div>
       </section>
 
       <section id="purchase" class="rounded-2xl border border-emerald-100 bg-white p-5">
@@ -524,6 +550,40 @@
       document.getElementById('stockProduct').innerHTML = options;
     }
 
+    function readCategoryMoqPayload(){
+      return {
+        bags: {
+          retail: Math.max(100, Number(document.getElementById('bagsRetailMoq')?.value || 100)),
+          wholesale: Math.max(5000, Number(document.getElementById('bagsWholesaleMoq')?.value || 5000))
+        },
+        books: {
+          retail: Math.max(100, Number(document.getElementById('booksRetailMoq')?.value || 100)),
+          wholesale: Math.max(5000, Number(document.getElementById('booksWholesaleMoq')?.value || 5000))
+        },
+        trays: {
+          retail: Math.max(100, Number(document.getElementById('traysRetailMoq')?.value || 100)),
+          wholesale: Math.max(5000, Number(document.getElementById('traysWholesaleMoq')?.value || 5000))
+        }
+      };
+    }
+
+    function applyCategoryMoqPayload(payload = {}){
+      const bags = payload.bags || {};
+      const books = payload.books || {};
+      const trays = payload.trays || {};
+      document.getElementById('bagsRetailMoq').value = Math.max(100, Number(bags.retail || 100));
+      document.getElementById('bagsWholesaleMoq').value = Math.max(5000, Number(bags.wholesale || 5000));
+      document.getElementById('booksRetailMoq').value = Math.max(100, Number(books.retail || 100));
+      document.getElementById('booksWholesaleMoq').value = Math.max(5000, Number(books.wholesale || 5000));
+      document.getElementById('traysRetailMoq').value = Math.max(100, Number(trays.retail || 100));
+      document.getElementById('traysWholesaleMoq').value = Math.max(5000, Number(trays.wholesale || 5000));
+    }
+
+    async function loadCategoryMoqSettings(){
+      const doc = await getDb().collection('appSettings').doc('moqConfig').get();
+      applyCategoryMoqPayload(doc.data()?.categories || {});
+    }
+
     function renderInventoryController(){
       const tbody = document.getElementById('inventoryControllerRows');
       if(!tbody) return;
@@ -554,9 +614,9 @@
         description,
         desc: description,
         wholesale_price_slabs: [
-          { min: 150, price: Math.max(0, wholesaleRate) },
-          { min: 300, price: Number((Math.max(0, wholesaleRate) * 0.93).toFixed(2)) },
-          { min: 600, price: Number((Math.max(0, wholesaleRate) * 0.86).toFixed(2)) }
+          { min: 100, price: Number((Math.max(0, wholesaleRate) * 1.16).toFixed(2)) },
+          { min: 500, price: Number((Math.max(0, wholesaleRate) * 1.08).toFixed(2)) },
+          { min: 5000, price: Math.max(0, wholesaleRate) }
         ],
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true });
@@ -567,9 +627,9 @@
         description,
         desc: description,
         wholesale_price_slabs: {
-          tier_150: { min: 150, price: Math.max(0, wholesaleRate) },
-          tier_300: { min: 300, price: Number((Math.max(0, wholesaleRate) * 0.93).toFixed(2)) },
-          tier_600: { min: 600, price: Number((Math.max(0, wholesaleRate) * 0.86).toFixed(2)) }
+          tier_100: { min: 100, price: Number((Math.max(0, wholesaleRate) * 1.16).toFixed(2)) },
+          tier_500: { min: 500, price: Number((Math.max(0, wholesaleRate) * 1.08).toFixed(2)) },
+          tier_5000: { min: 5000, price: Math.max(0, wholesaleRate) }
         },
         updatedAt: Date.now()
       });
@@ -586,7 +646,7 @@
       const product = productsCache.find((item) => item.id === productId) || {};
       document.getElementById('retailConfigTitle').textContent = product.name || productId;
       document.getElementById('retailPriceInput').value = Number(product.retail_price || 0);
-      document.getElementById('retailMoqInput').value = Number(product.retail_moq || 1);
+      document.getElementById('retailMoqInput').value = Math.max(100, Number(product.retail_moq || 100));
       document.getElementById('retailConfigModal').classList.remove('hidden');
     }
 
@@ -927,6 +987,18 @@
       inventorySearchTerm = e.target.value.trim().toLowerCase();
       renderInventoryController();
     });
+    document.getElementById('saveCategoryMoqBtn').addEventListener('click', async () => {
+      const categories = readCategoryMoqPayload();
+      await getDb().collection('appSettings').doc('moqConfig').set({
+        categories,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      await getRealtimeDb().ref('appSettings/moqConfig').update({
+        categories,
+        updatedAt: Date.now()
+      });
+      showMsg('stockMsg', 'Category-wise MOQ limits saved.');
+    });
     document.getElementById('closeRetailConfigBtn').addEventListener('click', () => {
       document.getElementById('retailConfigModal').classList.add('hidden');
       retailConfigProductId = '';
@@ -934,7 +1006,7 @@
     document.getElementById('saveRetailConfigBtn').addEventListener('click', async () => {
       if(!retailConfigProductId) return;
       const retailPrice = Number(document.getElementById('retailPriceInput').value || 0);
-      const retailMoq = Math.max(1, Number(document.getElementById('retailMoqInput').value || 1));
+      const retailMoq = Math.max(100, Number(document.getElementById('retailMoqInput').value || 100));
       await getDb().collection('products').doc(retailConfigProductId).set({
         retail_price: Math.max(0, retailPrice),
         retail_moq: retailMoq,
@@ -984,7 +1056,7 @@
         document.getElementById('purchaseDate').valueAsDate = new Date();
         setSummaryLoading(true);
         await processWebsiteSales();
-        await Promise.all([loadProducts(), loadPurchases(), loadSummary(), loadBusinessPulse()]);
+        await Promise.all([loadProducts(), loadPurchases(), loadSummary(), loadBusinessPulse(), loadCategoryMoqSettings()]);
         listenProductsRealtime();
         listenDaybookRealtime();
         listenDailyOrders();
