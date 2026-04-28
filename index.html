@@ -203,7 +203,7 @@
         </button>
         <button id="chooseWholesaleBtn" class="rounded-xl bg-emerald-100 px-4 py-3 text-left">
           <p class="font-bold text-emerald-900">Shop Wholesale</p>
-          <p class="text-xs text-emerald-800">Business rates for 150+ pcs slabs</p>
+          <p class="text-xs text-emerald-800">Business rates for 5,000+ pcs slabs</p>
         </button>
       </div>
       <p id="entryModeMsg" class="mt-3 text-xs font-semibold text-slate-600"></p>
@@ -212,7 +212,7 @@
   <div id="wholesaleAuthModal" class="hidden fixed inset-0 z-[131] flex items-center justify-center bg-black/55 px-4">
     <div class="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
       <h3 class="text-xl font-black text-[#065f46]">Wholesale Sign-up / Sign-in</h3>
-      <p class="mt-1 text-sm text-slate-600">For Bulk Orders (150+ pcs), please Sign-in as a Business.</p>
+      <p class="mt-1 text-sm text-slate-600">For Bulk Orders (5,000+ pcs), please Sign-in as a Business.</p>
       <form id="wholesaleAuthForm" class="mt-4 grid gap-2">
         <input id="wsShopName" required class="rounded-lg border px-3 py-2" placeholder="Shop Name" />
         <input id="wsOwnerName" required class="rounded-lg border px-3 py-2" placeholder="Owner Name" />
@@ -485,6 +485,17 @@
       </div>
     </section>
 
+    <section class="max-w-7xl mx-auto px-4 pb-8">
+      <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 md:flex md:items-center md:justify-between">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700">Caterer Certified</p>
+          <h3 class="mt-1 text-2xl font-black text-[#065f46]">Supplying to 500+ Top Caterers in Ahmedabad</h3>
+          <p class="mt-1 text-sm text-slate-700">High-volume dispatch discipline and GST-ready billing designed for serious B2B buyers.</p>
+        </div>
+        <button id="request10000QuoteBtn" class="mt-3 rounded-xl bg-[#065f46] px-4 py-2 text-sm font-bold text-white md:mt-0">Request Quote for 10,000+ Units</button>
+      </div>
+    </section>
+
     <section id="wholesale" class="max-w-7xl mx-auto px-4 pb-12 grid lg:grid-cols-2 gap-6">
       <div class="bg-white rounded-2xl border p-6">
         <h3 class="text-2xl font-extrabold">Bulk Order / Wholesale Inquiry</h3>
@@ -502,6 +513,11 @@
       <div class="bg-white rounded-2xl border p-6 space-y-4">
         <h3 class="text-2xl font-extrabold">B2B Buyer Portal</h3>
         <p class="text-slate-700">Login to download full wholesale price list PDF, MOQ chart, and dispatch schedules.</p>
+        <div class="rounded-xl border border-amber-300 bg-amber-50 p-3">
+          <p class="text-xs font-bold uppercase tracking-wide text-amber-700">New Buyer Confidence</p>
+          <p class="mt-1 text-sm font-semibold text-slate-800">Sample Kit (₹499): 1-1 piece from key products for quality checks.</p>
+          <button id="sampleKitBtn" class="mt-2 rounded-lg bg-amber-500 px-3 py-2 text-xs font-bold text-white">Order Sample Kit @ ₹499</button>
+        </div>
         <button id="portalDownloadBtn" class="inline-block px-4 py-2 rounded-lg border border-emerald-300 text-emerald-700 font-semibold">Download Full Price List (PDF)</button>
         <p id="portalStatus" class="text-sm font-medium text-slate-600">Please login to access B2B downloads.</p>
         <div id="dashboard" class="mt-3 bg-emerald-50 border border-emerald-100 rounded-xl p-4">
@@ -971,6 +987,7 @@
                 <option value="Card">Card</option>
               </select>
               <input id="coPincode" required inputmode="numeric" minlength="6" maxlength="6" class="rounded-lg border px-3 py-2" placeholder="Pincode" />
+              <input id="coGstNumber" required class="rounded-lg border px-3 py-2" placeholder="GST Number (Mandatory for checkout)" />
               <button type="submit" class="rounded-lg bg-[#065f46] py-2 font-semibold text-white">Deliver to this Address</button>
             </form>
           </div>
@@ -1018,12 +1035,26 @@
     const INSTALL_BANNER_HIDE_MS = 24 * 60 * 60 * 1000;
     const FIREBASE_CONFIG = (window.__FIREBASE_CONFIG__) || (window.VMP_CONFIG?.firebase) || (window.VMP_APP?.config?.firebase) || {};
     const LOW_STOCK_THRESHOLD = 10;
-    const RETAIL_MIN_ORDER_QTY = 1;
-    const WHOLESALE_MIN_ORDER_QTY = 150;
+    const RETAIL_MIN_ORDER_QTY = 100;
+    const WHOLESALE_MIN_ORDER_QTY = 5000;
     const RETAIL_MARKUP = 1.25;
+    const RETAIL_MIN_MESSAGE = 'Minimum 100 units required for Retail orders.';
     let shoppingMode = localStorage.getItem('vmpShoppingMode') || '';
     let wholesaleProfile = JSON.parse(localStorage.getItem('vmpWholesaleProfile') || 'null');
     let firestoreDb = null;
+    let categoryMoqConfig = { bags: {}, books: {}, trays: {} };
+
+    function buildWholesaleTiers(baseRate){
+      const tier1 = Math.max(0, Number(baseRate || 0));
+      const tier2 = Number((tier1 * 1.08).toFixed(2));
+      const tier3 = Number((tier1 * 1.16).toFixed(2));
+      return [
+        { min: 100, price: tier3, label: 'Packet Retail (100-499)' },
+        { min: 500, price: tier2, label: 'Bulk Retail (500-4,999)' },
+        { min: 5000, price: tier1, label: 'Wholesale (5,000-10,000)' }
+      ];
+    }
+
 
     function readStorage(key){
       try {
@@ -1418,9 +1449,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
         const pcs = Number(mLast[1]);
         const updatedPcs = Number.isFinite(pcs) ? Number((pcs + PRICE_INCREMENT).toFixed(2)) : PRICE_INCREMENT;
-        const tier500 = Number((updatedPcs * 0.92).toFixed(2));
-        const tier200 = Number((tier500 + 1).toFixed(2));
-        const tier100 = Number((tier500 + 2).toFixed(2));
+        const tierWholesale = Number((updatedPcs * 0.92).toFixed(2));
 
         let name = noSr.slice(0, mLast.index).trim();
         name = name
@@ -1438,14 +1467,10 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           stock: 200,
           retail_enabled: true,
           retail_unit: 'Packet',
-          retail_moq: 1,
+          retail_moq: RETAIL_MIN_ORDER_QTY,
           pieces_per_unit: 100,
-          retail_price: Number((tier100 * RETAIL_MARKUP).toFixed(2)),
-          tiers: [
-            {min:150, price: tier100},
-            {min:300, price: tier200},
-            {min:600, price: tier500}
-          ]
+          retail_price: Number((tierWholesale * RETAIL_MARKUP).toFixed(2)),
+          tiers: buildWholesaleTiers(tierWholesale)
         });
       }
       return items;
@@ -1467,7 +1492,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         const response = await fetch('./catalog/vmp-catalog-bags-stationery.json', { cache: 'no-store' });
         if(!response.ok) return [];
         const payload = await response.json();
-        const slabs = Array.isArray(payload.wholesale_price_slab) ? payload.wholesale_price_slab : [];
         return (payload.categories || []).flatMap((mainCategory) =>
           (mainCategory.sub_categories || []).flatMap((subCategory) =>
             (subCategory.products || []).map((item) => ({
@@ -1482,10 +1506,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
               retail_moq: Number(item.retail_moq || 1),
               pieces_per_unit: Number(item.pieces_per_unit || 100),
               retail_price: Number(item.retail_price || 0),
-              tiers: slabs.map((slab) => ({
-                min: Number(slab.min_qty || 0),
-                price: Number((Number(item.base_price || 0) * Number(slab.price_factor || 1)).toFixed(2))
-              })).filter((tier) => tier.min > 0 && tier.price > 0)
+              tiers: buildWholesaleTiers(Number(item.base_price || 0))
             }))
           )
         );
@@ -1502,11 +1523,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       const id = slugify(item.name);
       const overridePrice = Number(priceOverrides[id]);
       const tiers = Number.isFinite(overridePrice) && overridePrice > 0
-        ? [
-            {min:150, price: Number(overridePrice.toFixed(2))},
-            {min:300, price: Number(Math.max(overridePrice - 1, 0).toFixed(2))},
-            {min:600, price: Number(Math.max(overridePrice - 2, 0).toFixed(2))}
-          ]
+        ? buildWholesaleTiers(Number(overridePrice.toFixed(2)))
         : item.tiers;
       return {
         ...item,
@@ -1514,7 +1531,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         tiers,
         retail_enabled: item.retail_enabled !== false,
         retail_unit: item.retail_unit || 'Packet',
-        retail_moq: Math.max(1, Number(item.retail_moq || 1)),
+        retail_moq: Math.max(RETAIL_MIN_ORDER_QTY, Number(item.retail_moq || RETAIL_MIN_ORDER_QTY)),
         pieces_per_unit: Math.max(1, Number(item.pieces_per_unit || 100)),
         retail_price: Number(item.retail_price || 0) || Number(((tiers[0]?.price || 0) * RETAIL_MARKUP).toFixed(2)),
         hsn: item.hsn || (/paper|cornstarch|biodegradable|stationery/i.test(item.category) ? '4823' : (/glass|bag/i.test(item.category) ? '3923' : '3924')),
@@ -1570,11 +1587,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           if(!product) return;
           if(Number.isFinite(Number(data.liveWholesaleRate))){
             const wholesaleRate = Number(data.liveWholesaleRate);
-            product.tiers = [
-              { min: 150, price: wholesaleRate },
-              { min: 300, price: Number((wholesaleRate * 0.93).toFixed(2)) },
-              { min: 600, price: Number((wholesaleRate * 0.86).toFixed(2)) }
-            ];
+            product.tiers = [...buildWholesaleTiers(wholesaleRate)];
           }
           if(Array.isArray(data.wholesale_price_slabs) && data.wholesale_price_slabs.length){
             const slabs = data.wholesale_price_slabs
@@ -1584,7 +1597,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
             if(slabs.length) product.tiers = slabs;
           }
           product.retail_price = Number(data.retail_price || product.retail_price || 0);
-          product.retail_moq = Math.max(1, Number(data.retail_moq || product.retail_moq || 1));
+          product.retail_moq = Math.max(RETAIL_MIN_ORDER_QTY, Number(data.retail_moq || product.retail_moq || RETAIL_MIN_ORDER_QTY));
           product.retail_unit = data.retail_unit || product.retail_unit || 'Packet';
           product.pieces_per_unit = Math.max(1, Number(data.pieces_per_unit || product.pieces_per_unit || 100));
           product.retail_enabled = data.retail_enabled !== false;
@@ -1597,6 +1610,16 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         });
         applyProductFilters();
       }, (error) => console.warn('Retail pricing sync failed.', error));
+    }
+
+    function syncMoqSettingsRealtime(){
+      const db = getFirestoreDb();
+      if(!db) return;
+      db.collection('appSettings').doc('moqConfig').onSnapshot((doc) => {
+        const data = doc.data() || {};
+        categoryMoqConfig = data.categories || { bags: {}, books: {}, trays: {} };
+        applyProductFilters();
+      }, (error) => console.warn('MOQ config sync failed.', error));
     }
 
     function applySeasonBanner(mode){
@@ -2108,6 +2131,14 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       }
       document.getElementById('wholesaleAuthModal')?.classList.remove('hidden');
     });
+    bindById('sampleKitBtn', 'click', ()=>{
+      const msg = 'Hi Veer Mahadev Plastic, I want to order the Sample Kit (₹499) for quality check. Please share payment and dispatch details.';
+      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
+    });
+    bindById('request10000QuoteBtn', 'click', ()=>{
+      const msg = 'Hi Veer Mahadev Plastic, I want to Request Quote for 10,000+ Units. Please connect with your sales team.';
+      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
+    });
     bindById('closeWholesaleAuth', 'click', ()=>{
       document.getElementById('wholesaleAuthModal')?.classList.add('hidden');
       applyShoppingMode('retail');
@@ -2214,15 +2245,35 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return shoppingMode === 'wholesale' ? WHOLESALE_MIN_ORDER_QTY : RETAIL_MIN_ORDER_QTY;
     }
 
+    function productMoqCategory(product){
+      const text = `${product?.category || ''} ${product?.name || ''}`.toLowerCase();
+      if(/bag/.test(text)) return 'bags';
+      if(/book|stationery/.test(text)) return 'books';
+      if(/tray|plate/.test(text)) return 'trays';
+      return '';
+    }
+
+    function configuredRetailMoq(product){
+      const key = productMoqCategory(product);
+      const categoryValue = Number(categoryMoqConfig?.[key]?.retail || RETAIL_MIN_ORDER_QTY);
+      return Math.max(RETAIL_MIN_ORDER_QTY, categoryValue, Number(product?.retail_moq || RETAIL_MIN_ORDER_QTY));
+    }
+
+    function configuredWholesaleMoq(product){
+      const key = productMoqCategory(product);
+      const categoryValue = Number(categoryMoqConfig?.[key]?.wholesale || WHOLESALE_MIN_ORDER_QTY);
+      return Math.max(WHOLESALE_MIN_ORDER_QTY, categoryValue);
+    }
+
     function currentQtyStep(){
-      return shoppingMode === 'wholesale' ? 10 : 1;
+      return shoppingMode === 'wholesale' ? 100 : 1;
     }
 
     function retailConstraints(product){
       return {
         unit: product.retail_unit || 'Packet',
         piecesPerUnit: Math.max(1, Number(product.pieces_per_unit || 100)),
-        retailMoq: Math.max(1, Number(product.retail_moq || 1)),
+        retailMoq: configuredRetailMoq(product),
         retailEnabled: product.retail_enabled !== false
       };
     }
@@ -2291,8 +2342,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         color,
         hsn,
         moq: shoppingMode === 'wholesale'
-          ? `${product.tiers[0]?.min || WHOLESALE_MIN_ORDER_QTY}+ pcs`
-          : `${Math.max(1, Number(product.retail_moq || 1))}+ ${product.retail_unit || 'Packet'}`,
+          ? `${WHOLESALE_MIN_ORDER_QTY}+ pcs`
+          : `${configuredRetailMoq(product)}+ ${product.retail_unit || 'Packet'}`,
         use
       };
     }
@@ -2398,7 +2449,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       estimate.forEach((row) => {
         const product = row.product;
         const qty = mode === 'wholesale'
-          ? Math.max(WHOLESALE_MIN_ORDER_QTY, Math.ceil(row.qtyPieces / 10) * 10)
+          ? Math.max(WHOLESALE_MIN_ORDER_QTY, Math.ceil(row.qtyPieces / 100) * 100)
           : row.packets;
         const unit = unitPriceForProduct(product, qty, mode);
         const existing = cart.find((item) => item.id === product.id && item.unit === unit);
@@ -2416,21 +2467,21 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       const customerReady = Boolean((document.getElementById('customerName')?.value || '').trim() && (document.getElementById('customerMobile')?.value || '').trim() && (document.getElementById('customerAddress')?.value || '').trim());
       productGrid.innerHTML = filteredProducts.map(p => {
         const rating = productRating(p);
-        const minQty = currentMinOrderQty();
+        const minQty = configuredWholesaleMoq(p);
         const stepQty = currentQtyStep();
-        const baseWholesale = p.tiers[0]?.price || 0;
+        const baseWholesale = priceForQty(p.tiers, minQty);
         const retailMeta = retailConstraints(p);
         const retailPrice = Number(p.retail_price || 0) || Number((baseWholesale * RETAIL_MARKUP).toFixed(2));
         const unitDisplay = shoppingMode === 'wholesale' ? baseWholesale : retailPrice;
-        const qtyLabel = shoppingMode === 'wholesale' ? `${p.tiers[0]?.min || WHOLESALE_MIN_ORDER_QTY}+ pcs` : '1+ pcs';
+        const qtyLabel = shoppingMode === 'wholesale' ? `${minQty}+ pcs` : `${RETAIL_MIN_ORDER_QTY}+ pcs`;
         const tierLine = shoppingMode === 'wholesale'
-          ? `${p.tiers[1].min}+ @ ₹${p.tiers[1].price} • ${p.tiers[2].min}+ @ ₹${p.tiers[2].price}`
+          ? `500+ @ ₹${priceForQty(p.tiers, 500)} • 5,000+ @ ₹${priceForQty(p.tiers, 5000)}`
           : `Retail packet pricing active. Sign in for wholesale rates.`;
         const retailControls = shoppingMode === 'retail'
           ? `
             <div class="flex items-center justify-between">
               <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">Pack of ${retailMeta.piecesPerUnit} Pcs</span>
-              <span class="text-[11px] font-semibold text-orange-600">Min. Order: ${retailMeta.retailMoq} Packets</span>
+              <span class="text-[11px] font-semibold text-orange-600">Min. Order: ${retailMeta.retailMoq} Units</span>
             </div>
             <p class="text-sm font-bold text-emerald-800">Price: ₹${unitDisplay} per pack</p>
             <div class="flex items-center gap-2">
@@ -2467,6 +2518,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           <div class="space-y-3 p-3">
             <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${p.name}</h4>${stockBadge(p.stock)}</div>
             <p class="text-[11px] text-slate-500">${p.category}</p>
+            ${shoppingMode === 'wholesale' ? '<p class="rounded-full bg-emerald-700 px-2 py-1 text-center text-[10px] font-bold text-white">Genuine Wholesaler Price - Min. 5000 units</p>' : ''}
             <div class="flex items-center justify-between text-[11px]">
               <span class="rounded-full bg-emerald-100 px-2 py-0.5 font-semibold text-emerald-700">Pack Size: ${retailMeta.piecesPerUnit} pcs</span>
               <span class="font-semibold text-slate-600">⭐ ${rating.rating} (${rating.reviews})</span>
@@ -2555,7 +2607,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         if(currentVal > moq){
           qtyInput.value = String(currentVal - 1);
         } else {
-          showToast(`Minimum ${moq} packets required for this item`);
+          showToast(RETAIL_MIN_MESSAGE);
         }
       }
     }
@@ -2566,7 +2618,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(!p) return;
       const qtyInput = document.getElementById(`qty-${id}`);
       const retailMeta = retailConstraints(p);
-      const minQty = shoppingMode === 'retail' ? retailMeta.retailMoq : currentMinOrderQty();
+      const minQty = shoppingMode === 'retail' ? retailMeta.retailMoq : configuredWholesaleMoq(p);
       const stepQty = currentQtyStep();
       const rawQty = Number(qtyInput?.value || minQty);
       const qty = shoppingMode === 'retail'
@@ -2577,7 +2629,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         return;
       }
       if(shoppingMode === 'retail' && qty < retailMeta.retailMoq){
-        showToast(`Minimum ${retailMeta.retailMoq} packets required for this item`);
+        showToast(RETAIL_MIN_MESSAGE);
         return;
       }
       if(qtyInput) qtyInput.value = String(qty);
@@ -3002,13 +3054,21 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     bindById('checkoutForm', 'submit', (e)=>{
       e.preventDefault();
       if(shoppingMode === 'wholesale' && ensureWholesaleAccess()) return;
-      if(shoppingMode === 'wholesale' && cart.some((item) => Number(item.qty) < WHOLESALE_MIN_ORDER_QTY)){
-        alert(`Each product requires minimum ${WHOLESALE_MIN_ORDER_QTY} qty.`);
+      if(shoppingMode === 'wholesale' && cart.some((item) => {
+        const product = products.find((p) => p.id === item.id);
+        return Number(item.qty) < configuredWholesaleMoq(product);
+      })){
+        alert('Each product must match the wholesale MOQ for its category.');
         return;
       }
       const totals = checkoutTotals();
       const firstName = document.getElementById('coFirstName').value.trim();
       const lastName = document.getElementById('coLastName').value.trim();
+      const gstNumber = document.getElementById('coGstNumber').value.trim().toUpperCase();
+      if(gstNumber.length < 15){
+        alert('GST Number is mandatory for checkout and should be valid.');
+        return;
+      }
       const details = {
         firstName,
         lastName,
@@ -3016,6 +3076,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         whatsapp: normalizeIndianPhone(document.getElementById('coWhatsapp').value.trim()),
         address: document.getElementById('coAddress').value.trim(),
         pincode: document.getElementById('coPincode').value.trim(),
+        gstNumber,
         paymentType: document.getElementById('coPaymentType').value,
       };
       if(details.name.length < 2){
@@ -3164,7 +3225,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(productMatch){
         return `${productMatch.name} ka rate: ${productMatch.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')}. Category: ${productMatch.category}.`;
       }
-      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'Bulk tier pricing active hai: 150+, 300+, 600+ quantity slabs. 600+ par best wholesale rate apply hota hai.';
+      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'Bulk tier pricing active hai: 100-499 packet retail (highest), 500-4,999 bulk retail (standard), 5,000+ genuine wholesale (lowest factory rate).';
       if(q.includes('shipping') || q.includes('delivery') || q.includes('dispatch')) return 'Shipping dead weight vs volumetric weight (jo zyada ho) par calculate hoti hai. Local/Gujarat/Interstate zones available hain.';
       if(q.includes('stock') || q.includes('available')) return 'Product cards par live stock badge dikh raha hai: In Stock, Low Stock, Out of Stock.';
       if(q.includes('eco') || q.includes('biodegradable')) return 'Haan ji, eco-friendly biodegradable range available hai. Aap "Eco" ya product name type karein to rate details mil jayengi.';
@@ -3328,6 +3389,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     renderGuestEstimator();
     syncInventoryRealtime();
     syncRetailPricingRealtime();
+    syncMoqSettingsRealtime();
     syncSeasonBannerRealtime();
     renderCart();
     currentUser = loadCurrentUser();
