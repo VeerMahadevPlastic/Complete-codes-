@@ -272,5 +272,10 @@ def stock_adjust():
 
 
 if __name__ == '__main__':
+    debug_mode = os.getenv("FLASK_DEBUG", "false").strip().lower() in ("1", "true", "yes", "on")
+    app.run(host='0.0.0.0', port=8000, debug=debug_mode)
+    app.run(host='0.0.0.0', port=8000, debug=True)
+=======
     debug_mode = os.getenv('FLASK_DEBUG', 'false').strip().lower() in ('1', 'true', 'yes', 'on')
     app.run(host='0.0.0.0', port=8000, debug=debug_mode)
+>>>>>>> main
