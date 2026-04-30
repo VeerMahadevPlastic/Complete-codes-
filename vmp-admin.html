@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#065f46" />
+  <link rel="manifest" href="./vmp-admin-manifest.json" />
+  <link rel="icon" href="./icons/icon-192.svg" type="image/svg+xml" />
+  <title>VMP Admin | Financial & Inventory Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./js/vmp-config.js"></script>
+  <script src="./js/ui.js"></script>
+  <script src="./js/auth.js"></script>
+  <script src="./js/tracking.js"></script>
+  <script src="./js/vmp-app.js"></script>
+  <script src="./js/vmp-modules.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-database-compat.js" defer></script>
+</head>
+<body class="bg-[#f5f8f5] text-slate-800">
+  <div id="adminGate" class="fixed inset-0 z-[120] flex items-center justify-center bg-black/50 p-4">
+    <div class="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl">
+      <h2 class="text-xl font-black text-[#065f46]">Private Admin Access</h2>
+      <p class="mt-1 text-sm text-slate-600">Select role and enter passcode.</p>
+      <select id="adminGateRole" class="mt-3 w-full rounded-lg border px-3 py-2">
+        <option value="admin">Admin (Karan)</option>
+        <option value="manager">Staff - Manager</option>
+        <option value="delivery">Staff - Delivery</option>
+      </select>
+      <input id="adminGatePass" type="password" class="mt-4 w-full rounded-lg border px-3 py-2" placeholder="Passcode" />
+      <button id="adminGateBtn" class="mt-3 w-full rounded-lg bg-[#065f46] py-2 font-semibold text-white">Unlock Dashboard</button>
+      <p id="adminGateMsg" class="mt-2 text-sm font-semibold"></p>
+    </div>
+  </div>
+
+  <div class="min-h-screen md:grid md:grid-cols-[240px_1fr]">
+    <aside class="bg-[#065f46] p-5 text-white">
+      <h1 class="text-2xl font-black">VMP Accounts</h1>
+      <p class="mt-1 text-xs uppercase tracking-wider text-emerald-100">Tally / Vyapar style</p>
+      <nav class="mt-6 space-y-2 text-sm font-semibold">
+        <a href="#summary" class="block rounded-lg bg-white/10 px-3 py-2">Summary</a>
+        <a href="#daybook" class="block rounded-lg px-3 py-2 hover:bg-white/10">Daybook</a>
+        <a href="#purchase" class="block rounded-lg px-3 py-2 hover:bg-white/10">Purchases</a>
+        <a href="#dailyOrders" class="block rounded-lg px-3 py-2 hover:bg-white/10">Daily Orders</a>
+        <a href="#stock" class="block rounded-lg px-3 py-2 hover:bg-white/10">Stock Auto-Sync</a>
+      </nav>
+    </aside>
+
+    <main class="space-y-6 p-5 md:p-8">
+      <section id="summary" class="rounded-2xl border border-emerald-100 bg-white p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl font-black text-[#065f46]">Financial Summary (Profit/Loss)</h2>
+            <p class="text-sm text-slate-600">Total Sales - (Purchases + Expenses) = Net Profit</p>
+          </div>
+          <select id="reportFilter" class="rounded-lg border px-3 py-2 text-sm font-semibold">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly" selected>Monthly</option>
+          </select>
+          <select id="seasonModeSelect" class="rounded-lg border px-3 py-2 text-sm font-semibold">
+            <option value="normal">Normal</option>
+            <option value="wedding">Wedding Season</option>
+            <option value="festival">Festival Season</option>
+          </select>
+        </div>
+        <div class="mt-4 grid gap-3 md:grid-cols-4">
+          <div class="rounded-xl bg-emerald-50 p-3"><p class="text-xs text-emerald-700">Total Sales</p><p id="sumSales" class="text-xl font-black">₹0</p></div>
+          <div class="rounded-xl bg-emerald-50 p-3"><p class="text-xs text-emerald-700">Purchases</p><p id="sumPurchase" class="text-xl font-black">₹0</p></div>
+          <div class="rounded-xl bg-emerald-50 p-3"><p class="text-xs text-emerald-700">Expenses</p><p id="sumExpense" class="text-xl font-black">₹0</p></div>
+          <div class="rounded-xl bg-[#065f46] p-3 text-white"><p class="text-xs text-emerald-100">Net Profit</p><p id="sumProfit" class="text-xl font-black">₹0</p></div>
+        </div>
+        <div class="mt-4 grid gap-3 md:grid-cols-3">
+          <div class="rounded-xl border border-emerald-200 bg-white p-3"><p class="text-xs text-emerald-700">Today's Sales</p><p id="pulseTodaySales" class="text-lg font-black">₹0</p></div>
+          <div class="rounded-xl border border-emerald-200 bg-white p-3"><p class="text-xs text-emerald-700">7-Day Trend</p><p id="pulseTrend" class="text-sm font-semibold text-slate-700">-</p></div>
+          <div class="rounded-xl border border-emerald-200 bg-white p-3"><p class="text-xs text-emerald-700">Monthly Growth</p><p id="pulseGrowth" class="text-lg font-black">0%</p></div>
+        </div>
+        <div class="mt-3 grid gap-3 md:grid-cols-3">
+          <div class="rounded-xl bg-amber-50 p-3"><p class="text-xs text-amber-700">Total Pending</p><p id="osPending" class="text-lg font-black">0</p></div>
+          <div class="rounded-xl bg-blue-50 p-3"><p class="text-xs text-blue-700">In-Dispatch</p><p id="osDispatch" class="text-lg font-black">0</p></div>
+          <div class="rounded-xl bg-emerald-50 p-3"><p class="text-xs text-emerald-700">Delivered</p><p id="osDelivered" class="text-lg font-black">0</p></div>
+        </div>
+        <div id="urgencyAlertBox" class="mt-3 hidden rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-700"></div>
+      </section>
+
+      <section id="dailyOrders" class="rounded-2xl border border-emerald-100 bg-white p-5">
+        <h2 class="text-xl font-black text-[#065f46]">Daily Orders</h2>
+        <p class="mt-1 text-sm text-slate-600">Operational order list for manager and delivery staff.</p>
+        <div class="mt-4 overflow-x-auto rounded-xl border">
+          <table class="min-w-full text-sm">
+            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Order ID</th><th class="px-3 py-2">Customer</th><th class="px-3 py-2">Total</th><th class="px-3 py-2">Status</th><th class="px-3 py-2">Date</th></tr></thead>
+            <tbody id="dailyOrdersRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="daybook" class="rounded-2xl border border-emerald-100 bg-white p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-xl font-black text-[#065f46]">Digital Daybook (Cash & Bank)</h2>
+          <div class="inline-flex rounded-lg border">
+            <button id="tabCash" class="rounded-l-lg bg-[#065f46] px-3 py-2 text-xs font-bold text-white">Cash</button>
+            <button id="tabBank" class="rounded-r-lg px-3 py-2 text-xs font-bold text-slate-700">Bank</button>
+          </div>
+        </div>
+
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button id="quickCashSale" class="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-bold text-white">+ Quick Entry: Cash Sale</button>
+          <button id="quickCashOut" class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700">+ Quick Entry: Cash Out</button>
+        </div>
+
+        <form id="daybookForm" class="mt-4 grid gap-3 md:grid-cols-5">
+          <input id="entryDate" required type="date" class="rounded-lg border px-3 py-2" />
+          <select id="entryType" class="rounded-lg border px-3 py-2"><option value="sale">Sale In</option><option value="out">Expense Out</option></select>
+          <input id="entryAmount" required type="number" step="0.01" class="rounded-lg border px-3 py-2" placeholder="Amount" />
+          <input id="entryTxn" class="rounded-lg border px-3 py-2" placeholder="Txn ID / UTR (Bank only)" />
+          <input id="entryNote" class="rounded-lg border px-3 py-2" placeholder="Narration" />
+          <button id="daybookSubmitBtn" class="rounded-lg bg-[#065f46] py-2 font-semibold text-white md:col-span-5">+ Add Entry</button>
+        </form>
+        <p id="daybookMsg" class="mt-2 text-sm font-semibold"></p>
+
+        <div class="mt-4 overflow-x-auto rounded-xl border">
+          <table class="min-w-full text-sm">
+            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Date</th><th class="px-3 py-2">Mode</th><th class="px-3 py-2">Type</th><th class="px-3 py-2">Amount</th><th class="px-3 py-2">Txn/UTR</th><th class="px-3 py-2">Narration</th></tr></thead>
+            <tbody id="daybookRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="liveInventoryController" class="rounded-2xl border border-emerald-100 bg-white p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-xl font-black text-[#065f46]">Live Inventory & Rate Controller</h2>
+            <p class="mt-1 text-sm text-slate-600">Update stock and wholesale rate instantly. Website prices sync via Firebase in real time.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <input id="inventorySearch" class="rounded-lg border px-3 py-2 text-sm" placeholder="Search product (Sari Bag / 5CP Tray)" />
+            <button id="addNewProductBtn" class="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-bold text-white">+ Add New Product</button>
+          </div>
+        </div>
+        <div class="mt-4 overflow-x-auto rounded-xl border">
+          <table class="min-w-full text-sm">
+            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Product</th><th class="px-3 py-2">Current Stock</th><th class="px-3 py-2">Wholesale Rate</th><th class="px-3 py-2">Description</th><th class="px-3 py-2">Retail Settings</th><th class="px-3 py-2">Add Photo</th><th class="px-3 py-2">Action</th></tr></thead>
+            <tbody id="inventoryControllerRows"></tbody>
+          </table>
+        </div>
+        <div class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p class="text-sm font-black text-[#065f46]">Category MOQ Controller (Bags / Books / Trays)</p>
+              <p class="text-xs text-slate-600">Set different MOQ rules by category if needed. Defaults: Retail 100, Wholesale 5000.</p>
+            </div>
+            <button id="saveCategoryMoqBtn" class="rounded-lg bg-[#065f46] px-3 py-2 text-xs font-bold text-white">Save Category Limits</button>
+          </div>
+          <div class="mt-3 grid gap-2 md:grid-cols-3">
+            <div class="rounded-lg border bg-white p-3">
+              <p class="text-xs font-bold text-slate-700">Bags</p>
+              <input id="bagsRetailMoq" type="number" min="100" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="100" placeholder="Retail MOQ" />
+              <input id="bagsWholesaleMoq" type="number" min="5000" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="5000" placeholder="Wholesale MOQ" />
+            </div>
+            <div class="rounded-lg border bg-white p-3">
+              <p class="text-xs font-bold text-slate-700">Books</p>
+              <input id="booksRetailMoq" type="number" min="100" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="100" placeholder="Retail MOQ" />
+              <input id="booksWholesaleMoq" type="number" min="5000" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="5000" placeholder="Wholesale MOQ" />
+            </div>
+            <div class="rounded-lg border bg-white p-3">
+              <p class="text-xs font-bold text-slate-700">Trays</p>
+              <input id="traysRetailMoq" type="number" min="100" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="100" placeholder="Retail MOQ" />
+              <input id="traysWholesaleMoq" type="number" min="5000" class="mt-2 w-full rounded-lg border px-2 py-1 text-sm" value="5000" placeholder="Wholesale MOQ" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="purchase" class="rounded-2xl border border-emerald-100 bg-white p-5">
+        <h2 class="text-xl font-black text-[#065f46]">Purchase & Bill Management</h2>
+        <p class="mt-1 text-sm text-slate-600">Log raw material bills and scan/upload receipts to Firebase Storage.</p>
+        <form id="purchaseForm" class="mt-4 grid gap-3 md:grid-cols-3">
+          <input id="purchaseDate" required type="date" class="rounded-lg border px-3 py-2" />
+          <input id="purchaseMaterial" required class="rounded-lg border px-3 py-2" placeholder="Material (Plastic granules / Masterbatch)" />
+          <input id="purchaseSupplier" class="rounded-lg border px-3 py-2" placeholder="Supplier" />
+          <input id="purchaseQty" type="number" class="rounded-lg border px-3 py-2" placeholder="Qty (kg/units)" />
+          <input id="purchaseAmount" required type="number" step="0.01" class="rounded-lg border px-3 py-2" placeholder="Bill Amount" />
+          <input id="purchaseBill" type="file" accept="image/*,.pdf" class="rounded-lg border px-3 py-2" />
+          <button id="purchaseSubmitBtn" class="rounded-lg bg-[#065f46] py-2 font-semibold text-white md:col-span-3">+ Add Purchase Bill</button>
+        </form>
+        <p id="purchaseMsg" class="mt-2 text-sm font-semibold"></p>
+
+        <div class="mt-4 overflow-x-auto rounded-xl border">
+          <table class="min-w-full text-sm">
+            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Date</th><th class="px-3 py-2">Material</th><th class="px-3 py-2">Supplier</th><th class="px-3 py-2">Amount</th><th class="px-3 py-2">Bill</th></tr></thead>
+            <tbody id="purchaseRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="stock" class="rounded-2xl border border-emerald-100 bg-white p-5">
+        <h2 class="text-xl font-black text-[#065f46]">Inventory & Stock Auto-Sync</h2>
+        <p class="mt-1 text-sm text-slate-600">Website sales + manual cash sales auto-deduct stock. Use Stock In for production/purchase arrivals.</p>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <form id="manualSaleForm" class="rounded-xl border p-4 grid gap-3">
+            <p class="text-sm font-bold text-emerald-900">Manual Cash Sale</p>
+            <select id="saleProduct" class="rounded-lg border px-3 py-2"></select>
+            <input id="saleQty" required type="number" class="rounded-lg border px-3 py-2" placeholder="Quantity Sold" />
+            <input id="saleAmount" required type="number" step="0.01" class="rounded-lg border px-3 py-2" placeholder="Sale Amount" />
+            <button id="manualSaleSubmitBtn" class="rounded-lg bg-emerald-700 py-2 font-semibold text-white">+ Record Cash Sale & Deduct Stock</button>
+          </form>
+
+          <form id="stockInForm" class="rounded-xl border p-4 grid gap-3">
+            <p class="text-sm font-bold text-emerald-900">Stock In (Production / Purchase)</p>
+            <select id="stockProduct" class="rounded-lg border px-3 py-2"></select>
+            <input id="stockQty" required type="number" class="rounded-lg border px-3 py-2" placeholder="Quantity Added" />
+            <input id="stockRef" class="rounded-lg border px-3 py-2" placeholder="Reference (Batch/Purchase ID)" />
+            <button id="stockInSubmitBtn" class="rounded-lg bg-[#065f46] py-2 font-semibold text-white">+ Stock In</button>
+          </form>
+        </div>
+        <p id="stockMsg" class="mt-2 text-sm font-semibold"></p>
+
+        <div class="mt-4 overflow-x-auto rounded-xl border">
+          <table class="min-w-full text-sm">
+            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Product</th><th class="px-3 py-2">Current Stock</th><th class="px-3 py-2">Last Update</th></tr></thead>
+            <tbody id="stockRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="retailConfigModal" class="hidden fixed inset-0 z-[130] bg-black/40 p-4">
+    <div class="mx-auto mt-20 w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl">
+      <h3 class="text-lg font-black text-[#065f46]">Retail Packet Settings</h3>
+      <p id="retailConfigTitle" class="mt-1 text-sm text-slate-600">-</p>
+      <div class="mt-3 grid gap-2">
+        <input id="retailPriceInput" type="number" step="0.01" class="rounded-lg border px-3 py-2" placeholder="Retail Packet Price" />
+        <input id="retailMoqInput" type="number" class="rounded-lg border px-3 py-2" placeholder="Retail MOQ" />
+      </div>
+      <div class="mt-3 flex gap-2">
+        <button id="saveRetailConfigBtn" class="flex-1 rounded-lg bg-[#065f46] py-2 text-sm font-semibold text-white">Save Retail Settings</button>
+        <button id="closeRetailConfigBtn" class="rounded-lg border px-3 py-2 text-sm font-semibold">Close</button>
+      </div>
+    </div>
+  </div>
+  <input id="productPhotoInput" type="file" accept="image/*" capture="environment" class="hidden" />
+
+  <script>
+    const FIREBASE_CONFIG = (window.VMP_CONFIG?.firebase) || {};
+    const ADMIN_GATE_PASS = 'VMP@2026';
+    const STAFF_GATE_PASS = 'VMPSTAFF@2026';
+    let currentRole = 'admin';
+    let daybookMode = 'cash';
+    let productsCache = [];
+    let inventorySearchTerm = '';
+    let retailConfigProductId = '';
+    let pendingPhotoProductId = '';
+    let daybookUnsub = null;
+    let productsUnsub = null;
+
+    function getApp(){ return firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG); }
+    function getDb(){ return firebase.firestore(getApp()); }
+    function getStorage(){ return firebase.storage(getApp()); }
+    function getRealtimeDb(){ return firebase.database(getApp()); }
+    function money(n){ return `₹${Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 2 })}`; }
+    function showMsg(id, text, ok = true){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.className = `mt-2 text-sm font-semibold ${ok ? 'text-emerald-700' : 'text-rose-700'}`;
+      el.textContent = text;
+    }
+    function setButtonLoading(buttonId, loading, label){
+      const btn = document.getElementById(buttonId);
+      if(!btn) return;
+      if(loading){
+        btn.dataset.originalText = btn.dataset.originalText || btn.textContent;
+        btn.innerHTML = '<span class=\"inline-flex items-center gap-2\"><span class=\"h-3 w-3 animate-spin rounded-full border-2 border-white/30 border-t-white\"></span><span>Syncing...</span></span>';
+      } else {
+        btn.textContent = label || btn.dataset.originalText || btn.textContent;
+      }
+    }
+    function postBackgroundReconcile(){
+      fetch('/api/compute/reconcile', { method: 'POST' }).catch(() => {});
+    }
+    function applyRoleAccess(role){
+      const isAdmin = role === 'admin';
+      document.querySelectorAll('#summary, #daybook, #purchase').forEach((section) => {
+        if(section) section.classList.toggle('hidden', !isAdmin);
+      });
+      document.querySelectorAll('a[href="#summary"], a[href="#daybook"], a[href="#purchase"]').forEach((link) => {
+        if(link) link.classList.toggle('hidden', !isAdmin);
+      });
+      const heading = document.querySelector('#summary h2');
+      if(heading && !isAdmin) heading.textContent = 'Operational Dashboard';
+    }
+    function applySummaryData(summary){
+      if(!summary) return;
+      if(summary.todays_sales !== undefined){
+        document.getElementById('pulseTodaySales').textContent = money(summary.todays_sales || 0);
+      }
+      if(Array.isArray(summary.seven_day_trend)){
+        const trend = summary.seven_day_trend.map((d) => `${String(d.date).slice(5)}:₹${Number(d.sales || 0).toFixed(0)}`).join(' | ');
+        document.getElementById('pulseTrend').textContent = trend || '-';
+      }
+      if(summary.monthly_growth_percent !== undefined){
+        document.getElementById('pulseGrowth').textContent = `${Number(summary.monthly_growth_percent || 0).toFixed(2)}%`;
+      }
+      const st = summary.order_status;
+      if(st){
+        document.getElementById('osPending').textContent = String(st.pending || 0);
+        document.getElementById('osDispatch').textContent = String(st.in_dispatch || 0);
+        document.getElementById('osDelivered').textContent = String(st.delivered || 0);
+      }
+    }
+    function fmtDate(d){ return d.toISOString().slice(0,10); }
+    function parseDate(value){ return new Date(`${value}T00:00:00`); }
+    let transactionsCache = [];
+
+    function setSummaryLoading(loading = true){
+      const ids = ['sumSales', 'sumPurchase', 'sumExpense', 'sumProfit'];
+      ids.forEach((id) => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        if(loading){
+          el.innerHTML = '<span class="inline-flex items-center gap-2 text-sm"><span class="h-3 w-3 animate-spin rounded-full border-2 border-slate-300 border-t-emerald-700"></span>Syncing Data...</span>';
+        }
+      });
+    }
+
+    async function saveTransaction(payload){
+      await getDb().collection('transactions').add({
+        ...payload,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        admin_id: 'Karan_VMP_01'
+      });
+    }
+
+    function renderTransactionsTables(rows = []){
+      const daybookRows = rows
+        .filter((tx) => tx.kind === 'cash_sale' || tx.kind === 'cash_out')
+        .sort((a, b) => (b.createdAt?.toMillis?.() || Date.parse(b.date || '1970-01-01')) - (a.createdAt?.toMillis?.() || Date.parse(a.date || '1970-01-01')));
+      renderDaybook(daybookRows.map((row) => ({
+        date: row.date,
+        mode: row.mode || 'cash',
+        type: row.kind === 'cash_sale' ? 'sale' : 'out',
+        amount: Number(row.amount || 0),
+        txnId: row.txnId || '',
+        note: row.note || ''
+      })));
+      const purchaseRows = rows
+        .filter((tx) => tx.kind === 'purchase_bill')
+        .sort((a, b) => (b.createdAt?.toMillis?.() || Date.parse(b.date || '1970-01-01')) - (a.createdAt?.toMillis?.() || Date.parse(a.date || '1970-01-01')));
+      document.getElementById('purchaseRows').innerHTML = purchaseRows.map((p) => `
+        <tr class="border-t"><td class="px-3 py-2">${p.date || '-'}</td><td class="px-3 py-2">${p.material || '-'}</td><td class="px-3 py-2">${p.supplier || '-'}</td><td class="px-3 py-2">${money(p.amount)}</td><td class="px-3 py-2">${p.billUrl ? `<a class="text-emerald-700 underline" href="${p.billUrl}" target="_blank">View Bill</a>` : '-'}</td></tr>
+      `).join('') || '<tr><td colspan="5" class="px-3 py-2 text-slate-500">No purchase bills.</td></tr>';
+    }
+
+    function recalcSummaryFromTransactions(rows = [], orderRows = [], extraExpenses = []){
+      let sales = 0; let purchaseTotal = 0; let expenseTotal = 0;
+      rows.forEach((row) => {
+        if(!inReportWindow(row.date)) return;
+        if(row.kind === 'cash_sale') sales += Number(row.amount || 0);
+        if(row.kind === 'cash_out') expenseTotal += Number(row.amount || 0);
+        if(row.kind === 'purchase_bill') purchaseTotal += Number(row.amount || 0);
+      });
+      orderRows.forEach((row) => {
+        const date = row.date || (row.createdAt?.toDate ? fmtDate(row.createdAt.toDate()) : '');
+        if(inReportWindow(date)) sales += Number(row.total || row.totals?.total || 0);
+      });
+      extraExpenses.forEach((row) => {
+        if(inReportWindow(row.date)) expenseTotal += Number(row.amount || 0);
+      });
+      const profit = sales - (purchaseTotal + expenseTotal);
+      document.getElementById('sumSales').textContent = money(sales);
+      document.getElementById('sumPurchase').textContent = money(purchaseTotal);
+      document.getElementById('sumExpense').textContent = money(expenseTotal);
+      document.getElementById('sumProfit').textContent = money(profit);
+    }
+
+    function startTransactionsListener(){
+      getDb().collection('transactions').orderBy('timestamp', 'desc').limit(500).onSnapshot((snap) => {
+        transactionsCache = snap.docs.map((d) => d.data());
+        renderTransactionsTables(transactionsCache);
+      });
+    }
+
+    function syncVMPData(){
+      setSummaryLoading(true);
+      startTransactionsListener();
+      loadSummary().catch(() => {});
+      loadBusinessPulse().catch(() => {});
+    }
+
+    async function saveVMPTransaction(entryData){
+      try {
+        await saveTransaction(entryData);
+      } catch (e) {
+        alert('Error saving data: ' + (e?.message || e));
+      }
+    }
+
+    function inReportWindow(dateText){
+      if(!dateText) return false;
+      const d = parseDate(dateText);
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const filter = document.getElementById('reportFilter').value;
+      if(filter === 'daily') return fmtDate(d) === fmtDate(now);
+      if(filter === 'weekly'){
+        const weekStart = new Date(start);
+        weekStart.setDate(start.getDate() - 6);
+        return d >= weekStart && d <= now;
+      }
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      return d >= monthStart && d <= now;
+    }
+
+    function unlockIfAuthorized(){
+      if(sessionStorage.getItem('vmpAdminUnlocked') === 'yes'){
+        currentRole = sessionStorage.getItem('vmpAdminRole') || 'admin';
+        applyRoleAccess(currentRole);
+        document.getElementById('adminGate')?.remove();
+      }
+    }
+    unlockIfAuthorized();
+
+    document.getElementById('adminGateBtn').addEventListener('click', () => {
+      const pass = document.getElementById('adminGatePass').value.trim();
+      const selectedRole = document.getElementById('adminGateRole').value;
+      const msg = document.getElementById('adminGateMsg');
+      const requiredPass = selectedRole === 'admin' ? ADMIN_GATE_PASS : STAFF_GATE_PASS;
+      if(pass !== requiredPass){
+        msg.className = 'mt-2 text-sm font-semibold text-rose-600';
+        msg.textContent = 'Invalid passcode.';
+        return;
+      }
+      currentRole = selectedRole;
+      sessionStorage.setItem('vmpAdminUnlocked', 'yes');
+      sessionStorage.setItem('vmpAdminRole', currentRole);
+      getDb().collection('appSettings').doc('adminAccess').set({
+        role: currentRole,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true }).catch(() => {});
+      applyRoleAccess(currentRole);
+      document.getElementById('adminGate').remove();
+    });
+
+    function renderDailyOrders(rows){
+      const tbody = document.getElementById('dailyOrdersRows');
+      if(!tbody) return;
+      tbody.innerHTML = rows.map((order) => `
+        <tr class="border-t">
+          <td class="px-3 py-2">${order.orderId || order.id || '-'}</td>
+          <td class="px-3 py-2">${order.details?.name || '-'}</td>
+          <td class="px-3 py-2">${money(order.totals?.total || order.total || 0)}</td>
+          <td class="px-3 py-2">
+            <select onchange="updateOrderStatus('${order.id || order.orderId}','${encodeURIComponent(order.details?.name || '')}','${order.details?.whatsapp || ''}', this.value)" class="rounded-lg border px-2 py-1 text-xs font-semibold">
+              ${['Order Confirmed','Packed','Out for Delivery','Delivered'].map((status) => `<option value="${status}" ${String(order.status || '').toLowerCase() === status.toLowerCase() ? 'selected' : ''}>${status}</option>`).join('')}
+            </select>
+          </td>
+          <td class="px-3 py-2">${order.date || '-'}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="5" class="px-3 py-2 text-slate-500">No orders found.</td></tr>';
+    }
+
+    async function triggerOrderNotifications(payload){
+      const webhookUrl = (window.VMP_CONFIG?.automation?.orderStatusWebhook || localStorage.getItem('vmpOrderStatusWebhook') || '').trim();
+      const smsWebhookUrl = (window.VMP_CONFIG?.automation?.smsWebhook || localStorage.getItem('vmpSmsWebhook') || '').trim();
+      if(webhookUrl){
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+      }
+      if(smsWebhookUrl){
+        await fetch(smsWebhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+      }
+    }
+
+    window.updateOrderStatus = async function(orderId, encodedName, mobile, nextStatus){
+      const customerName = decodeURIComponent(encodedName || '');
+      await getDb().collection('orders').doc(orderId).set({
+        status: nextStatus,
+        statusUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+
+      const orderDoc = await getDb().collection('orders').doc(orderId).get().catch(() => null);
+      const orderData = orderDoc?.data?.() || {};
+      const deliveryAddress = orderData.details?.address || 'your location';
+      const staffNumber = (window.VMP_CONFIG?.operations?.deliveryStaffNumber || localStorage.getItem('vmpDeliveryStaffNumber') || '+91 80503 89261');
+      const templateMap = {
+        'Order Confirmed': `Order Confirmed! Hi ${customerName}, your order #${orderId} has been successfully placed at Veer Mahadev Plastic. We are processing it now. Thank you!`,
+        'Packed': `Ready for Dispatch! Your order #${orderId} is packed and quality-checked. We’ll notify you once it’s out for delivery.`,
+        'Out for Delivery': `Your order is on the way! Our delivery partner is heading to ${deliveryAddress}. You can contact them at ${staffNumber}.`,
+        'Delivered': `Delivered! Hope you liked our products. Please visit veermahadevplastic.in for your next order. Have a great day!`
+      };
+      const message = templateMap[nextStatus];
+      if(!message){
+        showMsg('stockMsg', `Order ${orderId} status updated to ${nextStatus}.`);
+        return;
+      }
+      const phone = String(mobile || '').replace(/\D/g, '').replace(/^91/, '');
+      const payload = {
+        orderId,
+        customerName,
+        mobile: phone,
+        status: nextStatus,
+        message
+      };
+      await triggerOrderNotifications(payload);
+      if(phone.length === 10){
+        window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(message)}`, '_blank');
+      }
+      showMsg('stockMsg', `Status updated and customer notification triggered (${nextStatus}).`);
+    }
+
+    function listenDailyOrders(){
+      getDb().collection('orders').orderBy('updated_at', 'desc').limit(100).onSnapshot((snap) => {
+        renderDailyOrders(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+      }, async () => {
+        const fallback = await getDb().collection('orders').limit(100).get();
+        renderDailyOrders(fallback.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+      });
+    }
+
+    function initSeasonMode(){
+      const select = document.getElementById('seasonModeSelect');
+      if(!select) return;
+      getDb().collection('appSettings').doc('seasonMode').onSnapshot((doc) => {
+        const mode = doc.data()?.mode || 'normal';
+        select.value = mode;
+      });
+      select.addEventListener('change', async () => {
+        await getDb().collection('appSettings').doc('seasonMode').set({
+          mode: select.value,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedBy: currentRole
+        }, { merge: true });
+      });
+    }
+
+    function fillProductDropdowns(){
+      const options = productsCache.map((p) => `<option value="${p.id}">${p.name} (${p.currentStock ?? p.stock ?? 0})</option>`).join('');
+      document.getElementById('saleProduct').innerHTML = options;
+      document.getElementById('stockProduct').innerHTML = options;
+    }
+
+    function readCategoryMoqPayload(){
+      return {
+        bags: {
+          retail: Math.max(100, Number(document.getElementById('bagsRetailMoq')?.value || 100)),
+          wholesale: Math.max(5000, Number(document.getElementById('bagsWholesaleMoq')?.value || 5000))
+        },
+        books: {
+          retail: Math.max(100, Number(document.getElementById('booksRetailMoq')?.value || 100)),
+          wholesale: Math.max(5000, Number(document.getElementById('booksWholesaleMoq')?.value || 5000))
+        },
+        trays: {
+          retail: Math.max(100, Number(document.getElementById('traysRetailMoq')?.value || 100)),
+          wholesale: Math.max(5000, Number(document.getElementById('traysWholesaleMoq')?.value || 5000))
+        }
+      };
+    }
+
+    function applyCategoryMoqPayload(payload = {}){
+      const bags = payload.bags || {};
+      const books = payload.books || {};
+      const trays = payload.trays || {};
+      document.getElementById('bagsRetailMoq').value = Math.max(100, Number(bags.retail || 100));
+      document.getElementById('bagsWholesaleMoq').value = Math.max(5000, Number(bags.wholesale || 5000));
+      document.getElementById('booksRetailMoq').value = Math.max(100, Number(books.retail || 100));
+      document.getElementById('booksWholesaleMoq').value = Math.max(5000, Number(books.wholesale || 5000));
+      document.getElementById('traysRetailMoq').value = Math.max(100, Number(trays.retail || 100));
+      document.getElementById('traysWholesaleMoq').value = Math.max(5000, Number(trays.wholesale || 5000));
+    }
+
+    async function loadCategoryMoqSettings(){
+      const doc = await getDb().collection('appSettings').doc('moqConfig').get();
+      applyCategoryMoqPayload(doc.data()?.categories || {});
+    }
+
+    function renderInventoryController(){
+      const tbody = document.getElementById('inventoryControllerRows');
+      if(!tbody) return;
+      const rows = productsCache
+        .filter((item) => !inventorySearchTerm || String(item.name || item.id).toLowerCase().includes(inventorySearchTerm))
+        .map((item) => `
+          <tr class="border-t">
+            <td class="px-3 py-2 font-semibold text-slate-800">${item.name || item.id}</td>
+            <td class="px-3 py-2"><input id="stock-input-${item.id}" type="number" value="${Number(item.currentStock ?? item.stock ?? 0)}" class="w-28 rounded-lg border px-2 py-1" /></td>
+            <td class="px-3 py-2"><input id="rate-input-${item.id}" type="number" step="0.01" value="${Number(item.liveWholesaleRate ?? item.price100 ?? item.tiers?.[0]?.price ?? 0)}" class="w-28 rounded-lg border px-2 py-1" /></td>
+            <td class="px-3 py-2"><textarea id="desc-input-${item.id}" rows="2" class="w-52 rounded-lg border px-2 py-1 text-xs">${item.description || item.desc || ''}</textarea></td>
+            <td class="px-3 py-2"><button onclick="openRetailConfig('${item.id}')" class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800">Retail Packet</button></td>
+            <td class="px-3 py-2"><button onclick="triggerProductPhoto('${item.id}')" class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-800">Add Photo</button></td>
+            <td class="px-3 py-2"><button onclick="saveLiveInventoryRow('${item.id}')" class="rounded-lg bg-emerald-700 px-3 py-1 text-xs font-bold text-white">Update Live</button></td>
+          </tr>
+        `);
+      tbody.innerHTML = rows.join('') || '<tr><td colspan="7" class="px-3 py-2 text-slate-500">No products found.</td></tr>';
+    }
+
+    window.saveLiveInventoryRow = async function(productId){
+      const stock = Number(document.getElementById(`stock-input-${productId}`)?.value || 0);
+      const wholesaleRate = Number(document.getElementById(`rate-input-${productId}`)?.value || 0);
+      const description = document.getElementById(`desc-input-${productId}`)?.value.trim() || '';
+      await getDb().collection('products').doc(productId).set({
+        currentStock: Math.max(0, stock),
+        stock: Math.max(0, stock),
+        liveWholesaleRate: Math.max(0, wholesaleRate),
+        description,
+        desc: description,
+        wholesale_price_slabs: [
+          { min: 100, price: Number((Math.max(0, wholesaleRate) * 1.16).toFixed(2)) },
+          { min: 500, price: Number((Math.max(0, wholesaleRate) * 1.08).toFixed(2)) },
+          { min: 5000, price: Math.max(0, wholesaleRate) }
+        ],
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      await getRealtimeDb().ref(`products/${productId}`).update({
+        currentStock: Math.max(0, stock),
+        stock: Math.max(0, stock),
+        liveWholesaleRate: Math.max(0, wholesaleRate),
+        description,
+        desc: description,
+        wholesale_price_slabs: {
+          tier_100: { min: 100, price: Number((Math.max(0, wholesaleRate) * 1.16).toFixed(2)) },
+          tier_500: { min: 500, price: Number((Math.max(0, wholesaleRate) * 1.08).toFixed(2)) },
+          tier_5000: { min: 5000, price: Math.max(0, wholesaleRate) }
+        },
+        updatedAt: Date.now()
+      });
+      showMsg('stockMsg', 'Live stock/rate updated successfully.');
+    }
+
+    window.triggerProductPhoto = function(productId){
+      pendingPhotoProductId = productId;
+      document.getElementById('productPhotoInput').click();
+    }
+
+    window.openRetailConfig = function(productId){
+      retailConfigProductId = productId;
+      const product = productsCache.find((item) => item.id === productId) || {};
+      document.getElementById('retailConfigTitle').textContent = product.name || productId;
+      document.getElementById('retailPriceInput').value = Number(product.retail_price || 0);
+      document.getElementById('retailMoqInput').value = Math.max(100, Number(product.retail_moq || 100));
+      document.getElementById('retailConfigModal').classList.remove('hidden');
+    }
+
+    async function loadProducts(){
+      const snap = await getDb().collection('products').get();
+      productsCache = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      fillProductDropdowns();
+      renderInventoryController();
+      document.getElementById('stockRows').innerHTML = productsCache.map((p) => `
+        <tr class="border-t"><td class="px-3 py-2">${p.name || p.id}</td><td class="px-3 py-2">${p.currentStock ?? p.stock ?? 0}</td><td class="px-3 py-2">${p.updatedAt?.toDate ? p.updatedAt.toDate().toLocaleString() : '-'}</td></tr>
+      `).join('') || '<tr><td colspan="3" class="px-3 py-2 text-slate-500">No products found.</td></tr>';
+    }
+    function listenProductsRealtime(){
+      if(productsUnsub) productsUnsub();
+      productsUnsub = getDb().collection('products').onSnapshot((snap) => {
+        productsCache = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        fillProductDropdowns();
+        renderInventoryController();
+        document.getElementById('stockRows').innerHTML = productsCache.map((p) => `
+          <tr class="border-t"><td class="px-3 py-2">${p.name || p.id}</td><td class="px-3 py-2">${p.currentStock ?? p.stock ?? 0}</td><td class="px-3 py-2">${p.updatedAt?.toDate ? p.updatedAt.toDate().toLocaleString() : '-'}</td></tr>
+        `).join('') || '<tr><td colspan="3" class="px-3 py-2 text-slate-500">No products found.</td></tr>';
+      });
+    }
+
+    async function adjustStock(productId, qtyDelta, source, reference = ''){
+      const ref = getDb().collection('products').doc(productId);
+      await getDb().runTransaction(async (txn) => {
+        const snap = await txn.get(ref);
+        const data = snap.data() || {};
+        const base = Number(data.currentStock ?? data.stock ?? 0);
+        const next = Math.max(base + qtyDelta, 0);
+        txn.set(ref, { currentStock: next, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+      });
+      await getDb().collection('stockMovements').add({
+        productId, qtyDelta, source, reference,
+        date: fmtDate(new Date()),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    async function processWebsiteSales(){
+      const snap = await getDb().collection('orders').where('stockSynced', '!=', true).limit(30).get();
+      for(const doc of snap.docs){
+        const order = doc.data() || {};
+        const items = order.items || [];
+        for(const item of items){
+          if(item.id && Number(item.qty) > 0){
+            await adjustStock(item.id, -Number(item.qty), 'website_sale', doc.id);
+          }
+        }
+        await doc.ref.set({ stockSynced: true, stockSyncedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+      }
+    }
+
+    function renderDaybook(entries){
+      document.getElementById('daybookRows').innerHTML = entries.map((e) => `
+        <tr class="border-t"><td class="px-3 py-2">${e.date || '-'}</td><td class="px-3 py-2 uppercase">${e.mode}</td><td class="px-3 py-2">${e.type === 'sale' ? 'Sale In' : 'Expense Out'}</td><td class="px-3 py-2">${money(e.amount)}</td><td class="px-3 py-2">${e.txnId || '-'}</td><td class="px-3 py-2">${e.note || '-'}</td></tr>
+      `).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No entries.</td></tr>';
+    }
+
+    async function loadDaybook(){
+      const snap = await getDb().collection('daybookEntries').where('mode', '==', daybookMode).limit(200).get();
+      const rows = snap.docs.map((d) => d.data()).sort((a, b) => {
+        const da = a.createdAt?.toMillis ? a.createdAt.toMillis() : Date.parse(a.date || '1970-01-01');
+        const db = b.createdAt?.toMillis ? b.createdAt.toMillis() : Date.parse(b.date || '1970-01-01');
+        return db - da;
+      });
+      renderDaybook(rows);
+    }
+    function listenDaybookRealtime(){
+      if(daybookUnsub) daybookUnsub();
+      daybookUnsub = getDb().collection('daybookEntries').where('mode', '==', daybookMode).limit(200)
+        .onSnapshot((snap) => {
+          const rows = snap.docs.map((d) => d.data()).sort((a, b) => {
+            const da = a.createdAt?.toMillis ? a.createdAt.toMillis() : Date.parse(a.date || '1970-01-01');
+            const db = b.createdAt?.toMillis ? b.createdAt.toMillis() : Date.parse(b.date || '1970-01-01');
+            return db - da;
+          });
+          renderDaybook(rows);
+        });
+    }
+
+    async function loadPurchases(){
+      const snap = await getDb().collection('purchases').limit(200).get();
+      const rows = snap.docs.map((d) => d.data()).sort((a, b) => {
+        const da = a.createdAt?.toMillis ? a.createdAt.toMillis() : Date.parse(a.date || '1970-01-01');
+        const db = b.createdAt?.toMillis ? b.createdAt.toMillis() : Date.parse(b.date || '1970-01-01');
+        return db - da;
+      });
+      document.getElementById('purchaseRows').innerHTML = rows.map((p) => {
+        return `<tr class="border-t"><td class="px-3 py-2">${p.date || '-'}</td><td class="px-3 py-2">${p.material || '-'}</td><td class="px-3 py-2">${p.supplier || '-'}</td><td class="px-3 py-2">${money(p.amount)}</td><td class="px-3 py-2">${p.billUrl ? `<a class="text-emerald-700 underline" href="${p.billUrl}" target="_blank">View Bill</a>` : '-'}</td></tr>`;
+      }).join('') || '<tr><td colspan="5" class="px-3 py-2 text-slate-500">No purchase bills.</td></tr>';
+    }
+
+    async function loadSummary(){
+      setSummaryLoading(true);
+      const [transactionsSnap, orders, expenses] = await Promise.all([
+        getDb().collection('transactions').get(),
+        getDb().collection('orders').get(),
+        getDb().collection('dailyExpenses').get()
+      ]);
+      const txRows = transactionsSnap.docs.map((d) => d.data());
+      const orderRows = orders.docs.map((d) => d.data());
+      const expenseRows = expenses.docs.map((d) => d.data());
+      transactionsCache = txRows;
+      renderTransactionsTables(transactionsCache);
+      recalcSummaryFromTransactions(txRows, orderRows, expenseRows);
+    }
+
+    async function loadBusinessPulse(){
+      try {
+        const summaryRes = await fetch('/get_summary');
+        if(summaryRes.ok){
+          applySummaryData(await summaryRes.json());
+        } else {
+          const [pulseRes, statusRes] = await Promise.all([
+            fetch('/api/dashboard/business-pulse'),
+            fetch('/api/dashboard/order-status')
+          ]);
+          if(pulseRes.ok){
+            const pulse = await pulseRes.json();
+            applySummaryData(pulse);
+          }
+          if(statusRes.ok){
+            const st = await statusRes.json();
+            applySummaryData({ order_status: st });
+          }
+        }
+        const alertRes = await fetch('/api/alerts/urgency');
+        if(alertRes.ok){
+          const alerts = await alertRes.json();
+          const box = document.getElementById('urgencyAlertBox');
+          if(alerts.length){
+            const top = alerts[0];
+            box.classList.remove('hidden');
+            box.textContent = `Urgency Alert: ${top.order_id} pending for ${top.pending_hours} hours.`;
+          } else {
+            box.classList.add('hidden');
+          }
+        }
+      } catch {
+        // backend not available, skip silently
+      }
+    }
+
+    document.getElementById('tabCash').addEventListener('click', () => {
+      daybookMode = 'cash';
+      document.getElementById('tabCash').className = 'rounded-l-lg bg-[#065f46] px-3 py-2 text-xs font-bold text-white';
+      document.getElementById('tabBank').className = 'rounded-r-lg px-3 py-2 text-xs font-bold text-slate-700';
+      listenDaybookRealtime();
+    });
+
+    document.getElementById('tabBank').addEventListener('click', () => {
+      daybookMode = 'bank';
+      document.getElementById('tabBank').className = 'rounded-r-lg bg-[#065f46] px-3 py-2 text-xs font-bold text-white';
+      document.getElementById('tabCash').className = 'rounded-l-lg px-3 py-2 text-xs font-bold text-slate-700';
+      listenDaybookRealtime();
+    });
+
+    document.getElementById('quickCashSale').addEventListener('click', () => {
+      daybookMode = 'cash';
+      document.getElementById('entryType').value = 'sale';
+      document.getElementById('entryNote').value = 'Direct counter sale';
+      document.getElementById('entryAmount').focus();
+    });
+
+    document.getElementById('quickCashOut').addEventListener('click', () => {
+      daybookMode = 'cash';
+      document.getElementById('entryType').value = 'out';
+      document.getElementById('entryNote').value = 'Petty expense';
+      document.getElementById('entryAmount').focus();
+    });
+
+    document.getElementById('daybookForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        date: document.getElementById('entryDate').value,
+        mode: daybookMode,
+        type: document.getElementById('entryType').value,
+        amount: Number(document.getElementById('entryAmount').value || 0),
+        txnId: daybookMode === 'bank' ? document.getElementById('entryTxn').value.trim() : '',
+        note: document.getElementById('entryNote').value.trim(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      const currentRows = Array.from(document.querySelectorAll('#daybookRows tr')).map((tr) => ({
+        date: tr.children[0]?.textContent || '-',
+        mode: (tr.children[1]?.textContent || '').toLowerCase(),
+        type: (tr.children[2]?.textContent || '').toLowerCase().includes('sale') ? 'sale' : 'out',
+        amount: Number((tr.children[3]?.textContent || '0').replace(/[₹,]/g, '')) || 0,
+        txnId: tr.children[4]?.textContent === '-' ? '' : (tr.children[4]?.textContent || ''),
+        note: tr.children[5]?.textContent === '-' ? '' : (tr.children[5]?.textContent || '')
+      }));
+      renderDaybook([{ ...payload, createdAt: { toMillis: () => Date.now() } }, ...currentRows].slice(0, 200));
+      showMsg('daybookMsg', 'Daybook entry queued instantly.');
+      setButtonLoading('daybookSubmitBtn', true);
+      e.target.reset();
+      document.getElementById('entryDate').valueAsDate = new Date();
+      saveVMPTransaction({
+        kind: payload.type === 'sale' ? 'cash_sale' : 'cash_out',
+        date: payload.date,
+        mode: payload.mode,
+        amount: payload.amount,
+        txnId: payload.txnId,
+        note: payload.note
+      }).catch(() => {});
+      getDb().collection('daybookEntries').add(payload).catch(() => {});
+      fetch('/add_entry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          date: payload.date,
+          mode: payload.mode,
+          type: payload.type,
+          amount: payload.amount,
+          narration: payload.note,
+          txn_id: payload.txnId
+        })
+      })
+        .then(async (res) => {
+          if(!res.ok) throw new Error('Entry API failed');
+          const data = await res.json();
+          if(data.summary) applySummaryData(data.summary);
+          return Promise.all([loadSummary(), loadBusinessPulse()]);
+        })
+        .then(() => postBackgroundReconcile())
+        .catch(() => showMsg('daybookMsg', 'Daybook save failed. Please retry.', false))
+        .finally(() => setButtonLoading('daybookSubmitBtn', false, '+ Add Entry'));
+    });
+
+    async function uploadBill(file){
+      if(!file) return '';
+      const ref = getStorage().ref().child(`purchase-bills/${Date.now()}-${file.name}`);
+      await ref.put(file);
+      return ref.getDownloadURL();
+    }
+
+    document.getElementById('purchaseForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setButtonLoading('purchaseSubmitBtn', true);
+      try {
+        const billFile = document.getElementById('purchaseBill').files[0];
+        const fd = new FormData();
+        fd.append('date', document.getElementById('purchaseDate').value);
+        fd.append('material', document.getElementById('purchaseMaterial').value.trim());
+        fd.append('supplier', document.getElementById('purchaseSupplier').value.trim());
+        fd.append('amount', String(Number(document.getElementById('purchaseAmount').value || 0)));
+        if(billFile) fd.append('bill_file', billFile);
+        const response = await fetch('/purchase_bill', { method: 'POST', body: fd });
+        if(!response.ok) throw new Error('Purchase API failed');
+        const result = await response.json();
+        if(result.summary) applySummaryData(result.summary);
+        await getDb().collection('purchases').add({
+          date: document.getElementById('purchaseDate').value,
+          material: document.getElementById('purchaseMaterial').value.trim(),
+          supplier: document.getElementById('purchaseSupplier').value.trim(),
+          qty: Number(document.getElementById('purchaseQty').value || 0),
+          amount: Number(document.getElementById('purchaseAmount').value || 0),
+          billUrl: result.purchase?.billUrl || '',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        await saveVMPTransaction({
+          kind: 'purchase_bill',
+          date: document.getElementById('purchaseDate').value,
+          material: document.getElementById('purchaseMaterial').value.trim(),
+          supplier: document.getElementById('purchaseSupplier').value.trim(),
+          amount: Number(document.getElementById('purchaseAmount').value || 0),
+          billUrl: result.purchase?.billUrl || ''
+        });
+        showMsg('purchaseMsg', 'Purchase bill logged.');
+        e.target.reset();
+        document.getElementById('purchaseDate').valueAsDate = new Date();
+        await Promise.all([loadPurchases(), loadSummary(), loadBusinessPulse()]);
+        postBackgroundReconcile();
+      } catch (error) {
+        showMsg('purchaseMsg', `Unable to save purchase: ${error.message}`, false);
+      } finally {
+        setButtonLoading('purchaseSubmitBtn', false, '+ Add Purchase Bill');
+      }
+    });
+
+    document.getElementById('manualSaleForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setButtonLoading('manualSaleSubmitBtn', true);
+      const productId = document.getElementById('saleProduct').value;
+      const qty = Number(document.getElementById('saleQty').value || 0);
+      const amount = Number(document.getElementById('saleAmount').value || 0);
+      try {
+        await fetch('/add_entry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            date: fmtDate(new Date()),
+            mode: 'cash',
+            type: 'sale',
+            amount,
+            narration: `Manual cash sale (${productId})`,
+            source: 'manual_cash_sale',
+            product_id: productId,
+            qty: Math.abs(qty)
+          })
+        });
+        await adjustStock(productId, -Math.abs(qty), 'manual_cash_sale', 'counter');
+        showMsg('stockMsg', 'Manual cash sale recorded and stock deducted.');
+        e.target.reset();
+        await Promise.all([loadSummary(), loadBusinessPulse()]);
+        postBackgroundReconcile();
+      } finally {
+        setButtonLoading('manualSaleSubmitBtn', false, '+ Record Cash Sale & Deduct Stock');
+      }
+    });
+
+    document.getElementById('stockInForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setButtonLoading('stockInSubmitBtn', true);
+      const productId = document.getElementById('stockProduct').value;
+      const qty = Number(document.getElementById('stockQty').value || 0);
+      const ref = document.getElementById('stockRef').value.trim();
+      try {
+        await fetch('/stock_adjust', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ product_id: productId, delta: Math.abs(qty) })
+        });
+        await adjustStock(productId, Math.abs(qty), 'stock_in', ref);
+        showMsg('stockMsg', 'Stock increased successfully.');
+        e.target.reset();
+        await Promise.all([loadSummary(), loadBusinessPulse()]);
+      } finally {
+        setButtonLoading('stockInSubmitBtn', false, '+ Stock In');
+      }
+    });
+
+    document.getElementById('reportFilter').addEventListener('change', loadSummary);
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('./vmp-admin-sw.js').catch(() => {});
+    }
+    document.getElementById('inventorySearch').addEventListener('input', (e) => {
+      inventorySearchTerm = e.target.value.trim().toLowerCase();
+      renderInventoryController();
+    });
+    document.getElementById('saveCategoryMoqBtn').addEventListener('click', async () => {
+      const categories = readCategoryMoqPayload();
+      await getDb().collection('appSettings').doc('moqConfig').set({
+        categories,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      await getRealtimeDb().ref('appSettings/moqConfig').update({
+        categories,
+        updatedAt: Date.now()
+      });
+      showMsg('stockMsg', 'Category-wise MOQ limits saved.');
+    });
+    document.getElementById('closeRetailConfigBtn').addEventListener('click', () => {
+      document.getElementById('retailConfigModal').classList.add('hidden');
+      retailConfigProductId = '';
+    });
+    document.getElementById('saveRetailConfigBtn').addEventListener('click', async () => {
+      if(!retailConfigProductId) return;
+      const retailPrice = Number(document.getElementById('retailPriceInput').value || 0);
+      const retailMoq = Math.max(100, Number(document.getElementById('retailMoqInput').value || 100));
+      await getDb().collection('products').doc(retailConfigProductId).set({
+        retail_price: Math.max(0, retailPrice),
+        retail_moq: retailMoq,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      await getRealtimeDb().ref(`products/${retailConfigProductId}`).update({
+        retail_price: Math.max(0, retailPrice),
+        retail_moq: retailMoq,
+        updatedAt: Date.now()
+      });
+      document.getElementById('retailConfigModal').classList.add('hidden');
+      showMsg('stockMsg', 'Retail packet settings updated.');
+    });
+    document.getElementById('productPhotoInput').addEventListener('change', async (event) => {
+      const file = event.target.files?.[0];
+      if(!file || !pendingPhotoProductId) return;
+      try {
+        const storageRef = getStorage().ref().child(`product-gallery/${pendingPhotoProductId}-${Date.now()}.jpg`);
+        await storageRef.put(file, { contentType: file.type || 'image/jpeg' });
+        const imageUrl = await storageRef.getDownloadURL();
+        const productRef = getDb().collection('products').doc(pendingPhotoProductId);
+        const product = productsCache.find((item) => item.id === pendingPhotoProductId) || {};
+        const previousGallery = Array.isArray(product.gallery_images) ? product.gallery_images : [];
+        const nextGallery = [imageUrl, ...previousGallery].slice(0, 12);
+        await productRef.set({
+          image: imageUrl,
+          gallery_images: nextGallery,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        await getRealtimeDb().ref(`products/${pendingPhotoProductId}`).update({
+          image: imageUrl,
+          gallery_images: nextGallery,
+          updatedAt: Date.now()
+        });
+        showMsg('stockMsg', 'Product photo uploaded and gallery updated.');
+      } catch (error) {
+        showMsg('stockMsg', `Photo upload failed: ${error.message}`, false);
+      } finally {
+        pendingPhotoProductId = '';
+        event.target.value = '';
+      }
+    });
+
+    (async function init(){
+      try {
+        document.getElementById('entryDate').valueAsDate = new Date();
+        document.getElementById('purchaseDate').valueAsDate = new Date();
+        setSummaryLoading(true);
+        await processWebsiteSales();
+        await Promise.all([loadProducts(), loadPurchases(), loadSummary(), loadBusinessPulse(), loadCategoryMoqSettings()]);
+        listenProductsRealtime();
+        listenDaybookRealtime();
+        listenDailyOrders();
+        initSeasonMode();
+        applyRoleAccess(currentRole);
+      } catch {
+        (window.VMP_UI?.showPopup || (() => {}))('Dashboard data unavailable. Please retry.', 'error');
+      }
+    })();
+    window.onload = syncVMPData;
+  </script>
+</body>
+</html>
