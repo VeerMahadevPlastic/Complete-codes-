@@ -272,4 +272,9 @@ def stock_adjust():
 
 
 if __name__ == '__main__':
+<<<<<<< codex/add-whatsapp-order-option-in-cart-p121ik
     app.run(host='0.0.0.0', port=8000, debug=True)
+=======
+    debug_mode = os.getenv('FLASK_DEBUG', 'false').strip().lower() in ('1', 'true', 'yes', 'on')
+    app.run(host='0.0.0.0', port=8000, debug=debug_mode)
+>>>>>>> main
