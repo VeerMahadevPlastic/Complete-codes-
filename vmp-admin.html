@@ -725,9 +725,42 @@
     }
 
     function renderDaybook(entries){
-      document.getElementById('daybookRows').innerHTML = entries.map((e) => `
-        <tr class="border-t"><td class="px-3 py-2">${e.date || '-'}</td><td class="px-3 py-2 uppercase">${e.mode}</td><td class="px-3 py-2">${e.type === 'sale' ? 'Sale In' : 'Expense Out'}</td><td class="px-3 py-2">${money(e.amount)}</td><td class="px-3 py-2">${e.txnId || '-'}</td><td class="px-3 py-2">${e.note || '-'}</td></tr>
-      `).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No entries.</td></tr>';
+      const tbody = document.getElementById('daybookRows');
+      tbody.textContent = '';
+
+      if(!entries.length){
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 6;
+        td.className = 'px-3 py-2 text-slate-500';
+        td.textContent = 'No entries.';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+
+      entries.forEach((e) => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-t';
+
+        const values = [
+          e.date || '-',
+          (e.mode || ''),
+          e.type === 'sale' ? 'Sale In' : 'Expense Out',
+          money(e.amount),
+          e.txnId || '-',
+          e.note || '-'
+        ];
+
+        values.forEach((value, idx) => {
+          const td = document.createElement('td');
+          td.className = idx === 1 ? 'px-3 py-2 uppercase' : 'px-3 py-2';
+          td.textContent = String(value);
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
     }
 
     async function loadDaybook(){
