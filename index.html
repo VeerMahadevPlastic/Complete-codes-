@@ -81,14 +81,18 @@
   <script src="./js/vmp-app.js"></script>
   <script src="./js/vmp-modules.js"></script>
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "76d9835b-80bc-44be-9533-83dcf6ae82eb",
+  <script>
+    window.ONE_SIGNAL_APP_ID = '76d9835b-80bc-44be-9533-83dcf6ae82eb';
+    window.ONE_SIGNAL_SAFARI_WEB_ID = 'web.onesignal.auto.2ce6e088-bd06-4a6b-8c58-d83c247eb259';
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: window.ONE_SIGNAL_APP_ID,
+        safari_web_id: window.ONE_SIGNAL_SAFARI_WEB_ID,
+        notifyButton: { enable: true }
+      });
     });
-  });
-</script>
+  </script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js" defer></script>
