@@ -256,6 +256,9 @@
     let pendingPhotoProductId = '';
     let daybookUnsub = null;
     let productsUnsub = null;
+    const NEGOTIABLE_PRODUCT_NAMES = [
+      '13" Round Plate (PP 81881)','13" Bamboo Plate (PP 82341)','13" Kareena Plate (PP 81901)','12" Round Plate (PP 81301)','12" Harmony Plate (PP 81601)','12" Diamond Plate (PP 81611)','12" Modi Plate (PP 81621)','12" Square Plate (PP 81821)','12" Kareena Plate (PP 81641)','12" Bamboo Plate (PP 81501)','12" Square Plate New (PP 81921)','12" Designer Plate (PP 81401)','12" Bajri Plate','11" Round Plate (PP 81231)','11" Galaxy Plate (PP 81751)','11" Square Bamboo Plate (PP 82261)','7" Round Plate (PP 80541)','7" Kareena Plate (PP 80501)','7" Square Plate (PP 80591)','0 No. Vati 3.25" (PP 80161)','2 No. Vati 3.5" (PP 80211)','4 No. Vati 3" (PP 80231)','7 No. Vati 3" (PP 80221)','Gulab Jamun Vati 2.75" (PP 80151)','Sweet Vati 3" (PP 80181)','Laddu Vati 3" (PP 80141)','Urmi Vati 3.25" (PP 80241)','Kareena Vati 3.5" (PP 80201)','Square Vati 3.25" (PP 80191)','Round Bowl (Katori) – Multi Color','5" Round Chat Plate (PP 80321)','4.5" Urmi Chat Plate Small (PP 80331)','5.25" Urmi Chat Plate Big (PP 80471)','5.25" Asthkon Chat Plate (PP 80401)','5" Square Chat Plate (PP 80351)','5" Zen Chat Plate (PP 80371)','4" Star Chat Plate','5.5" Diamond Chat Plate','6.5" Baby Plate','Veg Bowl Small 5" (PP 80231)','Veg Bowl Big (PP 80241)','Oval Chat Plate (PP 80601)','300 ml Round Soup Bowl (PP 80291)','160 ml Square Soup Bowl (PP 80371)','140 ml Baby Soup Bowl (PP 80261)','250 ml Continental Soup Bowl Big (PP 80431)','160 ml Continental Soup Bowl Small (PP 80361)'
+    ];
 
     function getApp(){ return firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG); }
     function getDb(){ return firebase.firestore(getApp()); }
@@ -550,6 +553,26 @@
       document.getElementById('stockProduct').innerHTML = options;
     }
 
+    async function ensureNegotiableCatalogProducts(){
+      const batch = getDb().batch();
+      NEGOTIABLE_PRODUCT_NAMES.forEach((name) => {
+        const id = String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const ref = getDb().collection('products').doc(id);
+        batch.set(ref, {
+          name,
+          category: /vati|bowl|katori|soup/i.test(name) ? 'Vati / Bowls' : (/chat/i.test(name) ? 'Chat Plates' : 'Plates'),
+          currentStock: 200,
+          stock: 200,
+          liveWholesaleRate: 0,
+          rate_mode: 'whatsapp_negotiable',
+          retail_moq: 100,
+          description: 'Premium High-Quality Finish - Contact for Real Sample Photos.',
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      });
+      await batch.commit();
+    }
+
     function readCategoryMoqPayload(){
       return {
         bags: {
@@ -593,7 +616,7 @@
           <tr class="border-t">
             <td class="px-3 py-2 font-semibold text-slate-800">${item.name || item.id}</td>
             <td class="px-3 py-2"><input id="stock-input-${item.id}" type="number" value="${Number(item.currentStock ?? item.stock ?? 0)}" class="w-28 rounded-lg border px-2 py-1" /></td>
-            <td class="px-3 py-2"><input id="rate-input-${item.id}" type="number" step="0.01" value="${Number(item.liveWholesaleRate ?? item.price100 ?? item.tiers?.[0]?.price ?? 0)}" class="w-28 rounded-lg border px-2 py-1" /></td>
+            <td class="px-3 py-2"><input id="rate-input-${item.id}" type="number" step="0.01" value="${Number(item.liveWholesaleRate ?? item.price100 ?? item.tiers?.[0]?.price ?? 0)}" class="w-28 rounded-lg border px-2 py-1" />${item.rate_mode === 'whatsapp_negotiable' ? '<p class="mt-1 text-[10px] font-bold text-emerald-700">Negotiable/WhatsApp</p>' : ''}</td>
             <td class="px-3 py-2"><textarea id="desc-input-${item.id}" rows="2" class="w-52 rounded-lg border px-2 py-1 text-xs">${item.description || item.desc || ''}</textarea></td>
             <td class="px-3 py-2"><button onclick="openRetailConfig('${item.id}')" class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800">Retail Packet</button></td>
             <td class="px-3 py-2"><button onclick="triggerProductPhoto('${item.id}')" class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-800">Add Photo</button></td>
@@ -702,9 +725,42 @@
     }
 
     function renderDaybook(entries){
-      document.getElementById('daybookRows').innerHTML = entries.map((e) => `
-        <tr class="border-t"><td class="px-3 py-2">${e.date || '-'}</td><td class="px-3 py-2 uppercase">${e.mode}</td><td class="px-3 py-2">${e.type === 'sale' ? 'Sale In' : 'Expense Out'}</td><td class="px-3 py-2">${money(e.amount)}</td><td class="px-3 py-2">${e.txnId || '-'}</td><td class="px-3 py-2">${e.note || '-'}</td></tr>
-      `).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No entries.</td></tr>';
+      const tbody = document.getElementById('daybookRows');
+      tbody.textContent = '';
+
+      if(!entries.length){
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 6;
+        td.className = 'px-3 py-2 text-slate-500';
+        td.textContent = 'No entries.';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+
+      entries.forEach((e) => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-t';
+
+        const values = [
+          e.date || '-',
+          (e.mode || ''),
+          e.type === 'sale' ? 'Sale In' : 'Expense Out',
+          money(e.amount),
+          e.txnId || '-',
+          e.note || '-'
+        ];
+
+        values.forEach((value, idx) => {
+          const td = document.createElement('td');
+          td.className = idx === 1 ? 'px-3 py-2 uppercase' : 'px-3 py-2';
+          td.textContent = String(value);
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
     }
 
     async function loadDaybook(){
@@ -1056,6 +1112,7 @@
         document.getElementById('purchaseDate').valueAsDate = new Date();
         setSummaryLoading(true);
         await processWebsiteSales();
+        await ensureNegotiableCatalogProducts();
         await Promise.all([loadProducts(), loadPurchases(), loadSummary(), loadBusinessPulse(), loadCategoryMoqSettings()]);
         listenProductsRealtime();
         listenDaybookRealtime();
