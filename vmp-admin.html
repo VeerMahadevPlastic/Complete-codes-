@@ -727,7 +727,6 @@
     function renderDaybook(entries){
       const tbody = document.getElementById('daybookRows');
       tbody.textContent = '';
-
       if(!entries.length){
         const tr = document.createElement('tr');
         const td = document.createElement('td');
@@ -738,24 +737,23 @@
         tbody.appendChild(tr);
         return;
       }
-
       entries.forEach((e) => {
         const tr = document.createElement('tr');
         tr.className = 'border-t';
 
-        const values = [
-          e.date || '-',
-          (e.mode || ''),
-          e.type === 'sale' ? 'Sale In' : 'Expense Out',
-          money(e.amount),
-          e.txnId || '-',
-          e.note || '-'
+        const cells = [
+          { className: 'px-3 py-2', value: e.date || '-' },
+          { className: 'px-3 py-2 uppercase', value: e.mode || '' },
+          { className: 'px-3 py-2', value: e.type === 'sale' ? 'Sale In' : 'Expense Out' },
+          { className: 'px-3 py-2', value: money(e.amount) },
+          { className: 'px-3 py-2', value: e.txnId || '-' },
+          { className: 'px-3 py-2', value: e.note || '-' }
         ];
 
-        values.forEach((value, idx) => {
+        cells.forEach((cell) => {
           const td = document.createElement('td');
-          td.className = idx === 1 ? 'px-3 py-2 uppercase' : 'px-3 py-2';
-          td.textContent = String(value);
+          td.className = cell.className;
+          td.textContent = cell.value;
           tr.appendChild(td);
         });
 
