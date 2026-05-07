@@ -1420,7 +1420,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         return [];
       }
     }
-   
+   const NEGOTIABLE_CATALOG_SLUGS = [
+      -];
     const NEGOTIABLE_CATALOG_ITEMS = NEGOTIABLE_CATALOG_SLUGS.map((slug) => {
       const clean = slug.replace(/-pp-.+$/,'').replace(/-\d+(?:-\d+)?$/,'');
       const parts = clean.split('-').filter(Boolean);
