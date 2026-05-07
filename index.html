@@ -1421,14 +1421,6 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       }
     }
 
-    
-    const NEGOTIABLE_CATALOG_SLUGS = [
-      '0-no-vati-3-25-pp-80161','2-no-vati-3-5-pp-80211','4-no-vati-3-pp-80231','7-no-vati-3-pp-80221','gulab-jamun-vati-2-75-pp-80151','sweet-vati-3-pp-80181','laddu-vati-3-pp-80141','urmi-vati-3-25-pp-80241','kareena-vati-3-5-pp-80201','square-vati-3-25-pp-80191','round-bowl-katori-multi-color',
-      '13-round-plate-pp-81881','13-bamboo-plate-pp-82341','13-kareena-plate-pp-81901','12-round-plate-pp-81301','12-harmony-plate-pp-81601','12-diamond-plate-pp-81611','12-modi-plate-pp-81621','12-square-plate-pp-81821','12-kareena-plate-pp-81641','12-bamboo-plate-pp-81501','12-square-plate-new-pp-81921','12-designer-plate-pp-81401','12-bajri-plate','11-round-plate-pp-81231','11-galaxy-plate-pp-81751','11-square-bamboo-plate-pp-82261','7-round-plate-pp-80541','7-kareena-plate-pp-80501','7-square-plate-pp-80591',
-      '5-round-chat-plate-pp-80321','4-5-urmi-chat-plate-small-pp-80331','5-25-urmi-chat-plate-big-pp-80471','5-25-asthkon-chat-plate-pp-80401','5-square-chat-plate-pp-80351','5-zen-chat-plate-pp-80371','4-star-chat-plate','5-5-diamond-chat-plate','6-5-baby-plate',
-      'veg-bowl-small-5-pp-80231','veg-bowl-big-pp-80241','oval-chat-plate-pp-80601','300-ml-round-soup-bowl-pp-80291','160-ml-square-soup-bowl-pp-80371','140-ml-baby-soup-bowl-pp-80261','250-ml-continental-soup-bowl-big-pp-80431','160-ml-continental-soup-bowl-small-pp-80361'
-    ];
-
     const NEGOTIABLE_CATALOG_ITEMS = NEGOTIABLE_CATALOG_SLUGS.map((slug) => {
       const clean = slug.replace(/-pp-.+$/,'').replace(/-\d+(?:-\d+)?$/,'');
       const parts = clean.split('-').filter(Boolean);
