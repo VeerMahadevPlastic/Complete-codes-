@@ -1408,22 +1408,6 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         return [];
       }
     }
-
-    const NEGOTIABLE_CATALOG_ITEMS = NEGOTIABLE_CATALOG_SLUGS.map((slug) => {
-      const clean = slug.replace(/-pp-.+$/,'').replace(/-\d+(?:-\d+)?$/,'');
-      const parts = clean.split('-').filter(Boolean);
-      const shortName = parts.slice(0, 3).join('-');
-      return {
-        name: shortName,
-        category: /vati|bowl|katori|soup/i.test(slug) ? 'Vati / Bowls' : (/chat/i.test(slug) ? 'Chat Plates' : 'Plates'),
-        image: './images/plate.jpg',
-        stock: 200, retail_enabled: true, retail_unit: 'Packet', retail_moq: RETAIL_MIN_ORDER_QTY,
-        pieces_per_unit: 100, retail_price: 0, tiers: buildWholesaleTiers(0.01),
-        negotiable_whatsapp_only: true,
-        description: 'Call for Rate'
-      };
-    });
-
     const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
 
     function mapProductItems(items){
