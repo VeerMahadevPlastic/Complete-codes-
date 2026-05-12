@@ -2319,47 +2319,6 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       showToast(`Guest estimate added for ${mode}`);
       openCart();
     }
-
-    function renderProducts(){
-      if(!productGrid) return;
-      const customerReady = Boolean((document.getElementById('customerName')?.value || '').trim() && (document.getElementById('customerMobile')?.value || '').trim() && (document.getElementById('customerAddress')?.value || '').trim());
-      productGrid.innerHTML = filteredProducts.map(p => {
-        const rating = productRating(p);
-        const minQty = configuredWholesaleMoq(p);
-        const stepQty = currentQtyStep();
-        const baseWholesale = priceForQty(p.tiers, minQty);
-        const retailMeta = retailConstraints(p);
-        const retailPrice = Number(p.retail_price || 0) || Number((baseWholesale * RETAIL_MARKUP).toFixed(2));
-        const unitDisplay = shoppingMode === 'wholesale' ? baseWholesale : retailPrice;
-        const isNegotiable = p.negotiable_whatsapp_only === true;
-        const qtyLabel = shoppingMode === 'wholesale' ? `${minQty}+ pcs` : `${RETAIL_MIN_ORDER_QTY}+ pcs`;
-        const tierLine = isNegotiable ? 'Call for Rate' : (shoppingMode === 'wholesale'
-          ? `500+ @ ₹${priceForQty(p.tiers, 500)} • 5,000+ @ ₹${priceForQty(p.tiers, 5000)}`
-          : `Retail packet pricing active. Sign in for wholesale rates.`);
-        const retailControls = shoppingMode === 'retail'
-          ? `
-            <div class="flex items-center justify-between">
-              <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">Pack of ${retailMeta.piecesPerUnit} Pcs</span>
-              <span class="text-[11px] font-semibold text-orange-600">Min. Order: ${retailMeta.retailMoq} Units</span>
-            </div>
-            <p class="text-sm font-bold text-emerald-800">Price: ₹${unitDisplay} per pack</p>
-            <div class="flex items-center gap-2">
-              <button onclick="event.stopPropagation();updateQuantity('${p.id}','minus',${retailMeta.retailMoq})" class="h-9 w-9 rounded-lg border border-slate-200 text-lg font-bold">-</button>
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="${retailMeta.retailMoq}" step="1" value="${retailMeta.retailMoq}" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
-              <button onclick="event.stopPropagation();updateQuantity('${p.id}','plus',${retailMeta.retailMoq})" class="h-9 w-9 rounded-lg border border-slate-200 text-lg font-bold">+</button>
-              ${isNegotiable ? `<button onclick="event.stopPropagation();openRateWhatsApp('${p.name}')" class="flex-1 rounded-xl bg-emerald-700 py-2 text-sm font-bold text-white">WhatsApp for Rate</button>` : `<button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>`}
-            </div>
-            <button data-retail-buy-now onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:cursor-not-allowed disabled:opacity-40" ${(!customerReady || p.stock===0)?'disabled':''}>Buy Now</button>
-          `
-          : `
-            <p class="text-sm font-bold text-emerald-800">₹${unitDisplay} <span class="text-[11px] font-medium text-slate-500">for ${qtyLabel}</span></p>
-            <p class="text-[11px] text-slate-500">${tierLine}</p>
-            <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="${minQty}" step="${stepQty}" value="${minQty}" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
-              ${isNegotiable ? `<button onclick="event.stopPropagation();openRateWhatsApp('${p.name}')" class="flex-1 rounded-xl bg-emerald-700 py-2 text-sm font-bold text-white">WhatsApp for Rate</button>` : `<button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>`}
-            </div>
-            <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
-          `;
         return `
         <article onclick="openProductDetails('${p.id}')" class="cursor-pointer overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
           <div class="relative">
