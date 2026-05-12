@@ -1324,821 +1324,230 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 15 PP CONTAINER FB 300ML BLACK / TRANSPERENT (5402) 2000 3840 2.92 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 16 PP CONTAINER FB 400ML BLACK / TRANSPERENT (5403) 2000 4360 3.18 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 17 PP CONTAINER FB 500ML BLACK / TRANSPERENT (5404) 2000 5460 3.73 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
-// 1. RAW PRICE DATA (Keep your existing data here)
-const RAW_PRICE_DATA = `
-17 PP CONTAINER FB 500ML BLACK / TRANSPERENT (5404) 2000 5460 3.73 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 18 PP CONTAINER FB 650ML BLACK / TRANSPERENT (5405) 2000 6600 4.3 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 19 PP ROUND CONTAINER LID 123DIA (5451) 2000 2800 2.4 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 `;
 
-// 2. PRODUCT IMAGE OVERRIDES
-const PRODUCT_IMAGE_OVERRIDES = {};
+// Per-product image URLs (id-wise). Add/replace links here.
+// Example: '3cp-meal-tray-with-lid-7041': 'https://...'
+const PRODUCT_IMAGE_OVERRIDES = {
+  // Add custom image URLs here for each product ID.
+};
 
-// 3. PARSE PRICE DATA FUNCTION
-function parsePriceData(rawText) {
-    const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
-    const items = [];
-    let section = 'General';
+function parsePriceData(rawText){
+  const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
+  const items = [];
+  let section = 'General';
 
-    for (const line of lines) {
-        if (/^SR\b/i.test(line)) {
-            section = line.replace(/^SR\s*/i, '').replace(/\s+PACKING[\s\S]*$/i, '').trim();
-            continue;
-        }
-        if (!/^\d+\s+/.test(line)) continue;
-
-        const [linePart, imagePartRaw] = line.split('||').map(v => (v || '').trim());
-        const imagePart = (imagePartRaw || '').replace(/^image\s*['"]?/i, '').replace(/['"]$/,'').trim();
-        const noSr = linePart.replace(/^\d+\s+/, '').trim();
-        const mLast = noSr.match(/(\d+(?:\.\d+)?)\s*$/);
-        
-        if (!mLast) continue;
-
-        const pcs = Number(mLast[1]);
-        const updatedPcs = Number.isFinite(pcs) ? Number((pcs + PRICE_INCREMENT).toFixed(2)) : PRICE_INCREMENT;
-        const tierWholesale = Number((updatedPcs * 0.92).toFixed(2));
-
-        let name = noSr.slice(0, mLast.index).trim();
-        name = name
-            .replace(/\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?\s*$/,'')
-            .replace(/\s+\d+(?:\.\d+)?\s*$/,'')
-            .replace(/\s{2,}/g,' ')
-            .trim();
-
-        if (!name) continue;
-
-        items.push({
-            name,
-            category: section,
-            image: imagePart || '',
-            stock: 200,
-            retail_enabled: true,
-            retail_unit: 'Packet',
-            retail_moq: RETAIL_MIN_ORDER_QTY,
-            pieces_per_unit: 100,
-            retail_price: Number((tierWholesale * RETAIL_MARKUP).toFixed(2)),
-            tiers: buildWholesaleTiers(tierWholesale)
-        });
+  for (const line of lines){
+    if (/^SR\b/i.test(line)){
+      section = line.replace(/^SR\s*/i, '').replace(/\s+PACKING[\s\S]*$/i, '').trim();
+      continue;
     }
-    return items;
-}
 
-// 4. MAPPING FUNCTION (Clean & Robust)
-function mapProductItems(items) {
-    if (!items || !Array.isArray(items)) return [];
-    
-    return items.map(item => {
-        const id = slugify(item.name);
-        const overridePrice = Number(priceOverrides[id]);
-        const tiers = (Number.isFinite(overridePrice) && overridePrice > 0)
-            ? buildWholesaleTiers(Number(overridePrice.toFixed(2)))
-            : item.tiers;
+    if (!/^\d+\s+/.test(line)) continue;
 
-        return {
-            ...item,
-            id,
-            tiers,
-            retail_enabled: item.retail_enabled !== false,
-            retail_unit: item.retail_unit || 'Packet',
-            retail_moq: Math.max(RETAIL_MIN_ORDER_QTY, Number(item.retail_moq || RETAIL_MIN_ORDER_QTY)),
-            pieces_per_unit: Math.max(1, Number(item.pieces_per_unit || 100)),
-            retail_price: Number(item.retail_price || 0) || Number(((tiers[0]?.price || 0) * RETAIL_MARKUP).toFixed(2)),
-            hsn: item.hsn || (/paper|cornstarch|biodegradable|stationery/i.test(item.category) ? '4823' : (/glass|bag/i.test(item.category) ? '3923' : '3924')),
-            supportsCustomPrinting: Boolean(item.supportsCustomPrinting),
-            image: PRODUCT_IMAGE_OVERRIDES[id] || item.image || imageFrom(item.name)
-        };
+    const [linePart, imagePartRaw] = line.split('||').map(v => (v || '').trim());
+
+    const imagePart = (imagePartRaw || '')
+      .replace(/^image\s*['"]?/i, '')
+      .replace(/['"]$/, '')
+      .trim();
+
+    const noSr = linePart.replace(/^\d+\s+/, '').trim();
+
+    const mLast = noSr.match(/(\d+(?:\.\d+)?)\s*$/);
+
+    if (!mLast) continue;
+
+    const pcs = Number(mLast[1]);
+
+    const updatedPcs = Number.isFinite(pcs)
+      ? Number((pcs + PRICE_INCREMENT).toFixed(2))
+      : PRICE_INCREMENT;
+
+    const tierWholesale = Number((updatedPcs * 0.92).toFixed(2));
+
+    let name = noSr.slice(0, mLast.index).trim();
+
+    name = name
+      .replace(/\s+\d+(?:\.\d+)?\s+\d+(?:\.\d+)?\s*$/, '')
+      .replace(/\s+\d+(?:\.\d+)?\s*$/, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+
+    if (!name) continue;
+
+    items.push({
+      name,
+      category: section,
+      image: imagePart || '',
+      stock: 200,
+      retail_enabled: true,
+      retail_unit: 'Packet',
+      retail_moq: RETAIL_MIN_ORDER_QTY,
+      pieces_per_unit: 100,
+      retail_price: Number((tierWholesale * RETAIL_MARKUP).toFixed(2)),
+      tiers: buildWholesaleTiers(tierWholesale)
     });
+  }
+
+  return items;
 }
 
-// 5. INITIALIZE PRODUCTS (Negotiable Items Removed Safely)
+function loadPriceOverrides(){
+  try {
+    return JSON.parse(readStorage('vmpPriceOverrides') || '{}');
+  } catch (error) {
+    console.warn('Unable to parse price overrides.', error);
+    return {};
+  }
+}
+
+const priceOverrides = loadPriceOverrides();
+
+async function loadExtendedCatalog(){
+  try {
+    const response = await fetch('./catalog/vmp-catalog-bags-stationery.json', {
+      cache: 'no-store'
+    });
+
+    if(!response.ok) return [];
+
+    const payload = await response.json();
+
+    return (payload.categories || []).flatMap((mainCategory) =>
+      (mainCategory.sub_categories || []).flatMap((subCategory) =>
+        (subCategory.products || []).map((item) => ({
+          name: item.name,
+          category: `${mainCategory.name} - ${subCategory.name}`,
+          image: item.image || '',
+          stock: 300,
+          hsn: item.hsn || '3923',
+          supportsCustomPrinting: Boolean(item.supports_custom_printing),
+          retail_enabled: item.retail_enabled !== false,
+          retail_unit: item.retail_unit || 'Packet',
+          retail_moq: Number(item.retail_moq || 1),
+          pieces_per_unit: Number(item.pieces_per_unit || 100),
+          retail_price: Number(item.retail_price || 0),
+          tiers: buildWholesaleTiers(Number(item.base_price || 0))
+        }))
+      )
+    );
+
+  } catch (error) {
+    console.warn('Extended catalog load failed.', error);
+    return [];
+  }
+}
+
+// ================================
+// NEGOTIABLE ITEMS REMOVED SAFELY
+// ================================
+
+// Empty array रखा गया है ताकि code break ना हो
+const NEGOTIABLE_CATALOG_ITEMS = [];
+
+// Main products
 const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
+
+function mapProductItems(items){
+
+  return items.map(item => {
+
+    const id = slugify(item.name);
+
+    const overridePrice = Number(priceOverrides[id]);
+
+    const tiers = Number.isFinite(overridePrice) && overridePrice > 0
+      ? buildWholesaleTiers(Number(overridePrice.toFixed(2)))
+      : item.tiers;
+
+    return {
+      ...item,
+      id,
+      tiers,
+
+      retail_enabled: item.retail_enabled !== false,
+
+      retail_unit: item.retail_unit || 'Packet',
+
+      retail_moq: Math.max(
+        RETAIL_MIN_ORDER_QTY,
+        Number(item.retail_moq || RETAIL_MIN_ORDER_QTY)
+      ),
+
+      pieces_per_unit: Math.max(
+        1,
+        Number(item.pieces_per_unit || 100)
+      ),
+
+      retail_price:
+        Number(item.retail_price || 0) ||
+        Number(((tiers[0]?.price || 0) * RETAIL_MARKUP).toFixed(2)),
+
+      hsn:
+        item.hsn ||
+        (
+          /paper|cornstarch|biodegradable|stationery/i.test(item.category)
+            ? '4823'
+            : (
+                /glass|bag/i.test(item.category)
+                  ? '3923'
+                  : '3924'
+              )
+        ),
+
+      supportsCustomPrinting: Boolean(item.supportsCustomPrinting),
+
+      image:
+        PRODUCT_IMAGE_OVERRIDES[id] ||
+        item.image ||
+        imageFrom(item.name)
+    };
+  });
+}
+
+// Final products array
 const products = mapProductItems(PRODUCT_ITEMS);
 
-// 6. LOAD EXTENDED CATALOG
-loadExtendedCatalog().then((extraItems) => {
-    if (!extraItems || !extraItems.length) return;
-    
-    const extraProducts = mapProductItems(extraItems);
-    products.push(...extraProducts);
-    
-    // Final Snapshot & Category Render
-    updateProductSnapshot();
-});
-
-function updateProductSnapshot() {
-    writeStorage('vmpProductSnapshot', JSON.stringify(products.map(p => ({
-        id: p.id,
-        name: p.name,
-        category: p.category,
-        price100: p.tiers[0]?.price || 0
-    }))));
-    
-    const dynamicCategories = ['All', ...new Set(products.map((p) => p.category))];
-    categories.splice(0, categories.length, ...dynamicCategories);
-    renderCategories();
-    applyProductFilters();
+// Negotiable items removed safely
+if (Array.isArray(NEGOTIABLE_CATALOG_ITEMS) && NEGOTIABLE_CATALOG_ITEMS.length) {
+  products.push(...mapProductItems(NEGOTIABLE_CATALOG_ITEMS));
 }
-    async function buildDigitalReceiptPdf(order){
-      const ready = await window.ensureJsPdf();
-      if(!ready) return null;
-      if(!order || !window.jspdf?.jsPDF) return null;
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-      const green = [6, 95, 70];
-      const gold = [212, 175, 55];
 
-      doc.setFillColor(...green);
-      doc.rect(0, 0, 210, 34, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(18);
-      doc.text('Veer Mahadev Plastic', 14, 14);
-      doc.setFontSize(11);
-      doc.text('Digital Order Receipt', 14, 20);
-      doc.setTextColor(...gold);
-      doc.setFontSize(12);
-      doc.text(`Order ID: ${order.orderId}`, 140, 14);
-      doc.setTextColor(255, 255, 255);
-      doc.text(`Paid: ₹${Number(order.totals?.total || order.total || 0).toFixed(2)}`, 140, 20);
+// Extended catalog
+loadExtendedCatalog().then((extraItems) => {
 
-      let y = 42;
-      doc.setTextColor(25, 25, 25);
-      doc.setFontSize(10);
-      doc.text(`Name: ${order.details?.name || '-'}`, 14, y);
-      doc.text(`WhatsApp: ${order.details?.whatsapp || '-'}`, 14, y + 6);
-      doc.text(`Address: ${(order.details?.address || '-')} ${(order.details?.pincode || '')}`, 14, y + 12, { maxWidth: 182 });
+  if(!extraItems.length) return;
 
-      y += 22;
-      doc.setFillColor(236, 253, 245);
-      doc.rect(14, y, 182, 8, 'F');
-      doc.setTextColor(6, 95, 70);
-      doc.text('Retail Items', 16, y + 5.5);
-      doc.text('Packets', 122, y + 5.5, { align: 'right' });
-      doc.text('Unit Price', 156, y + 5.5, { align: 'right' });
-      doc.text('Total', 192, y + 5.5, { align: 'right' });
+  const extraProducts = mapProductItems(extraItems);
 
-      y += 12;
-      doc.setTextColor(30, 30, 30);
-      (order.items || []).forEach((item) => {
-        const qty = Number(item.qty || 0);
-        const unit = Number(item.unit || 0);
-        const total = qty * unit;
-        const label = doc.splitTextToSize(item.name || 'Item', 96);
-        doc.text(label, 16, y);
-        doc.text(String(qty), 122, y, { align: 'right' });
-        doc.text(`₹${unit.toFixed(2)}`, 156, y, { align: 'right' });
-        doc.text(`₹${total.toFixed(2)}`, 192, y, { align: 'right' });
-        y += Math.max(7, label.length * 5);
-      });
+  products.push(...extraProducts);
 
-      y += 6;
-      doc.setDrawColor(200, 200, 200);
-      doc.line(14, y, 196, y);
-      y += 8;
-      doc.setFontSize(12);
-      doc.setTextColor(...green);
-      doc.text(`Total Paid Amount: ₹${Number(order.totals?.total || order.total || 0).toFixed(2)}`, 14, y);
+  writeStorage(
+    'vmpProductSnapshot',
+    JSON.stringify(
+      products.map(product => ({
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        price100: product.tiers[0]?.price || 0
+      }))
+    )
+  );
 
-      y += 14;
-      const trackingUrl = `https://wa.me/918050389261?text=${encodeURIComponent(`Track order ${order.orderId}`)}`;
-      doc.setFillColor(...green);
-      doc.roundedRect(14, y - 6, 74, 10, 3, 3, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(9.5);
-      doc.text('Track on WhatsApp', 51, y, { align: 'center' });
-      doc.link(14, y - 6, 74, 10, { url: trackingUrl });
-      doc.setTextColor(25, 25, 25);
-      doc.text('Thank you for supporting our Prajapati family business.', 14, y + 13);
+  const dynamicCategories = [
+    'All',
+    ...new Set(products.map((p) => p.category))
+  ];
 
-      return doc;
-    }
+  categories.splice(0, categories.length, ...dynamicCategories);
 
-    window.downloadHistoryInvoice = async function(orderId){
-      const history = orderHistory();
-      const order = history.find((item) => item.orderId === orderId);
-      if(!order) return;
-      const doc = await buildDigitalReceiptPdf(order);
-      if(doc) doc.save(`digital-receipt-${order.orderId}.pdf`);
-    }
+  renderCategories();
 
-    function openAuthHub(){
-      authHubModal?.classList.remove('hidden');
-    }
-
-    function closeAuthHub(){
-      authHubModal?.classList.add('hidden');
-    }
-
-    function closeProductDetails(){
-      productModal?.classList.add('hidden');
-    }
-
-    function applyShoppingMode(mode){
-      shoppingMode = mode;
-      localStorage.setItem('vmpShoppingMode', mode);
-      document.body.classList.toggle('mode-retail', mode === 'retail');
-      document.body.classList.toggle('mode-wholesale', mode === 'wholesale');
-      document.getElementById('entryModeModal')?.classList.add('hidden');
-      const retailBtn = document.getElementById('modeRetailBtn');
-      const wholesaleBtn = document.getElementById('modeWholesaleBtn');
-      if(retailBtn) retailBtn.classList.toggle('bg-amber-100', mode === 'retail');
-      if(wholesaleBtn) wholesaleBtn.classList.toggle('bg-emerald-100', mode === 'wholesale');
-      applyProductFilters();
-      updateDiscountProgress();
-    }
-
-    function trustBadgesMarkup(){
-      return [
-        { icon: '<svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" d="M12 2l8 4v6c0 5-3.4 9.7-8 11-4.6-1.3-8-6-8-11V6l8-4zm0 3.1L6 8v4c0 3.9 2.5 7.6 6 8.8 3.5-1.2 6-4.9 6-8.8V8l-6-2.9z"/></svg>', text: '100% Secure Payments' },
-        { icon: '<svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" d="M3 10l9-7 9 7v10h-7v-6h-4v6H3V10z"/></svg>', text: 'Direct from Ahmedabad Factory' },
-        { icon: '<svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" d="M3 7l9-4 9 4-9 4-9-4zm0 3l9 4 9-4v7l-9 4-9-4v-7z"/></svg>', text: 'Safe & Hygienic Packaging' },
-        { icon: '<svg viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.5-1.5z"/></svg>', text: 'Genuine Biodegradable Quality' }
-      ].map((badge) => `<div class="rounded-lg border border-emerald-100 bg-white px-2 py-2"><div class="flex items-center gap-1.5 text-emerald-700">${badge.icon}<span class="font-semibold text-slate-700">${badge.text}</span></div></div>`).join('');
-    }
-
-    function renderTrustBadges(){
-      const markup = trustBadgesMarkup();
-      const cartRow = document.getElementById('trustBadgeRowCart');
-      const modalRow = document.getElementById('trustBadgeRowModal');
-      if(cartRow) cartRow.innerHTML = markup;
-      if(modalRow) modalRow.innerHTML = markup;
-    }
-
-    function ensureWholesaleAccess(){
-      if(shoppingMode !== 'wholesale') return false;
-      if(wholesaleProfile) return false;
-      document.getElementById('wholesaleAuthModal')?.classList.remove('hidden');
-      return true;
-    }
-
-    bindById('installNowBtn', 'click', async ()=>{
-      if(!deferredPrompt) return;
-      hideInstallBanner();
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      if(choice.outcome === 'dismissed') scheduleInstallBanner();
-      deferredPrompt = null;
-    });
-    bindById('footerDownloadAppBtn', 'click', async ()=>{
-      if(deferredPrompt){
-        hideInstallBanner();
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-        if(choice.outcome === 'dismissed') scheduleInstallBanner();
-        deferredPrompt = null;
-        return;
-      }
-      alert('Install prompt is available after browser eligibility checks. Please use "Install Now" when it appears.');
-    });
-
-    bindById('closeInstallBanner', 'click', ()=> hideInstallBanner(true));
-    bindById('openAuthHubTop', 'click', openAuthHub);
-    bindById('openAuthHubMobile', 'click', openAuthHub);
-    bindById('openAuthHubNav', 'click', openAuthHub);
-    bindById('chooseRetailBtn', 'click', ()=> applyShoppingMode('retail'));
-    bindById('chooseWholesaleBtn', 'click', ()=>{
-      if(wholesaleProfile){
-        applyShoppingMode('wholesale');
-        return;
-      }
-      document.getElementById('entryModeMsg').textContent = 'Wholesale requires business sign-in.';
-      document.getElementById('wholesaleAuthModal')?.classList.remove('hidden');
-    });
-    bindById('modeRetailBtn', 'click', ()=> applyShoppingMode('retail'));
-    bindById('modeWholesaleBtn', 'click', ()=>{
-      if(wholesaleProfile){
-        applyShoppingMode('wholesale');
-        return;
-      }
-      document.getElementById('wholesaleAuthModal')?.classList.remove('hidden');
-    });
-    bindById('sampleKitBtn', 'click', ()=>{
-      const msg = 'Hi Veer Mahadev Plastic, I want to order the Sample Kit (₹499) for quality check. Please share payment and dispatch details.';
-      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
-    });
-    bindById('request10000QuoteBtn', 'click', ()=>{
-      const msg = 'Hi Veer Mahadev Plastic, I want to Request Quote for 10,000+ Units. Please connect with your sales team.';
-      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
-    });
-    bindById('closeWholesaleAuth', 'click', ()=>{
-      document.getElementById('wholesaleAuthModal')?.classList.add('hidden');
-      applyShoppingMode('retail');
-    });
-    bindById('wholesaleAuthForm', 'submit', (event)=>{
-      event.preventDefault();
-      wholesaleProfile = {
-        shopName: document.getElementById('wsShopName')?.value.trim(),
-        ownerName: document.getElementById('wsOwnerName')?.value.trim(),
-        mobile: document.getElementById('wsMobile')?.value.trim(),
-        gst: document.getElementById('wsGst')?.value.trim()
-      };
-      localStorage.setItem('vmpWholesaleProfile', JSON.stringify(wholesaleProfile));
-      document.getElementById('wholesaleAuthModal')?.classList.add('hidden');
-      applyShoppingMode('wholesale');
-    });
-    bindById('mobileMenuToggle', 'click', ()=>{
-      const menu = document.getElementById('mobilePrimaryMenu');
-      const toggle = document.getElementById('mobileMenuToggle');
-      if(!menu || !toggle) return;
-      menu.classList.toggle('hidden');
-      toggle.setAttribute('aria-expanded', menu.classList.contains('hidden') ? 'false' : 'true');
-    });
-    bindById('newsletterForm', 'submit', (event)=>{
-      event.preventDefault();
-      const email = document.getElementById('newsletterEmail')?.value.trim();
-      const msg = document.getElementById('newsletterMsg');
-      if(!msg) return;
-      if(!email){
-        msg.className = 'text-xs font-semibold text-rose-600';
-        msg.textContent = 'Please enter a valid email.';
-        return;
-      }
-      msg.className = 'text-xs font-semibold text-emerald-700';
-      msg.textContent = 'Thanks! You are subscribed for VMP wholesale updates.';
-      try {
-        localStorage.setItem('vmpNewsletterEmail', email);
-      } catch (error) {
-        console.warn('Unable to save newsletter email.', error);
-      }
-      event.target.reset();
-    });
-    bindById('closeAuthHub', 'click', closeAuthHub);
-    bindById('authHubModal', 'click', (event)=>{
-      if(event.target.id === 'authHubModal') closeAuthHub();
-    });
-    bindById('closeProductModal', 'click', closeProductDetails);
-    bindById('productModal', 'click', (event)=>{
-      if(event.target.id === 'productModal') closeProductDetails();
-    });
-    bindById('customPrintingBtn', 'click', ()=>{
-      document.getElementById('customPrintModal')?.classList.remove('hidden');
-    });
-    bindById('closeCustomPrintModal', 'click', ()=>{
-      document.getElementById('customPrintModal')?.classList.add('hidden');
-    });
-    bindById('customPrintModal', 'click', (event)=>{
-      if(event.target.id === 'customPrintModal') event.target.classList.add('hidden');
-    });
-    bindById('customPrintForm', 'submit', async (event)=>{
-      event.preventDefault();
-      const msg = document.getElementById('customPrintMsg');
-      if(!selectedProductForOrder || !msg) return;
-      const requestItem = {
-        id: `CP-${Date.now()}`,
-        productId: selectedProductForOrder.id,
-        productName: selectedProductForOrder.name,
-        companyName: document.getElementById('printCompanyName')?.value.trim() || '',
-        gstNumber: document.getElementById('printGst')?.value.trim() || '',
-        whatsapp: document.getElementById('printWhatsapp')?.value.trim() || '',
-        notes: document.getElementById('printNotes')?.value.trim() || '',
-        logoFileName: document.getElementById('printLogo')?.files?.[0]?.name || '',
-        createdAt: new Date().toISOString(),
-        status: 'Pending Quote'
-      };
-      try {
-        const previous = JSON.parse(localStorage.getItem('vmpCustomPrintRequests') || '[]');
-        previous.unshift(requestItem);
-        localStorage.setItem('vmpCustomPrintRequests', JSON.stringify(previous.slice(0, 100)));
-      } catch (error) {
-        console.warn('Unable to save custom print request locally.', error);
-      }
-      try {
-        await fetch('/api/custom-print-requests', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestItem)
-        });
-      } catch (error) {
-        console.warn('Custom print request API unavailable.', error);
-      }
-      msg.className = 'text-xs font-semibold text-emerald-700';
-      msg.textContent = 'Request submitted. Please check VMP Admin dashboard for quote workflow.';
-      event.target.reset();
-    });
-
-    bindById('modalOrderWa', 'click', ()=>{
-      if(!selectedProductForOrder) return;
-      const msg = `Hi Veer Mahadev Plastic, I want to order ${selectedProductForOrder.name}. Please confirm today's rate.`;
-      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
-    });
-
-    function currentMinOrderQty(){
-      return shoppingMode === 'wholesale' ? WHOLESALE_MIN_ORDER_QTY : RETAIL_MIN_ORDER_QTY;
-    }
-
-    function productMoqCategory(product){
-      const text = `${product?.category || ''} ${product?.name || ''}`.toLowerCase();
-      if(/bag/.test(text)) return 'bags';
-      if(/book|stationery/.test(text)) return 'books';
-      if(/tray|plate/.test(text)) return 'trays';
-      return '';
-    }
-
-    function configuredRetailMoq(product){
-      const key = productMoqCategory(product);
-      const categoryValue = Number(categoryMoqConfig?.[key]?.retail || RETAIL_MIN_ORDER_QTY);
-      return Math.max(RETAIL_MIN_ORDER_QTY, categoryValue, Number(product?.retail_moq || RETAIL_MIN_ORDER_QTY));
-    }
-
-    function configuredWholesaleMoq(product){
-      const key = productMoqCategory(product);
-      const categoryValue = Number(categoryMoqConfig?.[key]?.wholesale || WHOLESALE_MIN_ORDER_QTY);
-      return Math.max(WHOLESALE_MIN_ORDER_QTY, categoryValue);
-    }
-
-    function currentQtyStep(){
-      return shoppingMode === 'wholesale' ? 100 : 1;
-    }
-
-    function retailConstraints(product){
-      return {
-        unit: product.retail_unit || 'Packet',
-        piecesPerUnit: Math.max(1, Number(product.pieces_per_unit || 100)),
-        retailMoq: configuredRetailMoq(product),
-        retailEnabled: product.retail_enabled !== false
-      };
-    }
-
-    function showToast(message){
-      const toast = document.createElement('div');
-      toast.className = 'fixed left-1/2 top-24 z-[170] -translate-x-1/2 rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-xl';
-      toast.textContent = message;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 1800);
-    }
-
-    function priceForQty(tiers, qty){
-      let unit = tiers[0].price;
-      for(const tier of tiers) if(qty >= tier.min) unit = tier.price;
-      return unit;
-    }
-
-    function unitPriceForProduct(product, qty, mode = shoppingMode){
-      if(mode === 'wholesale'){
-        return priceForQty(product.tiers, qty);
-      }
-      const retailSeed = Number(product.retail_price || 0);
-      if(retailSeed > 0) return retailSeed;
-      return Number((priceForQty(product.tiers, 1) * RETAIL_MARKUP).toFixed(2));
-    }
-
-    function stockBadge(stock){
-      if(stock === 0) return '<span class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded">Out of Stock</span>';
-      if(stock < 80) return '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">Low Stock</span>';
-      return '<span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">In Stock</span>';
-    }
-
-    function categoryIcon(category){
-      const value = category.toLowerCase();
-      if(value.includes('glass')) return '🥤';
-      if(value.includes('plate') || value.includes('tray')) return '🍽️';
-      if(value.includes('spoon') || value.includes('cutlery')) return '🥄';
-      if(value.includes('bowl')) return '🥣';
-      if(value.includes('container') || value.includes('box')) return '📦';
-      return '🛍️';
-    }
-
-    function productMeta(product){
-      const name = product.name;
-      const sizeMatch = name.match(/(\d+\s?(?:ML|GRM|MM|DIA|OZ|NO|CP))/i);
-      const colorMatch = name.match(/(BLACK|MILKY|WHITE|RED|TRANS|TRANSPARENT|BROWN|GREEN)/i);
-      const category = product.category.toLowerCase();
-      let hsn = '3924';
-      if(category.includes('paper') || category.includes('cornstarch') || category.includes('biodegradable')) hsn = '4823';
-      if(category.includes('glass')) hsn = '3923';
-      if(category.includes('spoon') || category.includes('cutlery')) hsn = '3924';
-      let use = 'Suitable for wholesale supply, events, food service, catering, takeaway, and retail packaging.';
-      if(category.includes('glass')) use = 'Ideal for beverages, mocktails, water service, dessert serving, and party use.';
-      if(category.includes('plate') || category.includes('tray')) use = 'Best for meal service, catering packs, takeaway combos, and event dining.';
-      if(category.includes('container') || category.includes('box')) use = 'Good for takeaway packing, sweets, bakery items, meal storage, and delivery use.';
-      let color = 'As per product specification';
-      if(colorMatch){
-        color = colorMatch[1].toUpperCase();
-        if(color === 'TRANS') color = 'Transparent';
-      }
-      return {
-        size: sizeMatch ? sizeMatch[1].toUpperCase() : 'Standard Wholesale Size',
-        color,
-        hsn,
-        moq: shoppingMode === 'wholesale'
-          ? `${WHOLESALE_MIN_ORDER_QTY}+ pcs`
-          : `${configuredRetailMoq(product)}+ ${product.retail_unit || 'Packet'}`,
-        use
-      };
-    }
-
-    window.openProductDetails = function(id){
-      const product = products.find(item => item.id === id);
-      if(!product || !productModal) return;
-      selectedProductForOrder = product;
-      const meta = productMeta(product);
-      document.getElementById('productModalTitle').textContent = product.name;
-      document.getElementById('productModalImage').src = product.image;
-      document.getElementById('productModalImage').alt = product.name;
-      document.getElementById('productModalCategory').textContent = product.category;
-      document.getElementById('productModalStock').textContent = product.stock > 0 ? `${product.stock} packs ready` : 'Currently unavailable';
-      document.getElementById('productModalSize').textContent = meta.size;
-      document.getElementById('productModalColor').textContent = meta.color;
-      document.getElementById('productModalHsn').textContent = meta.hsn;
-      document.getElementById('productModalMoq').textContent = meta.moq;
-      document.getElementById('productModalPricing').textContent = shoppingMode === 'wholesale'
-        ? product.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')
-        : `Retail: ₹${Number(product.retail_price || (product.tiers?.[0]?.price || 0) * RETAIL_MARKUP).toFixed(2)} per ${product.retail_unit || 'Packet'}. Wholesale slabs visible only after business sign-in.`;
-      document.getElementById('productModalUse').textContent = meta.use;
-      const showCustomPrint = Boolean(product.supportsCustomPrinting) || /printed bag|printed business book/i.test(product.name);
-      document.getElementById('customPrintingBtn')?.classList.toggle('hidden', !showCustomPrint);
-      renderAlsoBought(product);
-      productModal.classList.remove('hidden');
-    }
-
-    function renderCategories(){
-      if(!categoryGrid || !categoryFilter) return;
-      categoryGrid.innerHTML = categories.slice(1).map(cat => `
-        <button data-cat="${cat}" class="jump-cat min-w-[92px] rounded-3xl border border-emerald-100 bg-white px-3 py-3 shadow-sm hover:border-emerald-400 hover:bg-emerald-50">
-          <span class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-2xl">${categoryIcon(cat)}</span>
-          <span class="mt-2 block text-xs font-semibold leading-tight text-slate-700">${cat}</span>
-        </button>
-      `).join('');
-      categoryFilter.innerHTML = categories.map(cat => `<option>${cat}</option>`).join('');
-      categoryFilter.value = activeCategory;
-    }
-
-    function applyProductFilters(){
-      filteredProducts = products.filter(p => {
-        const categoryOk = activeCategory === 'All' || p.category === activeCategory;
-        const searchOk = !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const retailVisible = shoppingMode !== 'retail' || p.retail_enabled !== false;
-        return categoryOk && searchOk && retailVisible;
-      });
-      renderProducts();
-    }
-
-    function productRating(product){
-      const seed = product.id.split('').reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
-      const rating = (3.8 + ((seed % 12) / 10)).toFixed(1);
-      const reviews = 120 + (seed % 880);
-      return { rating, reviews };
-    }
-
-    function guestEstimateData(guestCount){
-      const bulkMode = Boolean(document.getElementById('bulkBuyMode')?.checked);
-      const safetyMultiplier = bulkMode ? 1.1 : 1;
-      const standards = [
-        { keyword: /tray|plate/i, name: 'Meal Trays / Plates', factor: 1.2 },
-        { keyword: /glass|cup/i, name: 'Cups / Glasses', factor: 2.5 },
-        { keyword: /spoon|cutlery/i, name: 'Spoons', factor: 1.5 }
-      ];
-      return standards.map((rule) => {
-        const product = products.find((item) => rule.keyword.test(item.name)) || null;
-        const qtyPieces = Math.ceil(guestCount * rule.factor * safetyMultiplier);
-        const piecesPerPacket = Math.max(1, Number(product?.pieces_per_unit || 100));
-        const retailMoq = Math.max(1, Number(product?.retail_moq || 1));
-        return {
-          product,
-          displayName: product?.name || rule.name,
-          qtyPieces,
-          packets: Math.max(retailMoq, Math.ceil(qtyPieces / piecesPerPacket))
-        };
-      });
-    }
-
-    function renderGuestEstimator(){
-      const rows = document.getElementById('guestEstimateRows');
-      if(!rows || !guestCountInput || !guestCountBox) return;
-      const guestCount = Math.max(50, Number(guestCountInput.value || guestCountBox.value || 200));
-      guestCountInput.value = String(guestCount);
-      guestCountBox.value = String(guestCount);
-      const estimate = guestEstimateData(guestCount);
-      rows.innerHTML = estimate.map((item) => `
-        <tr class="border-t">
-          <td class="px-3 py-2">${item.displayName}</td>
-          <td class="px-3 py-2">${item.qtyPieces}</td>
-          <td class="px-3 py-2">${item.packets}</td>
-        </tr>
-      `).join('');
-    }
-
-    function addGuestEstimateToCart(mode){
-      const guestCount = Math.max(50, Number(guestCountInput?.value || 200));
-      const estimate = guestEstimateData(guestCount).filter((item) => item.product);
-      if(!estimate.length){
-        showToast('No matching products found for estimate');
-        return;
-      }
-      estimate.forEach((row) => {
-        const product = row.product;
-        const qty = mode === 'wholesale'
-          ? Math.max(WHOLESALE_MIN_ORDER_QTY, Math.ceil(row.qtyPieces / 100) * 100)
-          : row.packets;
-        const unit = unitPriceForProduct(product, qty, mode);
-        const existing = cart.find((item) => item.id === product.id && item.unit === unit);
-        if(existing) existing.qty += qty;
-        else cart.push({ id: product.id, name: product.name, qty, unit });
-      });
-      saveCart();
-      renderCart();
-      showToast(`Guest estimate added for ${mode}`);
-      openCart();
-    }
-
-    function renderProducts(){
-      if(!productGrid) return;
-      const customerReady = Boolean((document.getElementById('customerName')?.value || '').trim() && (document.getElementById('customerMobile')?.value || '').trim() && (document.getElementById('customerAddress')?.value || '').trim());
-      productGrid.innerHTML = filteredProducts.map(p => {
-        const rating = productRating(p);
-        const minQty = configuredWholesaleMoq(p);
-        const stepQty = currentQtyStep();
-        const baseWholesale = priceForQty(p.tiers, minQty);
-        const retailMeta = retailConstraints(p);
-        const retailPrice = Number(p.retail_price || 0) || Number((baseWholesale * RETAIL_MARKUP).toFixed(2));
-        const unitDisplay = shoppingMode === 'wholesale' ? baseWholesale : retailPrice;
-        const isNegotiable = p.negotiable_whatsapp_only === true;
-        const qtyLabel = shoppingMode === 'wholesale' ? `${minQty}+ pcs` : `${RETAIL_MIN_ORDER_QTY}+ pcs`;
-        const tierLine = isNegotiable ? 'Call for Rate' : (shoppingMode === 'wholesale'
-          ? `500+ @ ₹${priceForQty(p.tiers, 500)} • 5,000+ @ ₹${priceForQty(p.tiers, 5000)}`
-          : `Retail packet pricing active. Sign in for wholesale rates.`);
-        const retailControls = shoppingMode === 'retail'
-          ? `
-            <div class="flex items-center justify-between">
-              <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">Pack of ${retailMeta.piecesPerUnit} Pcs</span>
-              <span class="text-[11px] font-semibold text-orange-600">Min. Order: ${retailMeta.retailMoq} Units</span>
-            </div>
-            <p class="text-sm font-bold text-emerald-800">Price: ₹${unitDisplay} per pack</p>
-            <div class="flex items-center gap-2">
-              <button onclick="event.stopPropagation();updateQuantity('${p.id}','minus',${retailMeta.retailMoq})" class="h-9 w-9 rounded-lg border border-slate-200 text-lg font-bold">-</button>
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="${retailMeta.retailMoq}" step="1" value="${retailMeta.retailMoq}" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
-              <button onclick="event.stopPropagation();updateQuantity('${p.id}','plus',${retailMeta.retailMoq})" class="h-9 w-9 rounded-lg border border-slate-200 text-lg font-bold">+</button>
-              ${isNegotiable ? `<button onclick="event.stopPropagation();openRateWhatsApp('${p.name}')" class="flex-1 rounded-xl bg-emerald-700 py-2 text-sm font-bold text-white">WhatsApp for Rate</button>` : `<button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>`}
-            </div>
-            <button data-retail-buy-now onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:cursor-not-allowed disabled:opacity-40" ${(!customerReady || p.stock===0)?'disabled':''}>Buy Now</button>
-          `
-          : `
-            <p class="text-sm font-bold text-emerald-800">₹${unitDisplay} <span class="text-[11px] font-medium text-slate-500">for ${qtyLabel}</span></p>
-            <p class="text-[11px] text-slate-500">${tierLine}</p>
-            <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="${minQty}" step="${stepQty}" value="${minQty}" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
-              ${isNegotiable ? `<button onclick="event.stopPropagation();openRateWhatsApp('${p.name}')" class="flex-1 rounded-xl bg-emerald-700 py-2 text-sm font-bold text-white">WhatsApp for Rate</button>` : `<button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>`}
-            </div>
-            <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
-          `;
-        return `
-        <article onclick="openProductDetails('${p.id}')" class="cursor-pointer overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-          <div class="relative">
-            <img src="${p.image}" alt="${p.name}" loading="lazy" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
-            <button onclick="event.stopPropagation();shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
-              <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="18" cy="5" r="3"></circle>
-                <circle cx="6" cy="12" r="3"></circle>
-                <circle cx="18" cy="19" r="3"></circle>
-                <path d="M8.59 13.51 15.42 17.49"></path>
-                <path d="M15.41 6.51 8.59 10.49"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="space-y-3 p-3">
-            <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${p.name}</h4>${stockBadge(p.stock)}</div>
-            <p class="text-[11px] text-slate-500">${p.category}</p>
-            ${shoppingMode === 'wholesale' ? '<p class="rounded-full bg-emerald-700 px-2 py-1 text-center text-[10px] font-bold text-white">Genuine Wholesaler Price - Min. 5000 units</p>' : ''}
-            <div class="flex items-center justify-between text-[11px]">
-              <span class="rounded-full bg-emerald-100 px-2 py-0.5 font-semibold text-emerald-700">Pack Size: ${retailMeta.piecesPerUnit} pcs</span>
-              <span class="font-semibold text-slate-600">⭐ ${rating.rating} (${rating.reviews})</span>
-            </div>
-            ${retailControls}
-          </div>
-        </article>
-      `;
-      }).join('') || '<p class="text-sm text-slate-600">No products found. Try another category or search keyword.</p>';
-    }
-
-    function saveCart(){
-      try {
-        localStorage.setItem('vmpCart', JSON.stringify(cart));
-      } catch (error) {
-        console.warn('Unable to save cart to localStorage.', error);
-      }
-    }
-
-    function cartTotalQty(){
-      return cart.reduce((sum, item) => sum + item.qty, 0);
-    }
-
-    function cartTotalAmount(){
-      return cart.reduce((sum, item) => sum + (item.qty * item.unit), 0);
-    }
-
-    function updateDiscountProgress(){
-      if(!discountProgressBox || !discountProgressText || !discountProgressBar){
-        return;
-      }
-      if(shoppingMode !== 'wholesale'){
-        discountProgressBox.classList.add('hidden');
-        return;
-      }
-      const subtotal = cartTotalAmount();
-      const threshold = 5000;
-      const missing = Math.max(0, threshold - subtotal);
-      const progress = Math.min(100, Math.round((subtotal / threshold) * 100));
-      discountProgressBox.classList.remove('hidden');
-      if(missing > 0){
-        discountProgressText.textContent = `Add ₹${missing.toFixed(0)} more to unlock extra 2% Wholesale Discount!`;
-      } else {
-        discountProgressText.textContent = '🎉 Extra 2% Wholesale Discount unlocked!';
-      }
-      discountProgressBar.style.width = `${progress}%`;
-    }
-
-    function renderCart(){
-      if(!cartCount || !cartSubtotal || !cartItems) return;
-      cartCount.textContent = cartTotalQty();
-      if(floatingCartCount) floatingCartCount.textContent = cartTotalQty();
-      cartSubtotal.textContent = cartTotalAmount().toFixed(2);
-      if(cart.length === 0){
-        cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
-        updateWhatsappButton();
-        updateDiscountProgress();
-        return;
-      }
-      cartItems.innerHTML = cart.map((item, idx) => `
-        <div class="border rounded-xl p-3 mb-2">
-          <div class="flex justify-between gap-2">
-            <p class="font-semibold">${item.name}</p>
-            <button onclick="removeCartItem(${idx})" class="text-rose-600 text-sm">Remove</button>
-          </div>
-          <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
-        </div>
-      `).join('');
-      updateWhatsappButton();
-      updateDiscountProgress();
-    }
-
-    window.removeCartItem = function(idx){
-      cart.splice(idx, 1);
-      saveCart();
-      renderCart();
-    }
-
-    window.updateQuantity = function(id, type, moq){
-      const qtyInput = document.getElementById(`qty-${id}`);
-      if(!qtyInput) return;
-      const currentVal = parseInt(qtyInput.value || '0', 10);
-      if(type === 'plus'){
-        qtyInput.value = String(currentVal + 1);
-      } else if(type === 'minus'){
-        if(currentVal > moq){
-          qtyInput.value = String(currentVal - 1);
-        } else {
-          showToast(RETAIL_MIN_MESSAGE);
-        }
-      }
-    }
-
-    window.addToCart = function(id){
-      if(shoppingMode === 'wholesale' && ensureWholesaleAccess()) return;
-      const p = products.find(x => x.id === id);
-      if(!p) return;
-      const qtyInput = document.getElementById(`qty-${id}`);
-      const retailMeta = retailConstraints(p);
-      const minQty = shoppingMode === 'retail' ? retailMeta.retailMoq : configuredWholesaleMoq(p);
-      const stepQty = currentQtyStep();
-      const rawQty = Number(qtyInput?.value || minQty);
-      const qty = shoppingMode === 'retail'
-        ? Math.max(minQty, Math.ceil(rawQty))
-        : Math.max(minQty, Math.ceil(rawQty / stepQty) * stepQty);
-      if(shoppingMode === 'retail' && retailMeta.retailEnabled === false){
-        showToast('Retail purchase is disabled for this item');
-        return;
-      }
-      if(shoppingMode === 'retail' && qty < retailMeta.retailMoq){
-        showToast(RETAIL_MIN_MESSAGE);
-        return;
-      }
-      if(qtyInput) qtyInput.value = String(qty);
-      const unit = unitPriceForProduct(p, qty);
-      const existing = cart.find(c => c.id === id && c.unit === unit);
-      if(existing) existing.qty += qty;
-      else cart.push({id, name:p.name, qty, unit});
-      saveCart();
-      renderCart();
-      trackEvent('add_to_cart', { item_id: p.id, item_name: p.name, quantity: qty, price: unit });
-    }
-
-    
-    window.openRateWhatsApp = function(productName){
-      const msg = `Hi VMP Team, I am interested in ${productName} from your catalog. Please share the wholesale rates for bulk orders.`;
-      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
-    }
-
-    window.buyNow = function(id){
-      addToCart(id);
-      openCart();
-    }
-
-    window.shareProduct = async function(id){
-      const product = products.find(item => item.id === id);
-      if(!product) return;
-      const productUrl = window.location.href.split('#')[0];
-      const shareText = `Check out ${product.name} from Veer Mahadev Plastic! See rates here: ${productUrl}`;
-
-      if(navigator.share){
+  applyProductFilters();
+});
         try {
           await navigator.share({
             title: product.name,
