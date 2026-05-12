@@ -1,6 +1,22 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Veer Mahadev Plastic</title>
+    
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(function(OneSignal) {
+        OneSignal.init({
+          appId: "76d9835b-80bc-44be-9533-83dcf6ae82eb",
+        });
+      });
+    </script>
+    </head>
+<body>
+    </body>
+</html>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#047857" />
@@ -81,18 +97,18 @@
   <script src="./js/vmp-app.js"></script>
   <script src="./js/vmp-modules.js"></script>
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.ONE_SIGNAL_APP_ID = window.ONE_SIGNAL_APP_ID || '';
-    window.ONE_SIGNAL_SAFARI_WEB_ID = window.ONE_SIGNAL_SAFARI_WEB_ID || '';
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: window.ONE_SIGNAL_APP_ID,
-        safari_web_id: window.ONE_SIGNAL_SAFARI_WEB_ID,
-        notifyButton: { enable: true }
-      });
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "76d9835b-80bc-44be-9533-83dcf6ae82eb",
+      safari_web_id: "web.onesignal.auto.2ce6e088-bd06-4a6b-8c58-d83c247eb259",
+      notifyButton: {
+        enable: true,
+      },
     });
-  </script>
+  });
+</script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics-compat.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js" defer></script>
@@ -203,6 +219,7 @@
       header .grid { grid-template-columns: 1fr; }
       header .grid > a { font-size: 2rem; }
       header .grid > div:last-child { justify-self: start; width: 100%; flex-wrap: wrap; gap: 8px; }
+      #quickChips { padding-bottom: 2px; }
       header nav { display: none; }
       #searchBtn { padding: 0.55rem 0.75rem; font-size: 0.75rem; }
       #home h1 { font-size: 2.2rem; line-height: 1.15; }
@@ -286,12 +303,12 @@
             <input id="productSearch" class="w-full bg-transparent text-sm outline-none" placeholder="Search wholesale products..." />
             <button id="searchBtn" class="rounded-xl bg-emerald-800 px-4 py-2 text-sm font-semibold text-white">Search</button>
           </div>
-        </div>
         <div class="flex items-center gap-2 justify-self-end text-sm">
           <div class="hidden rounded-xl border border-emerald-200 p-1 sm:flex">
             <button id="modeRetailBtn" class="rounded-lg px-2 py-1 text-xs font-bold text-amber-800">Retail</button>
             <button id="modeWholesaleBtn" class="rounded-lg px-2 py-1 text-xs font-bold text-emerald-800">Wholesale</button>
           </div>
+          <button id="mobileMenuToggle" class="inline-flex items-center rounded-xl border border-emerald-200 px-3 py-2 font-semibold text-emerald-800 md:hidden" aria-expanded="false" aria-controls="mobilePrimaryMenu">☰</button>
           <a href="#wholesale" class="hidden rounded-xl border border-emerald-200 px-3 py-2 font-semibold text-emerald-800 hover:bg-emerald-50 sm:inline-flex">Become a Supplier</a>
           <button id="openAuthHubTop" class="hidden sm:inline-flex items-center rounded-xl border border-emerald-200 px-3 py-2 font-semibold text-emerald-800 hover:bg-emerald-50">👤 Profile</button>
           <button id="openCartTop" class="inline-flex items-center rounded-xl border border-emerald-200 px-3 py-2 font-semibold text-emerald-800 hover:bg-emerald-50">🛒 Cart (<span id="cartCount">0</span>)</button>
@@ -299,10 +316,16 @@
         </div>
       </div>
 
-      <div class="mt-3 border-t border-slate-100 pt-3 text-right text-sm font-medium text-slate-700">
+      <nav class="mt-3 hidden items-center gap-4 overflow-x-auto whitespace-nowrap border-t border-slate-100 pt-3 text-sm font-medium text-slate-700 md:flex">
         <button id="openAuthHubNav" class="rounded-full border border-transparent px-1 py-1">Login / Sign Up</button>
         <button id="openLogin" class="rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold hover:bg-slate-50">B2B Portal</button>
-      </div>
+      </nav>
+      <nav id="mobilePrimaryMenu" class="mt-3 hidden space-y-2 rounded-2xl border border-emerald-100 bg-white p-3 text-sm font-semibold text-slate-700 md:hidden">
+        <a href="#shop" class="block rounded-lg px-2 py-2 hover:bg-emerald-50">Products</a>
+        <a href="#wholesale" class="block rounded-lg px-2 py-2 hover:bg-emerald-50">B2B Inquiry</a>
+        <a href="#googleReviews" class="block rounded-lg px-2 py-2 hover:bg-emerald-50">Google Reviews</a>
+        <a href="./customer-care.html" class="block rounded-lg px-2 py-2 hover:bg-emerald-50">Customer Care</a>
+      </nav>
     </div>
   </header>
 
@@ -320,10 +343,10 @@
               <p class="mt-2 text-sm font-bold text-emerald-100">Ahmedabad ke Caterers ki pehli pasand! Direct Factory rates par.</p>
             </div>
             <div class="grid grid-cols-2 gap-2">
-              <img src="image_563fab.jpg" alt="Meal Trays" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
-              <img src="image_563fab.jpg" alt="Catering Bags" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
-              <img src="image_563fab.jpg" alt="Cups and Glasses" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
-              <img src="image_563fab.jpg" alt="Stationery Bill Books" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
+              <img src="https://i.postimg.cc/yYksSfV8/ripple-glass.jpg" alt="Cups and Glasses" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
+              <img src="https://i.postimg.cc/ydYRcywr/tisue-paper.jpg" alt="TISSUE PAPER" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
+              <img src="https://i.postimg.cc/zXghwQHf/foil-cantainer-3.jpg" alt="SILVER CONTAINER" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
+              <img src="https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg" alt="BOIDGRADEBLE PLATE" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
             </div>
             <div class="rounded-2xl border border-white/30 bg-white/10 p-4 text-center backdrop-blur-sm">
               <p class="text-xs font-black uppercase tracking-[0.2em] text-[#facc15]">Download App</p>
@@ -333,14 +356,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    <section class="mx-auto max-w-7xl px-4 pb-8">
-      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <button data-chip="Tray" class="quick-chip flex items-center gap-2 rounded-2xl border border-emerald-100 bg-white px-4 py-3 text-left shadow-sm hover:bg-emerald-50"><span aria-hidden="true">🍱</span><span class="text-sm font-semibold">Trays</span></button>
-        <button data-chip="Bag" class="quick-chip flex items-center gap-2 rounded-2xl border border-emerald-100 bg-white px-4 py-3 text-left shadow-sm hover:bg-emerald-50"><span aria-hidden="true">🛍️</span><span class="text-sm font-semibold">Bags</span></button>
-        <button data-chip="Book" class="quick-chip flex items-center gap-2 rounded-2xl border border-emerald-100 bg-white px-4 py-3 text-left shadow-sm hover:bg-emerald-50"><span aria-hidden="true">📘</span><span class="text-sm font-semibold">Stationery</span></button>
-        <button data-chip="Biodegradable" class="quick-chip flex items-center gap-2 rounded-2xl border border-emerald-100 bg-white px-4 py-3 text-left shadow-sm hover:bg-emerald-50"><span aria-hidden="true">♻️</span><span class="text-sm font-semibold">Biodegradable</span></button>
       </div>
     </section>
 
@@ -549,9 +564,6 @@
           <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
             <button data-profile-action="orders" class="rounded-2xl border bg-white p-4 text-left"><p class="text-2xl">👜</p><p class="mt-2 text-base font-bold">Your Orders</p></button>
             <button data-profile-action="support" class="rounded-2xl border bg-white p-4 text-left"><p class="text-2xl">💬</p><p class="mt-2 text-base font-bold">Help & Support</p></button>
-            
-            <button data-profile-action="rewards" class="rounded-2xl border bg-white p-4 text-left"><p class="text-2xl">⭐</p><p class="mt-2 text-base font-bold">Rewards</p></button>
-          </div>
 
           <button id="profileUpdateCard" class="hidden w-full rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-left">
             <p class="text-lg font-black text-emerald-900">Update Available <span class="ml-2 rounded bg-emerald-600 px-2 py-0.5 text-xs text-white">New</span></p>
@@ -567,7 +579,6 @@
               <button data-profile-action="support" class="flex w-full items-center justify-between px-2 py-3 text-left"><span>💬 Help & Support</span><span>›</span></button>
               <button data-profile-action="addresses" class="flex w-full items-center justify-between px-2 py-3 text-left"><span>📍 Saved Addresses</span><span>›</span></button>
               <button data-profile-action="profile" class="flex w-full items-center justify-between px-2 py-3 text-left"><span>👤 Profile</span><span>›</span></button>
-              <button data-profile-action="rewards" class="flex w-full items-center justify-between px-2 py-3 text-left"><span>⭐ Rewards</span><span>›</span></button>
               <button data-profile-action="payment" class="flex w-full items-center justify-between px-2 py-3 text-left"><span>💳 Payment Management</span><span>›</span></button>
             </div>
           </div>
@@ -1147,7 +1158,8 @@
     });
 
     window.addEventListener('load', initFirebaseAnalytics);
-       let swReg = null;
+
+    let swReg = null;
     function showUpdateCard(registration){
       const card = document.getElementById('profileUpdateCard');
       if(!card) return;
@@ -1408,6 +1420,23 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         return [];
       }
     }
+  const NEGOTIABLE_CATALOG_SLUGS = [
+      '0-no-vati'
+    ];
+    const NEGOTIABLE_CATALOG_ITEMS = NEGOTIABLE_CATALOG_SLUGS.map((slug) => {
+      const clean = slug.replace(/-pp-.+$/,'').replace(/-\d+(?:-\d+)?$/,'');
+      const parts = clean.split('-').filter(Boolean);
+      const shortName = parts.slice(0, 3).join('-');
+      return {
+        name: shortName,
+        category: /vati|bowl|katori|soup/i.test(slug) ? 'Vati / Bowls' : (/chat/i.test(slug) ? 'Chat Plates' : 'Plates'),
+        image: './images/plate.jpg',
+        stock: 200, retail_enabled: true, retail_unit: 'Packet', retail_moq: RETAIL_MIN_ORDER_QTY,
+        pieces_per_unit: 100, retail_price: 0, tiers: buildWholesaleTiers(0.01),
+        negotiable_whatsapp_only: true,
+        description: 'Call for Rate'
+      };
+    });
     const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
 
     function mapProductItems(items){
@@ -2069,6 +2098,13 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       document.getElementById('wholesaleAuthModal')?.classList.add('hidden');
       applyShoppingMode('wholesale');
     });
+    bindById('mobileMenuToggle', 'click', ()=>{
+      const menu = document.getElementById('mobilePrimaryMenu');
+      const toggle = document.getElementById('mobileMenuToggle');
+      if(!menu || !toggle) return;
+      menu.classList.toggle('hidden');
+      toggle.setAttribute('aria-expanded', menu.classList.contains('hidden') ? 'false' : 'true');
+    });
     bindById('newsletterForm', 'submit', (event)=>{
       event.preventDefault();
       const email = document.getElementById('newsletterEmail')?.value.trim();
@@ -2216,8 +2252,6 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
     function categoryIcon(category){
       const value = category.toLowerCase();
-      if(value.includes('bag')) return '🛍️';
-      if(value.includes('stationery') || value.includes('book') || value.includes('pad')) return '📘';
       if(value.includes('glass')) return '🥤';
       if(value.includes('plate') || value.includes('tray')) return '🍽️';
       if(value.includes('spoon') || value.includes('cutlery')) return '🥄';
@@ -2777,27 +2811,10 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       applyProductFilters();
     });
 
-    async function logSearchAnalytics(queryText){
-      try {
-        if(!queryText || !window.firebase?.firestore) return;
-        const app = window.firebase.apps?.length ? window.firebase.app() : window.firebase.initializeApp(window.__FIREBASE_CONFIG__ || {});
-        await window.firebase.firestore(app).collection('search_analytics').add({
-          query: queryText,
-          source: 'meta_ads_or_site',
-          createdAt: new Date().toISOString()
-        });
-      } catch (error) {
-        console.warn('search_analytics log failed', error);
-      }
-    }
-
     if(searchBtn) searchBtn.addEventListener('click', ()=>{
       searchTerm = productSearch.value.trim();
       applyProductFilters();
-      if(searchTerm) {
-        trackEvent('search', { search_term: searchTerm });
-        logSearchAnalytics(searchTerm);
-      }
+      if(searchTerm) trackEvent('search', { search_term: searchTerm });
     });
 
     if(productSearch) productSearch.addEventListener('keydown', (e)=>{
@@ -2805,10 +2822,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         e.preventDefault();
         searchTerm = productSearch.value.trim();
         applyProductFilters();
-        if(searchTerm) {
-          trackEvent('search', { search_term: searchTerm });
-          logSearchAnalytics(searchTerm);
-        }
+        if(searchTerm) trackEvent('search', { search_term: searchTerm });
       }
     });
 
@@ -2817,7 +2831,6 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         searchTerm = chip.dataset.chip || '';
         if(productSearch) productSearch.value = searchTerm;
         applyProductFilters();
-        if(searchTerm) logSearchAnalytics(searchTerm);
         document.getElementById('shop')?.scrollIntoView({behavior:'smooth'});
       });
     });
@@ -3372,4 +3385,4 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
   </script>
 </body>
-</html>f
+</html>
