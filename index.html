@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Veer Mahadev Plastic</title>
-    
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(function(OneSignal) {
-        OneSignal.init({
-          appId: "76d9835b-80bc-44be-9533-83dcf6ae82eb",
-        });
-      });
-    </script>
+   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "76d9835b-80bc-44be-9533-83dcf6ae82eb",
+      safari_web_id: "web.onesignal.auto.2ce6e088-bd06-4a6b-8c58-d83c247eb259",
+      notifyButton: {
+        enable: true,
+      },
+    });
+  });
+</script>
     </head>
 <body>
     </body>
