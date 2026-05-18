@@ -726,11 +726,12 @@
 
     function renderDaybook(entries){
       const tbody = document.getElementById('daybookRows');
-      tbody.replaceChildren();
+      tbody.textContent = '';
 
       if(!entries.length){
         const tr = document.createElement('tr');
         const td = document.createElement('td');
+        tr.className = 'border-t';
         td.colSpan = 6;
         td.className = 'px-3 py-2 text-slate-500';
         td.textContent = 'No entries.';
@@ -743,19 +744,19 @@
         const tr = document.createElement('tr');
         tr.className = 'border-t';
 
-        const cells = [
-          { className: 'px-3 py-2', value: e.date || '-' },
-          { className: 'px-3 py-2 uppercase', value: e.mode || '-' },
-          { className: 'px-3 py-2', value: e.type === 'sale' ? 'Sale In' : 'Expense Out' },
-          { className: 'px-3 py-2', value: money(e.amount) },
-          { className: 'px-3 py-2', value: e.txnId || '-' },
-          { className: 'px-3 py-2', value: e.note || '-' }
+        const values = [
+          e.date || '-',
+          e.mode || '-',
+          e.type === 'sale' ? 'Sale In' : 'Expense Out',
+          money(e.amount),
+          e.txnId || '-',
+          e.note || '-'
         ];
 
-        cells.forEach(({ className, value }) => {
+        values.forEach((value, idx) => {
           const td = document.createElement('td');
-          td.className = className;
-          td.textContent = value;
+          td.className = idx === 1 ? 'px-3 py-2 uppercase' : 'px-3 py-2';
+          td.textContent = String(value);
           tr.appendChild(td);
         });
 
