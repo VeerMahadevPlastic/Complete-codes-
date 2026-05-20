@@ -139,6 +139,28 @@
             <button id="addNewProductBtn" class="rounded-lg bg-emerald-700 px-3 py-2 text-xs font-bold text-white">+ Add New Product</button>
           </div>
         </div>
+        <form id="localCatalogForm" class="mt-4 grid gap-3 rounded-xl border border-emerald-100 p-4 md:grid-cols-2">
+          <input id="lcProductName" required class="rounded-lg border px-3 py-2" placeholder="Product Name" />
+          <select id="lcCategory" class="rounded-lg border px-3 py-2">
+            <option>Plates</option><option>Cups & Glass</option><option>Bowls & Trays</option><option>Bags</option><option>Stationery</option><option>Catering Supplies</option><option>Takeaway Boxes</option><option>Eco-friendly</option>
+          </select>
+          <input id="lcBaseRate" required type="number" step="0.01" class="rounded-lg border px-3 py-2" placeholder="Base Wholesale Rate per pc" />
+          <input id="lcRetailPrice" required type="number" step="0.01" class="rounded-lg border px-3 py-2" placeholder="Retail Price per Packet" />
+          <input id="lcImageUrl" class="rounded-lg border px-3 py-2 md:col-span-2" placeholder="Image URL (optional)" />
+          <input id="lcHsnCode" class="rounded-lg border px-3 py-2" value="3924" placeholder="HSN Code" />
+          <textarea id="lcDescription" rows="3" class="rounded-lg border px-3 py-2 md:col-span-2" placeholder="Product Description/Details"></textarea>
+          <div class="md:col-span-2 flex gap-2">
+            <button id="lcSaveBtn" class="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-bold text-white">Add New Product / Rate Update</button>
+            <button id="lcResetBtn" type="button" class="rounded-lg border px-4 py-2 text-sm font-semibold">Clear</button>
+          </div>
+          <p id="localCatalogMsg" class="text-sm font-semibold md:col-span-2"></p>
+        </form>
+        <div class="mt-4 overflow-x-auto rounded-xl border">
+          <table class="min-w-full text-sm">
+            <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Image</th><th class="px-3 py-2">Name</th><th class="px-3 py-2">Category</th><th class="px-3 py-2">Wholesale Rate</th><th class="px-3 py-2">Retail Price</th><th class="px-3 py-2">Actions</th></tr></thead>
+            <tbody id="localCatalogRows"></tbody>
+          </table>
+        </div>
         <div class="mt-4 overflow-x-auto rounded-xl border">
           <table class="min-w-full text-sm">
             <thead class="bg-emerald-50 text-left text-emerald-900"><tr><th class="px-3 py-2">Product</th><th class="px-3 py-2">Current Stock</th><th class="px-3 py-2">Wholesale Rate</th><th class="px-3 py-2">Description</th><th class="px-3 py-2">Retail Settings</th><th class="px-3 py-2">Add Photo</th><th class="px-3 py-2">Action</th></tr></thead>
@@ -270,6 +292,37 @@
       if(!el) return;
       el.className = `mt-2 text-sm font-semibold ${ok ? 'text-emerald-700' : 'text-rose-700'}`;
       el.textContent = text;
+    }
+    function showLocalCatalogMsg(text, ok = true){
+      const el = document.getElementById('localCatalogMsg');
+      if(!el) return;
+      el.className = `text-sm font-semibold md:col-span-2 ${ok ? 'text-emerald-700' : 'text-rose-700'}`;
+      el.textContent = text;
+    }
+    function slugifyValue(value){ return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+    function buildBulkTiers(baseRate){
+      const safe = Math.max(0, Number(baseRate || 0));
+      return [{ min: 100, price: Number((safe * 1.16).toFixed(2)) }, { min: 500, price: Number((safe * 1.08).toFixed(2)) }, { min: 5000, price: Number(safe.toFixed(2)) }];
+    }
+    function readMasterProducts(){
+      try {
+        const raw = localStorage.getItem('vmp_master_products');
+        if(!raw){ localStorage.setItem('vmp_master_products', '[]'); return []; }
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.warn('Failed to read vmp_master_products', error);
+        localStorage.setItem('vmp_master_products', '[]');
+        return [];
+      }
+    }
+    function writeMasterProducts(items){ localStorage.setItem('vmp_master_products', JSON.stringify(items)); }
+    let editingProductId = '';
+    function renderLocalCatalogRows(){
+      const rows = document.getElementById('localCatalogRows');
+      if(!rows) return;
+      const items = readMasterProducts();
+      rows.innerHTML = items.map((item) => `<tr class="border-t"><td class="px-3 py-2"><img src="${item.image || 'https://placehold.co/64x64?text=VMP'}" class="h-12 w-12 rounded object-cover"/></td><td class="px-3 py-2 font-semibold">${item.name || '-'}</td><td class="px-3 py-2">${item.category || '-'}</td><td class="px-3 py-2">₹${Number(item.base_wholesale_rate ?? item.tiers?.[2]?.price ?? 0).toFixed(2)}</td><td class="px-3 py-2">₹${Number(item.retail_price || 0).toFixed(2)}</td><td class="px-3 py-2"><button onclick="editLocalProduct('${item.id}')" class="rounded border px-2 py-1 text-xs font-semibold">Edit</button> <button onclick="deleteLocalProduct('${item.id}')" class="rounded border border-rose-200 bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-700">Delete</button></td></tr>`).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No custom products yet.</td></tr>';
     }
     function setButtonLoading(buttonId, loading, label){
       const btn = document.getElementById(buttonId);
@@ -594,6 +647,13 @@
       const bags = payload.bags || {};
       const books = payload.books || {};
       const trays = payload.trays || {};
+      const setValue = (id, value) => { const el = document.getElementById(id); if(el) el.value = value; };
+      setValue('bagsRetailMoq', Math.max(100, Number(bags.retail || 100)));
+      setValue('bagsWholesaleMoq', Math.max(5000, Number(bags.wholesale || 5000)));
+      setValue('booksRetailMoq', Math.max(100, Number(books.retail || 100)));
+      setValue('booksWholesaleMoq', Math.max(5000, Number(books.wholesale || 5000)));
+      setValue('traysRetailMoq', Math.max(100, Number(trays.retail || 100)));
+      setValue('traysWholesaleMoq', Math.max(5000, Number(trays.wholesale || 5000)));
       document.getElementById('bagsRetailMoq').value = Math.max(100, Number(bags.retail || 100));
       document.getElementById('bagsWholesaleMoq').value = Math.max(5000, Number(bags.wholesale || 5000));
       document.getElementById('booksRetailMoq').value = Math.max(100, Number(books.retail || 100));
@@ -725,6 +785,9 @@
     }
 
     function renderDaybook(entries){
+      document.getElementById('daybookRows').innerHTML = entries.map((e) => `
+        <tr class="border-t"><td class="px-3 py-2">${e.date || '-'}</td><td class="px-3 py-2 uppercase">${e.mode}</td><td class="px-3 py-2">${e.type === 'sale' ? 'Sale In' : 'Expense Out'}</td><td class="px-3 py-2">${money(e.amount)}</td><td class="px-3 py-2">${e.txnId || '-'}</td><td class="px-3 py-2">${e.note || '-'}</td></tr>
+      `).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No entries.</td></tr>';
       const tbody = document.getElementById('daybookRows');
       tbody.textContent = '';
 
@@ -1044,6 +1107,7 @@
       inventorySearchTerm = e.target.value.trim().toLowerCase();
       renderInventoryController();
     });
+    document.getElementById('saveCategoryMoqBtn')?.addEventListener('click', async () => {
     document.getElementById('saveCategoryMoqBtn').addEventListener('click', async () => {
       const categories = readCategoryMoqPayload();
       await getDb().collection('appSettings').doc('moqConfig').set({
@@ -1056,6 +1120,64 @@
       });
       showMsg('stockMsg', 'Category-wise MOQ limits saved.');
     });
+    document.getElementById('localCatalogForm')?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      try {
+        const name = document.getElementById('lcProductName').value.trim();
+        const id = slugifyValue(name);
+        if(!id) return showLocalCatalogMsg('Product name is required.', false);
+        const baseRate = Number(document.getElementById('lcBaseRate').value || 0);
+        const retailPrice = Number(document.getElementById('lcRetailPrice').value || 0);
+        if(baseRate <= 0 || retailPrice < 0) return showLocalCatalogMsg('Please enter valid rates.', false);
+        const nextProduct = {
+          id, name,
+          category: document.getElementById('lcCategory').value,
+          base_wholesale_rate: Number(baseRate.toFixed(2)),
+          retail_price: Number(retailPrice.toFixed(2)),
+          image: document.getElementById('lcImageUrl').value.trim() || 'https://placehold.co/600x400?text=VMP+Product',
+          hsn: document.getElementById('lcHsnCode').value.trim() || '3924',
+          description: document.getElementById('lcDescription').value.trim(),
+          tiers: buildBulkTiers(baseRate),
+          retail_enabled: true, retail_unit: 'Packet', retail_moq: 1, pieces_per_unit: 100, stock: 200
+        };
+        const existing = readMasterProducts().filter((item) => item.id !== (editingProductId || id));
+        existing.unshift(nextProduct);
+        writeMasterProducts(existing);
+        event.target.reset();
+        document.getElementById('lcHsnCode').value = '3924';
+        editingProductId = '';
+        renderLocalCatalogRows();
+        showLocalCatalogMsg('Product saved to localStorage.');
+      } catch (error) {
+        console.error(error);
+        showLocalCatalogMsg('Could not save product. Please review the form values.', false);
+      }
+    });
+    document.getElementById('lcResetBtn')?.addEventListener('click', () => {
+      document.getElementById('localCatalogForm')?.reset();
+      document.getElementById('lcHsnCode').value = '3924';
+      editingProductId = '';
+      showLocalCatalogMsg('');
+    });
+    window.editLocalProduct = function(productId){
+      const product = readMasterProducts().find((item) => item.id === productId);
+      if(!product) return showLocalCatalogMsg('Product not found.', false);
+      editingProductId = productId;
+      document.getElementById('lcProductName').value = product.name || '';
+      document.getElementById('lcCategory').value = product.category || 'Plates';
+      document.getElementById('lcBaseRate').value = Number(product.base_wholesale_rate ?? product.tiers?.[2]?.price ?? 0);
+      document.getElementById('lcRetailPrice').value = Number(product.retail_price || 0);
+      document.getElementById('lcImageUrl').value = product.image || '';
+      document.getElementById('lcHsnCode').value = product.hsn || '3924';
+      document.getElementById('lcDescription').value = product.description || '';
+      document.getElementById('lcProductName').focus();
+    };
+    window.deleteLocalProduct = function(productId){
+      writeMasterProducts(readMasterProducts().filter((item) => item.id !== productId));
+      if(editingProductId === productId) editingProductId = '';
+      renderLocalCatalogRows();
+      showLocalCatalogMsg('Product deleted.');
+    };
     document.getElementById('closeRetailConfigBtn').addEventListener('click', () => {
       document.getElementById('retailConfigModal').classList.add('hidden');
       retailConfigProductId = '';
@@ -1115,6 +1237,7 @@
         await processWebsiteSales();
         await ensureNegotiableCatalogProducts();
         await Promise.all([loadProducts(), loadPurchases(), loadSummary(), loadBusinessPulse(), loadCategoryMoqSettings()]);
+        renderLocalCatalogRows();
         listenProductsRealtime();
         listenDaybookRealtime();
         listenDailyOrders();
