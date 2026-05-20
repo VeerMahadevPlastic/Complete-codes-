@@ -285,6 +285,16 @@
       }
     }
     function writeMasterProducts(items){ localStorage.setItem('vmp_master_products', JSON.stringify(items)); }
+    function sanitizeText(value){ return String(value ?? '').trim(); }
+    function toSafeImageUrl(value, fallback){
+      const candidate = String(value ?? '').trim();
+      if(!candidate) return fallback;
+      try {
+        const parsed = new URL(candidate, window.location.origin);
+        if(parsed.protocol === 'http:' || parsed.protocol === 'https:') return parsed.href;
+      } catch (error) {}
+      return fallback;
+    }
     let editingProductId = '';
     function renderLocalCatalogRows(){
       const rows = document.getElementById('localCatalogRows');
@@ -310,7 +320,7 @@
         const tdImage = document.createElement('td');
         tdImage.className = 'px-3 py-2';
         const img = document.createElement('img');
-        img.src = item.image || 'https://placehold.co/64x64?text=VMP';
+        img.src = toSafeImageUrl(item.image, 'https://placehold.co/64x64?text=VMP');
         img.alt = item.name || 'Product image';
         img.className = 'h-12 w-12 rounded object-cover';
         tdImage.appendChild(img);
@@ -1167,7 +1177,7 @@
     document.getElementById('localCatalogForm')?.addEventListener('submit', (event) => {
       event.preventDefault();
       try {
-        const name = document.getElementById('lcProductName').value.trim();
+        const name = sanitizeText(document.getElementById('lcProductName').value);
         const id = slugifyValue(name);
         if(!id) return showLocalCatalogMsg('Product name is required.', false);
         const baseRate = Number(document.getElementById('lcBaseRate').value || 0);
@@ -1175,12 +1185,12 @@
         if(baseRate <= 0 || retailPrice < 0) return showLocalCatalogMsg('Please enter valid rates.', false);
         const nextProduct = {
           id, name,
-          category: document.getElementById('lcCategory').value,
+          category: sanitizeText(document.getElementById('lcCategory').value),
           base_wholesale_rate: Number(baseRate.toFixed(2)),
           retail_price: Number(retailPrice.toFixed(2)),
-          image: document.getElementById('lcImageUrl').value.trim() || 'https://placehold.co/600x400?text=VMP+Product',
-          hsn: document.getElementById('lcHsnCode').value.trim() || '3924',
-          description: document.getElementById('lcDescription').value.trim(),
+          image: toSafeImageUrl(document.getElementById('lcImageUrl').value, 'https://placehold.co/600x400?text=VMP+Product'),
+          hsn: sanitizeText(document.getElementById('lcHsnCode').value) || '3924',
+          description: sanitizeText(document.getElementById('lcDescription').value),
           tiers: buildBulkTiers(baseRate),
           retail_enabled: true, retail_unit: 'Packet', retail_moq: 1, pieces_per_unit: 100, stock: 200
         };
