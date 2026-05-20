@@ -16,5 +16,13 @@ def public_config():
             "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET", ""),
             "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID", ""),
             "appId": os.getenv("FIREBASE_APP_ID", ""),
+        },
+        "payment": {
+            "provider": os.getenv("PAYMENT_PROVIDER", "phonepe"),
+            "phonepe": {
+                "enabled": os.getenv("PHONEPE_ENABLED", "true").lower() == "true",
+                "merchantId": os.getenv("PHONEPE_MERCHANT_ID", "SU2605141715570021348446"),
+                "collectEndpoint": os.getenv("PHONEPE_COLLECT_ENDPOINT", "/api/payments/phonepe/create-order")
+            }
         }
     })

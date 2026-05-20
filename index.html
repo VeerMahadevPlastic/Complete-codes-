@@ -220,11 +220,11 @@
       <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Choose Shopping Type</p>
       <h2 class="mt-2 text-2xl font-black text-slate-900">Shop Retail or Shop Wholesale</h2>
       <div class="mt-4 grid gap-3">
-        <button id="chooseRetailBtn" class="rounded-xl bg-amber-100 px-4 py-3 text-left">
+        <button id="shopRetailBtn" class="rounded-xl bg-amber-100 px-4 py-3 text-left">
           <p class="font-bold text-amber-900">Shop Retail</p>
           <p class="text-xs text-amber-800">Friendly pricing + direct browsing</p>
         </button>
-        <button id="chooseWholesaleBtn" class="rounded-xl bg-emerald-100 px-4 py-3 text-left">
+        <button id="shopWholesaleBtn" class="rounded-xl bg-emerald-100 px-4 py-3 text-left">
           <p class="font-bold text-emerald-900">Shop Wholesale</p>
           <p class="text-xs text-emerald-800">Business rates for 5,000+ pcs slabs</p>
         </button>
@@ -1013,6 +1013,7 @@
         window.ONE_SIGNAL_APP_ID = cfg.oneSignalAppId || window.ONE_SIGNAL_APP_ID || '';
         window.ONE_SIGNAL_SAFARI_WEB_ID = cfg.oneSignalSafariWebId || window.ONE_SIGNAL_SAFARI_WEB_ID || '';
         window.__FIREBASE_CONFIG__ = Object.assign({}, window.__FIREBASE_CONFIG__ || {}, cfg.firebase || {});
+        window.__PAYMENT_CONFIG__ = Object.assign({}, window.__PAYMENT_CONFIG__ || {}, cfg.payment || {});
       } catch (_) {}
     }
 
@@ -1035,6 +1036,15 @@
     let wholesaleProfile = JSON.parse(localStorage.getItem('vmpWholesaleProfile') || 'null');
     let firestoreDb = null;
     let categoryMoqConfig = { bags: {}, books: {}, trays: {} };
+    const DEFAULT_PAYMENT_CONFIG = {
+      provider: 'phonepe',
+      phonepe: {
+        enabled: true,
+        merchantId: 'SU2605141715570021348446',
+        collectEndpoint: '/api/payments/phonepe/create-order'
+      },
+      fallbackUpiId: '8050389261@upi'
+    };
 
     function buildWholesaleTiers(baseRate){
       const tier1 = Math.max(0, Number(baseRate || 0));
@@ -1533,23 +1543,41 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     });
     }
 
-    const products = mapProductItems(PRODUCT_ITEMS);
-        products.push(...mapProductItems(EXTRA_CATALOG_ITEMS));
-    loadExtendedCatalog().then((extraItems) => {
-      if(!extraItems.length) return;
-      const extraProducts = mapProductItems(extraItems);
-      products.push(...extraProducts);
-      writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
-        id: product.id,
-        name: product.name,
-        category: product.category,
-        price100: product.tiers[0]?.price || 0
-      }))));
-      const dynamicCategories = ['All', ...new Set(products.map((p) => p.category))];
-      categories.splice(0, categories.length, ...dynamicCategories);
-      renderCategories();
-      applyProductFilters();
-    });
+    function safeReadMasterProducts(){
+      try {
+        const existing = localStorage.getItem('vmp_master_products');
+        if(!existing){
+          localStorage.setItem('vmp_master_products', '[]');
+          return [];
+        }
+        const parsed = JSON.parse(existing);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        console.warn('Unable to read vmp_master_products. Resetting to empty array.', error);
+        localStorage.setItem('vmp_master_products', '[]');
+        return [];
+      }
+    }
+
+    function initializeCatalog(){
+      const adminProducts = safeReadMasterProducts();
+      const baseProducts = parsePriceData(RAW_PRICE_DATA);
+      const mergedById = new Map();
+      const appendByPriority = (list) => {
+        list.forEach((item) => {
+          const id = slugify(item.id || item.name || '');
+          if(!id) return;
+          mergedById.set(id, { ...item, id });
+        });
+      };
+      appendByPriority(baseProducts);
+      appendByPriority(adminProducts);
+      const mergedProducts = Array.from(mergedById.values());
+      return mapProductItems(mergedProducts);
+    }
+
+    const products = initializeCatalog();
+    products.push(...mapProductItems(EXTRA_CATALOG_ITEMS));
 
     function syncInventoryRealtime(){
       const db = getFirestoreDb();
@@ -2067,6 +2095,10 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     }
 
     function applyShoppingMode(mode){
+      if(mode !== 'retail' && mode !== 'wholesale'){
+        console.warn('Invalid shopping mode provided.', mode);
+        return;
+      }
       shoppingMode = mode;
       localStorage.setItem('vmpShoppingMode', mode);
       document.body.classList.toggle('mode-retail', mode === 'retail');
@@ -2076,7 +2108,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         modalElement.classList.add('hidden');
         modalElement.style.display = 'none';
       }
-      document.getElementById('entryModeModal')?.classList.add('hidden');
       const retailBtn = document.getElementById('modeRetailBtn');
       const wholesaleBtn = document.getElementById('modeWholesaleBtn');
       if(retailBtn) retailBtn.classList.toggle('bg-amber-100', mode === 'retail');
@@ -2135,15 +2166,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     bindById('openAuthHubNav', 'click', openAuthHub);
     bindById('shopRetailBtn', 'click', ()=> applyShoppingMode('retail'));
     bindById('shopWholesaleBtn', 'click', ()=> applyShoppingMode('wholesale'));
-    bindById('chooseRetailBtn', 'click', ()=> applyShoppingMode('retail'));
-    bindById('chooseWholesaleBtn', 'click', ()=>{
-      if(wholesaleProfile){
-        applyShoppingMode('wholesale');
-        return;
-      }
-      document.getElementById('entryModeMsg').textContent = 'Wholesale requires business sign-in.';
-      document.getElementById('wholesaleAuthModal')?.classList.remove('hidden');
-    });
     bindById('modeRetailBtn', 'click', ()=> applyShoppingMode('retail'));
     bindById('modeWholesaleBtn', 'click', ()=>{
       if(wholesaleProfile){
@@ -3147,13 +3169,19 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         value: totals.total,
         item_count: cartTotalQty()
       });
-      const upiId = '8050389261@upi';
       const orderId = `VMP${Date.now().toString().slice(-6)}`;
-      const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${totals.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order '+orderId)}`;
+      const runtimePaymentConfig = Object.assign({}, DEFAULT_PAYMENT_CONFIG, window.__PAYMENT_CONFIG__ || {});
+      const phonePeConfig = runtimePaymentConfig.phonepe || {};
+      const noteSuffix = runtimePaymentConfig.provider === 'phonepe' && phonePeConfig.merchantId
+        ? ` | PhonePe MID: ${phonePeConfig.merchantId}`
+        : '';
+      const upiId = runtimePaymentConfig.fallbackUpiId || '8050389261@upi';
+      const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${totals.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order '+orderId+noteSuffix)}`;
       const qr = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}`;
       document.getElementById('upiQr').src = qr;
       const upiPayLink = document.getElementById('upiPayLink');
       upiPayLink.href = upiUri;
+      upiPayLink.textContent = runtimePaymentConfig.provider === 'phonepe' ? 'Pay via PhonePe / UPI App' : 'Pay via UPI App';
       document.getElementById('upiBox').classList.remove('hidden');
       latestCheckout = {orderId, details, totals, cart:[...cart], paymentStatus:'Pending', orderType: shoppingMode || 'retail'};
       const oldProfile = loadProfile();
@@ -3453,7 +3481,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     if(savedMode === 'retail' || savedMode === 'wholesale'){
       applyShoppingMode(savedMode);
     } else if(!shoppingMode){
-    if(!shoppingMode){
       document.getElementById('entryModeModal')?.classList.remove('hidden');
     } else {
       applyShoppingMode(shoppingMode);
