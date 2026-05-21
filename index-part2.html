@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -1157,13 +1157,8 @@
       deferredPrompt = event;
       if(splash?.dataset.dismissed === 'true') scheduleInstallBanner();
     });
-  });
-</script>
-    </head>
-<body>
-    </body>
-</html>
-window.addEventListener('appinstalled', () => {
+
+    window.addEventListener('appinstalled', () => {
       deferredPrompt = null;
       hideInstallBanner();
     });
@@ -1493,35 +1488,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     }
 
     const priceOverrides = loadPriceOverrides();
-
-    async function loadExtendedCatalog(){
-      try {
-        const response = await fetch('./catalog/vmp-catalog-bags-stationery.json', { cache: 'no-store' });
-        if(!response.ok) return [];
-        const payload = await response.json();
-        return (payload.categories || []).flatMap((mainCategory) =>
-          (mainCategory.sub_categories || []).flatMap((subCategory) =>
-            (subCategory.products || []).map((item) => ({
-              name: item.name,
-              category: `${mainCategory.name} - ${subCategory.name}`,
-              image: item.image || '',
-              stock: 300,
-              hsn: item.hsn || '3923',
-              supportsCustomPrinting: Boolean(item.supports_custom_printing),
-              retail_enabled: item.retail_enabled !== false,
-              retail_unit: item.retail_unit || 'Packet',
-              retail_moq: Number(item.retail_moq || 1),
-              pieces_per_unit: Number(item.pieces_per_unit || 100),
-              retail_price: Number(item.retail_price || 0),
-              tiers: buildWholesaleTiers(Number(item.base_price || 0))
-            }))
-          )
-        );
-      } catch (error) {
-        console.warn('Extended catalog load failed.', error);
-        return [];
-      }
-    }
 
     const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
 

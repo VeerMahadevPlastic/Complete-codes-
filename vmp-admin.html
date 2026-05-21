@@ -268,6 +268,23 @@
       el.textContent = text;
     }
     function slugifyValue(value){ return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+    function escapeHtml(value){
+      return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    }
+    function escapeAttr(value){ return escapeHtml(value); }
+    function escapeJsSingleQuoted(value){
+      return String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\r/g, '\\r').replace(/\n/g, '\\n');
+    }
+    function safeImageSrc(value){
+      const fallback = 'https://placehold.co/64x64?text=VMP';
+      const src = String(value || '').trim();
+      if(!src) return fallback;
+      try {
+        const parsed = new URL(src, window.location.origin);
+        if(parsed.protocol === 'http:' || parsed.protocol === 'https:') return parsed.href;
+      } catch (_) {}
+      return fallback;
+    }
     function buildBulkTiers(baseRate){
       const safe = Math.max(0, Number(baseRate || 0));
       return [{ min: 100, price: Number((safe * 1.16).toFixed(2)) }, { min: 500, price: Number((safe * 1.08).toFixed(2)) }, { min: 5000, price: Number(safe.toFixed(2)) }];
@@ -285,89 +302,20 @@
       }
     }
     function writeMasterProducts(items){ localStorage.setItem('vmp_master_products', JSON.stringify(items)); }
-    function sanitizeText(value){ return String(value ?? '').trim(); }
-    function toSafeImageUrl(value, fallback){
-      const candidate = String(value ?? '').trim();
-      if(!candidate) return fallback;
-      try {
-        const parsed = new URL(candidate, window.location.origin);
-        if(parsed.protocol === 'http:' || parsed.protocol === 'https:') return parsed.href;
-      } catch (error) {}
-      return fallback;
-    }
     let editingProductId = '';
     function renderLocalCatalogRows(){
       const rows = document.getElementById('localCatalogRows');
       if(!rows) return;
       const items = readMasterProducts();
-      rows.textContent = '';
-
-      if(!items.length){
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = 6;
-        td.className = 'px-3 py-2 text-slate-500';
-        td.textContent = 'No custom products yet.';
-        tr.appendChild(td);
-        rows.appendChild(tr);
-        return;
-      }
-
-      items.forEach((item) => {
-        const tr = document.createElement('tr');
-        tr.className = 'border-t';
-
-        const tdImage = document.createElement('td');
-        tdImage.className = 'px-3 py-2';
-        const img = document.createElement('img');
-        img.src = toSafeImageUrl(item.image, 'https://placehold.co/64x64?text=VMP');
-        img.alt = item.name || 'Product image';
-        img.className = 'h-12 w-12 rounded object-cover';
-        tdImage.appendChild(img);
-
-        const tdName = document.createElement('td');
-        tdName.className = 'px-3 py-2 font-semibold';
-        tdName.textContent = item.name || '-';
-
-        const tdCategory = document.createElement('td');
-        tdCategory.className = 'px-3 py-2';
-        tdCategory.textContent = item.category || '-';
-
-        const tdWholesale = document.createElement('td');
-        tdWholesale.className = 'px-3 py-2';
-        tdWholesale.textContent = `₹${Number(item.base_wholesale_rate ?? item.tiers?.[2]?.price ?? 0).toFixed(2)}`;
-
-        const tdRetail = document.createElement('td');
-        tdRetail.className = 'px-3 py-2';
-        tdRetail.textContent = `₹${Number(item.retail_price || 0).toFixed(2)}`;
-
-        const tdActions = document.createElement('td');
-        tdActions.className = 'px-3 py-2';
-
-        const editBtn = document.createElement('button');
-        editBtn.type = 'button';
-        editBtn.className = 'rounded border px-2 py-1 text-xs font-semibold';
-        editBtn.textContent = 'Edit';
-        editBtn.addEventListener('click', () => editLocalProduct(item.id));
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.type = 'button';
-        deleteBtn.className = 'rounded border border-rose-200 bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-700';
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.addEventListener('click', () => deleteLocalProduct(item.id));
-
-        tdActions.appendChild(editBtn);
-        tdActions.appendChild(document.createTextNode(' '));
-        tdActions.appendChild(deleteBtn);
-
-        tr.appendChild(tdImage);
-        tr.appendChild(tdName);
-        tr.appendChild(tdCategory);
-        tr.appendChild(tdWholesale);
-        tr.appendChild(tdRetail);
-        tr.appendChild(tdActions);
-        rows.appendChild(tr);
-      });
+      rows.innerHTML = items.map((item) => {
+        const imageSrc = escapeAttr(safeImageSrc(item.image));
+        const safeName = escapeHtml(item.name || '-');
+        const safeCategory = escapeHtml(item.category || '-');
+        const safeIdForJs = escapeJsSingleQuoted(item.id || '');
+        const wholesale = Number(item.base_wholesale_rate ?? item.tiers?.[2]?.price ?? 0).toFixed(2);
+        const retail = Number(item.retail_price || 0).toFixed(2);
+        return `<tr class="border-t"><td class="px-3 py-2"><img src="${imageSrc}" class="h-12 w-12 rounded object-cover"/></td><td class="px-3 py-2 font-semibold">${safeName}</td><td class="px-3 py-2">${safeCategory}</td><td class="px-3 py-2">₹${wholesale}</td><td class="px-3 py-2">₹${retail}</td><td class="px-3 py-2"><button onclick="editLocalProduct('${safeIdForJs}')" class="rounded border px-2 py-1 text-xs font-semibold">Edit</button> <button onclick="deleteLocalProduct('${safeIdForJs}')" class="rounded border border-rose-200 bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-700">Delete</button></td></tr>`;
+      }).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No custom products yet.</td></tr>';
     }
     function ensureMasterProductsStore(){
       const items = readMasterProducts();
@@ -827,55 +775,19 @@
       }
     }
 
+    function escapeHtml(value){
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     function renderDaybook(entries){
-      const rowsEl = document.getElementById('daybookRows');
-      rowsEl.textContent = '';
-      if(!entries.length){
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = 6;
-        td.className = 'px-3 py-2 text-slate-500';
-        td.textContent = 'No entries.';
-        tr.appendChild(td);
-        rowsEl.appendChild(tr);
-        return;
-      }
-      entries.forEach((e) => {
-        const tr = document.createElement('tr');
-        tr.className = 'border-t';
-
-        const tdDate = document.createElement('td');
-        tdDate.className = 'px-3 py-2';
-        tdDate.textContent = e.date || '-';
-
-        const tdMode = document.createElement('td');
-        tdMode.className = 'px-3 py-2 uppercase';
-        tdMode.textContent = e.mode || '';
-
-        const tdType = document.createElement('td');
-        tdType.className = 'px-3 py-2';
-        tdType.textContent = e.type === 'sale' ? 'Sale In' : 'Expense Out';
-
-        const tdAmount = document.createElement('td');
-        tdAmount.className = 'px-3 py-2';
-        tdAmount.textContent = money(e.amount);
-
-        const tdTxn = document.createElement('td');
-        tdTxn.className = 'px-3 py-2';
-        tdTxn.textContent = e.txnId || '-';
-
-        const tdNote = document.createElement('td');
-        tdNote.className = 'px-3 py-2';
-        tdNote.textContent = e.note || '-';
-
-        tr.appendChild(tdDate);
-        tr.appendChild(tdMode);
-        tr.appendChild(tdType);
-        tr.appendChild(tdAmount);
-        tr.appendChild(tdTxn);
-        tr.appendChild(tdNote);
-        rowsEl.appendChild(tr);
-      });
+      document.getElementById('daybookRows').innerHTML = entries.map((e) => `
+        <tr class="border-t"><td class="px-3 py-2">${escapeHtml(e.date || '-')}</td><td class="px-3 py-2 uppercase">${escapeHtml(e.mode || '')}</td><td class="px-3 py-2">${escapeHtml(e.type === 'sale' ? 'Sale In' : 'Expense Out')}</td><td class="px-3 py-2">${escapeHtml(money(e.amount))}</td><td class="px-3 py-2">${escapeHtml(e.txnId || '-')}</td><td class="px-3 py-2">${escapeHtml(e.note || '-')}</td></tr>
+      `).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No entries.</td></tr>';
     }
 
     async function loadDaybook(){
@@ -1177,7 +1089,7 @@
     document.getElementById('localCatalogForm')?.addEventListener('submit', (event) => {
       event.preventDefault();
       try {
-        const name = sanitizeText(document.getElementById('lcProductName').value);
+        const name = document.getElementById('lcProductName').value.trim();
         const id = slugifyValue(name);
         if(!id) return showLocalCatalogMsg('Product name is required.', false);
         const baseRate = Number(document.getElementById('lcBaseRate').value || 0);
@@ -1185,12 +1097,12 @@
         if(baseRate <= 0 || retailPrice < 0) return showLocalCatalogMsg('Please enter valid rates.', false);
         const nextProduct = {
           id, name,
-          category: sanitizeText(document.getElementById('lcCategory').value),
+          category: document.getElementById('lcCategory').value,
           base_wholesale_rate: Number(baseRate.toFixed(2)),
           retail_price: Number(retailPrice.toFixed(2)),
-          image: toSafeImageUrl(document.getElementById('lcImageUrl').value, 'https://placehold.co/600x400?text=VMP+Product'),
-          hsn: sanitizeText(document.getElementById('lcHsnCode').value) || '3924',
-          description: sanitizeText(document.getElementById('lcDescription').value),
+          image: document.getElementById('lcImageUrl').value.trim() || 'https://placehold.co/600x400?text=VMP+Product',
+          hsn: document.getElementById('lcHsnCode').value.trim() || '3924',
+          description: document.getElementById('lcDescription').value.trim(),
           tiers: buildBulkTiers(baseRate),
           retail_enabled: true, retail_unit: 'Packet', retail_moq: 1, pieces_per_unit: 100, stock: 200
         };
