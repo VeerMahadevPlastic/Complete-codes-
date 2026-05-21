@@ -268,6 +268,23 @@
       el.textContent = text;
     }
     function slugifyValue(value){ return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+    function escapeHtml(value){
+      return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    }
+    function escapeAttr(value){ return escapeHtml(value); }
+    function escapeJsSingleQuoted(value){
+      return String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\r/g, '\\r').replace(/\n/g, '\\n');
+    }
+    function safeImageSrc(value){
+      const fallback = 'https://placehold.co/64x64?text=VMP';
+      const src = String(value || '').trim();
+      if(!src) return fallback;
+      try {
+        const parsed = new URL(src, window.location.origin);
+        if(parsed.protocol === 'http:' || parsed.protocol === 'https:') return parsed.href;
+      } catch (_) {}
+      return fallback;
+    }
     function buildBulkTiers(baseRate){
       const safe = Math.max(0, Number(baseRate || 0));
       return [{ min: 100, price: Number((safe * 1.16).toFixed(2)) }, { min: 500, price: Number((safe * 1.08).toFixed(2)) }, { min: 5000, price: Number(safe.toFixed(2)) }];
@@ -290,7 +307,15 @@
       const rows = document.getElementById('localCatalogRows');
       if(!rows) return;
       const items = readMasterProducts();
-      rows.innerHTML = items.map((item) => `<tr class="border-t"><td class="px-3 py-2"><img src="${item.image || 'https://placehold.co/64x64?text=VMP'}" class="h-12 w-12 rounded object-cover"/></td><td class="px-3 py-2 font-semibold">${item.name || '-'}</td><td class="px-3 py-2">${item.category || '-'}</td><td class="px-3 py-2">₹${Number(item.base_wholesale_rate ?? item.tiers?.[2]?.price ?? 0).toFixed(2)}</td><td class="px-3 py-2">₹${Number(item.retail_price || 0).toFixed(2)}</td><td class="px-3 py-2"><button onclick="editLocalProduct('${item.id}')" class="rounded border px-2 py-1 text-xs font-semibold">Edit</button> <button onclick="deleteLocalProduct('${item.id}')" class="rounded border border-rose-200 bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-700">Delete</button></td></tr>`).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No custom products yet.</td></tr>';
+      rows.innerHTML = items.map((item) => {
+        const imageSrc = escapeAttr(safeImageSrc(item.image));
+        const safeName = escapeHtml(item.name || '-');
+        const safeCategory = escapeHtml(item.category || '-');
+        const safeIdForJs = escapeJsSingleQuoted(item.id || '');
+        const wholesale = Number(item.base_wholesale_rate ?? item.tiers?.[2]?.price ?? 0).toFixed(2);
+        const retail = Number(item.retail_price || 0).toFixed(2);
+        return `<tr class="border-t"><td class="px-3 py-2"><img src="${imageSrc}" class="h-12 w-12 rounded object-cover"/></td><td class="px-3 py-2 font-semibold">${safeName}</td><td class="px-3 py-2">${safeCategory}</td><td class="px-3 py-2">₹${wholesale}</td><td class="px-3 py-2">₹${retail}</td><td class="px-3 py-2"><button onclick="editLocalProduct('${safeIdForJs}')" class="rounded border px-2 py-1 text-xs font-semibold">Edit</button> <button onclick="deleteLocalProduct('${safeIdForJs}')" class="rounded border border-rose-200 bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-700">Delete</button></td></tr>`;
+      }).join('') || '<tr><td colspan="6" class="px-3 py-2 text-slate-500">No custom products yet.</td></tr>';
     }
     function ensureMasterProductsStore(){
       const items = readMasterProducts();
