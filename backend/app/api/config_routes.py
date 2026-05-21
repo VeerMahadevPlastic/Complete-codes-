@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 import os
 from fastapi.responses import JSONResponse
+from backend.app.config import settings
 
 router = APIRouter(prefix="/api/config", tags=["config"])
 
@@ -18,11 +19,13 @@ def public_config():
             "appId": os.getenv("FIREBASE_APP_ID", ""),
         },
         "payment": {
-            "provider": os.getenv("PAYMENT_PROVIDER", "phonepe"),
+            "provider": settings.payment_provider,
             "phonepe": {
-                "enabled": os.getenv("PHONEPE_ENABLED", "true").lower() == "true",
-                "merchantId": os.getenv("PHONEPE_MERCHANT_ID", "SU2605141715570021348446"),
-                "collectEndpoint": os.getenv("PHONEPE_COLLECT_ENDPOINT", "/api/payments/phonepe/create-order")
+                "enabled": settings.phonepe_enabled,
+                "merchantId": settings.phonepe_merchant_id,
+                "collectEndpoint": settings.phonepe_collect_endpoint,
+                # Never expose secret values to the browser.
+                "serverSecretConfigured": bool(settings.phonepe_client_secret)
             }
         }
     })
