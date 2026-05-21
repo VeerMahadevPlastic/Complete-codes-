@@ -36,3 +36,17 @@ flask --app flask_app run --port 8000 --debug
 ## Firebase
 If Firebase service account is configured (`GOOGLE_APPLICATION_CREDENTIALS`), data writes to Firestore.
 If not configured, APIs use in-memory fallback for development.
+## Payment security (PhonePe)
+- Keep PhonePe secrets on the backend only.
+- Do **not** put client secret/salt key in HTML/JS/public config.
+- Configure through environment variables:
+
+```bash
+export PAYMENT_PROVIDER=phonepe
+export PHONEPE_ENABLED=true
+export PHONEPE_MERCHANT_ID=SU2605141715570021348446
+export PHONEPE_CLIENT_SECRET="your-secret-here"
+export PHONEPE_COLLECT_ENDPOINT=/api/payments/phonepe/create-order
+```
+
+`/api/config/public` exposes only non-sensitive payment metadata and a boolean `serverSecretConfigured`.
