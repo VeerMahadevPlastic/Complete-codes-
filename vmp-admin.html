@@ -62,8 +62,12 @@
     const FALLBACK_IMG = 'https://placehold.co/120x80?text=VMP';
     let editingId = '';
 
+    function slugify(value){
+      return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    }
+
     function escapeHtml(value){
-      return String(value ?? '')
+      return String(value || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
@@ -73,13 +77,14 @@
 
     function safeImageUrl(value){
       const raw = String(value || '').trim();
-      if (!raw) return FALLBACK_IMG;
-      if (/^(https?:)?\/\//i.test(raw) || raw.startsWith('/')) return raw;
-      return FALLBACK_IMG;
-    }
-
-    function slugify(value){
-      return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      if(!raw) return escapeHtml(FALLBACK_IMG);
+      try {
+        const u = new URL(raw, window.location.origin);
+        if(u.protocol === 'http:' || u.protocol === 'https:'){
+          return escapeHtml(u.href);
+        }
+      } catch {}
+      return escapeHtml(FALLBACK_IMG);
     }
 
     function notify(msg){
@@ -115,7 +120,7 @@
       const items = readProducts();
       rows.innerHTML = items.map(p => `
         <tr class="border-t">
-          <td class="px-2 py-2"><img src="${escapeHtml(safeImageUrl(p.image))}" class="h-12 w-16 rounded object-cover" onerror="this.src='${escapeHtml(FALLBACK_IMG)}'" /></td>
+          <td class="px-2 py-2"><img src="${safeImageUrl(p.image)}" class="h-12 w-16 rounded object-cover" onerror="this.src='${FALLBACK_IMG}'" /></td>
           <td class="px-2 py-2 font-semibold">${escapeHtml(p.name || '-')}</td>
           <td class="px-2 py-2">${escapeHtml(p.category || '-')}</td>
           <td class="px-2 py-2">₹${Number(p.base_wholesale_rate || 0).toFixed(2)}</td>

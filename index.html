@@ -161,8 +161,8 @@
     @keyframes logoFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.02); } }
     @keyframes glowPulse { 0%,100% { opacity: 0.45; transform: scale(0.96); } 50% { opacity: 0.95; transform: scale(1.03); } }
     @keyframes shimmer { 0% { transform: translateX(-120%) rotate(12deg); } 100% { transform: translateX(120%) rotate(12deg); } }
-    @keyframes taglineReveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes itemReveal { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes splashFade { 0%, 78% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; pointer-events: none; } }
+    @keyframes marquee { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
     @keyframes pulseSoft {
       0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.35); }
       50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
@@ -296,21 +296,36 @@
     </div>
   </div>
   <div class="app-shell">
-  <header class="sticky top-0 z-50 border-b border-emerald-100 bg-white/95 glass">
+  <header class="sticky top-0 z-50 border-b border-emerald-900 bg-[#064e3b] text-white shadow-xl">
     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
-      <div class="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-center text-xs font-bold text-amber-800">
+      <div class="rounded-xl border border-amber-300/40 bg-emerald-950/50 px-3 py-2 text-center text-xs font-bold text-amber-300">
         ⚡ Ahmedabad Catering Emergency? Order before 12 PM for Same-Day Delivery across Ahmedabad!
       </div>
       <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3">
-        <button id="openAuthHubTop" class="hidden sm:inline-flex items-center rounded-full border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50">Login</button>
-        <a href="#home" class="text-center text-xl font-black tracking-tight text-emerald-800 sm:text-2xl">Veer Mahadev Plastic</a>
-        <button id="openCartTop" class="justify-self-end rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">Cart (<span id="cartCount">0</span>)</button>
+        <button id="openAuthHubTop" class="hidden sm:inline-flex items-center rounded-full border border-amber-300/50 px-3 py-2 text-xs font-semibold text-amber-200 hover:bg-emerald-900">Login</button>
+        <a href="#home" class="text-center text-xl font-black tracking-tight text-amber-300 sm:text-2xl">Veer Mahadev Plastic</a>
+        <button id="openCartTop" class="justify-self-end rounded-full border border-amber-300/50 px-4 py-2 text-sm font-semibold text-amber-100 hover:bg-emerald-900">Cart (<span id="cartCount">0</span>)</button>
       </div>
       <div class="flex items-center gap-2">
-        <div class="flex flex-1 items-center rounded-2xl border border-emerald-100 bg-[#f8fbf8] px-3 py-2 shadow-sm">
-          <span class="mr-2 text-emerald-700">🔎</span>
-          <input id="productSearch" class="w-full bg-transparent text-sm outline-none" placeholder="Search plates, cups, spoons, trays..." />
+        <div class="flex flex-1 items-center rounded-2xl border border-emerald-700 bg-emerald-900/50 px-3 py-2 shadow-sm">
+          <span class="mr-2 text-amber-300">🔎</span>
+          <input id="productSearch" class="w-full bg-transparent text-sm text-emerald-50 placeholder:text-emerald-200/70 outline-none" placeholder="Search plates, cups, spoons, trays..." />
         </div>
+        <button id="searchBtn" class="rounded-2xl bg-amber-500 px-4 py-2 text-sm font-semibold text-emerald-950">Search</button>
+        <button id="openAuthHubMobile" class="inline-flex items-center rounded-2xl border border-amber-300/50 px-3 py-2 text-xs font-semibold text-amber-100 sm:hidden">Login</button>
+      </div>
+      <div class="flex items-center justify-between gap-3 text-xs font-medium text-emerald-100">
+        <nav class="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
+          <a href="#categories" class="text-amber-300">Categories</a>
+          <a href="#shop">Shop All</a>
+          <a href="#eco">Eco Range</a>
+          <a href="#wholesale">Wholesale</a>
+          <button id="openAuthHubNav" class="rounded-full border border-transparent px-1 py-1">Login / Sign Up</button>
+        </nav>
+        <button id="openLogin" class="hidden rounded-full border border-amber-300/50 px-3 py-2 text-xs font-semibold hover:bg-emerald-900 sm:inline-flex">B2B Portal</button>
+      </div>
+      <div class="overflow-hidden rounded-lg border border-amber-300/30 bg-emerald-950/50">
+        <p class="whitespace-nowrap px-3 py-1 text-xs font-semibold text-amber-300 animate-[marquee_18s_linear_infinite]">Veer Mahadev Plastic: Custom Manufacturer for Gujarat's Elite Catering Businesses</p>
       </div>
 
       <nav class="mt-3 hidden items-center gap-4 overflow-x-auto whitespace-nowrap border-t border-slate-100 pt-3 text-sm font-medium text-slate-700 md:flex">
@@ -327,30 +342,46 @@
   </header>
 
   <main id="home">
-    <section class="border-b border-emerald-100 bg-white">
-      <div class="mx-auto max-w-7xl px-4 py-8">
-        <div class="overflow-hidden rounded-[2rem] border border-[#D4AF37]/40 bg-gradient-to-r from-[#064e3b] via-[#0f766e] to-[#7f1d1d] p-5 text-white shadow-xl lg:p-7">
-          <div class="grid gap-5 lg:grid-cols-[1.1fr_1fr_0.9fr] lg:items-center">
-            <div>
-              <p id="seasonBadge" class="text-xs font-black uppercase tracking-[0.28em] text-[#facc15]">MAHA INDIAN CATERING SALE</p>
-              <h1 id="heroHeading" class="mt-3 text-3xl font-black leading-tight text-white lg:text-4xl">Get Premium Catering Disposables at Factory Prices!</h1>
-              <p id="heroDescription" class="mt-3 text-sm text-emerald-50">Ahmedabad's Best! Direct Factory Rates on all catering packs. Trust the Prajapati family business since 2022.</p>
-              <p class="mt-3 rounded-xl border border-[#fbbf24]/40 bg-white/10 px-3 py-2 text-sm font-semibold text-[#fde68a]">Special Combo: Free Delivery on Wedding Orders Over ₹50,000!</p>
-              <p class="mt-2 text-xs font-semibold text-emerald-100">Meal Trays | Catering Bags | Wedding Bill Books | Eco-Friendly Ware</p>
-              <p class="mt-2 text-sm font-bold text-emerald-100">Ahmedabad ke Caterers ki pehli pasand! Direct Factory rates par.</p>
+    <section class="relative overflow-hidden border-b border-emerald-900 bg-gradient-to-br from-emerald-950 via-emerald-900 to-slate-900 text-white">
+      <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-15 mix-blend-overlay" alt="Disposable products"/>
+      <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
+        <div>
+          <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
+            <span class="text-amber-300">VIP Gilded Catering Suite</span> for Gujarat’s Premium Buyers
+          </h1>
+          <p class="mt-4 text-lg text-emerald-100">Engineered for corporate catering groups, sweet chains, and institutional buyers who demand quality consistency and manufacturing assurance.</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="#shop" class="px-6 py-3 rounded-xl bg-amber-500 text-emerald-950 font-bold hover:bg-amber-400">Explore Product Floor</a>
+            <a href="#wholesale" class="px-6 py-3 rounded-xl border-2 border-amber-300 text-amber-200 font-bold hover:bg-emerald-800">Get Corporate Quote</a>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-emerald-600/50 bg-white/10 p-5 shadow-2xl backdrop-blur-md">
+          <h3 class="text-xl font-bold text-amber-300">3D Factory Floor Intelligence</h3>
+          <p class="mt-1 text-sm text-emerald-100">Modern, process-controlled production for reliable large-volume dispatch cycles.</p>
+          <div class="mt-4 grid gap-3 text-sm">
+            <div class="rounded-xl border border-emerald-500/40 bg-emerald-900/40 p-3 transition duration-300 hover:scale-[1.02] hover:border-amber-300/60">
+              <p class="text-xs uppercase tracking-wide text-emerald-200">Unit</p>
+              <p class="mt-1 font-bold text-white">Precision Injection Molding Unit</p>
             </div>
-            <div class="grid grid-cols-2 gap-2">
-              <img src="https://i.postimg.cc/yYksSfV8/ripple-glass.jpg" alt="Cups and Glasses" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
-              <img src="https://i.postimg.cc/ydYRcywr/tisue-paper.jpg" alt="TISSUE PAPER" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
-              <img src="https://i.postimg.cc/zXghwQHf/foil-cantainer-3.jpg" alt="SILVER CONTAINER" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
-              <img src="https://i.postimg.cc/1RWyXxZh/boidgrade-plate.jpg" alt="BOIDGRADEBLE PLATE" class="h-24 w-full rounded-xl border border-white/20 object-cover shadow md:h-28" loading="eager" onerror="this.onerror=null;this.src='./images/plate.jpg';" />
+            <div class="rounded-xl border border-emerald-500/40 bg-emerald-900/40 p-3 transition duration-300 hover:scale-[1.02] hover:border-amber-300/60">
+              <p class="text-xs uppercase tracking-wide text-emerald-200">Capacity</p>
+              <p class="mt-1 font-bold text-white">Production Capacity: 10 Lakh+ Units/Day</p>
             </div>
-            <div class="rounded-2xl border border-white/30 bg-white/10 p-4 text-center backdrop-blur-sm">
-              <p class="text-xs font-black uppercase tracking-[0.2em] text-[#facc15]">Download App</p>
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fwww.veermahadevplastic.in%2F" alt="Veer Mahadev App QR" class="mx-auto mt-2 h-36 w-36 rounded-xl border border-white/30 bg-white p-2" loading="lazy"/>
-              <a id="heroPrimaryCta" href="#shop" class="pulse-soft mt-3 inline-flex w-full items-center justify-center rounded-xl bg-[#facc15] px-4 py-3 text-sm font-black text-[#065f46]">Shop Wholesale</a>
-              <a id="heroSecondaryCta" href="#wholesale" class="mt-2 inline-flex w-full items-center justify-center rounded-xl border border-white/40 px-4 py-2 text-xs font-bold text-white">Get Supplier Pricing</a>
+            <div class="rounded-xl border border-emerald-500/40 bg-emerald-900/40 p-3 transition duration-300 hover:scale-[1.02] hover:border-amber-300/60">
+              <p class="text-xs uppercase tracking-wide text-emerald-200">Trust</p>
+              <p class="mt-1 font-bold text-white">Trusted by 500+ Top Caterers & Sweet Shops in Gujarat</p>
             </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-4 text-sm">
+            <input id="weight" type="number" step="0.1" placeholder="Weight kg" class="border rounded-lg px-3 py-2"/>
+            <input id="length" type="number" placeholder="Length cm" class="border rounded-lg px-3 py-2"/>
+            <input id="width" type="number" placeholder="Width cm" class="border rounded-lg px-3 py-2"/>
+            <input id="height" type="number" placeholder="Height cm" class="border rounded-lg px-3 py-2"/>
+            <select id="zone" class="border rounded-lg px-3 py-2 col-span-2">
+              <option value="1">Local (Ahmedabad)</option>
+              <option value="1.4">Within Gujarat</option>
+              <option value="1.9">Interstate</option>
+            </select>
           </div>
         </div>
       </div>
@@ -383,37 +414,23 @@
       <div id="categoryGrid" class="mt-5 flex gap-3 overflow-x-auto pb-2 text-center"></div>
     </section>
 
-    <section id="liveRates" class="max-w-7xl mx-auto px-4 pb-2"><p class="text-xs font-semibold text-emerald-700">Live wholesale rates (updated from latest catalog)</p></section>
-
-    <section id="guestPlanner" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-white p-5">
-        <div class="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Event Planner</p>
-            <h3 class="text-2xl font-extrabold text-slate-900">Guest-Based Quantity Estimator</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <label for="guestCount" class="text-sm font-semibold text-slate-600">Number of Guests</label>
-            <input id="guestCount" type="range" min="50" max="2000" step="10" value="200" class="w-44 accent-emerald-700">
-            <input id="guestCountBox" type="number" min="50" max="2000" step="10" value="200" class="w-24 rounded-lg border px-2 py-1 text-sm">
-          </div>
-        </div>
-        <div class="mt-4 overflow-x-auto">
-          <table class="min-w-full rounded-xl border border-emerald-100 bg-white text-sm">
-            <thead class="bg-emerald-50 text-left text-emerald-800">
-              <tr><th class="px-3 py-2">Product</th><th class="px-3 py-2">Estimated Quantity (pcs)</th><th class="px-3 py-2">Packets Needed</th></tr>
-            </thead>
-            <tbody id="guestEstimateRows"></tbody>
-          </table>
-        </div>
-        <div class="mt-3 flex flex-wrap gap-2">
-          <label class="inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-white px-3 py-2 text-xs font-semibold text-emerald-800">
-            <input id="bulkBuyMode" type="checkbox" class="accent-emerald-700" />
-            Bulk Buy Mode (+10% safety)
-          </label>
-          <button id="addGuestEstimateRetail" class="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white">Add All to Cart (Retail)</button>
-          <button id="addGuestEstimateWholesale" class="rounded-lg border border-emerald-300 px-4 py-2 text-sm font-semibold text-emerald-800">Add All to Cart (Wholesale)</button>
-        </div>
+    <section id="vipSampleKit" class="max-w-7xl mx-auto px-4 pb-8">
+      <div class="rounded-2xl border border-amber-300/40 bg-gradient-to-r from-emerald-900 to-emerald-800 p-6 text-white shadow-xl">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">VIP Factory Program</p>
+        <h3 class="mt-2 text-2xl font-extrabold">Verify Our Quality Before Bulk Buying. Apply for Veer Mahadev VIP Sample Kit.</h3>
+        <form id="vipSampleForm" class="mt-5 grid gap-3 md:grid-cols-2">
+          <input id="vipBusinessName" required class="rounded-lg border border-emerald-600 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/80" placeholder="Business/Caterer Name" />
+          <input id="vipWhatsapp" required class="rounded-lg border border-emerald-600 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/80" placeholder="WhatsApp Number" />
+          <input id="vipGstin" class="rounded-lg border border-emerald-600 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/80" placeholder="GSTIN (Optional)" />
+          <select id="vipVolume" required class="rounded-lg border border-emerald-600 bg-emerald-950/50 px-3 py-2 text-sm text-white">
+            <option value="">Expected Monthly Order Volume</option>
+            <option>10,000 to 50,000 pcs/month</option>
+            <option>50,000 to 1,000,000 pcs/month</option>
+            <option>1,000,000+ pcs/month (Elite VIP Corporate Partner)</option>
+          </select>
+          <button class="md:col-span-2 rounded-lg bg-amber-500 py-2.5 text-sm font-bold text-emerald-950 hover:bg-amber-400">Submit VIP Sample Request</button>
+          <p id="vipSampleMsg" class="md:col-span-2 text-xs font-semibold text-amber-200"></p>
+        </form>
       </div>
     </section>
 
@@ -817,7 +834,7 @@
             <p class="text-sm font-semibold text-slate-700">Payment Mode</p>
             <div class="mt-2 flex flex-col items-center justify-center p-3 bg-white border rounded-lg">
               <div class="w-full max-w-[280px] mx-auto rounded-lg border bg-white p-2">
-                <img id="checkoutQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=upi://pay?pa=gpay-12203322638@OKBIZAXIS&pn=Veer%20Mahadev%20Plastic" alt="UPI QR" class="h-auto w-full rounded" />
+                <img id="checkoutQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=upi://pay?pa=8050389261@upi&pn=Veer%20Mahadev%20Plastic" alt="UPI QR" class="h-auto w-full rounded" />
               </div>
               <p class="mt-2 text-xs text-slate-500 text-center">Scan via PhonePe / GPay / UPI app to pay securely.</p>
             </div>
@@ -832,6 +849,7 @@
               <hr />
               <div class="flex justify-between font-bold text-emerald-800"><span>Total</span><span>₹<span id="checkoutTotal">0</span></span></div>
             </div>
+            <button id="shareCartQuoteBtn" class="mt-3 w-full rounded-lg border border-emerald-300 bg-white py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">🔗 Share Cart / Quote via WhatsApp</button>
             <button id="confirmPayBtn" class="mt-4 w-full rounded-lg bg-emerald-700 py-2 font-semibold text-white">Confirm & Pay</button>
           </div>
         </div>
@@ -2627,6 +2645,23 @@ SR FIBER PLATES RATE PCS
       if(modalRow) modalRow.innerHTML = markup;
     }
 
+    function trustBadgesMarkup(){
+      return [
+        '🛡️ 100% Secure Payments',
+        '🏭 Direct from Ahmedabad Factory',
+        '📦 Safe & Hygienic Packaging',
+        '✅ Genuine Biodegradable Quality'
+      ].map((t) => `<div class="rounded-lg border border-emerald-100 bg-white px-2 py-1"><span class="font-semibold text-slate-700">${t}</span></div>`).join('');
+    }
+
+    function renderTrustBadges(){
+      const cartRow = document.getElementById('trustBadgeRowCart');
+      const modalRow = document.getElementById('trustBadgeRowModal');
+      const markup = trustBadgesMarkup();
+      if(cartRow) cartRow.innerHTML = markup;
+      if(modalRow) modalRow.innerHTML = markup;
+    }
+
     window.removeCartItem = function(idx){
       cart.splice(idx, 1);
       saveCart();
@@ -2826,6 +2861,82 @@ SR FIBER PLATES RATE PCS
       document.getElementById('checkoutModal')?.classList.add('hidden');
     }
 
+    function encodeSharedCartPayload(cartItems){
+      const payload = {
+        v: 1,
+        ts: Date.now(),
+        items: (Array.isArray(cartItems) ? cartItems : []).map((item) => ({
+          id: String(item.id || ''),
+          name: String(item.name || ''),
+          qty: Number(item.qty || 0),
+          unit: Number(item.unit || 0)
+        })).filter((item) => item.id && item.qty > 0)
+      };
+      return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    }
+
+    function decodeSharedCartPayload(encoded){
+      try {
+        const json = decodeURIComponent(escape(atob(String(encoded || ''))));
+        const parsed = JSON.parse(json);
+        if(!parsed || !Array.isArray(parsed.items)) return [];
+        return parsed.items
+          .map((item) => ({
+            id: String(item.id || ''),
+            name: String(item.name || ''),
+            qty: Math.max(1, Number(item.qty || 0)),
+            unit: Math.max(0, Number(item.unit || 0))
+          }))
+          .filter((item) => item.id && item.qty > 0);
+      } catch (error) {
+        console.warn('Invalid shared cart payload.', error);
+        return [];
+      }
+    }
+
+    function handleInboundSharedCart(){
+      const url = new URL(window.location.href);
+      const sharedParam = url.searchParams.get('shared_cart');
+      if(!sharedParam) return;
+      const sharedItems = decodeSharedCartPayload(sharedParam);
+      if(!sharedItems.length) return;
+      const mergedMap = new Map();
+      for(const item of cart){
+        mergedMap.set(item.id, { ...item });
+      }
+      for(const item of sharedItems){
+        const baseProduct = products.find((p) => p.id === item.id);
+        const safeUnit = item.unit > 0 ? item.unit : Number(baseProduct?.tiers?.[0]?.price || 0);
+        if(mergedMap.has(item.id)){
+          const current = mergedMap.get(item.id);
+          mergedMap.set(item.id, { ...current, qty: Number(current.qty || 0) + item.qty });
+        } else {
+          mergedMap.set(item.id, { id: item.id, name: item.name || baseProduct?.name || item.id, qty: item.qty, unit: safeUnit });
+        }
+      }
+      cart = Array.from(mergedMap.values());
+      saveCart();
+      renderCart();
+      openCart();
+      url.searchParams.delete('shared_cart');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      alert('Shared quote items loaded into cart successfully.');
+    }
+
+    function shareCartQuoteViaWhatsApp(){
+      const sourceCart = loadCart();
+      if(!Array.isArray(sourceCart) || !sourceCart.length){
+        alert('Please add products to cart before sharing quote.');
+        return;
+      }
+      const encoded = encodeSharedCartPayload(sourceCart);
+      const sharedLink = `${window.location.origin}${window.location.pathname}?shared_cart=${encodeURIComponent(encoded)}`;
+      const summaryLines = sourceCart.map((item) => `• ${item.name} x ${item.qty} - ₹${(Number(item.qty||0) * Number(item.unit||0)).toFixed(2)}`).join('\n');
+      const subtotal = sourceCart.reduce((sum, item) => sum + (Number(item.qty || 0) * Number(item.unit || 0)), 0).toFixed(2);
+      const message = `Hello! Here is the wholesale order quotation from Veer Mahadev Plastic.\n\n*Order Summary:*\n${summaryLines}\n\n*Total Amount:* ₹${subtotal}\n\nClick this secure link to view, verify, and complete the payment directly: ${sharedLink}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
     // Shipping calculator
     bindById('calcShip', 'click', ()=>{
       const w = Number(document.getElementById('weight').value||0);
@@ -2850,6 +2961,22 @@ SR FIBER PLATES RATE PCS
       const msg = document.getElementById('bulkMsg');
       msg.className = 'text-sm font-semibold text-emerald-700';
       msg.textContent = `Inquiry submitted successfully. Our team will contact you shortly. File: ${fileName}`;
+      e.target.reset();
+    });
+    bindById('vipSampleForm', 'submit', (e)=>{
+      e.preventDefault();
+      const businessName = document.getElementById('vipBusinessName')?.value.trim() || '';
+      const whatsapp = document.getElementById('vipWhatsapp')?.value.trim() || '';
+      const gstin = document.getElementById('vipGstin')?.value.trim() || '';
+      const volume = document.getElementById('vipVolume')?.value || '';
+      const vipMsg = document.getElementById('vipSampleMsg');
+      if(!businessName || !whatsapp || !volume){
+        if(vipMsg) vipMsg.textContent = 'Please fill business name, WhatsApp, and expected volume.';
+        return;
+      }
+      const message = `Hello Veer Mahadev Plastic! I am interested in your VIP Factory Sample Kit for my catering business.%0ABusiness: ${encodeURIComponent(businessName)}%0AWhatsApp: ${encodeURIComponent(whatsapp)}%0AGSTIN: ${encodeURIComponent(gstin || 'Not provided')}%0AEstimated monthly volume: ${encodeURIComponent(volume)}%0APlease connect with priority assistance.`;
+      window.open(`https://wa.me/918050389261?text=${message}`,'_blank');
+      if(vipMsg) vipMsg.textContent = 'VIP request submitted. Redirecting to WhatsApp priority channel.';
       e.target.reset();
     });
 
@@ -3003,281 +3130,7 @@ SR FIBER PLATES RATE PCS
       alert('Payment initiated. Our team will verify and confirm your order.');
       closeCheckoutModal();
     });
-    bindById('checkoutBtn', 'click', ()=>{
-      if(!cart.length){ alert('Please add items in cart first.'); return; }
-      closeCart();
-      checkoutModal?.classList.remove('hidden');
-      renderCheckout();
-    });
-    bindById('closeCheckout', 'click', ()=> checkoutModal?.classList.add('hidden'));
-    bindById('saveAddressBtn', 'click', ()=>{
-      const profile = loadProfile();
-      const updatedAddress = document.getElementById('editAddressInput').value.trim();
-      const paymentType = document.getElementById('editPaymentType').value;
-      const photo = document.getElementById('editPhotoInput').value.trim();
-      profile.address = updatedAddress;
-      profile.paymentType = paymentType;
-      if(photo) profile.photo = photo;
-      saveProfile(profile);
-      if(currentUser){ currentUser.profile = profile; saveCurrentUser(currentUser, localStorage.getItem('vmpUserSession') !== null); }
-      renderProfile();
-      renderBuyAgain();
-    });
-    bindById('logoutBtn', 'click', ()=>{
-      localStorage.removeItem('vmpUserSession');
-      sessionStorage.removeItem('vmpUserSession');
-      b2bLoggedIn = false;
-      currentUser = null;
-      const portalStatus = document.getElementById('portalStatus');
-      if(portalStatus) portalStatus.textContent = 'Please login to access B2B downloads.';
-      alert('Logged out successfully.');
-    });
-    bindById('reorderBtn', 'click', ()=>{
-      const history = orderHistory();
-      if(!history.length) return alert('No previous order found.');
-      const last = history[0];
-      cart = [...last.items];
-      saveCart();
-      renderCart();
-      openCart();
-    });
-    bindById('profileUpdateCard', 'click', async ()=>{
-      if(!swReg?.waiting){
-        alert('No pending update right now.');
-        return;
-      }
-      if(!confirm('Update app now? It will reload once and install latest version.')) return;
-      swReg.waiting.postMessage({ type: 'SKIP_WAITING' });
-    });
-    document.querySelectorAll('[data-profile-action]').forEach((btn)=>{
-      btn.addEventListener('click', () => {
-        const action = btn.getAttribute('data-profile-action');
-        const info = {
-          orders: 'Open My Orders page to track current and previous orders.',
-          support: 'Help & Support: WhatsApp +91 80503 89261 or email veermahadevplastic@gmail.com.',
-          gifts: 'Feature unavailable right now.',
-          rewards: 'Rewards: Earn extra discounts on repeat and bulk orders.',
-          refunds: 'Refunds are processed as per refund policy after approval.',
-          addresses: 'Saved Addresses: Edit your delivery address in profile section above.',
-          profile: 'Profile details are saved locally on your phone for faster checkout.',
-          payment: 'Payment management supports UPI and approved account transfer methods.'
-        };
-        if(action === 'orders'){
-          window.location.href = './my-orders.html';
-          return;
-        }
-        alert(info[action] || 'Feature information will be available soon.');
-      });
-    });
-
-    function freightChargeByOrder(){
-      const totalQty = cartTotalQty();
-      if(totalQty <= 0) return { delivery: 0, parcels: 0 };
-      const parcels = Math.max(1, Math.ceil(totalQty / 180));
-      const qtyBandCharge = totalQty <= 300 ? 180 : totalQty <= 800 ? 320 : totalQty <= 1500 ? 520 : 760;
-      const parcelHandling = parcels * 35;
-      return { delivery: qtyBandCharge + parcelHandling, parcels };
-    }
-
-    function checkoutTotals(){
-      const subtotal = cartTotalAmount();
-      const gst = 0;
-      const freight = freightChargeByOrder();
-      const delivery = subtotal > 0 ? freight.delivery : 0;
-      const total = Number((subtotal + gst + delivery).toFixed(2));
-      return {subtotal, gst, delivery, total, parcels: freight.parcels};
-    }
-
-    function renderCheckout(){
-      const itemsEl = document.getElementById('checkoutItems');
-      if(itemsEl) itemsEl.innerHTML = cart.map(i => `<p>${i.name} × ${i.qty} = ₹${(i.qty*i.unit).toFixed(2)}</p>`).join('');
-      const totals = checkoutTotals();
-      document.getElementById('coSubtotal').textContent = totals.subtotal.toFixed(2);
-      document.getElementById('coGst').textContent = totals.gst.toFixed(2);
-      document.getElementById('coDelivery').textContent = totals.delivery.toFixed(2);
-      document.getElementById('coTotal').textContent = totals.total.toFixed(2);
-      const freightNote = document.getElementById('freightNote');
-      if(freightNote) freightNote.textContent = `Include GST Rate (0%) • Freight ₹${totals.delivery.toFixed(2)} (${totals.parcels || 0} parcels est.)`;
-    }
-
-    async function syncPaidOrderStock(orderItems = []){
-      const db = getFirestoreDb();
-      for(const line of orderItems){
-        const product = products.find((item) => item.id === line.id);
-        const qty = Math.max(0, Number(line.qty || 0));
-        if(product){
-          product.stock = Math.max(0, Number(product.stock || 0) - qty);
-          if(Number.isFinite(Number(product.currentStock))){
-            product.currentStock = Math.max(0, Number(product.currentStock || 0) - qty);
-          }
-        }
-        if(!db || !line.id) continue;
-        try {
-          const productRef = db.collection('products').doc(line.id);
-          const inventoryRef = db.collection('inventory').doc(line.id);
-          await db.runTransaction(async (tx) => {
-            const productSnap = await tx.get(productRef);
-            const inventorySnap = await tx.get(inventoryRef);
-            const productData = productSnap.data() || {};
-            const inventoryData = inventorySnap.data() || {};
-            const pCurrent = Number(productData.currentStock ?? productData.stock ?? 0);
-            const iCurrent = Number(inventoryData.stock ?? inventoryData.currentStock ?? pCurrent);
-            const nextStock = Math.max(0, Math.min(pCurrent, iCurrent) - qty);
-            tx.set(productRef, { currentStock: nextStock, stock: nextStock, updatedAt: new Date().toISOString() }, { merge: true });
-            tx.set(inventoryRef, { stock: nextStock, currentStock: nextStock, updatedAt: new Date().toISOString() }, { merge: true });
-          });
-        } catch (error) {
-          console.warn('Stock sync after payment failed for product', line.id, error);
-        }
-      }
-      applyProductFilters();
-    }
-
-    bindById('checkoutForm', 'submit', (e)=>{
-      e.preventDefault();
-      if(shoppingMode === 'wholesale' && ensureWholesaleAccess()) return;
-      if(shoppingMode === 'wholesale' && cart.some((item) => {
-        const product = products.find((p) => p.id === item.id);
-        return Number(item.qty) < configuredWholesaleMoq(product);
-      })){
-        alert('Each product must match the wholesale MOQ for its category.');
-        return;
-      }
-      const totals = checkoutTotals();
-      const firstName = document.getElementById('coFirstName').value.trim();
-      const lastName = document.getElementById('coLastName').value.trim();
-      const gstNumber = document.getElementById('coGstNumber').value.trim().toUpperCase();
-      if(shoppingMode === 'wholesale' && gstNumber.length < 15){
-        alert('GST Number is mandatory for wholesale checkout and should be valid.');
-        return;
-      }
-      const details = {
-        firstName,
-        lastName,
-        name: `${firstName} ${lastName}`.trim(),
-        whatsapp: normalizeIndianPhone(document.getElementById('coWhatsapp').value.trim()),
-        address: document.getElementById('coAddress').value.trim(),
-        state: document.getElementById('coState').value.trim(),
-        pincode: document.getElementById('coPincode').value.trim(),
-        gstNumber,
-        paymentType: document.getElementById('coPaymentType').value,
-      };
-      if(details.name.length < 2){
-        alert('Please enter a valid customer name.');
-        return;
-      }
-      if(!isValidIndianPhone(details.whatsapp)){
-        alert('Please enter a valid 10-digit WhatsApp number.');
-        return;
-      }
-      if(details.address.length < 10){
-        alert('Please enter a complete delivery address.');
-        return;
-      }
-      if(details.state.length < 2){
-        alert('Please enter your state.');
-        return;
-      }
-      if(!isValidPincode(details.pincode)){
-        alert('Please enter a valid 6-digit pincode.');
-        return;
-      }
-      trackEvent('begin_checkout', {
-        currency: 'INR',
-        value: totals.total,
-        item_count: cartTotalQty()
-      });
-      const upiId = '8050389261@upi';
-      const orderId = `VMP${Date.now().toString().slice(-6)}`;
-      const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${totals.total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('Order '+orderId)}`;
-      const qr = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}`;
-      document.getElementById('upiQr').src = qr;
-      const upiPayLink = document.getElementById('upiPayLink');
-      upiPayLink.href = upiUri;
-      document.getElementById('upiBox').classList.remove('hidden');
-      latestCheckout = {orderId, details, totals, cart:[...cart], paymentStatus:'Pending', orderType: shoppingMode || 'retail'};
-      const oldProfile = loadProfile();
-      const profile = {
-        ...oldProfile,
-        name: details.name,
-        whatsapp: details.whatsapp,
-        address: `${details.address}, ${details.state} - ${details.pincode}`,
-        state: details.state,
-        paymentType: details.paymentType
-      };
-      saveProfile(profile);
-      if(currentUser){ currentUser.profile = profile; saveCurrentUser(currentUser, localStorage.getItem('vmpUserSession') !== null); }
-      renderProfile();
-    });
-
-    bindById('paymentDoneBtn', 'click', ()=>{
-      if(!latestCheckout) return;
-      latestCheckout.paymentStatus = 'Paid';
-      document.getElementById('paymentSuccess').classList.remove('hidden');
-      document.getElementById('paymentSuccess').textContent = 'Payment Successful ✅ Order dispatch will start after payment confirmation.';
-      document.getElementById('contestBanner').classList.remove('hidden');
-      document.getElementById('downloadInvoiceBtn').classList.remove('hidden');
-      trackEvent('purchase', {
-        transaction_id: latestCheckout.orderId,
-        currency: 'INR',
-        value: latestCheckout.totals.total
-      });
-      const paidOrder = {
-        orderId: latestCheckout.orderId,
-        total: latestCheckout.totals.total.toFixed(2),
-        date: new Date().toLocaleString(),
-        status: 'Order Placed',
-        paymentStatus: 'Paid',
-        orderType: latestCheckout.orderType || (shoppingMode || 'retail'),
-        details: latestCheckout.details,
-        totals: latestCheckout.totals,
-        tracking: { carrier: 'delhivery', awb: latestCheckout.orderId },
-        trackingLink: `./live-tracking.html?awb=${encodeURIComponent(latestCheckout.orderId)}&carrier=delhivery`,
-        items: latestCheckout.cart.map((item) => ({ ...item, hsn: (products.find((p) => p.id === item.id)?.hsn) || '3924' }))
-      };
-      pushOrderHistory(paidOrder);
-      saveOrderToCloud(paidOrder);
-      syncPaidOrderStock(latestCheckout.cart).catch(() => {});
-      renderProfile();
-      renderBuyAgain();
-      buildDigitalReceiptPdf(paidOrder).then(async (receiptDoc) => {
-        if(!receiptDoc) return;
-        const blob = receiptDoc.output('blob');
-        const file = new File([blob], `digital-receipt-${paidOrder.orderId}.pdf`, { type: 'application/pdf' });
-        if(navigator.canShare && navigator.canShare({ files: [file] })){
-          try {
-            await navigator.share({
-              files: [file],
-              title: `VMP Receipt ${paidOrder.orderId}`,
-              text: 'Digital receipt from Veer Mahadev Plastic'
-            });
-          } catch (error) {
-            receiptDoc.save(`digital-receipt-${paidOrder.orderId}.pdf`);
-          }
-        } else {
-          receiptDoc.save(`digital-receipt-${paidOrder.orderId}.pdf`);
-        }
-      });
-      const trackingUrl = `https://www.veermahadevplastic.in/live-tracking.html?awb=${encodeURIComponent(latestCheckout.orderId)}&carrier=delhivery`;
-      const receiptLines = latestCheckout.cart.map((i, n)=>`${n+1}. ${i.name} | ${i.qty} packets | ₹${i.unit.toFixed(2)} each`).join('%0A');
-      const customerMsg = `✨ Your order is confirmed, ${latestCheckout.details.name}!%0AOrder ID: ${latestCheckout.orderId}%0A%0ADigital Receipt:%0A${receiptLines}%0ATotal Paid: ₹${latestCheckout.totals.total.toFixed(2)}%0ATrack Order: ${encodeURIComponent(trackingUrl)}%0A🎥 Upload Unboxing Video & Get Extra Discount.%0AThank you from Prajapati family business.`;
-      window.open(`https://wa.me/91${latestCheckout.details.whatsapp}?text=${customerMsg}`,'_blank');
-      const lines = latestCheckout.cart.map((i, n)=>`${n+1}. ${i.name} - ${i.qty} qty - ₹${(i.qty*i.unit).toFixed(2)}`).join('%0A');
-      const adminMsg = `New Order ${latestCheckout.orderId}%0AOrder Type: ${(latestCheckout.orderType || shoppingMode || 'retail').toUpperCase()}%0AName: ${latestCheckout.details.name}%0AWhatsApp: ${latestCheckout.details.whatsapp}%0AAddress: ${latestCheckout.details.address}, ${latestCheckout.details.state || '-'} - ${latestCheckout.details.pincode}%0AStatus: ${latestCheckout.paymentStatus}%0ATotal: ₹${latestCheckout.totals.total.toFixed(2)}%0AItems:%0A${lines}`;
-      window.open(`https://wa.me/918050389261?text=${adminMsg}`,'_blank');
-      window.location.href = `mailto:veermahadevplastic@gmail.com?subject=${encodeURIComponent('New Paid Order '+latestCheckout.orderId)}&body=${adminMsg}`;
-    });
-
-    bindById('downloadInvoiceBtn', 'click', async ()=>{
-      if(!latestCheckout) return;
-      const liveOrder = {
-        ...latestCheckout,
-        date: new Date().toLocaleString(),
-        items: latestCheckout.cart.map((item) => ({ ...item, hsn: (products.find((p) => p.id === item.id)?.hsn) || '3924' }))
-      };
-      const doc = await buildDigitalReceiptPdf(liveOrder);
-      if(doc) doc.save(`digital-receipt-${latestCheckout.orderId}.pdf`);
-    });
+    bindById('shareCartQuoteBtn', 'click', shareCartQuoteViaWhatsApp);
 
     // Repeat order
     bindById('repeatOrder', 'click', ()=>{
@@ -3478,6 +3331,7 @@ SR FIBER PLATES RATE PCS
     syncSeasonBannerRealtime();
     renderCart();
     renderTrustBadges();
+    handleInboundSharedCart();
     const reorderBtn = document.getElementById('repeatOrder');
     if(reorderBtn) reorderBtn.textContent = '🔁 Re-Order Last Cart';
     const shippingZone = document.getElementById('shippingZone');
