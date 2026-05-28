@@ -167,6 +167,7 @@
       0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.35); }
       50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
     }
+    .vmp-ad-fade-out { opacity: 0; transform: translateY(10px) scale(0.98); pointer-events: none; }
     @media (min-width: 1024px) {
       .app-shell { padding-bottom: 128px; }
       .install-banner { bottom: 20px; }
@@ -327,6 +328,9 @@
       <div class="overflow-hidden rounded-lg border border-amber-300/30 bg-emerald-950/50">
         <p class="whitespace-nowrap px-3 py-1 text-xs font-semibold text-amber-300 animate-[marquee_18s_linear_infinite]">Veer Mahadev Plastic: Custom Manufacturer for Gujarat's Elite Catering Businesses</p>
       </div>
+      <div class="overflow-hidden rounded-lg border border-amber-300/30 bg-emerald-950/50">
+        <p class="whitespace-nowrap px-3 py-1 text-xs font-semibold text-amber-300 animate-[marquee_18s_linear_infinite]">Veer Mahadev Plastic: Custom Manufacturer for Gujarat's Elite Catering Businesses</p>
+      </div>
 
       <nav class="mt-3 hidden items-center gap-4 overflow-x-auto whitespace-nowrap border-t border-slate-100 pt-3 text-sm font-medium text-slate-700 md:flex">
         <button id="openAuthHubNav" class="rounded-full border border-transparent px-1 py-1">Login / Sign Up</button>
@@ -344,6 +348,14 @@
   <main id="home">
     <section class="relative overflow-hidden border-b border-emerald-900 bg-gradient-to-br from-emerald-950 via-emerald-900 to-slate-900 text-white">
       <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-15 mix-blend-overlay" alt="Disposable products"/>
+      <div id="heroAdOverlay" class="absolute right-4 top-4 z-20 w-40 sm:w-48 md:right-8 md:top-8 md:w-56 lg:w-64 rounded-2xl border border-amber-300/35 bg-white/10 p-2 shadow-2xl backdrop-blur-md transition-all duration-700 ease-out">
+        <div class="rounded-xl border border-emerald-300/40 bg-black/25 p-2">
+          <p class="mb-2 text-center text-[10px] font-semibold tracking-wide text-amber-200">VIP Factory Reel</p>
+          <video id="heroAdVideo" class="h-[260px] w-full rounded-lg object-cover sm:h-[300px] md:h-[340px]" autoplay muted playsinline controls>
+            <source src="ad_reel.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
       <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
         <div>
           <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
@@ -2662,6 +2674,23 @@ SR FIBER PLATES RATE PCS
       if(modalRow) modalRow.innerHTML = markup;
     }
 
+    function trustBadgesMarkup(){
+      return [
+        '🛡️ 100% Secure Payments',
+        '🏭 Direct from Ahmedabad Factory',
+        '📦 Safe & Hygienic Packaging',
+        '✅ Genuine Biodegradable Quality'
+      ].map((t) => `<div class="rounded-lg border border-emerald-100 bg-white px-2 py-1"><span class="font-semibold text-slate-700">${t}</span></div>`).join('');
+    }
+
+    function renderTrustBadges(){
+      const cartRow = document.getElementById('trustBadgeRowCart');
+      const modalRow = document.getElementById('trustBadgeRowModal');
+      const markup = trustBadgesMarkup();
+      if(cartRow) cartRow.innerHTML = markup;
+      if(modalRow) modalRow.innerHTML = markup;
+    }
+
     window.removeCartItem = function(idx){
       cart.splice(idx, 1);
       saveCart();
@@ -2935,6 +2964,26 @@ SR FIBER PLATES RATE PCS
       const subtotal = sourceCart.reduce((sum, item) => sum + (Number(item.qty || 0) * Number(item.unit || 0)), 0).toFixed(2);
       const message = `Hello! Here is the wholesale order quotation from Veer Mahadev Plastic.\n\n*Order Summary:*\n${summaryLines}\n\n*Total Amount:* ₹${subtotal}\n\nClick this secure link to view, verify, and complete the payment directly: ${sharedLink}`;
       window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function initHeroAdOverlay(){
+      const overlay = document.getElementById('heroAdOverlay');
+      const video = document.getElementById('heroAdVideo');
+      if(!overlay || !video) return;
+      const seen = localStorage.getItem('vmp_ad_seen') === 'true';
+      if(seen){
+        overlay.style.display = 'none';
+        return;
+      }
+      const hideOverlay = () => {
+        overlay.classList.add('vmp-ad-fade-out');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          localStorage.setItem('vmp_ad_seen', 'true');
+        }, 800);
+      };
+      video.addEventListener('ended', hideOverlay, { once: true });
+      video.addEventListener('error', hideOverlay, { once: true });
     }
 
     // Shipping calculator
@@ -3331,6 +3380,7 @@ SR FIBER PLATES RATE PCS
     syncSeasonBannerRealtime();
     renderCart();
     renderTrustBadges();
+    initHeroAdOverlay();
     handleInboundSharedCart();
     const reorderBtn = document.getElementById('repeatOrder');
     if(reorderBtn) reorderBtn.textContent = '🔁 Re-Order Last Cart';
