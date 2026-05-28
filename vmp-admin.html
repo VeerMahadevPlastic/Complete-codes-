@@ -66,6 +66,25 @@
       return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     }
 
+    function escapeHtml(value){
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function safeImageUrl(value){
+      const raw = String(value || '').trim();
+      if(!raw) return FALLBACK_IMG;
+      try {
+        const u = new URL(raw, window.location.href);
+        if(u.protocol === 'http:' || u.protocol === 'https:') return u.href;
+      } catch {}
+      return FALLBACK_IMG;
+    }
+
     function notify(msg){
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -99,14 +118,14 @@
       const items = readProducts();
       rows.innerHTML = items.map(p => `
         <tr class="border-t">
-          <td class="px-2 py-2"><img src="${p.image || FALLBACK_IMG}" class="h-12 w-16 rounded object-cover" onerror="this.src='${FALLBACK_IMG}'" /></td>
-          <td class="px-2 py-2 font-semibold">${p.name || '-'}</td>
-          <td class="px-2 py-2">${p.category || '-'}</td>
+          <td class="px-2 py-2"><img src="${escapeHtml(safeImageUrl(p.image))}" class="h-12 w-16 rounded object-cover" onerror="this.src='${FALLBACK_IMG}'" /></td>
+          <td class="px-2 py-2 font-semibold">${escapeHtml(p.name || '-')}</td>
+          <td class="px-2 py-2">${escapeHtml(p.category || '-')}</td>
           <td class="px-2 py-2">₹${Number(p.base_wholesale_rate || 0).toFixed(2)}</td>
           <td class="px-2 py-2">₹${Number(p.retail_price || 0).toFixed(2)}</td>
           <td class="px-2 py-2">
-            <button data-edit="${p.id}" class="edit rounded border px-2 py-1 text-xs">Edit</button>
-            <button data-del="${p.id}" class="del rounded border border-rose-300 bg-rose-50 px-2 py-1 text-xs text-rose-700">Delete</button>
+            <button data-edit="${escapeHtml(p.id)}" class="edit rounded border px-2 py-1 text-xs">Edit</button>
+            <button data-del="${escapeHtml(p.id)}" class="del rounded border border-rose-300 bg-rose-50 px-2 py-1 text-xs text-rose-700">Delete</button>
           </td>
         </tr>
       `).join('') || '<tr><td colspan="6" class="px-2 py-3 text-slate-500">No custom products yet.</td></tr>';
