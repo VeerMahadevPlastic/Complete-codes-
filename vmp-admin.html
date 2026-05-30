@@ -67,22 +67,12 @@
     }
 
     function escapeHtml(value){
-      return String(value ?? '')
+      return String(value || '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
-    }
-
-    function safeImageUrl(value){
-      const raw = String(value || '').trim();
-      if(!raw) return FALLBACK_IMG;
-      try {
-        const u = new URL(raw, window.location.href);
-        if(u.protocol === 'http:' || u.protocol === 'https:') return u.href;
-      } catch {}
-      return FALLBACK_IMG;
     }
 
     function notify(msg){
@@ -116,19 +106,25 @@
     function renderRows(){
       const rows = document.getElementById('rows');
       const items = readProducts();
-      rows.innerHTML = items.map(p => `
+      rows.innerHTML = items.map(p => {
+        const safeImage = escapeHtml(p.image || FALLBACK_IMG);
+        const safeName = escapeHtml(p.name || '-');
+        const safeCategory = escapeHtml(p.category || '-');
+        const safeId = escapeHtml(p.id || '');
+        return `
         <tr class="border-t">
-          <td class="px-2 py-2"><img src="${escapeHtml(safeImageUrl(p.image))}" class="h-12 w-16 rounded object-cover" onerror="this.src='${FALLBACK_IMG}'" /></td>
-          <td class="px-2 py-2 font-semibold">${escapeHtml(p.name || '-')}</td>
-          <td class="px-2 py-2">${escapeHtml(p.category || '-')}</td>
+          <td class="px-2 py-2"><img src="${safeImage}" class="h-12 w-16 rounded object-cover" onerror="this.src='${FALLBACK_IMG}'" /></td>
+          <td class="px-2 py-2 font-semibold">${safeName}</td>
+          <td class="px-2 py-2">${safeCategory}</td>
           <td class="px-2 py-2">₹${Number(p.base_wholesale_rate || 0).toFixed(2)}</td>
           <td class="px-2 py-2">₹${Number(p.retail_price || 0).toFixed(2)}</td>
           <td class="px-2 py-2">
-            <button data-edit="${escapeHtml(p.id)}" class="edit rounded border px-2 py-1 text-xs">Edit</button>
-            <button data-del="${escapeHtml(p.id)}" class="del rounded border border-rose-300 bg-rose-50 px-2 py-1 text-xs text-rose-700">Delete</button>
+            <button data-edit="${safeId}" class="edit rounded border px-2 py-1 text-xs">Edit</button>
+            <button data-del="${safeId}" class="del rounded border border-rose-300 bg-rose-50 px-2 py-1 text-xs text-rose-700">Delete</button>
           </td>
         </tr>
-      `).join('') || '<tr><td colspan="6" class="px-2 py-3 text-slate-500">No custom products yet.</td></tr>';
+      `;
+      }).join('') || '<tr><td colspan="6" class="px-2 py-3 text-slate-500">No custom products yet.</td></tr>';
 
       document.querySelectorAll('.edit').forEach(btn => {
         btn.addEventListener('click', () => {

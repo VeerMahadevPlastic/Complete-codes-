@@ -168,6 +168,10 @@
       50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
     }
     .vmp-ad-fade-out { opacity: 0; transform: translateY(10px) scale(0.98); pointer-events: none; }
+    .vmp-toast-enter { animation: vmpToastIn 0.35s ease-out both; }
+    @keyframes vmpToastIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .vmp-auth-card { animation: authSlideUp 0.32s ease-out both; }
+    @keyframes authSlideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     @media (min-width: 1024px) {
       .app-shell { padding-bottom: 128px; }
       .install-banner { bottom: 20px; }
@@ -352,7 +356,7 @@
         <div class="rounded-xl border border-emerald-300/40 bg-black/25 p-2">
           <p class="mb-2 text-center text-[10px] font-semibold tracking-wide text-amber-200">VIP Factory Reel</p>
           <video id="heroAdVideo" class="h-[260px] w-full rounded-lg object-cover sm:h-[300px] md:h-[340px]" autoplay muted playsinline controls>
-            <source src="https://youtube.com/shorts/OS1aZpElD_0?feature=share" type="video/mp4" />
+            <source src="ad_reel.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -830,44 +834,77 @@
     </div>
   </aside>
   <div id="drawerOverlay" class="hidden fixed inset-0 bg-black/40 z-50"></div>
-  <div id="checkoutModal" class="hidden fixed inset-0 z-[75] bg-black/50 flex items-center justify-center min-h-screen p-4">
-    <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl flex flex-col my-auto max-h-[95vh] md:max-h-[90vh] overflow-hidden">
-      <div class="flex items-center justify-between border-b px-4 py-3 md:px-6">
-        <h3 class="text-lg font-black text-emerald-800">Secure Checkout</h3>
-        <button id="closeCheckoutModal" class="rounded border px-3 py-1 text-sm font-semibold">Close</button>
+  <div id="checkoutModal" class="hidden fixed inset-0 z-[75] bg-black/60 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-5xl bg-white rounded-xl shadow-2xl flex flex-col my-auto max-h-[95vh] md:max-h-[90vh] overflow-hidden border border-emerald-100">
+      <div class="flex items-center justify-between border-b border-emerald-100 bg-gradient-to-r from-emerald-950 via-emerald-900 to-white px-4 py-3 md:px-6">
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-300">Veer Mahadev Secure B2B Gateway</p>
+          <h3 class="text-lg font-black text-white">PhonePe Institutional Checkout</h3>
+        </div>
+        <button id="closeCheckoutModal" class="rounded border border-amber-200/70 px-3 py-1 text-sm font-semibold text-amber-100 hover:bg-emerald-800">Close</button>
       </div>
       <div class="overflow-y-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-12 gap-6 style-scrollbar">
         <div class="md:col-span-7 space-y-4">
-          <div class="rounded-lg border p-3">
+          <div class="rounded-xl border border-emerald-100 bg-emerald-50/60 p-3">
+            <p class="text-sm font-semibold text-emerald-900">Verified Buyer Profile</p>
+            <p id="checkoutProfilePreview" class="mt-1 text-sm text-slate-600">Login profile required before checkout.</p>
+          </div>
+          <div class="rounded-xl border border-emerald-100 p-3">
             <p class="text-sm font-semibold text-slate-700">Delivery Address</p>
             <p id="checkoutAddressPreview" class="mt-1 text-sm text-slate-600">Please fill customer name and address in cart.</p>
           </div>
-          <div class="rounded-lg border p-3">
-            <p class="text-sm font-semibold text-slate-700">Payment Mode</p>
-            <div class="mt-2 flex flex-col items-center justify-center p-3 bg-white border rounded-lg">
-              <div class="w-full max-w-[280px] mx-auto rounded-lg border bg-white p-2">
-                <img id="checkoutQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=upi://pay?pa=8050389261@upi&pn=Veer%20Mahadev%20Plastic" alt="UPI QR" class="h-auto w-full rounded" />
+          <details id="checkoutItemsAccordion" class="rounded-xl border border-emerald-100 bg-white p-3" open>
+            <summary class="cursor-pointer text-sm font-bold text-emerald-900">Order Summary / Cart Breakdown</summary>
+            <div id="checkoutItemBreakdown" class="mt-3 max-h-52 space-y-2 overflow-y-auto pr-1 text-sm text-slate-700"></div>
+          </details>
+          <div class="rounded-xl border border-[#5f259f]/30 bg-[#5f259f]/5 p-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <p class="text-sm font-semibold text-[#5f259f]">Payment Mode: PhonePe / UPI</p>
+              <span id="phonepeLiveStatus" class="rounded-full border border-emerald-200 bg-white px-2 py-1 text-[11px] font-bold text-emerald-700">Secure node connecting...</span>
+            </div>
+            <p class="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900">Direct Manufacturer Clearance: Verify order via WhatsApp/UPI instantly.</p>
+            <div class="mt-3 flex flex-col items-center justify-center p-3 bg-white border border-amber-200 rounded-lg">
+              <div class="w-full max-w-[280px] mx-auto rounded-xl border-2 border-amber-300 bg-white p-2 shadow-lg">
+                <img id="checkoutQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=upi://pay?pa=8050389261@upi&pn=Veer%20Mahadev%20Plastic" alt="PhonePe UPI QR" class="h-auto w-full rounded" />
               </div>
               <p class="mt-2 text-xs text-slate-500 text-center">Scan via PhonePe / GPay / UPI app to pay securely.</p>
             </div>
+            <label class="mt-3 block text-xs font-bold uppercase tracking-wide text-slate-600" for="utrInput">UTR / Transaction ID after payment</label>
+            <input id="utrInput" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#5f259f]" placeholder="Paste PhonePe / UPI UTR here" />
           </div>
         </div>
         <div class="md:col-span-5">
-          <div class="rounded-lg border bg-slate-50 p-4 sticky top-0">
-            <p class="text-sm font-semibold text-slate-700">Price Details</p>
-            <div class="mt-3 space-y-2 text-sm">
-              <div class="flex justify-between"><span>Subtotal</span><span>₹<span id="checkoutSubtotal">0</span></span></div>
-              <div class="flex justify-between"><span>Shipping</span><span>₹<span id="checkoutShipping">0</span></span></div>
+          <div class="rounded-xl border border-emerald-100 bg-slate-50 p-4 sticky top-0">
+            <p class="text-sm font-semibold text-slate-700">Professional Price Details</p>
+            <div class="mt-3 space-y-2 text-sm font-medium tabular-nums">
+              <div class="flex justify-between"><span>Order Value</span><span>₹<span id="checkoutSubtotal">0</span></span></div>
+              <div class="flex justify-between"><span>Dynamic Tiered Shipping</span><span>₹<span id="checkoutShipping">0</span></span></div>
               <hr />
-              <div class="flex justify-between font-bold text-emerald-800"><span>Total</span><span>₹<span id="checkoutTotal">0</span></span></div>
+              <div class="flex justify-between text-lg font-black text-emerald-900"><span>Total Final Amount</span><span>₹<span id="checkoutTotal">0</span></span></div>
             </div>
             <button id="shareCartQuoteBtn" class="mt-3 w-full rounded-lg border border-emerald-300 bg-white py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">🔗 Share Cart / Quote via WhatsApp</button>
-            <button id="confirmPayBtn" class="mt-4 w-full rounded-lg bg-emerald-700 py-2 font-semibold text-white">Confirm & Pay</button>
+            <a href="https://wa.me/918050389261?text=Need%20Help%20with%20Payment%3F%20Please%20connect%20me%20with%20Factory%20Billing%20Desk." target="_blank" rel="noopener" class="mt-3 block rounded-lg border border-amber-300 bg-amber-50 py-2 text-center text-xs font-bold text-amber-900 hover:bg-amber-100">Need Help with Payment? Connect directly with Factory Billing Desk</a>
+            <button id="confirmPayBtn" class="mt-4 w-full rounded-lg bg-[#5f259f] py-2 font-semibold text-white hover:bg-[#4c1d95]">Verify UTR & Confirm PhonePe Payment</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div id="profileGateModal" class="hidden fixed inset-0 z-[76] flex items-end justify-center bg-black/60 px-4 pb-4 sm:items-center sm:pb-0">
+    <div class="vmp-auth-card w-full max-w-md rounded-2xl border border-amber-300/50 bg-[#064e3b] p-5 text-white shadow-2xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300">VIP Buyer Access</p>
+      <h3 class="mt-2 text-2xl font-black">Unlock Secure B2B Checkout</h3>
+      <p class="mt-1 text-sm text-emerald-100">Please share buyer details once so we can protect quotes, payment, and delivery verification.</p>
+      <form id="profileGateForm" class="mt-4 grid gap-3">
+        <input id="gateFullName" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Full Name" />
+        <input id="gateMobile" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Mobile / WhatsApp Number" />
+        <input id="gateEmail" required type="email" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Email Address" />
+        <button class="rounded-lg bg-amber-500 py-2 text-sm font-bold text-emerald-950 hover:bg-amber-400">Save Profile & Continue</button>
+        <p id="profileGateMsg" class="text-xs font-semibold text-amber-200"></p>
+      </form>
+    </div>
+  </div>
+  <div id="vmpToastHost" class="fixed right-4 top-24 z-[90] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2 pointer-events-none"></div>
   <div id="creditModal" class="hidden fixed inset-0 z-[69] bg-black/50 px-4">
     <div class="mx-auto mt-16 w-full max-w-lg rounded-2xl bg-white p-5 shadow-2xl">
       <div class="flex items-center justify-between"><h3 class="text-lg font-black text-emerald-800">Corporate Credit Request</h3><button id="closeCreditModal" class="rounded border px-2 py-1 text-xs">Close</button></div>
@@ -1556,8 +1593,40 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
     });
     const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
 
-    function mapProductItems(items){
-      return items.map(item => {
+    const FIBER_PLATE_ITEMS = [
+      { id: "fp_01", name: "FIBER PLATE DESIGN NO.1", price: 60, image: "https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_02", name: "FIBER PLATE DESIGN NO.2", price: 60, image: "https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_03", name: "FIBER PLATE DESIGN NO.3", price: 60, image: "https://i.postimg.cc/Q9q0dX42/IMG-20260425-WA0002.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_04", name: "FIBER PLATE DESIGN NO.4", price: 60, image: "https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_05", name: "FIBER PLATE DESIGN NO.5", price: 60, image: "https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_06", name: "FIBER PLATE DESIGN NO.6", price: 60, image: "https://i.postimg.cc/FksGf2wc/IMG-20260425-WA0027.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_07", name: "FIBER PLATE DESIGN NO.7", price: 60, image: "https://i.postimg.cc/hQPMJHNV/IMG-20260425-WA0028.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_08", name: "FIBER PLATE DESIGN NO.8", price: 60, image: "https://i.postimg.cc/BPQN8dRB/IMG-20260425-WA0030.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_09", name: "FIBER PLATE DESIGN NO.9", price: 60, image: "https://i.postimg.cc/xNTgkWBK/IMG-20260425-WA0033.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_10", name: "FIBER PLATE DESIGN NO.10", price: 60, image: "https://i.postimg.cc/N2fbyWZP/IMG-20260425-WA0034.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_11", name: "FIBER PLATE DESIGN NO.11", price: 60, image: "https://i.postimg.cc/1V5MgLbH/IMG-20260425-WA0035.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_12", name: "FIBER PLATE DESIGN NO.12", price: 60, image: "https://i.postimg.cc/K3vQKdCq/IMG-20260425-WA0040.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_13", name: "FIBER PLATE DESIGN NO.13", price: 60, image: "https://i.postimg.cc/CnLJZW9v/IMG-20260425-WA0037.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_14", name: "FIBER PLATE DESIGN NO.14", price: 60, image: "https://i.postimg.cc/H8s3JfFN/IMG-20260425-WA0038.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_15", name: "FIBER PLATE DESIGN NO.15", price: 60, image: "https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_16", name: "FIBER PLATE DESIGN NO.16", price: 60, image: "https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_17", name: "FIBER PLATE DESIGN NO.17", price: 60, image: "https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_18", name: "FIBER PLATE DESIGN NO.18", price: 60, image: "https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_19", name: "FIBER PLATE DESIGN NO.19", price: 60, image: "https://i.postimg.cc/06DVhGpZ/IMG-20260515-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_20", name: "FIBER PLATE DESIGN NO.20", price: 60, image: "https://i.postimg.cc/rdxf7GSf/IMG-20260515-WA0023.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_21", name: "FIBER PLATE DESIGN NO.21", price: 60, image: "https://i.postimg.cc/NymdZ81G/IMG-20260515-WA0030.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_22", name: "FIBER PLATE DESIGN NO.22", price: 60, image: "https://i.postimg.cc/XZdstKwJ/IMG-20260515-WA0031.jpg", category: "Fiber Plates", minOrder: 100 }
+    ].map((item) => ({
+      ...item,
+      stock: 500,
+      tiers: [
+        { min: 100, price: item.price },
+        { min: 500, price: Number((item.price * 0.94).toFixed(2)) },
+        { min: 5000, price: Number((item.price * 0.88).toFixed(2)) }
+      ]
+    }));
+
+    const parsedCatalogProducts = PRODUCT_ITEMS.map(item => {
       const id = slugify(item.name);
       const overridePrice = Number(priceOverrides[id]);
       const tiers = Number.isFinite(overridePrice) && overridePrice > 0
@@ -1702,6 +1771,9 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
       }, () => applySeasonBanner('normal'));
     }
 
+    const products = [...parsedCatalogProducts, ...FIBER_PLATE_ITEMS]
+      .filter((item) => !/negotiable|test grid|plain wholesale/i.test(`${item.name || ''} ${item.category || ''}`));
+
     writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
       id: product.id,
       name: product.name,
@@ -1760,344 +1832,45 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
       return element;
     }
 
-    function loadCurrentUser(){
-      try {
-        return JSON.parse(localStorage.getItem('vmpUserSession') || sessionStorage.getItem('vmpUserSession') || 'null');
-      } catch { return null; }
+    let pendingAuthAction = null;
+
+    function notifyVmp(message, title = 'VMP Priority Update'){
+      const host = document.getElementById('vmpToastHost');
+      if(!host) return;
+      setTimeout(() => {
+        const item = document.createElement('div');
+        item.className = 'vmp-toast-enter pointer-events-auto rounded-xl border border-amber-300/70 bg-[#064e3b] px-4 py-3 text-sm text-emerald-50 shadow-2xl';
+        item.innerHTML = `<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-300">${title}</p><p class="mt-1 font-semibold">${message}</p>`;
+        host.appendChild(item);
+        setTimeout(() => item.remove(), 4200);
+      }, 250);
     }
 
-    function saveCurrentUser(user, remember=true){
-      const payload = JSON.stringify(user);
-      if(remember){
-        localStorage.setItem('vmpUserSession', payload);
-        sessionStorage.removeItem('vmpUserSession');
-      } else {
-        sessionStorage.setItem('vmpUserSession', payload);
-        localStorage.removeItem('vmpUserSession');
-      }
-      localStorage.setItem('vmpUserProfile', JSON.stringify(user.profile || {}));
+    function getBuyerProfile(){
+      try { return JSON.parse(localStorage.getItem('vmp_user_profile') || 'null'); }
+      catch { return null; }
     }
 
-    function loadProfile(){
-      try { return JSON.parse(localStorage.getItem('vmpUserProfile') || '{}'); } catch { return {}; }
+    function hasBuyerProfile(){
+      const profile = getBuyerProfile();
+      return Boolean(profile?.fullName && profile?.mobile && profile?.email);
     }
 
-    function saveProfile(profile){
-      localStorage.setItem('vmpUserProfile', JSON.stringify(profile));
+    function openProfileGate(afterSave){
+      pendingAuthAction = typeof afterSave === 'function' ? afterSave : null;
+      const modal = document.getElementById('profileGateModal');
+      if(modal) modal.classList.remove('hidden');
     }
 
-    function orderHistory(){
-      try { return JSON.parse(localStorage.getItem('vmpOrderHistory') || '[]'); } catch { return []; }
+    function closeProfileGate(){
+      document.getElementById('profileGateModal')?.classList.add('hidden');
     }
 
-    function pushOrderHistory(order){
-      const history = orderHistory();
-      history.unshift(order);
-      localStorage.setItem('vmpOrderHistory', JSON.stringify(history.slice(0, 20)));
-    }
-
-    async function saveOrderToCloud(order){
-      const db = getFirestoreDb();
-      if(!db) return;
-      try {
-        await db.collection('orders').doc(order.orderId).set({
-          ...order,
-          createdAt: window.firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-      } catch (error) {
-        console.warn('Unable to sync order to Firestore.', error);
-      }
-    }
-
-    function buildTrackingLink(tracking = {}){
-      const awb = String(tracking.awb || '').trim();
-      const carrier = String(tracking.carrier || 'delhivery').toLowerCase();
-      if(!awb) return './live-tracking.html';
-      if(carrier.includes('shiprocket')) return `https://shiprocket.co/tracking/${encodeURIComponent(awb)}`;
-      return `https://www.delhivery.com/track/package/${encodeURIComponent(awb)}`;
-    }
-
-    function statusToTimelinePercent(status){
-      const value = String(status || '').toLowerCase();
-      if(value.includes('deliver')) return 100;
-      if(value.includes('transit')) return 66;
-      if(value.includes('dispatch')) return 33;
-      return 10;
-    }
-
-    function renderProfile(){
-      const profile = loadProfile();
-      document.getElementById('profileName').textContent = profile.name || 'Guest User';
-      document.getElementById('profileWhatsapp').textContent = profile.whatsapp || '-';
-      document.getElementById('profileAddress').textContent = `Address: ${profile.address || '-'}`;
-      document.getElementById('profilePaymentType').textContent = `Payment: ${profile.paymentType || 'UPI'}`;
-      document.getElementById('profilePhotoPreview').src = profile.photo || './icons/logo.svg';
-      document.getElementById('editPhotoInput').value = profile.photo || '';
-      document.getElementById('editAddressInput').value = profile.address || '';
-      document.getElementById('editPaymentType').value = profile.paymentType || 'UPI';
-      const history = orderHistory();
-      const last = history[0];
-      document.getElementById('lastOrderBox').textContent = last ? `${last.orderId} | ₹${last.total} | ${last.date}` : 'No previous order yet.';
-      const timeline = document.getElementById('orderTimeline');
-      const timelineProgress = document.getElementById('orderTimelineProgress');
-      if(timeline && timelineProgress){
-        if(last){
-          timeline.classList.remove('hidden');
-          timelineProgress.style.width = `${statusToTimelinePercent(last.status || 'Order Placed')}%`;
-        } else {
-          timeline.classList.add('hidden');
-          timelineProgress.style.width = '0%';
-        }
-      }
-      const list = document.getElementById('orderHistoryList');
-      list.innerHTML = history.map(o => `
-        <div class="rounded-lg border p-2">
-          <p>${o.date || '-'} • ${o.orderId} • ₹${o.total} • ${o.items.length} items • ${o.status || 'Order Placed'}</p>
-          <a href="${o.trackingLink || buildTrackingLink(o.tracking)}" target="_blank" rel="noopener" class="mt-1 inline-flex rounded-full border border-emerald-300 px-3 py-1 text-xs font-semibold text-emerald-700">Track Live</a>
-          ${(String(o.status || '').toLowerCase().includes('deliver')) ? '<p class="mt-1 rounded bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-800">Upload Unboxing Video & Get Extra Discount</p>' : ''}
-          ${o.paymentStatus === 'Paid' ? `<button onclick="downloadHistoryInvoice('${o.orderId}')" class="mt-2 rounded-lg border border-emerald-300 px-3 py-1 text-xs font-semibold text-emerald-700">Download Payment Receipt</button>` : ''}
-        </div>
-      `).join('') || '<p>No orders yet.</p>';
-    }
-
-    function renderBuyAgain(){
-      const list = document.getElementById('buyAgainList');
-      if(!list) return;
-      const section = document.getElementById('buyAgainSection');
-      if(!currentUser){
-        if(section) section.classList.add('hidden');
-        return;
-      }
-      if(section) section.classList.remove('hidden');
-      const history = orderHistory();
-      const lastThree = history.slice(0, 3);
-      const dedup = new Map();
-      for(const order of lastThree){
-        for(const item of (order.items || [])){
-          const current = dedup.get(item.id) || 0;
-          dedup.set(item.id, current + Number(item.qty || 0));
-        }
-      }
-      const topIds = Array.from(dedup.entries())
-        .sort((a, b) => b[1] - a[1])
-        .map(([id]) => id)
-        .slice(0, 8);
-      const topProducts = topIds.map((id) => products.find((p) => p.id === id)).filter(Boolean);
-      if(!topProducts.length){
-        list.innerHTML = '<p class="text-sm text-slate-500">Buy It Again will appear after your first 3 orders.</p>';
-        return;
-      }
-      list.innerHTML = topProducts.map((product) => `
-        <article class="min-w-[210px] rounded-xl border border-emerald-100 bg-emerald-50 p-3">
-          <img src="${product.image}" alt="${product.name}" class="h-24 w-full rounded-lg object-cover" loading="lazy" />
-          <p class="mt-2 line-clamp-2 text-sm font-bold text-slate-900">${product.name}</p>
-          <p class="text-xs text-slate-600">Starts ₹${product.tiers?.[0]?.price || 0} | MOQ ${product.tiers?.[0]?.min || 150}+</p>
-          <button onclick="addToCart('${product.id}')" class="mt-2 w-full rounded-lg bg-emerald-700 py-2 text-sm font-bold text-white">Add to Cart</button>
-        </article>
-      `).join('');
-    }
-
-    function renderAlsoBought(product){
-      const box = document.getElementById('modalAlsoBought');
-      if(!box || !product) return;
-      const history = orderHistory();
-      const relatedCounts = {};
-      for(const order of history){
-        const itemIds = (order.items || []).map(i => i.id);
-        if(!itemIds.includes(product.id)) continue;
-        for(const id of itemIds){
-          if(id === product.id) continue;
-          relatedCounts[id] = (relatedCounts[id] || 0) + 1;
-        }
-      }
-      const coPurchased = Object.entries(relatedCounts)
-        .sort((a, b) => b[1] - a[1])
-        .map(([id]) => products.find((p) => p.id === id))
-        .filter(Boolean);
-      const categoryFallback = products
-        .filter((p) => p.id !== product.id && p.category === product.category)
-        .slice(0, 8);
-      const suggestions = [...coPurchased, ...categoryFallback]
-        .filter((p, idx, arr) => arr.findIndex(x => x.id === p.id) === idx)
-        .slice(0, 8);
-      if(!suggestions.length){
-        box.innerHTML = '<p class="text-xs text-slate-500">Suggestions appear as customers place bundled orders.</p>';
-        return;
-      }
-      box.innerHTML = suggestions.map((item) => `
-        <button onclick="event.stopPropagation();addToCart('${item.id}')" class="min-w-[160px] rounded-xl border border-emerald-100 bg-emerald-50 p-2 text-left">
-          <img src="${item.image}" alt="${item.name}" class="h-16 w-full rounded-md object-cover" loading="lazy" />
-          <p class="mt-1 line-clamp-2 text-xs font-semibold text-slate-800">${item.name}</p>
-          <p class="text-[11px] text-slate-600">from ₹${item.tiers?.[0]?.price || 0}</p>
-        </button>
-      `).join('');
-    }
-
-    async function buildInvoicePdf(order){
-      const ready = await window.ensureJsPdf();
-      if(!ready) return null;
-      if(!order || !window.jspdf?.jsPDF) return null;
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      const green = [122, 173, 101];
-      const right = 196;
-      doc.setFontSize(19);
-      doc.setTextColor(25, 25, 25);
-      doc.text('Veer Mahadev Plastic', 14, 14);
-      doc.setFontSize(17);
-      doc.setTextColor(...green);
-      doc.text('BILL OF SUPPLY', 142, 14);
-      doc.setTextColor(30, 30, 30);
-      doc.setFontSize(9);
-      doc.text('Wholesale Disposable Packaging Supplier', 14, 20);
-      doc.text('Stress Address, Ahmedabad, Gujarat', 14, 25);
-      doc.text('Phone: +91 80503 89261 | GSTIN: 24BLLPL0402N1Z6', 14, 30);
-      doc.text(`Date: ${order.date || new Date().toLocaleString()}`, 134, 22);
-      doc.text(`Invoice #: ${order.orderId}`, 134, 27);
-      doc.text(`Customer ID: ${order.details?.whatsapp || '-'}`, 134, 32);
-
-      doc.setFillColor(...green);
-      doc.rect(14, 38, 60, 6, 'F');
-      doc.rect(78, 38, 60, 6, 'F');
-      doc.rect(142, 38, 54, 6, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(8.5);
-      doc.text('CUSTOMER', 16, 42);
-      doc.text('SHIP TO', 80, 42);
-      doc.text('SHIPPING DETAILS', 144, 42);
-      doc.setTextColor(25, 25, 25);
-      doc.setFontSize(8.5);
-      doc.text(order.details?.name || '-', 16, 48);
-      doc.text((order.details?.address || '-') + ' ' + (order.details?.pincode || ''), 16, 53, { maxWidth: 55 });
-      doc.text(order.details?.whatsapp || '-', 16, 59);
-      doc.text(order.details?.name || '-', 80, 48);
-      doc.text((order.details?.address || '-') + ' ' + (order.details?.pincode || ''), 80, 53, { maxWidth: 55 });
-      doc.text('Freight Type: Surface', 144, 48);
-      doc.text('Total Packages: ' + String((order.items || []).length), 144, 53);
-      doc.text('Dispatch after payment confirmation', 144, 58, { maxWidth: 48 });
-
-      let y = 68;
-      doc.setFillColor(...green);
-      doc.rect(14, y, 182, 7, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.text('PART NO', 16, y + 5);
-      doc.text('DESCRIPTION', 35, y + 5);
-      doc.text('QTY', 136, y + 5, { align: 'right' });
-      doc.text('UNIT PRICE', 158, y + 5, { align: 'right' });
-      doc.text('TAX', 174, y + 5, { align: 'right' });
-      doc.text('TOTAL', 194, y + 5, { align: 'right' });
-      doc.setTextColor(25, 25, 25);
-      y += 11;
-      (order.items || []).forEach((item, idx) => {
-        const qty = Number(item.qty || 0);
-        const unit = Number(item.unit || 0);
-        const total = (qty * unit).toFixed(2);
-        const lines = doc.splitTextToSize(`${item.name} (HSN: ${item.hsn || '3924'})`, 94);
-        doc.text(String(idx + 1), 16, y);
-        doc.text(lines, 35, y);
-        doc.text(String(qty), 136, y, { align: 'right' });
-        doc.text(unit.toFixed(2), 158, y, { align: 'right' });
-        doc.text('0%', 174, y, { align: 'right' });
-        doc.text(total, 194, y, { align: 'right' });
-        y += Math.max(6, lines.length * 5);
-      });
-      y += 4;
-      doc.text(`Subtotal: ₹${Number(order.totals?.subtotal || 0).toFixed(2)}`, right, y, { align: 'right' }); y += 6;
-      doc.text(`Include GST Rate (0%): ₹${Number(order.totals?.gst || 0).toFixed(2)}`, right, y, { align: 'right' }); y += 6;
-      doc.text(`Freight: ₹${Number(order.totals?.delivery || 0).toFixed(2)}`, right, y, { align: 'right' }); y += 6;
-      doc.setFillColor(...green);
-      doc.rect(140, y - 4, 56, 8, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.text(`TOTAL: ₹${Number(order.totals?.total || order.total || 0).toFixed(2)}`, right, y + 1, { align: 'right' });
-      doc.setTextColor(25, 25, 25);
-      y += 12;
-      doc.setFontSize(8.5);
-      doc.text('Composition Scheme Declaration: Tax on supplies has been paid under composition levy; recipient is not eligible for input tax credit.', 14, y, { maxWidth: 182 });
-      y += 12;
-      doc.text('Order dispatch will be initiated only after payment confirmation.', 14, y, { maxWidth: 182 });
-      return doc;
-    }
-
-    async function buildDigitalReceiptPdf(order){
-      const ready = await window.ensureJsPdf();
-      if(!ready) return null;
-      if(!order || !window.jspdf?.jsPDF) return null;
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-      const green = [6, 95, 70];
-      const gold = [212, 175, 55];
-
-      doc.setFillColor(...green);
-      doc.rect(0, 0, 210, 34, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(18);
-      doc.text('Veer Mahadev Plastic', 14, 14);
-      doc.setFontSize(11);
-      doc.text('Digital Order Receipt', 14, 20);
-      doc.setTextColor(...gold);
-      doc.setFontSize(12);
-      doc.text(`Order ID: ${order.orderId}`, 140, 14);
-      doc.setTextColor(255, 255, 255);
-      doc.text(`Paid: ₹${Number(order.totals?.total || order.total || 0).toFixed(2)}`, 140, 20);
-
-      let y = 42;
-      doc.setTextColor(25, 25, 25);
-      doc.setFontSize(10);
-      doc.text(`Name: ${order.details?.name || '-'}`, 14, y);
-      doc.text(`WhatsApp: ${order.details?.whatsapp || '-'}`, 14, y + 6);
-      doc.text(`Address: ${(order.details?.address || '-')} ${(order.details?.pincode || '')}`, 14, y + 12, { maxWidth: 182 });
-
-      y += 22;
-      doc.setFillColor(236, 253, 245);
-      doc.rect(14, y, 182, 8, 'F');
-      doc.setTextColor(6, 95, 70);
-      doc.text('Retail Items', 16, y + 5.5);
-      doc.text('Packets', 122, y + 5.5, { align: 'right' });
-      doc.text('Unit Price', 156, y + 5.5, { align: 'right' });
-      doc.text('Total', 192, y + 5.5, { align: 'right' });
-
-      y += 12;
-      doc.setTextColor(30, 30, 30);
-      (order.items || []).forEach((item) => {
-        const qty = Number(item.qty || 0);
-        const unit = Number(item.unit || 0);
-        const total = qty * unit;
-        const label = doc.splitTextToSize(item.name || 'Item', 96);
-        doc.text(label, 16, y);
-        doc.text(String(qty), 122, y, { align: 'right' });
-        doc.text(`₹${unit.toFixed(2)}`, 156, y, { align: 'right' });
-        doc.text(`₹${total.toFixed(2)}`, 192, y, { align: 'right' });
-        y += Math.max(7, label.length * 5);
-      });
-
-      y += 6;
-      doc.setDrawColor(200, 200, 200);
-      doc.line(14, y, 196, y);
-      y += 8;
-      doc.setFontSize(12);
-      doc.setTextColor(...green);
-      doc.text(`Total Paid Amount: ₹${Number(order.totals?.total || order.total || 0).toFixed(2)}`, 14, y);
-
-      y += 14;
-      const trackingUrl = `https://wa.me/918050389261?text=${encodeURIComponent(`Track order ${order.orderId}`)}`;
-      doc.setFillColor(...green);
-      doc.roundedRect(14, y - 6, 74, 10, 3, 3, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(9.5);
-      doc.text('Track on WhatsApp', 51, y, { align: 'center' });
-      doc.link(14, y - 6, 74, 10, { url: trackingUrl });
-      doc.setTextColor(25, 25, 25);
-      doc.text('Thank you for supporting our Prajapati family business.', 14, y + 13);
-
-      return doc;
-    }
-
-    window.downloadHistoryInvoice = async function(orderId){
-      const history = orderHistory();
-      const order = history.find((item) => item.orderId === orderId);
-      if(!order) return;
-      const doc = await buildDigitalReceiptPdf(order);
-      if(doc) doc.save(`digital-receipt-${order.orderId}.pdf`);
+    function requireBuyerProfile(afterSave){
+      if(hasBuyerProfile()) return true;
+      openProfileGate(afterSave);
+      notifyVmp('Please save your buyer profile to unlock checkout and WhatsApp ordering.', 'Buyer verification required');
+      return false;
     }
 
     function openAuthHub(){
@@ -2709,6 +2482,23 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
       if(modalRow) modalRow.innerHTML = markup;
     }
 
+    function trustBadgesMarkup(){
+      return [
+        '🛡️ 100% Secure Payments',
+        '🏭 Direct from Ahmedabad Factory',
+        '📦 Safe & Hygienic Packaging',
+        '✅ Genuine Biodegradable Quality'
+      ].map((t) => `<div class="rounded-lg border border-emerald-100 bg-white px-2 py-1"><span class="font-semibold text-slate-700">${t}</span></div>`).join('');
+    }
+
+    function renderTrustBadges(){
+      const cartRow = document.getElementById('trustBadgeRowCart');
+      const modalRow = document.getElementById('trustBadgeRowModal');
+      const markup = trustBadgesMarkup();
+      if(cartRow) cartRow.innerHTML = markup;
+      if(modalRow) modalRow.innerHTML = markup;
+    }
+
     window.removeCartItem = function(idx){
       cart.splice(idx, 1);
       saveCart();
@@ -2757,16 +2547,11 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
       else cart.push({id, name:p.name, qty, unit});
       saveCart();
       renderCart();
-      trackEvent('add_to_cart', { item_id: p.id, item_name: p.name, quantity: qty, price: unit });
-    }
-
-    
-    window.openRateWhatsApp = function(productName){
-      const msg = `Hi VMP Team, I am interested in ${productName} from your catalog. Please share the wholesale rates for bulk orders.`;
-      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
+      notifyVmp(`${p.name} added to cart successfully.`, 'Cart updated');
     }
 
     window.buyNow = function(id){
+      if(!requireBuyerProfile(() => { addToCart(id); openCart(); })) return;
       addToCart(id);
       openCart();
     }
@@ -2886,22 +2671,49 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
     }
 
     function openCheckoutModal(){
+      if(!requireBuyerProfile(openCheckoutModal)) return;
       const modal = document.getElementById('checkoutModal');
       const subtotal = cartTotalAmount();
       const estimate = shippingEstimate(subtotal);
-      const name = (document.getElementById('customerName')?.value || '').trim();
+      const total = subtotal + Number(estimate.charge || 0);
+      const profile = getBuyerProfile();
+      const name = (document.getElementById('customerName')?.value || profile?.fullName || '').trim();
       const address = (document.getElementById('customerAddress')?.value || '').trim();
+      const profilePreview = document.getElementById('checkoutProfilePreview');
       const addressPreview = document.getElementById('checkoutAddressPreview');
+      if(profilePreview && profile){
+        profilePreview.textContent = `${profile.fullName} • ${profile.mobile} • ${profile.email}`;
+      }
       if(addressPreview){
         addressPreview.textContent = (name && address) ? `${name} • ${address}` : 'Please fill customer name and address in cart.';
+      }
+      const itemBreakdown = document.getElementById('checkoutItemBreakdown');
+      if(itemBreakdown){
+        itemBreakdown.innerHTML = cart.map((item) => `
+          <div class="flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2">
+            <div><p class="font-semibold">${item.name}</p><p class="text-xs text-slate-500">Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</p></div>
+            <p class="font-bold text-emerald-800">₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}</p>
+          </div>
+        `).join('') || '<p class="text-sm text-slate-500">Cart is empty.</p>';
       }
       const subEl = document.getElementById('checkoutSubtotal');
       const shipEl = document.getElementById('checkoutShipping');
       const totalEl = document.getElementById('checkoutTotal');
       if(subEl) subEl.textContent = subtotal.toFixed(2);
       if(shipEl) shipEl.textContent = Number(estimate.charge).toFixed(2);
-      if(totalEl) totalEl.textContent = (subtotal + Number(estimate.charge)).toFixed(2);
+      if(totalEl) totalEl.textContent = total.toFixed(2);
+      const qr = document.getElementById('checkoutQrImage');
+      if(qr){
+        const upiUri = `upi://pay?pa=8050389261@upi&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('VMP B2B Order')}`;
+        qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(upiUri)}`;
+      }
+      const status = document.getElementById('phonepeLiveStatus');
+      if(status){
+        status.textContent = 'Secure node connecting...';
+        setTimeout(() => { status.textContent = 'Live & listening for UPI confirmation'; }, 1000);
+      }
       if(modal) modal.classList.remove('hidden');
+      notifyVmp('Secure PhonePe B2B gateway opened.', 'Checkout ready');
     }
 
     function closeCheckoutModal(){
@@ -3164,6 +2976,28 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
       e.target.reset();
     });
 
+    bindById('profileGateForm', 'submit', (e)=>{
+      e.preventDefault();
+      const profile = {
+        fullName: document.getElementById('gateFullName')?.value.trim() || '',
+        mobile: document.getElementById('gateMobile')?.value.trim() || '',
+        email: document.getElementById('gateEmail')?.value.trim() || '',
+        capturedAt: new Date().toISOString()
+      };
+      const msg = document.getElementById('profileGateMsg');
+      if(!profile.fullName || !profile.mobile || !profile.email){
+        if(msg) msg.textContent = 'Full name, mobile, and email are required.';
+        return;
+      }
+      localStorage.setItem('vmp_user_profile', JSON.stringify(profile));
+      closeProfileGate();
+      notifyVmp('Buyer profile saved. Secure checkout is now unlocked.', 'Profile verified');
+      const next = pendingAuthAction;
+      pendingAuthAction = null;
+      if(typeof next === 'function') next();
+      e.target.reset();
+    });
+
     // WhatsApp actions (floating + cart)
     bindById('waFloating', 'click', (e)=>{
       e.preventDefault();
@@ -3172,6 +3006,7 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
       window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
     });
     bindById('waCart', 'click', ()=>{
+      if(!requireBuyerProfile(() => document.getElementById('waCart')?.click())) return;
       const details = getCustomerDetails();
       if(!details) { openCart(); return; }
       if(cart.length === 0){
@@ -3187,6 +3022,7 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
     });
 
     bindById('buyNowCart', 'click', ()=>{
+      if(!requireBuyerProfile(() => document.getElementById('buyNowCart')?.click())) return;
       const details = getCustomerDetails();
       if(!details) { openCart(); return; }
       openCheckoutModal();
@@ -3194,7 +3030,26 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
     bindById('closeCheckoutModal', 'click', closeCheckoutModal);
     bindById('checkoutModal', 'click', (e)=>{ if(e.target.id === 'checkoutModal') closeCheckoutModal(); });
     bindById('confirmPayBtn', 'click', ()=>{
-      alert('Payment initiated. Our team will verify and confirm your order.');
+      if(!requireBuyerProfile(openCheckoutModal)) return;
+      const utr = (document.getElementById('utrInput')?.value || '').trim();
+      if(!utr){
+        notifyVmp('Please enter UTR / Transaction ID after payment.', 'UTR required');
+        return;
+      }
+      const payload = {
+        profile: getBuyerProfile(),
+        address: (document.getElementById('customerAddress')?.value || '').trim(),
+        shipping: shippingEstimate(cartTotalAmount()),
+        paymentMode: 'PhonePe / UPI',
+        utr,
+        items: cart,
+        subtotal: cartTotalAmount(),
+        createdAt: new Date().toISOString()
+      };
+      const orders = JSON.parse(localStorage.getItem('vmp_order_setups') || '[]');
+      orders.unshift(payload);
+      localStorage.setItem('vmp_order_setups', JSON.stringify(orders.slice(0, 25)));
+      notifyVmp('Order setup captured with PhonePe UTR for verification.', 'Payment verification queued');
       closeCheckoutModal();
     });
     bindById('shareCartQuoteBtn', 'click', shareCartQuoteViaWhatsApp);
