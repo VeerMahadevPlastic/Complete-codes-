@@ -352,7 +352,7 @@
         <div class="rounded-xl border border-emerald-300/40 bg-black/25 p-2">
           <p class="mb-2 text-center text-[10px] font-semibold tracking-wide text-amber-200">VIP Factory Reel</p>
           <video id="heroAdVideo" class="h-[260px] w-full rounded-lg object-cover sm:h-[300px] md:h-[340px]" autoplay muted playsinline controls>
-            <source src="ad_reel.mp4" type="video/mp4" />
+            <source src="https://youtube.com/shorts/OS1aZpElD_0?feature=share" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -1402,7 +1402,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 18 PP CONTAINER FB 650ML BLACK / TRANSPERENT  2000 6600 4.3 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 19 PP ROUND CONTAINER LID 123DIA  2000 2800 2.4 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 
-SR FIBER PLATES RATE PCS
+SR FIBER PLATES PACKING RATE BOX RATE PCS
 1.	FIBER PLATE DESIGN NO.1  60 || https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg
 2.	FIBER PLATE DESIGN NO.2  60 || https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg
 3.	FIBER PLATE DESIGN NO.3  60 || https://i.postimg.cc/Q9q0dX42/IMG-20260425-WA0002.jpg
@@ -1520,16 +1520,34 @@ SR FIBER PLATES RATE PCS
       }
     }
   const NEGOTIABLE_CATALOG_SLUGS = [
-      'out of stock'
+'1.	FIBER PLATE DESIGN NO.1  60 ||, https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg,
+2.	FIBER PLATE DESIGN NO.2  60 || https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg,
+3.	FIBER PLATE DESIGN NO.3  60 || https://i.postimg.cc/Q9q0dX42/IMG-20260425-WA0002.jpg,
+4.	FIBER PLATE DESIGN NO.4  60 || https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg,
+5.	FIBER PLATE DESIGN NO.5  60 || https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg,
+6.	FIBER PLATE DESIGN NO.6  60 || https://i.postimg.cc/FksGf2wc/IMG-20260425-WA0027.jpg,
+7.	FIBER PLATE DESIGN NO.7  60 || https://i.postimg.cc/hQPMJHNV/IMG-20260425-WA0028.jpg,
+8.	FIBER PLATE DESIGN NO.8  0 60 || https://i.postimg.cc/BPQN8dRB/IMG-20260425-WA0030.jpg,
+9.	FIBER PLATE DESIGN NO.9  60 || https://i.postimg.cc/xNTgkWBK/IMG-20260425-WA0033.jpg,
+10.	FIBER PLATE DESIGN NO.10  60 || https://i.postimg.cc/N2fbyWZP/IMG-20260425-WA0034.jpg,
+11.	FIBER PLATE DESIGN NO.11  60 || https://i.postimg.cc/1V5MgLbH/IMG-20260425-WA0035.jpg,
+12.	FIBER PLATE DESIGN NO.12 60 || https://i.postimg.cc/K3vQKdCq/IMG-20260425-WA0040.jpg ,
+13.	FIBER PLATE DESIGN NO.13   60 || https://i.postimg.cc/CnLJZW9v/IMG-20260425-WA0037.jpg,
+14.	FIBER PLATE DESIGN NO.14  60 || https://i.postimg.cc/H8s3JfFN/IMG-20260425-WA0038.jpg,
+15.	FIBER PLATE DESIGN NO.15  60 || https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg,
+16.	FIBER PLATE DESIGN NO.16   60 || https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg,
+17.	FIBER PLATE DESIGN NO.17 60 || https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg,
+18.	FIBER PLATE DESIGN NO.18  60 || https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg,
+19.	FIBER PLATE DESIGN NO.19  60 || https://i.postimg.cc/06DVhGpZ/IMG-20260515-WA0022.jpg,
+20.	FIBER PLATE DESIGN NO.20  60 || https://i.postimg.cc/rdxf7GSf/IMG-20260515-WA0023.jpg,
+21.	FIBER PLATE DESIGN NO.21  60 || https://i.postimg.cc/NymdZ81G/IMG-20260515-WA0030.jpg,
+22.	FIBER PLATE DESIGN NO.22  60 || https://i.postimg.cc/XZdstKwJ/IMG-20260515-WA0031.jpg,
     ];
     const NEGOTIABLE_CATALOG_ITEMS = NEGOTIABLE_CATALOG_SLUGS.map((slug) => {
-      const clean = slug.replace(/-pp-.+$/,'').replace(/-\d+(?:-\d+)?$/,'');
-      const parts = clean.split('-').filter(Boolean);
-      const shortName = parts.slice(0, 3).join('-');
-      return {
-        name: shortName,
-        category: /vati|bowl|katori|soup/i.test(slug) ? 'Vati / Bowls' : (/chat/i.test(slug) ? 'Chat Plates' : 'Plates'),
-        image: './images/plate.jpg',
+      // Per-product image URLs (id-wise). Add/replace links here.
+    // Example: '3cp-meal-tray-with-lid-7041': 'https://...'
+    const PRODUCT_IMAGE_OVERRIDES = {
+      // Add custom image URLs here for each product ID.
         stock: 200, retail_enabled: true, retail_unit: 'Packet', retail_moq: RETAIL_MIN_ORDER_QTY,
         pieces_per_unit: 100, retail_price: 0, tiers: buildWholesaleTiers(0),
         negotiable_whatsapp_only: true,
