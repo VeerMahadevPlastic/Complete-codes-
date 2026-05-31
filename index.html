@@ -70,10 +70,16 @@
     @keyframes glowPulse { 0%,100% { opacity: 0.45; transform: scale(0.96); } 50% { opacity: 0.95; transform: scale(1.03); } }
     @keyframes shimmer { 0% { transform: translateX(-120%) rotate(12deg); } 100% { transform: translateX(120%) rotate(12deg); } }
     @keyframes splashFade { 0%, 78% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; pointer-events: none; } }
+    @keyframes marquee { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
     @keyframes pulseSoft {
       0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.35); }
       50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
     }
+    .vmp-ad-fade-out { opacity: 0; transform: translateY(10px) scale(0.98); pointer-events: none; }
+    .vmp-toast-enter { animation: vmpToastIn 0.35s ease-out both; }
+    @keyframes vmpToastIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .vmp-auth-card { animation: authSlideUp 0.32s ease-out both; }
+    @keyframes authSlideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
     @media (min-width: 1024px) {
       .app-shell { padding-bottom: 128px; }
       .install-banner { bottom: 20px; }
@@ -91,85 +97,218 @@
       <p class="mt-6 text-sm font-semibold tracking-[0.35em] text-emerald-700">WELCOME TO THE APP</p>
     </div>
   </div>
+
+  <div id="entryModeModal" data-vmp-entry-backdrop aria-hidden="true" class="hidden fixed inset-0 z-[74] flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="w-full max-w-xl rounded-[2rem] border border-amber-300/60 bg-white p-6 shadow-2xl">
+      <p class="text-xs font-black uppercase tracking-[0.28em] text-emerald-700">Choose Shopping Type</p>
+      <h2 class="mt-2 text-3xl font-black text-slate-950">Shop Retail or Shop Wholesale</h2>
+      <p class="mt-2 text-sm text-slate-600">Select once to unlock the storefront. Returning buyers are auto-routed from saved preference.</p>
+      <div class="mt-5 grid gap-3 sm:grid-cols-2">
+        <button id="shopRetailBtn" type="button" data-shopping-mode="retail" onclick="event.preventDefault(); window.applyShoppingMode && window.applyShoppingMode('retail')" class="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-4 text-left transition hover:-translate-y-0.5 hover:bg-amber-100">
+          <span class="block text-lg font-black text-amber-900">Shop Retail</span>
+          <span class="mt-1 block text-sm font-semibold text-amber-800/80">Packet-wise ordering with retail MOQ rules.</span>
+        </button>
+        <button id="shopWholesaleBtn" type="button" data-shopping-mode="wholesale" onclick="event.preventDefault(); window.applyShoppingMode && window.applyShoppingMode('wholesale')" class="rounded-2xl border border-emerald-300 bg-emerald-50 px-4 py-4 text-left transition hover:-translate-y-0.5 hover:bg-emerald-100">
+          <span class="block text-lg font-black text-emerald-900">Shop Wholesale</span>
+          <span class="mt-1 block text-sm font-semibold text-emerald-800/80">Factory slabs for 5,000+ unit buyers.</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="app-shell">
-  <header class="sticky top-0 z-50 border-b border-emerald-100 bg-white/95 glass">
+  <header class="sticky top-0 z-50 border-b border-[#d4af37]/30 bg-[#064e3b] text-white shadow-2xl">
     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
-      <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3">
-        <button id="openAuthHubTop" class="hidden sm:inline-flex items-center rounded-full border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 hover:bg-emerald-50">Login</button>
-        <a href="#home" class="text-center text-xl font-black tracking-tight text-emerald-800 sm:text-2xl">Veer Mahadev Plastic</a>
-        <button id="openCartTop" class="justify-self-end rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">Cart (<span id="cartCount">0</span>)</button>
-      </div>
-      <div class="flex items-center gap-2">
-        <div class="flex flex-1 items-center rounded-2xl border border-emerald-100 bg-[#f8fbf8] px-3 py-2 shadow-sm">
-          <span class="mr-2 text-emerald-700">🔎</span>
-          <input id="productSearch" class="w-full bg-transparent text-sm outline-none" placeholder="Search plates, cups, spoons, trays..." />
+      <div class="grid gap-3 lg:grid-cols-[260px_1fr_440px] lg:items-center">
+        <a href="#home" class="flex items-center gap-3 rounded-2xl border border-[#d4af37]/30 bg-emerald-950/50 px-3 py-2 shadow-inner">
+          <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" loading="eager" decoding="async" class="h-12 w-12 rounded-xl border border-[#d4af37]/40 bg-white object-contain p-1" />
+          <span>
+            <span class="block text-lg font-black leading-tight text-[#d4af37]">Veer Mahadev</span>
+            <span class="block text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-100">Plastic B2B Suite</span>
+          </span>
+        </a>
+
+        <div class="flex items-center gap-2 rounded-2xl border border-[#d4af37]/30 bg-emerald-950/60 px-3 py-2 shadow-lg">
+          <span class="text-xl text-[#d4af37]">🔎</span>
+          <input id="productSearch" class="w-full bg-transparent text-sm font-semibold text-white placeholder:text-emerald-100/75 outline-none" placeholder="Search for Products, Categories and More" />
+          <button id="searchBtn" class="rounded-xl bg-[#d4af37] px-4 py-2 text-xs font-black uppercase tracking-wide text-[#064e3b] transition hover:bg-amber-300">Search</button>
         </div>
-        <button id="searchBtn" class="rounded-2xl bg-emerald-800 px-4 py-2 text-sm font-semibold text-white">Search</button>
-        <button id="openAuthHubMobile" class="inline-flex items-center rounded-2xl border border-emerald-200 px-3 py-2 text-xs font-semibold text-emerald-800 sm:hidden">Login</button>
+
+        <div class="grid gap-2 sm:grid-cols-[1fr_auto] lg:grid-cols-[1fr_auto_auto_auto] lg:items-center">
+          <div class="rounded-2xl border border-emerald-600/70 bg-emerald-950/50 px-3 py-2">
+            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-[#d4af37]">Location & ETA</p>
+            <p class="text-xs font-semibold text-white">📍 Delivering to: Caterer Street, Ahmedabad, Gujarat</p>
+          </div>
+          <div class="rounded-2xl border border-[#d4af37]/50 bg-[#d4af37] px-3 py-2 text-center text-xs font-black text-[#064e3b] shadow-lg">24 min Bulk Factory Dispatch</div>
+
+          <div class="group relative hidden lg:block">
+            <button id="openAuthHubTop" class="rounded-2xl border border-[#d4af37]/40 bg-emerald-950/60 px-4 py-3 text-xs font-bold text-amber-100 transition hover:bg-emerald-900">Login / Sign Up ▾</button>
+            <div class="pointer-events-none absolute right-0 top-full z-[70] mt-2 w-72 translate-y-2 rounded-2xl border border-[#d4af37]/40 bg-white p-3 text-slate-800 opacity-0 shadow-2xl transition group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
+              <button id="openAuthHubNav" class="w-full rounded-xl bg-[#d4af37] px-4 py-2 text-sm font-black text-[#064e3b]">Sign Up / Verify Buyer</button>
+              <div class="mt-3 grid grid-cols-2 gap-2 text-xs font-semibold">
+                <a href="#profile" class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900">My Profile</a>
+                <a href="./my-orders.html" class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900">Order History</a>
+                <a href="#shop" class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900">Wishlist</a>
+                <button id="openLogin" class="rounded-lg bg-emerald-50 px-3 py-2 text-left text-emerald-900">Bulk Accounts</button>
+                <a href="#notifications" class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900">Notifications</a>
+                <a href="./customer-care.html" class="rounded-lg bg-emerald-50 px-3 py-2 text-emerald-900">24x7 Caterer Care</a>
+                <a href="#install" class="col-span-2 rounded-lg bg-slate-100 px-3 py-2 text-slate-800">Download Factory App</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="group relative hidden lg:block">
+            <button class="rounded-2xl border border-white/15 bg-emerald-950/60 px-4 py-3 text-xs font-bold text-emerald-100 transition hover:bg-emerald-900">More ▾</button>
+            <div class="pointer-events-none absolute right-0 top-full z-[70] mt-2 w-64 translate-y-2 rounded-2xl border border-[#d4af37]/40 bg-white p-3 text-sm font-semibold text-slate-800 opacity-0 shadow-2xl transition group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
+              <a href="#wholesale" class="block rounded-lg px-3 py-2 hover:bg-emerald-50">Bulk Inquiry Form</a>
+              <a href="#notifications" class="block rounded-lg px-3 py-2 hover:bg-emerald-50">Notification Settings</a>
+              <a href="https://wa.me/918050389261" target="_blank" rel="noopener" class="block rounded-lg px-3 py-2 hover:bg-emerald-50">24x7 Factory Desk</a>
+              <a href="#wholesale" class="block rounded-lg px-3 py-2 hover:bg-emerald-50">Partner Program</a>
+            </div>
+          </div>
+
+          <button id="openCartTop" class="rounded-2xl border border-[#d4af37]/50 bg-white px-4 py-3 text-sm font-black text-[#064e3b] shadow-lg transition hover:bg-amber-50">🛒 Cart (<span id="cartCount">0</span>)</button>
+        </div>
       </div>
-      <div class="flex items-center justify-between gap-3 text-xs font-medium text-slate-600">
-        <nav class="flex items-center gap-4 overflow-x-auto whitespace-nowrap">
-          <a href="#categories" class="text-emerald-700">Categories</a>
-          <a href="#shop">Shop All</a>
-          <a href="#eco">Eco Range</a>
-          <a href="#wholesale">Wholesale</a>
-          <button id="openAuthHubNav" class="rounded-full border border-transparent px-1 py-1">Login / Sign Up</button>
-        </nav>
-        <button id="openLogin" class="hidden rounded-full border border-slate-300 px-3 py-2 text-xs font-semibold hover:bg-slate-50 sm:inline-flex">B2B Portal</button>
+
+      <div class="flex items-center justify-between gap-3 text-xs font-bold text-emerald-50 lg:hidden">
+        <button id="openAuthHubMobile" class="rounded-full border border-[#d4af37]/40 px-3 py-2 text-[#d4af37]">Login</button>
+        <a href="#wholesale" class="rounded-full border border-white/15 px-3 py-2">Bulk Inquiry</a>
+        <a href="./customer-care.html" class="rounded-full border border-white/15 px-3 py-2">Care</a>
+      </div>
+
+      <div class="flex gap-2 overflow-x-auto pb-1 text-xs font-black">
+        <a href="#shop" class="rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Plates</a>
+        <a href="#shop" class="rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Cups &amp; Spoons</a>
+        <a href="#shop" class="rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Trays</a>
+        <a href="#shop" class="rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Packaging</a>
+        <a href="#vipSampleKit" class="rounded-full border border-[#d4af37]/60 bg-emerald-950/50 px-4 py-2 text-[#d4af37]">VIP Sample Kit</a>
+      </div>
+
+      <div class="overflow-hidden rounded-xl border border-[#d4af37]/30 bg-emerald-950/60">
+        <p class="whitespace-nowrap px-3 py-1.5 text-xs font-bold text-[#d4af37] animate-[marquee_18s_linear_infinite]">Veer Mahadev Plastic: Custom Manufacturer for Gujarat's Elite Catering Businesses • Ahmedabad Catering Emergency? Order before 12 PM for Same-Day Delivery • Factory-direct pricing for bulk buyers</p>
       </div>
     </div>
   </header>
 
   <main id="home">
-    <section class="relative overflow-hidden bg-white border-b border-emerald-100">
-      <img src="http://i.postimg.cc/mhSM6Mmp/company-logo.png?auto=format&fit=crop&q=80&w=1800" class="absolute inset-0 h-full w-full object-cover opacity-20" alt="Disposable products"/>
-      <div class="relative max-w-7xl mx-auto px-4 py-16 lg:py-20 grid lg:grid-cols-2 gap-8 items-center">
-        <div>
-          <h1 class="text-4xl lg:text-5xl font-extrabold leading-tight">
-            <span class="text-emerald-700">Bharat ka Leading Disposable Hub</span> - Factory Rates, High Quality!
-          </h1>
-          <p class="mt-4 text-lg">Serving <b>10,000+</b> customers monthly since 2022. Best quality for restaurants, cafes, event managers, and households.</p>
-          <div class="mt-6 flex flex-wrap gap-3">
-            <a href="#shop" class="px-6 py-3 rounded-xl bg-emerald-700 text-white font-bold hover:bg-emerald-800">Shop Retail</a>
-            <a href="#wholesale" class="px-6 py-3 rounded-xl border-2 border-emerald-700 text-emerald-700 font-bold hover:bg-emerald-50">Get Wholesale Quote</a>
-          </div>
+    <section class="relative overflow-hidden bg-[#064e3b] text-white">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.22),transparent_28%),linear-gradient(135deg,#064e3b_0%,#052e24_58%,#031b16_100%)]"></div>
+      <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#f5f8f5] to-transparent"></div>
+      <div id="heroAdOverlay" class="absolute right-4 top-4 z-20 w-40 sm:w-48 md:right-8 md:top-8 md:w-56 lg:w-64 rounded-2xl border border-[#d4af37]/45 bg-white/10 p-2 shadow-2xl backdrop-blur-md transition-all duration-700 ease-out">
+        <div class="rounded-xl border border-emerald-300/40 bg-black/25 p-2">
+          <p class="mb-2 text-center text-[10px] font-semibold tracking-wide text-amber-200">VIP Factory Reel</p>
+          <video id="heroAdVideo" class="h-[260px] w-full rounded-lg object-cover sm:h-[300px] md:h-[340px]" autoplay muted playsinline controls>
+            <source src="ad_reel.mp4" type="video/mp4" />
+          </video>
         </div>
-        <div class="bg-white/90 border border-emerald-100 rounded-2xl p-5 shadow-sm">
-          <h3 class="text-xl font-bold">Shipping Estimate (Weight/Volume)</h3>
-          <p class="text-sm text-slate-600 mt-1">For bulky products, shipping is calculated on whichever is higher: dead weight or volumetric weight.</p>
-          <div class="grid grid-cols-2 gap-2 mt-4 text-sm">
-            <input id="weight" type="number" step="0.1" placeholder="Weight kg" class="border rounded-lg px-3 py-2"/>
-            <input id="length" type="number" placeholder="Length cm" class="border rounded-lg px-3 py-2"/>
-            <input id="width" type="number" placeholder="Width cm" class="border rounded-lg px-3 py-2"/>
-            <input id="height" type="number" placeholder="Height cm" class="border rounded-lg px-3 py-2"/>
-            <select id="zone" class="border rounded-lg px-3 py-2 col-span-2">
+      </div>
+      <div class="relative mx-auto grid max-w-7xl gap-8 px-4 py-14 lg:grid-cols-[1.1fr_0.9fr] lg:py-20">
+        <div class="rounded-[2rem] border border-[#d4af37]/35 bg-white/10 p-6 shadow-2xl backdrop-blur-md lg:p-8">
+          <div class="inline-flex rounded-full border border-[#d4af37]/40 bg-emerald-950/60 px-4 py-2 text-xs font-black uppercase tracking-[0.25em] text-[#d4af37]">CATERING CHALLENGE MODE ON</div>
+          <h1 class="mt-5 max-w-3xl text-4xl font-black leading-tight text-white lg:text-6xl">Match Quality and Factory Prices with <span class="text-[#d4af37]">Veer Mahadev.</span></h1>
+          <p class="mt-4 max-w-2xl text-lg font-medium text-emerald-50">Ahmedabad's direct bulk manufacturer for elite caterers, sweet shops, event planners, and institutional procurement teams.</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="#shop" class="rounded-2xl bg-[#d4af37] px-6 py-3 text-sm font-black uppercase tracking-wide text-[#064e3b] shadow-xl transition hover:-translate-y-0.5 hover:bg-amber-300">Start Factory Order</a>
+            <a href="#wholesale" class="rounded-2xl border border-[#d4af37]/70 bg-emerald-950/50 px-6 py-3 text-sm font-black uppercase tracking-wide text-[#d4af37] transition hover:bg-emerald-900">Corporate Bulk Quote</a>
+          </div>
+          <div class="mt-8 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 transition hover:scale-[1.02] hover:border-[#d4af37]/60">
+              <p class="text-xs uppercase tracking-wide text-emerald-100">Unit</p>
+              <p class="mt-1 font-black text-white">Precision Injection Molding Unit</p>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 transition hover:scale-[1.02] hover:border-[#d4af37]/60">
+              <p class="text-xs uppercase tracking-wide text-emerald-100">Capacity</p>
+              <p class="mt-1 font-black text-white">10 Lakh+ Units/Day</p>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 transition hover:scale-[1.02] hover:border-[#d4af37]/60">
+              <p class="text-xs uppercase tracking-wide text-emerald-100">Network</p>
+              <p class="mt-1 font-black text-white">500+ Top Caterers &amp; Sweet Shops</p>
+            </div>
+          </div>
+          <div class="mt-6 inline-flex rounded-full border border-[#d4af37]/50 bg-black/20 px-4 py-2 text-xs font-black text-[#d4af37]">Powered by Veer Mahadev Plastic • Direct Manufacturer Clearance</div>
+        </div>
+
+        <aside class="rounded-[2rem] border border-[#d4af37]/35 bg-white p-5 text-[#0f2f27] shadow-2xl lg:p-6">
+          <p class="text-xs font-black uppercase tracking-[0.22em] text-[#064e3b]">Flipkart Minutes Inspired B2B Command Panel</p>
+          <h2 class="mt-2 text-2xl font-black">Instant Dispatch Planner</h2>
+          <p class="mt-1 text-sm text-slate-600">Estimate logistics before checkout and lock stock for urgent Ahmedabad catering jobs.</p>
+          <div class="mt-4 grid grid-cols-2 gap-2 text-sm">
+            <input id="weight" type="number" step="0.1" placeholder="Weight kg" class="rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2 outline-none focus:border-[#d4af37]"/>
+            <input id="length" type="number" placeholder="Length cm" class="rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2 outline-none focus:border-[#d4af37]"/>
+            <input id="width" type="number" placeholder="Width cm" class="rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2 outline-none focus:border-[#d4af37]"/>
+            <input id="height" type="number" placeholder="Height cm" class="rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2 outline-none focus:border-[#d4af37]"/>
+            <select id="zone" class="col-span-2 rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2 outline-none focus:border-[#d4af37]">
               <option value="1">Local (Ahmedabad)</option>
               <option value="1.4">Within Gujarat</option>
               <option value="1.9">Interstate</option>
             </select>
           </div>
-          <button id="calcShip" class="mt-3 w-full bg-emerald-700 text-white py-2.5 rounded-lg font-semibold">Calculate Shipping</button>
-          <p id="shipOut" class="mt-2 text-sm font-semibold text-emerald-700"></p>
+          <button id="calcShip" class="mt-3 w-full rounded-xl bg-[#064e3b] py-3 text-sm font-black uppercase tracking-wide text-white shadow-lg hover:bg-emerald-900">Calculate Shipping</button>
+          <p id="shipOut" class="mt-2 text-sm font-bold text-[#064e3b]"></p>
+          <div class="mt-5 grid grid-cols-2 gap-3 text-xs font-bold">
+            <div class="rounded-2xl border border-[#d4af37]/40 bg-amber-50 p-3">✅ GST invoices ready</div>
+            <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-3">🚚 Same-day Ahmedabad</div>
+            <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-3">♻️ Eco range available</div>
+            <div class="rounded-2xl border border-[#d4af37]/40 bg-amber-50 p-3">🏭 Factory-direct stock</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="relative -mt-6 bg-transparent">
+      <div class="mx-auto max-w-7xl px-4">
+        <div class="rounded-[2rem] border border-[#d4af37]/30 bg-white p-4 shadow-2xl">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-xs font-black uppercase tracking-[0.22em] text-[#064e3b]">Instant Category Slider</p>
+              <h2 class="text-2xl font-black text-slate-950">Factory Stock by Demand</h2>
+            </div>
+            <a href="#shop" class="hidden rounded-full bg-[#064e3b] px-4 py-2 text-xs font-black text-white sm:inline-flex">View All</a>
+          </div>
+          <div class="mt-4 flex gap-4 overflow-x-auto pb-2 text-center">
+            <a href="#shop" class="min-w-[132px] rounded-2xl border border-emerald-100 bg-emerald-50 p-3 text-[#064e3b]"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">🍱</span><span class="mt-2 block text-xs font-black">3CP/4CP/5CP Meal Trays</span></a>
+            <a href="#shop" class="min-w-[132px] rounded-2xl border border-emerald-100 bg-emerald-50 p-3 text-[#064e3b]"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">🥣</span><span class="mt-2 block text-xs font-black">Soup Bowls</span></a>
+            <button data-cat="Fiber Plates" class="jump-cat min-w-[132px] rounded-2xl border border-[#d4af37]/50 bg-amber-50 p-3 text-[#064e3b]"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">🍽️</span><span class="mt-2 block text-xs font-black">Premium Fiber Plates</span></button>
+            <a href="#shop" class="min-w-[132px] rounded-2xl border border-emerald-100 bg-emerald-50 p-3 text-[#064e3b]"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">🥤</span><span class="mt-2 block text-xs font-black">Plastic Wholesale Cups</span></a>
+            <a href="#shop" class="min-w-[132px] rounded-2xl border border-emerald-100 bg-emerald-50 p-3 text-[#064e3b]"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">🧻</span><span class="mt-2 block text-xs font-black">Paper Napkins</span></a>
+            <a href="#shop" class="min-w-[132px] rounded-2xl border border-emerald-100 bg-emerald-50 p-3 text-[#064e3b]"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">🥄</span><span class="mt-2 block text-xs font-black">Cutlery Sets</span></a>
+            <a href="#shop" class="min-w-[132px] rounded-2xl border border-emerald-100 bg-emerald-50 p-3 text-[#064e3b]"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">🛍️</span><span class="mt-2 block text-xs font-black">Heavy Catering Bags</span></a>
+            <a href="#shop" class="min-w-[132px] rounded-2xl border border-emerald-100 bg-emerald-50 p-3 text-[#064e3b]"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">🎁</span><span class="mt-2 block text-xs font-black">Sweet Boxes</span></a>
+            <a href="#shop" class="min-w-[132px] rounded-2xl border border-emerald-100 bg-emerald-50 p-3 text-[#064e3b]"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white text-3xl shadow">📦</span><span class="mt-2 block text-xs font-black">Industrial Storage Boxes</span></a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="bg-emerald-50 border-y border-emerald-100">
-      <div class="max-w-7xl mx-auto px-4 py-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-semibold">
-        <p>✅ 500+ Items in Stock</p>
-        <p>🚚 Same Day Dispatch</p>
-        <p>♻️ Eco-Friendly / Biodegradable Range</p>
-        <p>🧾 GST Invoicing Ready</p>
-      </div>
-    </section>
-
-    
     <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex items-end justify-between flex-wrap gap-2">
-        <h2 class="text-3xl font-extrabold">Shop by Category</h2>
-        <p class="text-sm text-slate-600">Click any category to jump to products and view filtered items.</p>
+        <div>
+          <p class="text-sm font-black uppercase tracking-[0.22em] text-[#064e3b]">Live Catalog Navigation</p>
+          <h2 class="text-3xl font-black text-slate-950">Shop by Category</h2>
+        </div>
+        <p class="text-sm font-semibold text-slate-600">Click any category to jump to products and view filtered items.</p>
       </div>
       <div id="categoryGrid" class="mt-5 flex gap-3 overflow-x-auto pb-2 text-center"></div>
+    </section>
+
+    <section id="vipSampleKit" class="max-w-7xl mx-auto px-4 pb-8">
+      <div class="rounded-2xl border border-amber-300/40 bg-gradient-to-r from-emerald-900 to-emerald-800 p-6 text-white shadow-xl">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">VIP Factory Program</p>
+        <h3 class="mt-2 text-2xl font-extrabold">Verify Our Quality Before Bulk Buying. Apply for Veer Mahadev VIP Sample Kit.</h3>
+        <form id="vipSampleForm" class="mt-5 grid gap-3 md:grid-cols-2">
+          <input id="vipBusinessName" required class="rounded-lg border border-emerald-600 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/80" placeholder="Business/Caterer Name" />
+          <input id="vipWhatsapp" required class="rounded-lg border border-emerald-600 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/80" placeholder="WhatsApp Number" />
+          <input id="vipGstin" class="rounded-lg border border-emerald-600 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/80" placeholder="GSTIN (Optional)" />
+          <select id="vipVolume" required class="rounded-lg border border-emerald-600 bg-emerald-950/50 px-3 py-2 text-sm text-white">
+            <option value="">Expected Monthly Order Volume</option>
+            <option>10,000 to 50,000 pcs/month</option>
+            <option>50,000 to 1,000,000 pcs/month</option>
+            <option>1,000,000+ pcs/month (Elite VIP Corporate Partner)</option>
+          </select>
+          <button class="md:col-span-2 rounded-lg bg-amber-500 py-2.5 text-sm font-bold text-emerald-950 hover:bg-amber-400">Submit VIP Sample Request</button>
+          <p id="vipSampleMsg" class="md:col-span-2 text-xs font-semibold text-amber-200"></p>
+        </form>
+      </div>
     </section>
 
     <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
@@ -286,6 +425,7 @@
           <li><a href="#wholesale">Bulk Inquiry</a></li>
           <li><a href="#">Shipping Policy</a></li>
           <li><a href="#">GST Invoicing</a></li>
+          <li><a href="./quality-compliance-certificates.pdf" target="_blank" rel="noopener">Quality & Compliance Certificates</a></li>
         </ul>
       </div>
       <div>
@@ -333,8 +473,15 @@
     <div id="cartItems" class="p-4 h-[calc(100%-220px)] overflow-y-auto hide-scrollbar"></div>
     <div class="p-4 border-t bg-slate-50">
       <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
+      <p class="text-xs text-slate-600 mt-1">Shipping Zone: <span id="shippingZoneLabel" class="font-semibold">Ahmedabad</span></p>
+      <p class="text-xs text-slate-600">Estimated Shipping: ₹<span id="shippingCharge">0</span></p>
       <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
       <div class="mt-3 grid gap-2">
+        <select id="shippingZone" class="border rounded-lg px-3 py-2 text-sm">
+          <option value="ahmedabad">Ahmedabad Zone</option>
+          <option value="gujarat">Rest of Gujarat</option>
+          <option value="interstate">Outside Gujarat</option>
+        </select>
         <input id="customerName" class="border rounded-lg px-3 py-2 text-sm" placeholder="Customer Name (required)" />
         <textarea id="customerAddress" class="border rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Full Address with City, State, Pincode (required)"></textarea>
         <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
@@ -344,10 +491,96 @@
           <span>💬</span><span>Order on WhatsApp</span>
         </button>
         <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Buy Now</button>
+        <button id="directorCallBtn" class="hidden w-full rounded-lg border border-amber-300 bg-amber-50 py-2 text-sm font-bold text-amber-900">👑 Large B2B Contract? Speak Directly with Director Karan Prajapati</button>
+        <button id="creditRequestBtn" class="w-full rounded-lg border border-emerald-200 bg-white py-2 text-xs font-semibold text-emerald-800">Apply for Corporate Credit / Post-Paid Billing (Registered GST Businesses Only)</button>
+        <div id="trustBadgeRowCart" class="grid grid-cols-2 gap-2 text-[10px] md:grid-cols-4"></div>
       </div>
     </div>
   </aside>
   <div id="drawerOverlay" class="hidden fixed inset-0 bg-black/40 z-50"></div>
+  <div id="checkoutModal" class="hidden fixed inset-0 z-[75] bg-black/60 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-5xl bg-white rounded-xl shadow-2xl flex flex-col my-auto max-h-[95vh] md:max-h-[90vh] overflow-hidden border border-emerald-100">
+      <div class="flex items-center justify-between border-b border-emerald-100 bg-gradient-to-r from-emerald-950 via-emerald-900 to-white px-4 py-3 md:px-6">
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-300">Veer Mahadev Secure B2B Gateway</p>
+          <h3 class="text-lg font-black text-white">PhonePe Institutional Checkout</h3>
+        </div>
+        <button id="closeCheckoutModal" class="rounded border border-amber-200/70 px-3 py-1 text-sm font-semibold text-amber-100 hover:bg-emerald-800">Close</button>
+      </div>
+      <div class="overflow-y-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-12 gap-6 style-scrollbar">
+        <div class="md:col-span-7 space-y-4">
+          <div class="rounded-xl border border-emerald-100 bg-emerald-50/60 p-3">
+            <p class="text-sm font-semibold text-emerald-900">Verified Buyer Profile</p>
+            <p id="checkoutProfilePreview" class="mt-1 text-sm text-slate-600">Login profile required before checkout.</p>
+          </div>
+          <div class="rounded-xl border border-emerald-100 p-3">
+            <p class="text-sm font-semibold text-slate-700">Delivery Address</p>
+            <p id="checkoutAddressPreview" class="mt-1 text-sm text-slate-600">Please fill customer name and address in cart.</p>
+          </div>
+          <details id="checkoutItemsAccordion" class="rounded-xl border border-emerald-100 bg-white p-3">
+            <summary class="cursor-pointer text-sm font-bold text-emerald-900">Order Summary / Cart Breakdown</summary>
+            <div id="checkoutItemBreakdown" class="mt-3 max-h-52 space-y-2 overflow-y-auto pr-1 text-sm text-slate-700"></div>
+          </details>
+          <div class="rounded-xl border border-[#5f259f]/30 bg-[#5f259f]/5 p-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <p class="text-sm font-semibold text-[#5f259f]">Payment Mode: PhonePe / UPI</p>
+              <span id="phonepeLiveStatus" class="rounded-full border border-emerald-200 bg-white px-2 py-1 text-[11px] font-bold text-emerald-700">Secure node connecting...</span>
+            </div>
+            <p class="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900">Direct Manufacturer Clearance: Verify order via WhatsApp/UPI instantly.</p>
+            <div class="mt-3 flex flex-col items-center justify-center p-3 bg-white border border-amber-200 rounded-lg">
+              <div class="w-full max-w-[280px] mx-auto rounded-xl border-2 border-amber-300 bg-white p-2 shadow-lg">
+                <img id="checkoutQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=upi://pay?pa=8050389261@upi&pn=Veer%20Mahadev%20Plastic" alt="PhonePe UPI QR" class="h-auto w-full rounded" />
+              </div>
+              <p class="mt-2 text-xs text-slate-500 text-center">Scan via PhonePe / GPay / UPI app to pay securely.</p>
+            </div>
+            <label class="mt-3 block text-xs font-bold uppercase tracking-wide text-slate-600" for="utrInput">UTR / Transaction ID after payment</label>
+            <input id="utrInput" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#5f259f]" placeholder="Paste PhonePe / UPI UTR here" />
+          </div>
+        </div>
+        <div class="md:col-span-5">
+          <div class="rounded-xl border border-emerald-100 bg-slate-50 p-4 sticky top-0">
+            <p class="text-sm font-semibold text-slate-700">Professional Price Details</p>
+            <div class="mt-3 space-y-2 text-sm font-medium tabular-nums">
+              <div class="flex justify-between"><span>Order Value</span><span>₹<span id="checkoutSubtotal">0</span></span></div>
+              <div class="flex justify-between"><span>Dynamic Tiered Shipping</span><span>₹<span id="checkoutShipping">0</span></span></div>
+              <hr />
+              <div class="flex justify-between text-lg font-black text-emerald-900"><span>Total Final Amount</span><span>₹<span id="checkoutTotal">0</span></span></div>
+            </div>
+            <button id="shareCartQuoteBtn" class="mt-3 w-full rounded-lg border border-emerald-300 bg-white py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">🔗 Share Cart / Quote via WhatsApp</button>
+            <a href="https://wa.me/918050389261?text=Need%20Help%20with%20Payment%3F%20Please%20connect%20me%20with%20Factory%20Billing%20Desk." target="_blank" rel="noopener" class="mt-3 block rounded-lg border border-amber-300 bg-amber-50 py-2 text-center text-xs font-bold text-amber-900 hover:bg-amber-100">Need Help with Payment? Connect directly with Factory Billing Desk</a>
+            <button id="confirmPayBtn" class="mt-4 w-full rounded-lg bg-[#5f259f] py-2 font-semibold text-white hover:bg-[#4c1d95]">Verify UTR & Confirm PhonePe Payment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="profileGateModal" class="hidden fixed inset-0 z-[76] flex items-end justify-center bg-black/60 px-4 pb-4 sm:items-center sm:pb-0">
+    <div class="vmp-auth-card w-full max-w-md rounded-2xl border border-amber-300/50 bg-[#064e3b] p-5 text-white shadow-2xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300">VIP Buyer Access</p>
+      <h3 class="mt-2 text-2xl font-black">Unlock Secure B2B Checkout</h3>
+      <p class="mt-1 text-sm text-emerald-100">Please share buyer details once so we can protect quotes, payment, and delivery verification.</p>
+      <form id="profileGateForm" class="mt-4 grid gap-3">
+        <input id="gateFullName" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Full Name" />
+        <input id="gateMobile" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Mobile / WhatsApp Number" />
+        <input id="gateEmail" required type="email" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Email Address" />
+        <button class="rounded-lg bg-amber-500 py-2 text-sm font-bold text-emerald-950 hover:bg-amber-400">Save Profile & Continue</button>
+        <p id="profileGateMsg" class="text-xs font-semibold text-amber-200"></p>
+      </form>
+    </div>
+  </div>
+  <div id="vmpToastHost" class="fixed right-4 top-24 z-[90] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2 pointer-events-none"></div>
+  <div id="creditModal" class="hidden fixed inset-0 z-[69] bg-black/50 px-4">
+    <div class="mx-auto mt-16 w-full max-w-lg rounded-2xl bg-white p-5 shadow-2xl">
+      <div class="flex items-center justify-between"><h3 class="text-lg font-black text-emerald-800">Corporate Credit Request</h3><button id="closeCreditModal" class="rounded border px-2 py-1 text-xs">Close</button></div>
+      <form id="creditForm" class="mt-3 grid gap-2">
+        <input id="creditName" required class="rounded border px-3 py-2 text-sm" placeholder="Business Name" />
+        <input id="creditGst" required class="rounded border px-3 py-2 text-sm" placeholder="GST Number" />
+        <input id="creditVolume" required type="number" class="rounded border px-3 py-2 text-sm" placeholder="Expected Monthly Volume (₹)" />
+        <textarea id="creditNotes" class="rounded border px-3 py-2 text-sm" rows="2" placeholder="Any notes"></textarea>
+        <button class="rounded bg-emerald-700 py-2 text-sm font-semibold text-white">Submit Credit Request</button>
+      </form>
+    </div>
+  </div>
 
   <div id="productModal" class="hidden fixed inset-0 z-[68] bg-black/50 px-4">
     <div class="mx-auto mt-10 max-w-3xl rounded-[2rem] bg-white shadow-2xl">
@@ -367,7 +600,14 @@
             <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">Size / Capacity</p><p id="productModalSize" class="mt-1 font-semibold text-slate-800"></p></div>
             <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">Colour</p><p id="productModalColor" class="mt-1 font-semibold text-slate-800"></p></div>
             <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">HSN Code</p><p id="productModalHsn" class="mt-1 font-semibold text-slate-800"></p></div>
-            <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">MOQ</p><p id="productModalMoq" class="mt-1 font-semibold text-slate-800"></p></div>
+          <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">MOQ</p><p id="productModalMoq" class="mt-1 font-semibold text-slate-800"></p></div>
+          </div>
+          <div id="trustBadgeRowModal" class="grid grid-cols-2 gap-2 text-[10px] md:grid-cols-4"></div>
+          <div class="rounded-[1.5rem] border border-slate-100 p-4">
+            <p class="text-sm font-semibold text-slate-800">Texture Preview</p>
+            <video id="productTextureVideo" class="mt-2 h-36 w-full rounded-xl bg-black/5 object-cover" autoplay muted loop playsinline controls>
+              <source id="productTextureVideoSource" src="" type="video/mp4">
+            </video>
           </div>
           <div class="rounded-[1.5rem] border border-emerald-100 p-4">
             <p class="text-sm font-semibold text-emerald-800">Tier Pricing</p>
@@ -824,7 +1064,41 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
 
     const PRODUCT_ITEMS = parsePriceData(RAW_PRICE_DATA);
 
-    const products = PRODUCT_ITEMS.map(item => {
+
+    const FIBER_PLATE_ITEMS = [
+      { id: "fp_01", name: "FIBER PLATE DESIGN NO.1", price: 60, image: "https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_02", name: "FIBER PLATE DESIGN NO.2", price: 60, image: "https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_03", name: "FIBER PLATE DESIGN NO.3", price: 60, image: "https://i.postimg.cc/Q9q0dX42/IMG-20260425-WA0002.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_04", name: "FIBER PLATE DESIGN NO.4", price: 60, image: "https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_05", name: "FIBER PLATE DESIGN NO.5", price: 60, image: "https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_06", name: "FIBER PLATE DESIGN NO.6", price: 60, image: "https://i.postimg.cc/FksGf2wc/IMG-20260425-WA0027.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_07", name: "FIBER PLATE DESIGN NO.7", price: 60, image: "https://i.postimg.cc/hQPMJHNV/IMG-20260425-WA0028.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_08", name: "FIBER PLATE DESIGN NO.8", price: 60, image: "https://i.postimg.cc/BPQN8dRB/IMG-20260425-WA0030.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_09", name: "FIBER PLATE DESIGN NO.9", price: 60, image: "https://i.postimg.cc/xNTgkWBK/IMG-20260425-WA0033.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_10", name: "FIBER PLATE DESIGN NO.10", price: 60, image: "https://i.postimg.cc/N2fbyWZP/IMG-20260425-WA0034.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_11", name: "FIBER PLATE DESIGN NO.11", price: 60, image: "https://i.postimg.cc/1V5MgLbH/IMG-20260425-WA0035.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_12", name: "FIBER PLATE DESIGN NO.12", price: 60, image: "https://i.postimg.cc/K3vQKdCq/IMG-20260425-WA0040.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_13", name: "FIBER PLATE DESIGN NO.13", price: 60, image: "https://i.postimg.cc/CnLJZW9v/IMG-20260425-WA0037.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_14", name: "FIBER PLATE DESIGN NO.14", price: 60, image: "https://i.postimg.cc/H8s3JfFN/IMG-20260425-WA0038.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_15", name: "FIBER PLATE DESIGN NO.15", price: 60, image: "https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_16", name: "FIBER PLATE DESIGN NO.16", price: 60, image: "https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_17", name: "FIBER PLATE DESIGN NO.17", price: 60, image: "https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_18", name: "FIBER PLATE DESIGN NO.18", price: 60, image: "https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_19", name: "FIBER PLATE DESIGN NO.19", price: 60, image: "https://i.postimg.cc/06DVhGpZ/IMG-20260515-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_20", name: "FIBER PLATE DESIGN NO.20", price: 60, image: "https://i.postimg.cc/rdxf7GSf/IMG-20260515-WA0023.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_21", name: "FIBER PLATE DESIGN NO.21", price: 60, image: "https://i.postimg.cc/NymdZ81G/IMG-20260515-WA0030.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_22", name: "FIBER PLATE DESIGN NO.22", price: 60, image: "https://i.postimg.cc/XZdstKwJ/IMG-20260515-WA0031.jpg", category: "Fiber Plates", minOrder: 100 }
+    ].map((item) => ({
+      ...item,
+      stock: 500,
+      tiers: [
+        { min: 100, price: item.price },
+        { min: 500, price: Number((item.price * 0.94).toFixed(2)) },
+        { min: 5000, price: Number((item.price * 0.88).toFixed(2)) }
+      ]
+    }));
+
+    const parsedCatalogProducts = PRODUCT_ITEMS.map(item => {
       const id = slugify(item.name);
       const overridePrice = Number(priceOverrides[id]);
       const tiers = Number.isFinite(overridePrice) && overridePrice > 0
@@ -841,6 +1115,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         image: PRODUCT_IMAGE_OVERRIDES[id] || item.image || imageFrom(item.name)
       };
     });
+
+    const products = [...parsedCatalogProducts, ...FIBER_PLATE_ITEMS]
+      .filter((item) => !/negotiable|test grid|plain wholesale/i.test(`${item.name || ''} ${item.category || ''}`));
 
     writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
       id: product.id,
@@ -885,6 +1162,116 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(!element) return null;
       element.addEventListener(eventName, handler);
       return element;
+    }
+
+
+    function cleanupEntryModeBackdrop(){
+      const modal = document.getElementById('entryModeModal');
+      if(modal){
+        modal.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+        modal.setAttribute('aria-hidden', 'true');
+        modal.removeAttribute('data-open');
+        modal.style.setProperty('display', 'none', 'important');
+        modal.style.setProperty('pointer-events', 'none', 'important');
+        modal.style.removeProperty('backdrop-filter');
+        modal.style.removeProperty('filter');
+      }
+      document.querySelectorAll('[data-vmp-entry-backdrop]').forEach((backdrop) => {
+        backdrop.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+        backdrop.setAttribute('aria-hidden', 'true');
+        backdrop.removeAttribute('data-open');
+        backdrop.style.setProperty('display', 'none', 'important');
+        backdrop.style.setProperty('pointer-events', 'none', 'important');
+        backdrop.style.removeProperty('backdrop-filter');
+        backdrop.style.removeProperty('filter');
+      });
+      const appShell = document.querySelector('.app-shell');
+      if(appShell){
+        appShell.style.removeProperty('filter');
+        appShell.style.removeProperty('backdrop-filter');
+        appShell.style.removeProperty('pointer-events');
+      }
+      document.body.classList.remove('overflow-hidden');
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('position');
+      document.body.style.removeProperty('pointer-events');
+      document.documentElement.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('pointer-events');
+    }
+
+    function applyShoppingMode(mode, silent = false){
+      const normalizedMode = mode === 'wholesale' ? 'wholesale' : 'retail';
+      localStorage.setItem('vmp_shopping_preference', normalizedMode);
+      localStorage.setItem('vmpShoppingMode', normalizedMode);
+      cleanupEntryModeBackdrop();
+      if(!silent){
+        notifyVmp(`Shopping preference set to ${normalizedMode}. Storefront unlocked.`, 'Shopping mode saved');
+      }
+    }
+
+    window.applyShoppingMode = applyShoppingMode;
+
+    function initEntryModeGate(){
+      bindById('shopRetailBtn', 'click', (event) => { if(event.defaultPrevented) return; applyShoppingMode('retail'); });
+      bindById('shopWholesaleBtn', 'click', (event) => { if(event.defaultPrevented) return; applyShoppingMode('wholesale'); });
+      bindById('entryModeModal', 'click', (event) => {
+        if(event.target?.id === 'entryModeModal') applyShoppingMode('retail');
+      });
+      const savedMode = localStorage.getItem('vmp_shopping_preference') || localStorage.getItem('vmpShoppingMode');
+      if(savedMode){
+        applyShoppingMode(savedMode, true);
+        return;
+      }
+      const modal = document.getElementById('entryModeModal');
+      if(!modal) return;
+      modal.style.removeProperty('display');
+      modal.style.removeProperty('pointer-events');
+      modal.setAttribute('aria-hidden', 'false');
+      modal.setAttribute('data-open', 'true');
+      modal.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    let pendingAuthAction = null;
+
+    function notifyVmp(message, title = 'VMP Priority Update'){
+      const host = document.getElementById('vmpToastHost');
+      if(!host) return;
+      setTimeout(() => {
+        const item = document.createElement('div');
+        item.className = 'vmp-toast-enter pointer-events-auto rounded-xl border border-amber-300/70 bg-[#064e3b] px-4 py-3 text-sm text-emerald-50 shadow-2xl';
+        item.innerHTML = `<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-300">${title}</p><p class="mt-1 font-semibold">${message}</p>`;
+        host.appendChild(item);
+        setTimeout(() => item.remove(), 4200);
+      }, 250);
+    }
+
+    function getBuyerProfile(){
+      try { return JSON.parse(localStorage.getItem('vmp_user_profile') || 'null'); }
+      catch { return null; }
+    }
+
+    function hasBuyerProfile(){
+      const profile = getBuyerProfile();
+      return Boolean(profile?.fullName && profile?.mobile && profile?.email);
+    }
+
+    function openProfileGate(afterSave){
+      pendingAuthAction = typeof afterSave === 'function' ? afterSave : null;
+      const modal = document.getElementById('profileGateModal');
+      if(modal) modal.classList.remove('hidden');
+    }
+
+    function closeProfileGate(){
+      document.getElementById('profileGateModal')?.classList.add('hidden');
+    }
+
+    function requireBuyerProfile(afterSave){
+      if(hasBuyerProfile()) return true;
+      openProfileGate(afterSave);
+      notifyVmp('Please save your buyer profile to unlock checkout and WhatsApp ordering.', 'Buyer verification required');
+      return false;
     }
 
     function openAuthHub(){
@@ -985,6 +1372,17 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       document.getElementById('productModalMoq').textContent = meta.moq;
       document.getElementById('productModalPricing').textContent = product.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ');
       document.getElementById('productModalUse').textContent = meta.use;
+      const textureVideos = {
+        '5cp-meal-tray-with-lid-7045': 'https://cdn.coverr.co/videos/coverr-hands-holding-a-box-1579/1080p.mp4',
+        'premium-butter-paper-sheet': 'https://cdn.coverr.co/videos/coverr-working-with-baking-paper-1578/1080p.mp4'
+      };
+      const fallbackVideo = 'https://cdn.coverr.co/videos/coverr-hands-holding-a-box-1579/1080p.mp4';
+      const source = document.getElementById('productTextureVideoSource');
+      const video = document.getElementById('productTextureVideo');
+      if(source && video){
+        source.src = textureVideos[product.id] || fallbackVideo;
+        video.load();
+      }
       productModal.classList.remove('hidden');
     }
 
@@ -1014,7 +1412,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       productGrid.innerHTML = filteredProducts.map(p => `
         <article onclick="openProductDetails('${p.id}')" class="cursor-pointer overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
           <div class="relative">
-            <img src="${p.image}" alt="${p.name}" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
+            <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
             <button onclick="event.stopPropagation();shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
               <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="18" cy="5" r="3"></circle>
@@ -1056,10 +1454,31 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return cart.reduce((sum, item) => sum + (item.qty * item.unit), 0);
     }
 
+    function shippingEstimate(subtotal){
+      const zone = document.getElementById('shippingZone')?.value || 'ahmedabad';
+      if(zone === 'ahmedabad') return { zoneLabel: 'Ahmedabad', charge: subtotal >= 5000 ? 0 : 150 };
+      if(zone === 'gujarat'){
+        if(subtotal >= 50000) return { zoneLabel: 'Rest of Gujarat', charge: 0 };
+        if(subtotal >= 15000) return { zoneLabel: 'Rest of Gujarat', charge: 450 };
+        return { zoneLabel: 'Rest of Gujarat', charge: 750 };
+      }
+      return { zoneLabel: 'Outside Gujarat', charge: 1250 };
+    }
+
     function renderCart(){
       if(!cartCount || !cartSubtotal || !cartItems) return;
       cartCount.textContent = cartTotalQty();
-      cartSubtotal.textContent = cartTotalAmount().toFixed(2);
+      const subtotal = cartTotalAmount();
+      cartSubtotal.textContent = subtotal.toFixed(2);
+      const estimate = shippingEstimate(subtotal);
+      const shippingCharge = document.getElementById('shippingCharge');
+      const shippingZoneLabel = document.getElementById('shippingZoneLabel');
+      if(shippingCharge) shippingCharge.textContent = Number(estimate.charge).toFixed(2);
+      if(shippingZoneLabel) shippingZoneLabel.textContent = estimate.zoneLabel;
+      const directorBtn = document.getElementById('directorCallBtn');
+      if(directorBtn){
+        directorBtn.classList.toggle('hidden', cartTotalAmount() < 100000);
+      }
       if(cart.length === 0){
         cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
         updateWhatsappButton();
@@ -1074,7 +1493,25 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
         </div>
       `).join('');
+      renderTrustBadges();
       updateWhatsappButton();
+    }
+
+    function trustBadgesMarkup(){
+      return [
+        '🛡️ 100% Secure Payments',
+        '🏭 Direct from Ahmedabad Factory',
+        '📦 Safe & Hygienic Packaging',
+        '✅ Genuine Biodegradable Quality'
+      ].map((t) => `<div class="rounded-lg border border-emerald-100 bg-white px-2 py-1"><span class="font-semibold text-slate-700">${t}</span></div>`).join('');
+    }
+
+    function renderTrustBadges(){
+      const cartRow = document.getElementById('trustBadgeRowCart');
+      const modalRow = document.getElementById('trustBadgeRowModal');
+      const markup = trustBadgesMarkup();
+      if(cartRow) cartRow.innerHTML = markup;
+      if(modalRow) modalRow.innerHTML = markup;
     }
 
     window.removeCartItem = function(idx){
@@ -1092,9 +1529,11 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       else cart.push({id, name:p.name, qty, unit});
       saveCart();
       renderCart();
+      notifyVmp(`${p.name} added to cart successfully.`, 'Cart updated');
     }
 
     window.buyNow = function(id){
+      if(!requireBuyerProfile(() => { addToCart(id); openCart(); })) return;
       addToCart(id);
       openCart();
     }
@@ -1175,6 +1614,161 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(drawerOverlay) drawerOverlay.classList.add('hidden');
     }
 
+    function openCheckoutModal(){
+      if(!requireBuyerProfile(openCheckoutModal)) return;
+      const modal = document.getElementById('checkoutModal');
+      const subtotal = cartTotalAmount();
+      const estimate = shippingEstimate(subtotal);
+      const total = subtotal + Number(estimate.charge || 0);
+      const profile = getBuyerProfile();
+      const name = (document.getElementById('customerName')?.value || profile?.fullName || '').trim();
+      const address = (document.getElementById('customerAddress')?.value || '').trim();
+      const profilePreview = document.getElementById('checkoutProfilePreview');
+      const addressPreview = document.getElementById('checkoutAddressPreview');
+      if(profilePreview && profile){
+        profilePreview.textContent = `${profile.fullName} • ${profile.mobile} • ${profile.email}`;
+      }
+      if(addressPreview){
+        addressPreview.textContent = (name && address) ? `${name} • ${address}` : 'Please fill customer name and address in cart.';
+      }
+      const itemBreakdown = document.getElementById('checkoutItemBreakdown');
+      if(itemBreakdown){
+        itemBreakdown.innerHTML = cart.map((item) => `
+          <div class="flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2">
+            <div><p class="font-semibold">${item.name}</p><p class="text-xs text-slate-500">Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</p></div>
+            <p class="font-bold text-emerald-800">₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}</p>
+          </div>
+        `).join('') || '<p class="text-sm text-slate-500">Cart is empty.</p>';
+      }
+      const summaryAccordion = document.getElementById('checkoutItemsAccordion');
+      if(summaryAccordion){
+        const isDesktopCheckout = window.matchMedia('(min-width: 768px)').matches;
+        if(isDesktopCheckout){
+          summaryAccordion.setAttribute('open', 'open');
+        } else {
+          summaryAccordion.removeAttribute('open');
+        }
+      }
+      const subEl = document.getElementById('checkoutSubtotal');
+      const shipEl = document.getElementById('checkoutShipping');
+      const totalEl = document.getElementById('checkoutTotal');
+      if(subEl) subEl.textContent = subtotal.toFixed(2);
+      if(shipEl) shipEl.textContent = Number(estimate.charge).toFixed(2);
+      if(totalEl) totalEl.textContent = total.toFixed(2);
+      const qr = document.getElementById('checkoutQrImage');
+      if(qr){
+        const upiUri = `upi://pay?pa=8050389261@upi&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('VMP B2B Order')}`;
+        qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(upiUri)}`;
+      }
+      const status = document.getElementById('phonepeLiveStatus');
+      if(status){
+        status.textContent = 'Secure node connecting...';
+        setTimeout(() => { status.textContent = 'Live & listening for UPI confirmation'; }, 1000);
+      }
+      if(modal) modal.classList.remove('hidden');
+      notifyVmp('Secure PhonePe B2B gateway opened.', 'Checkout ready');
+    }
+
+    function closeCheckoutModal(){
+      document.getElementById('checkoutModal')?.classList.add('hidden');
+    }
+
+    function encodeSharedCartPayload(cartItems){
+      const payload = {
+        v: 1,
+        ts: Date.now(),
+        items: (Array.isArray(cartItems) ? cartItems : []).map((item) => ({
+          id: String(item.id || ''),
+          name: String(item.name || ''),
+          qty: Number(item.qty || 0),
+          unit: Number(item.unit || 0)
+        })).filter((item) => item.id && item.qty > 0)
+      };
+      return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    }
+
+    function decodeSharedCartPayload(encoded){
+      try {
+        const json = decodeURIComponent(escape(atob(String(encoded || ''))));
+        const parsed = JSON.parse(json);
+        if(!parsed || !Array.isArray(parsed.items)) return [];
+        return parsed.items
+          .map((item) => ({
+            id: String(item.id || ''),
+            name: String(item.name || ''),
+            qty: Math.max(1, Number(item.qty || 0)),
+            unit: Math.max(0, Number(item.unit || 0))
+          }))
+          .filter((item) => item.id && item.qty > 0);
+      } catch (error) {
+        console.warn('Invalid shared cart payload.', error);
+        return [];
+      }
+    }
+
+    function handleInboundSharedCart(){
+      const url = new URL(window.location.href);
+      const sharedParam = url.searchParams.get('shared_cart');
+      if(!sharedParam) return;
+      const sharedItems = decodeSharedCartPayload(sharedParam);
+      if(!sharedItems.length) return;
+      const mergedMap = new Map();
+      for(const item of cart){
+        mergedMap.set(item.id, { ...item });
+      }
+      for(const item of sharedItems){
+        const baseProduct = products.find((p) => p.id === item.id);
+        const safeUnit = item.unit > 0 ? item.unit : Number(baseProduct?.tiers?.[0]?.price || 0);
+        if(mergedMap.has(item.id)){
+          const current = mergedMap.get(item.id);
+          mergedMap.set(item.id, { ...current, qty: Number(current.qty || 0) + item.qty });
+        } else {
+          mergedMap.set(item.id, { id: item.id, name: item.name || baseProduct?.name || item.id, qty: item.qty, unit: safeUnit });
+        }
+      }
+      cart = Array.from(mergedMap.values());
+      saveCart();
+      renderCart();
+      openCart();
+      url.searchParams.delete('shared_cart');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      alert('Shared quote items loaded into cart successfully.');
+    }
+
+    function shareCartQuoteViaWhatsApp(){
+      const sourceCart = loadCart();
+      if(!Array.isArray(sourceCart) || !sourceCart.length){
+        alert('Please add products to cart before sharing quote.');
+        return;
+      }
+      const encoded = encodeSharedCartPayload(sourceCart);
+      const sharedLink = `${window.location.origin}${window.location.pathname}?shared_cart=${encodeURIComponent(encoded)}`;
+      const summaryLines = sourceCart.map((item) => `• ${item.name} x ${item.qty} - ₹${(Number(item.qty||0) * Number(item.unit||0)).toFixed(2)}`).join('\n');
+      const subtotal = sourceCart.reduce((sum, item) => sum + (Number(item.qty || 0) * Number(item.unit || 0)), 0).toFixed(2);
+      const message = `Hello! Here is the wholesale order quotation from Veer Mahadev Plastic.\n\n*Order Summary:*\n${summaryLines}\n\n*Total Amount:* ₹${subtotal}\n\nClick this secure link to view, verify, and complete the payment directly: ${sharedLink}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function initHeroAdOverlay(){
+      const overlay = document.getElementById('heroAdOverlay');
+      const video = document.getElementById('heroAdVideo');
+      if(!overlay || !video) return;
+      const seen = localStorage.getItem('vmp_ad_seen') === 'true';
+      if(seen){
+        overlay.style.display = 'none';
+        return;
+      }
+      const hideOverlay = () => {
+        overlay.classList.add('vmp-ad-fade-out');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          localStorage.setItem('vmp_ad_seen', 'true');
+        }, 800);
+      };
+      video.addEventListener('ended', hideOverlay, { once: true });
+      video.addEventListener('error', hideOverlay, { once: true });
+    }
+
     // Shipping calculator
     bindById('calcShip', 'click', ()=>{
       const w = Number(document.getElementById('weight').value||0);
@@ -1199,6 +1793,22 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       const msg = document.getElementById('bulkMsg');
       msg.className = 'text-sm font-semibold text-emerald-700';
       msg.textContent = `Inquiry submitted successfully. Our team will contact you shortly. File: ${fileName}`;
+      e.target.reset();
+    });
+    bindById('vipSampleForm', 'submit', (e)=>{
+      e.preventDefault();
+      const businessName = document.getElementById('vipBusinessName')?.value.trim() || '';
+      const whatsapp = document.getElementById('vipWhatsapp')?.value.trim() || '';
+      const gstin = document.getElementById('vipGstin')?.value.trim() || '';
+      const volume = document.getElementById('vipVolume')?.value || '';
+      const vipMsg = document.getElementById('vipSampleMsg');
+      if(!businessName || !whatsapp || !volume){
+        if(vipMsg) vipMsg.textContent = 'Please fill business name, WhatsApp, and expected volume.';
+        return;
+      }
+      const message = `Hello Veer Mahadev Plastic! I am interested in your VIP Factory Sample Kit for my catering business.%0ABusiness: ${encodeURIComponent(businessName)}%0AWhatsApp: ${encodeURIComponent(whatsapp)}%0AGSTIN: ${encodeURIComponent(gstin || 'Not provided')}%0AEstimated monthly volume: ${encodeURIComponent(volume)}%0APlease connect with priority assistance.`;
+      window.open(`https://wa.me/918050389261?text=${message}`,'_blank');
+      if(vipMsg) vipMsg.textContent = 'VIP request submitted. Redirecting to WhatsApp priority channel.';
       e.target.reset();
     });
 
@@ -1279,6 +1889,59 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     bindById('openCartFromDash', 'click', openCart);
     bindById('closeCart', 'click', closeCart);
     bindById('drawerOverlay', 'click', closeCart);
+    bindById('directorCallBtn', 'click', ()=>{
+      const msg = 'Hi Karan Prajapati ji, we have a large B2B requirement above ₹1 lakh. Please connect for factory-direct pricing and visit.';
+      window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
+    });
+    bindById('creditRequestBtn', 'click', ()=> document.getElementById('creditModal')?.classList.remove('hidden'));
+    bindById('closeCreditModal', 'click', ()=> document.getElementById('creditModal')?.classList.add('hidden'));
+    bindById('creditModal', 'click', (e)=>{ if(e.target.id === 'creditModal') e.target.classList.add('hidden'); });
+    bindById('creditForm', 'submit', (e)=>{
+      e.preventDefault();
+      const payload = {
+        name: document.getElementById('creditName')?.value.trim() || '',
+        gst: document.getElementById('creditGst')?.value.trim() || '',
+        volume: document.getElementById('creditVolume')?.value.trim() || '',
+        notes: document.getElementById('creditNotes')?.value.trim() || ''
+      };
+      const msg = `Corporate Credit Request%0ABusiness: ${encodeURIComponent(payload.name)}%0AGST: ${encodeURIComponent(payload.gst)}%0AMonthly Volume: ${encodeURIComponent(payload.volume)}%0ANotes: ${encodeURIComponent(payload.notes)}`;
+      window.open(`https://wa.me/918050389261?text=${msg}`,'_blank');
+      alert('Credit request captured. Our verification team will contact you.');
+      document.getElementById('creditModal')?.classList.add('hidden');
+      e.target.reset();
+    });
+
+    bindById('profileGateForm', 'submit', (e)=>{
+      e.preventDefault();
+      const profile = {
+        fullName: document.getElementById('gateFullName')?.value.trim() || '',
+        mobile: document.getElementById('gateMobile')?.value.trim() || '',
+        email: document.getElementById('gateEmail')?.value.trim() || '',
+        capturedAt: new Date().toISOString()
+      };
+      const msg = document.getElementById('profileGateMsg');
+      if(!profile.fullName || !profile.mobile || !profile.email){
+        if(msg) msg.textContent = 'Full name, mobile, and email are required.';
+        return;
+      }
+      localStorage.setItem('vmp_user_profile', JSON.stringify(profile));
+      const abandonedWebhookPayload = {
+        type: 'abandoned_cart_alert',
+        message: `Abandoned Cart Alert: User ${profile.fullName} (${profile.mobile}) left items in cart without UTR confirmation.`,
+        profile,
+        cartItems: cart,
+        cartTotal: cartTotalAmount(),
+        preparedAt: new Date().toISOString()
+      };
+      console.info(abandonedWebhookPayload.message, abandonedWebhookPayload);
+      localStorage.setItem('vmp_abandoned_cart_webhook_payload', JSON.stringify(abandonedWebhookPayload));
+      closeProfileGate();
+      notifyVmp('Buyer profile saved. Secure checkout is now unlocked.', 'Profile verified');
+      const next = pendingAuthAction;
+      pendingAuthAction = null;
+      if(typeof next === 'function') next();
+      e.target.reset();
+    });
 
     // WhatsApp actions (floating + cart)
     bindById('waFloating', 'click', (e)=>{
@@ -1287,6 +1950,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
     });
     bindById('waCart', 'click', ()=>{
+      if(!requireBuyerProfile(() => document.getElementById('waCart')?.click())) return;
       const details = getCustomerDetails();
       if(!details) { openCart(); return; }
       if(cart.length === 0){
@@ -1301,10 +1965,37 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     });
 
     bindById('buyNowCart', 'click', ()=>{
+      if(!requireBuyerProfile(() => document.getElementById('buyNowCart')?.click())) return;
       const details = getCustomerDetails();
       if(!details) { openCart(); return; }
-      alert(`Order initiated for ${details.name}. Our team will confirm delivery at provided address.`);
+      openCheckoutModal();
     });
+    bindById('closeCheckoutModal', 'click', closeCheckoutModal);
+    bindById('checkoutModal', 'click', (e)=>{ if(e.target.id === 'checkoutModal') closeCheckoutModal(); });
+    bindById('confirmPayBtn', 'click', ()=>{
+      if(!requireBuyerProfile(openCheckoutModal)) return;
+      const utr = (document.getElementById('utrInput')?.value || '').trim();
+      if(!utr){
+        notifyVmp('Please enter UTR / Transaction ID after payment.', 'UTR required');
+        return;
+      }
+      const payload = {
+        profile: getBuyerProfile(),
+        address: (document.getElementById('customerAddress')?.value || '').trim(),
+        shipping: shippingEstimate(cartTotalAmount()),
+        paymentMode: 'PhonePe / UPI',
+        utr,
+        items: cart,
+        subtotal: cartTotalAmount(),
+        createdAt: new Date().toISOString()
+      };
+      const orders = JSON.parse(localStorage.getItem('vmp_order_setups') || '[]');
+      orders.unshift(payload);
+      localStorage.setItem('vmp_order_setups', JSON.stringify(orders.slice(0, 25)));
+      notifyVmp('Order setup captured with PhonePe UTR for verification.', 'Payment verification queued');
+      closeCheckoutModal();
+    });
+    bindById('shareCartQuoteBtn', 'click', shareCartQuoteViaWhatsApp);
 
     // Repeat order
     bindById('repeatOrder', 'click', ()=>{
@@ -1337,7 +2028,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(productMatch){
         return `${productMatch.name} ka rate: ${productMatch.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ')}. Category: ${productMatch.category}.`;
       }
-      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'Bulk tier pricing active hai: 100+, 200+, 500+ quantity slabs. 500+ sabse kam rate (minimum price) rakha gaya hai.';
+      if(q.includes('price') || q.includes('rate') || q.includes('wholesale')) return 'Bulk tier pricing active hai: 100+, 500+, 5000+ quantity slabs. 5000+ sabse kam factory rate hai.';
       if(q.includes('shipping') || q.includes('delivery') || q.includes('dispatch')) return 'Shipping dead weight vs volumetric weight (jo zyada ho) par calculate hoti hai. Local/Gujarat/Interstate zones available hain.';
       if(q.includes('stock') || q.includes('available')) return 'Product cards par live stock badge dikh raha hai: In Stock, Low Stock, Out of Stock.';
       if(q.includes('eco') || q.includes('biodegradable')) return 'Haan ji, eco-friendly biodegradable range available hai. Aap "Eco" ya product name type karein to rate details mil jayengi.';
@@ -1361,9 +2052,17 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     };
 
     // initialize
+    initEntryModeGate();
     renderCategories();
     applyProductFilters();
     renderCart();
+    renderTrustBadges();
+    initHeroAdOverlay();
+    handleInboundSharedCart();
+    const reorderBtn = document.getElementById('repeatOrder');
+    if(reorderBtn) reorderBtn.textContent = '🔁 Re-Order Last Cart';
+    const shippingZone = document.getElementById('shippingZone');
+    if(shippingZone) shippingZone.addEventListener('change', renderCart);
     ['customerName','customerAddress'].forEach(id => {
       const element = document.getElementById(id);
       if(element) element.addEventListener('input', updateWhatsappButton);
