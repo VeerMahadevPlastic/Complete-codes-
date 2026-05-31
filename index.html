@@ -97,6 +97,24 @@
       <p class="mt-6 text-sm font-semibold tracking-[0.35em] text-emerald-700">WELCOME TO THE APP</p>
     </div>
   </div>
+
+  <div id="entryModeModal" data-vmp-entry-backdrop class="hidden fixed inset-0 z-[74] flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="w-full max-w-xl rounded-[2rem] border border-amber-300/60 bg-white p-6 shadow-2xl">
+      <p class="text-xs font-black uppercase tracking-[0.28em] text-emerald-700">Choose Shopping Type</p>
+      <h2 class="mt-2 text-3xl font-black text-slate-950">Shop Retail or Shop Wholesale</h2>
+      <p class="mt-2 text-sm text-slate-600">Select once to unlock the storefront. Returning buyers are auto-routed from saved preference.</p>
+      <div class="mt-5 grid gap-3 sm:grid-cols-2">
+        <button id="shopRetailBtn" type="button" class="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-4 text-left transition hover:-translate-y-0.5 hover:bg-amber-100">
+          <span class="block text-lg font-black text-amber-900">Shop Retail</span>
+          <span class="mt-1 block text-sm font-semibold text-amber-800/80">Packet-wise ordering with retail MOQ rules.</span>
+        </button>
+        <button id="shopWholesaleBtn" type="button" class="rounded-2xl border border-emerald-300 bg-emerald-50 px-4 py-4 text-left transition hover:-translate-y-0.5 hover:bg-emerald-100">
+          <span class="block text-lg font-black text-emerald-900">Shop Wholesale</span>
+          <span class="mt-1 block text-sm font-semibold text-emerald-800/80">Factory slabs for 5,000+ unit buyers.</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="app-shell">
   <header class="sticky top-0 z-50 border-b border-emerald-900 bg-[#064e3b] text-white shadow-xl">
     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
@@ -1079,6 +1097,53 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return element;
     }
 
+
+    function cleanupEntryModeBackdrop(){
+      const modal = document.getElementById('entryModeModal');
+      if(modal){
+        modal.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+        modal.style.setProperty('display', 'none', 'important');
+        modal.style.setProperty('pointer-events', 'none', 'important');
+      }
+      document.querySelectorAll('[data-vmp-entry-backdrop]').forEach((backdrop) => {
+        backdrop.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+        backdrop.style.setProperty('display', 'none', 'important');
+        backdrop.style.setProperty('pointer-events', 'none', 'important');
+      });
+      document.body.classList.remove('overflow-hidden');
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('overflow');
+    }
+
+    function applyShoppingMode(mode, silent = false){
+      const normalizedMode = mode === 'wholesale' ? 'wholesale' : 'retail';
+      localStorage.setItem('vmp_shopping_preference', normalizedMode);
+      localStorage.setItem('vmpShoppingMode', normalizedMode);
+      cleanupEntryModeBackdrop();
+      if(!silent){
+        notifyVmp(`Shopping preference set to ${normalizedMode}. Storefront unlocked.`, 'Shopping mode saved');
+      }
+    }
+
+    window.applyShoppingMode = applyShoppingMode;
+
+    function initEntryModeGate(){
+      bindById('shopRetailBtn', 'click', () => applyShoppingMode('retail'));
+      bindById('shopWholesaleBtn', 'click', () => applyShoppingMode('wholesale'));
+      const savedMode = localStorage.getItem('vmp_shopping_preference') || localStorage.getItem('vmpShoppingMode');
+      if(savedMode){
+        applyShoppingMode(savedMode, true);
+        return;
+      }
+      const modal = document.getElementById('entryModeModal');
+      if(!modal) return;
+      modal.style.removeProperty('display');
+      modal.style.removeProperty('pointer-events');
+      modal.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+      document.body.classList.add('overflow-hidden');
+    }
+
     let pendingAuthAction = null;
 
     function notifyVmp(message, title = 'VMP Priority Update'){
@@ -1879,6 +1944,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     };
 
     // initialize
+    initEntryModeGate();
     renderCategories();
     applyProductFilters();
     renderCart();
