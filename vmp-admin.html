@@ -66,6 +66,15 @@
       return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     }
 
+    function escapeHtml(value){
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     function notify(msg){
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -97,74 +106,25 @@
     function renderRows(){
       const rows = document.getElementById('rows');
       const items = readProducts();
-      rows.textContent = '';
-
-      if(!items.length){
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        tr.className = 'border-t';
-        td.colSpan = 6;
-        td.className = 'px-2 py-3 text-slate-500';
-        td.textContent = 'No custom products yet.';
-        tr.appendChild(td);
-        rows.appendChild(tr);
-        return;
-      }
-
-      items.forEach((p) => {
-        const tr = document.createElement('tr');
-        tr.className = 'border-t';
-
-        const tdImg = document.createElement('td');
-        tdImg.className = 'px-2 py-2';
-        const img = document.createElement('img');
-        img.className = 'h-12 w-16 rounded object-cover';
-        img.src = String(p.image || FALLBACK_IMG).trim() || FALLBACK_IMG;
-        img.onerror = () => { img.src = FALLBACK_IMG; };
-        tdImg.appendChild(img);
-
-        const tdName = document.createElement('td');
-        tdName.className = 'px-2 py-2 font-semibold';
-        tdName.textContent = p.name || '-';
-
-        const tdCategory = document.createElement('td');
-        tdCategory.className = 'px-2 py-2';
-        tdCategory.textContent = p.category || '-';
-
-        const tdBase = document.createElement('td');
-        tdBase.className = 'px-2 py-2';
-        tdBase.textContent = `₹${Number(p.base_wholesale_rate || 0).toFixed(2)}`;
-
-        const tdRetail = document.createElement('td');
-        tdRetail.className = 'px-2 py-2';
-        tdRetail.textContent = `₹${Number(p.retail_price || 0).toFixed(2)}`;
-
-        const tdActions = document.createElement('td');
-        tdActions.className = 'px-2 py-2';
-
-        const editBtn = document.createElement('button');
-        editBtn.dataset.edit = p.id;
-        editBtn.className = 'edit rounded border px-2 py-1 text-xs';
-        editBtn.textContent = 'Edit';
-
-        const delBtn = document.createElement('button');
-        delBtn.dataset.del = p.id;
-        delBtn.className = 'del rounded border border-rose-300 bg-rose-50 px-2 py-1 text-xs text-rose-700';
-        delBtn.textContent = 'Delete';
-
-        tdActions.appendChild(editBtn);
-        tdActions.appendChild(document.createTextNode(' '));
-        tdActions.appendChild(delBtn);
-
-        tr.appendChild(tdImg);
-        tr.appendChild(tdName);
-        tr.appendChild(tdCategory);
-        tr.appendChild(tdBase);
-        tr.appendChild(tdRetail);
-        tr.appendChild(tdActions);
-
-        rows.appendChild(tr);
-      });
+      rows.innerHTML = items.map(p => {
+        const safeImage = escapeHtml(p.image || FALLBACK_IMG);
+        const safeName = escapeHtml(p.name || '-');
+        const safeCategory = escapeHtml(p.category || '-');
+        const safeId = escapeHtml(p.id || '');
+        return `
+        <tr class="border-t">
+          <td class="px-2 py-2"><img src="${safeImage}" class="h-12 w-16 rounded object-cover" onerror="this.src='${FALLBACK_IMG}'" /></td>
+          <td class="px-2 py-2 font-semibold">${safeName}</td>
+          <td class="px-2 py-2">${safeCategory}</td>
+          <td class="px-2 py-2">₹${Number(p.base_wholesale_rate || 0).toFixed(2)}</td>
+          <td class="px-2 py-2">₹${Number(p.retail_price || 0).toFixed(2)}</td>
+          <td class="px-2 py-2">
+            <button data-edit="${safeId}" class="edit rounded border px-2 py-1 text-xs">Edit</button>
+            <button data-del="${safeId}" class="del rounded border border-rose-300 bg-rose-50 px-2 py-1 text-xs text-rose-700">Delete</button>
+          </td>
+        </tr>
+      `;
+      }).join('') || '<tr><td colspan="6" class="px-2 py-3 text-slate-500">No custom products yet.</td></tr>';
 
       document.querySelectorAll('.edit').forEach(btn => {
         btn.addEventListener('click', () => {
