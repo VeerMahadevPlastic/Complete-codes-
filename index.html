@@ -300,6 +300,24 @@
       </div>
     </div>
   </div>
+
+  <div id="entryModeModal" data-vmp-entry-backdrop class="hidden fixed inset-0 z-[74] flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="w-full max-w-xl rounded-[2rem] border border-amber-300/60 bg-white p-6 shadow-2xl">
+      <p class="text-xs font-black uppercase tracking-[0.28em] text-emerald-700">Choose Shopping Type</p>
+      <h2 class="mt-2 text-3xl font-black text-slate-950">Shop Retail or Shop Wholesale</h2>
+      <p class="mt-2 text-sm text-slate-600">Select once to unlock the storefront. Returning buyers are auto-routed from saved preference.</p>
+      <div class="mt-5 grid gap-3 sm:grid-cols-2">
+        <button id="shopRetailBtn" type="button" class="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-4 text-left transition hover:-translate-y-0.5 hover:bg-amber-100">
+          <span class="block text-lg font-black text-amber-900">Shop Retail</span>
+          <span class="mt-1 block text-sm font-semibold text-amber-800/80">Packet-wise ordering with retail MOQ rules.</span>
+        </button>
+        <button id="shopWholesaleBtn" type="button" class="rounded-2xl border border-emerald-300 bg-emerald-50 px-4 py-4 text-left transition hover:-translate-y-0.5 hover:bg-emerald-100">
+          <span class="block text-lg font-black text-emerald-900">Shop Wholesale</span>
+          <span class="mt-1 block text-sm font-semibold text-emerald-800/80">Factory slabs for 5,000+ unit buyers.</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="app-shell">
   <header class="sticky top-0 z-50 border-b border-emerald-900 bg-[#064e3b] text-white shadow-xl">
     <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
@@ -370,6 +388,21 @@
             <a href="#shop" class="px-6 py-3 rounded-xl bg-amber-500 text-emerald-950 font-bold hover:bg-amber-400">Explore Product Floor</a>
             <a href="#wholesale" class="px-6 py-3 rounded-xl border-2 border-amber-300 text-amber-200 font-bold hover:bg-emerald-800">Get Corporate Quote</a>
           </div>
+          <div class="mt-8 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 transition hover:scale-[1.02] hover:border-[#d4af37]/60">
+              <p class="text-xs uppercase tracking-wide text-emerald-100">Unit</p>
+              <p class="mt-1 font-black text-white">Precision Injection Molding Unit</p>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 transition hover:scale-[1.02] hover:border-[#d4af37]/60">
+              <p class="text-xs uppercase tracking-wide text-emerald-100">Capacity</p>
+              <p class="mt-1 font-black text-white">10 Lakh+ Units/Day</p>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 transition hover:scale-[1.02] hover:border-[#d4af37]/60">
+              <p class="text-xs uppercase tracking-wide text-emerald-100">Network</p>
+              <p class="mt-1 font-black text-white">500+ Top Caterers &amp; Sweet Shops</p>
+            </div>
+          </div>
+          <div class="mt-6 inline-flex rounded-full border border-[#d4af37]/50 bg-black/20 px-4 py-2 text-xs font-black text-[#d4af37]">Powered by Veer Mahadev Plastic • Direct Manufacturer Clearance</div>
         </div>
         <div class="rounded-2xl border border-emerald-600/50 bg-white/10 p-5 shadow-2xl backdrop-blur-md">
           <h3 class="text-xl font-bold text-amber-300">3D Factory Floor Intelligence</h3>
@@ -421,11 +454,13 @@
       </div>
     </section>
 
-    
     <section id="categories" class="max-w-7xl mx-auto px-4 py-10">
       <div class="flex items-end justify-between flex-wrap gap-2">
-        <h2 class="text-3xl font-extrabold">Shop by Category</h2>
-        <p class="text-sm text-slate-600">Click any category to jump to products and view filtered items.</p>
+        <div>
+          <p class="text-sm font-black uppercase tracking-[0.22em] text-[#064e3b]">Live Catalog Navigation</p>
+          <h2 class="text-3xl font-black text-slate-950">Shop by Category</h2>
+        </div>
+        <p class="text-sm font-semibold text-slate-600">Click any category to jump to products and view filtered items.</p>
       </div>
       <div id="categoryGrid" class="mt-5 flex gap-3 overflow-x-auto pb-2 text-center"></div>
     </section>
@@ -1774,6 +1809,9 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
     const products = [...parsedCatalogProducts, ...FIBER_PLATE_ITEMS]
       .filter((item) => !/negotiable|test grid|plain wholesale/i.test(`${item.name || ''} ${item.category || ''}`));
 
+    const products = [...parsedCatalogProducts, ...FIBER_PLATE_ITEMS]
+      .filter((item) => !/negotiable|test grid|plain wholesale/i.test(`${item.name || ''} ${item.category || ''}`));
+
     writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
       id: product.id,
       name: product.name,
@@ -2429,6 +2467,23 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
       renderTrustBadges();
       updateWhatsappButton();
       updateDiscountProgress();
+    }
+
+    function trustBadgesMarkup(){
+      return [
+        '🛡️ 100% Secure Payments',
+        '🏭 Direct from Ahmedabad Factory',
+        '📦 Safe & Hygienic Packaging',
+        '✅ Genuine Biodegradable Quality'
+      ].map((t) => `<div class="rounded-lg border border-emerald-100 bg-white px-2 py-1"><span class="font-semibold text-slate-700">${t}</span></div>`).join('');
+    }
+
+    function renderTrustBadges(){
+      const cartRow = document.getElementById('trustBadgeRowCart');
+      const modalRow = document.getElementById('trustBadgeRowModal');
+      const markup = trustBadgesMarkup();
+      if(cartRow) cartRow.innerHTML = markup;
+      if(modalRow) modalRow.innerHTML = markup;
     }
 
     function trustBadgesMarkup(){
@@ -3244,6 +3299,7 @@ SR FIBER PLATES PACKING RATE BOX RATE PCS
     }
 
     // initialize
+    initEntryModeGate();
     renderCategories();
     applyProductFilters();
     renderGuestEstimator();
