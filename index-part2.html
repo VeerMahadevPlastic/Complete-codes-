@@ -1812,12 +1812,36 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       }
       const itemBreakdown = document.getElementById('checkoutItemBreakdown');
       if(itemBreakdown){
-        itemBreakdown.innerHTML = cart.map((item) => `
-          <div class="flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2">
-            <div><p class="font-semibold">${item.name}</p><p class="text-xs text-slate-500">Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</p></div>
-            <p class="font-bold text-emerald-800">₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}</p>
-          </div>
-        `).join('') || '<p class="text-sm text-slate-500">Cart is empty.</p>';
+        itemBreakdown.textContent = '';
+        if(cart.length === 0){
+          const emptyMsg = document.createElement('p');
+          emptyMsg.className = 'text-sm text-slate-500';
+          emptyMsg.textContent = 'Cart is empty.';
+          itemBreakdown.appendChild(emptyMsg);
+        } else {
+          cart.forEach((item) => {
+            const row = document.createElement('div');
+            row.className = 'flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2';
+
+            const left = document.createElement('div');
+            const name = document.createElement('p');
+            name.className = 'font-semibold';
+            name.textContent = item.name;
+            const qty = document.createElement('p');
+            qty.className = 'text-xs text-slate-500';
+            qty.textContent = `Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}`;
+            left.appendChild(name);
+            left.appendChild(qty);
+
+            const total = document.createElement('p');
+            total.className = 'font-bold text-emerald-800';
+            total.textContent = `₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}`;
+
+            row.appendChild(left);
+            row.appendChild(total);
+            itemBreakdown.appendChild(row);
+          });
+        }
       }
       const summaryAccordion = document.getElementById('checkoutItemsAccordion');
       if(summaryAccordion){
