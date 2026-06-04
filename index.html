@@ -206,6 +206,26 @@
     </div>
   </header>
 
+  <section id="factoryCapacityTicker" class="relative z-40 border-b border-[#b88916]/50 bg-[#d4af37] text-[#064e3b] shadow-lg shadow-amber-900/20">
+    <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-2 text-xs font-black sm:flex-row sm:items-center sm:justify-between sm:text-sm">
+      <div class="flex min-w-0 items-center gap-2">
+        <span class="inline-flex h-8 w-8 flex-shrink-0 animate-pulse items-center justify-center rounded-full bg-[#064e3b] text-lg text-[#d4af37] shadow-md shadow-emerald-950/30" aria-hidden="true">🏭</span>
+        <p class="min-w-0 leading-snug sm:truncate">
+          <span class="uppercase tracking-[0.18em]">FACTORY FLOOR CAPACITIES:</span>
+          <span id="factoryCapacityCounter" class="mx-1 rounded-md bg-[#064e3b] px-2 py-0.5 font-black tabular-nums text-white">8,42,000</span>
+          <span>Pcs Daily Target Booked.</span>
+        </p>
+      </div>
+      <div class="flex min-w-0 items-center gap-2 rounded-full border border-[#064e3b]/25 bg-white/35 px-3 py-1 shadow-inner">
+        <span class="flex-shrink-0" aria-hidden="true">⏱️</span>
+        <p class="min-w-0 text-[11px] leading-snug sm:text-xs">
+          <span id="dispatchCountdownLabel" class="font-black">Production Line Closing for Same-Day Dispatch in:</span>
+          <span id="dispatchCountdownClock" class="ml-1 rounded-md bg-[#064e3b] px-2 py-0.5 font-black tabular-nums text-white">--:--:--</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
   <main id="home">
     <section class="relative overflow-hidden bg-[#064e3b] text-white">
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.22),transparent_28%),linear-gradient(135deg,#064e3b_0%,#052e24_58%,#031b16_100%)]"></div>
@@ -1820,6 +1840,96 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       const subtotal = sourceCart.reduce((sum, item) => sum + (Number(item.qty || 0) * Number(item.unit || 0)), 0).toFixed(2);
       const message = `Hello! Here is the wholesale order quotation from Veer Mahadev Plastic.\n\n*Order Summary:*\n${summaryLines}\n\n*Total Amount:* ₹${subtotal}\n\nClick this secure link to view, verify, and complete the payment directly: ${sharedLink}`;
       window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+    
+const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
+    const DAILY_FACTORY_CAPACITY = 1000000;
+
+    function hashFactorySeed(seed){
+      return String(seed).split('').reduce((acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) >>> 0, 0);
+    }
+
+    function formatFactoryPieces(value){
+      return Math.min(Number(value || 0), DAILY_FACTORY_CAPACITY).toLocaleString('en-IN');
+    }
+
+    function createFactoryCapacityState(now = new Date()){
+      const dateKey = now.toISOString().slice(0, 10);
+      const seededOffset = hashFactorySeed(`${dateKey}-${now.getUTCHours()}`) % 8001;
+      return {
+        dateKey,
+        booked: 842000 + seededOffset,
+        updatedAt: now.toISOString(),
+      };
+    }
+
+    function readFactoryCapacityState(){
+      const now = new Date();
+      const dateKey = now.toISOString().slice(0, 10);
+      try {
+        const stored = JSON.parse(localStorage.getItem(FACTORY_CAPACITY_STATE_KEY) || 'null');
+        if(stored && stored.dateKey === dateKey && Number(stored.booked) > 0){
+          return { ...stored, booked: Math.min(Number(stored.booked), DAILY_FACTORY_CAPACITY) };
+        }
+      } catch (error) {
+        console.warn('Factory capacity ticker state reset.', error);
+      }
+      const fresh = createFactoryCapacityState(now);
+      localStorage.setItem(FACTORY_CAPACITY_STATE_KEY, JSON.stringify(fresh));
+      return fresh;
+    }
+
+    function saveFactoryCapacityState(state){
+      localStorage.setItem(FACTORY_CAPACITY_STATE_KEY, JSON.stringify({
+        ...state,
+        booked: Math.min(Number(state.booked || 0), DAILY_FACTORY_CAPACITY),
+        updatedAt: new Date().toISOString(),
+      }));
+    }
+
+    function updateFactoryCapacityCounter(state){
+      const counter = document.getElementById('factoryCapacityCounter');
+      if(counter) counter.textContent = formatFactoryPieces(state.booked);
+    }
+
+    function updateDispatchCountdown(){
+      const label = document.getElementById('dispatchCountdownLabel');
+      const clock = document.getElementById('dispatchCountdownClock');
+      if(!label || !clock) return;
+      const now = new Date();
+      const deadline = new Date(now);
+      deadline.setHours(12, 0, 0, 0);
+      if(now >= deadline){
+        deadline.setDate(deadline.getDate() + 1);
+        label.textContent = 'Next-Day Morning Batch Dispatches close in:';
+      } else {
+        label.textContent = 'Production Line Closing for Same-Day Dispatch in:';
+      }
+      const diff = Math.max(0, deadline.getTime() - now.getTime());
+      const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+      const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+      clock.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    function initFactoryCapacityTicker(){
+      if(!document.getElementById('factoryCapacityTicker')) return;
+      let state = readFactoryCapacityState();
+      updateFactoryCapacityCounter(state);
+      updateDispatchCountdown();
+      setInterval(updateDispatchCountdown, 1000);
+      const tickCapacity = () => {
+        const increment = Math.floor(150 + Math.random() * 701);
+        state = {
+          ...state,
+          booked: Math.min(DAILY_FACTORY_CAPACITY, Number(state.booked || 0) + increment),
+        };
+        saveFactoryCapacityState(state);
+        updateFactoryCapacityCounter(state);
+        const nextDelay = 45000 + Math.floor(Math.random() * 15001);
+        window.setTimeout(tickCapacity, nextDelay);
+      };
+      window.setTimeout(tickCapacity, 45000 + Math.floor(Math.random() * 15001));
     }
 
     function initHeroAdOverlay(){
