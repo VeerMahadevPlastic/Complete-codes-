@@ -618,6 +618,15 @@
     </div>
   </div>
   <div id="vmpToastHost" class="fixed right-4 top-24 z-[90] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2 pointer-events-none"></div>
+         <div id="pwaUpdateBanner" class="fixed inset-x-4 bottom-4 z-[95] hidden translate-y-8 rounded-2xl border border-[#d4af37]/70 bg-[#064e3b] p-4 text-white opacity-0 shadow-2xl shadow-emerald-950/40 transition-all duration-500 sm:left-1/2 sm:max-w-xl sm:-translate-x-1/2">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-[11px] font-black uppercase tracking-[0.2em] text-[#d4af37]">PWA Factory Update</p>
+        <p class="mt-1 text-sm font-bold">New Factory Update Available! 🚀 Update App now for live wholesale rates.</p>
+      </div>
+      <button id="pwaUpdateNowBtn" class="rounded-xl bg-[#d4af37] px-5 py-2 text-sm font-black text-[#064e3b] shadow-lg transition hover:bg-amber-300">Update Now</button>
+    </div>
+  </div>
   <div id="creditModal" class="hidden fixed inset-0 z-[69] bg-black/50 px-4">
     <div class="mx-auto mt-16 w-full max-w-lg rounded-2xl bg-white p-5 shadow-2xl">
       <div class="flex items-center justify-between"><h3 class="text-lg font-black text-emerald-800">Corporate Credit Request</h3><button id="closeCreditModal" class="rounded border px-2 py-1 text-xs">Close</button></div>
@@ -801,12 +810,6 @@
       deferredPrompt = null;
       hideInstallBanner();
     });
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
-      });
-    }
 
     function slugify(value){
       return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -1160,6 +1163,101 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         setTimeout(() => item.remove(), 4200);
       }, 250);
     }
+let vmpServiceWorkerRegistration = null;
+    let vmpPendingUpdateWorker = null;
+    let vmpRefreshingForUpdate = false;
+
+    function showPwaUpdateBanner(worker){
+      vmpPendingUpdateWorker = worker || vmpPendingUpdateWorker;
+      const banner = document.getElementById('pwaUpdateBanner');
+      if(!banner) return;
+      banner.classList.remove('hidden');
+      requestAnimationFrame(() => banner.classList.remove('translate-y-8', 'opacity-0'));
+      notifyVmp('New Factory Update Available! 🚀 Update App now for live wholesale rates.', 'PWA update ready');
+    }
+
+    function activatePwaUpdateNow(){
+      const banner = document.getElementById('pwaUpdateBanner');
+      if(banner) banner.classList.add('translate-y-8', 'opacity-0');
+      if(vmpPendingUpdateWorker){
+        vmpPendingUpdateWorker.postMessage({ type: 'SKIP_WAITING' });
+      }
+      setTimeout(() => window.location.reload(true), 700);
+    }
+
+    async function registerVmpServiceWorker(){
+      if(!('serviceWorker' in navigator)) return;
+      try {
+        const registration = await navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' });
+        vmpServiceWorkerRegistration = registration;
+        if(registration.waiting) showPwaUpdateBanner(registration.waiting);
+        registration.addEventListener('updatefound', () => {
+          const installingWorker = registration.installing;
+          if(!installingWorker) return;
+          installingWorker.addEventListener('statechange', () => {
+            if(installingWorker.state === 'installed' && navigator.serviceWorker.controller){
+              showPwaUpdateBanner(installingWorker);
+            }
+          });
+        });
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if(vmpRefreshingForUpdate) return;
+          vmpRefreshingForUpdate = true;
+          window.location.reload(true);
+        });
+        setTimeout(() => registration.update(), 2500);
+        setInterval(() => registration.update(), 30000);
+      } catch (error) {
+        console.warn('VMP service worker registration failed.', error);
+      }
+    }
+
+    async function requestVmpNotificationPermission(){
+      if(!('Notification' in window)){
+        notifyVmp('Browser notifications are not supported here. In-app alerts remain active.', 'Notifications');
+        return 'unsupported';
+      }
+      const permission = Notification.permission === 'default' ? await Notification.requestPermission() : Notification.permission;
+      if(permission === 'granted'){
+        notifyVmp('Wholesale alert channel activated securely!', 'Notifications enabled');
+      } else {
+        notifyVmp('Notification permission was not enabled. You will still receive in-app updates.', 'Notifications');
+      }
+      return permission;
+    }
+
+    async function dispatchLocalFactoryNotification(title, body, tag = 'vmp-local-alert'){
+      if(!('Notification' in window) || Notification.permission !== 'granted'){
+        notifyVmp(body, title);
+        return;
+      }
+      try {
+        const registration = vmpServiceWorkerRegistration || (navigator.serviceWorker?.ready ? await navigator.serviceWorker.ready : null);
+        if(registration?.showNotification){
+          registration.showNotification(title, {
+            body,
+            tag,
+            renotify: true,
+            icon: './icons/icon-192.svg',
+            badge: './icons/icon-192.svg',
+            data: { url: window.location.href, createdAt: new Date().toISOString() },
+          });
+        } else {
+          new Notification(title, { body, tag });
+        }
+      } catch (error) {
+        console.warn('Local notification dispatch failed.', error);
+        notifyVmp(body, title);
+      }
+    }
+
+    function maybeDispatchCapacityWarning(state){
+      if(!state || Number(state.booked || 0) < 950000) return;
+      const warningKey = `vmp_capacity_warning_${state.dateKey || new Date().toISOString().slice(0, 10)}`;
+      if(localStorage.getItem(warningKey) === 'true') return;
+      localStorage.setItem(warningKey, 'true');
+      dispatchLocalFactoryNotification('Urgent: Factory floor capacity reaching 98%!', 'Lock your catering orders now.', 'vmp-capacity-warning');
+    }
 
     function getBuyerProfile(){
       try { return JSON.parse(localStorage.getItem('vmp_user_profile') || 'null'); }
@@ -1215,6 +1313,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     }
 
     function triggerFactoryAppPrompt(){
+      registerVmpServiceWorker();
       const installButton = document.getElementById('installNowBtn');
       if(installButton){
         installButton.click();
@@ -1244,11 +1343,11 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     bindById('dropdownMyProfile', 'click', () => openProfileGate(null));
     bindById('dropdownOrderHistory', 'click', () => { renderOrderHistory(); scrollToSection('order-history'); });
     bindById('dropdownWishlist', 'click', () => { activeCategory = 'All'; searchTerm = ''; applyProductFilters(); scrollToSection('shop'); notifyVmp('Wishlist shortcut opened. Add products to cart to save your buying list.', 'Wishlist'); });
-    bindById('dropdownNotifications', 'click', () => notifyVmp('Notifications are active for profile, cart, checkout, and payment updates.', 'Notification Settings'));
+    bindById('dropdownNotifications', 'click', requestVmpNotificationPermission);
     bindById('dropdownCare', 'click', () => openFactoryDesk('Hi VMP Team, I need 24x7 Caterer Care support.'));
     bindById('dropdownDownloadApp', 'click', triggerFactoryAppPrompt);
     bindById('dropdownBulkInquiry', 'click', () => scrollToSection('wholesale'));
-    bindById('dropdownNotificationSettings', 'click', () => notifyVmp('Notification settings are managed automatically for cart, checkout, and order updates.', 'Notifications'));
+        bindById('dropdownNotificationSettings', 'click', requestVmpNotificationPermission);
     bindById('dropdownFactoryDesk', 'click', () => openFactoryDesk('Hi VMP Team, please connect me with the 24x7 Factory Desk.'));
     bindById('dropdownPartnerProgram', 'click', () => { scrollToSection('wholesale'); notifyVmp('Partner Program inquiry starts from the Bulk Order form.', 'Partner Program'); });
     bindById('refreshOrderHistory', 'click', renderOrderHistory);
@@ -1916,6 +2015,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       if(!document.getElementById('factoryCapacityTicker')) return;
       let state = readFactoryCapacityState();
       updateFactoryCapacityCounter(state);
+       maybeDispatchCapacityWarning(state);
       updateDispatchCountdown();
       setInterval(updateDispatchCountdown, 1000);
       const tickCapacity = () => {
@@ -1926,6 +2026,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
         };
         saveFactoryCapacityState(state);
         updateFactoryCapacityCounter(state);
+        maybeDispatchCapacityWarning(state);
         const nextDelay = 45000 + Math.floor(Math.random() * 15001);
         window.setTimeout(tickCapacity, nextDelay);
       };
@@ -2191,6 +2292,9 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       renderCart();
       renderOrderHistory();
       notifyVmp(`Order ${completedOrder.orderId} paid and moved to Order History. Cart cleared.`, 'Payment verified');
+       setTimeout(() => {
+        dispatchLocalFactoryNotification('Veer Mahadev Plastic', 'Order Dispatched! Your bulk batch is entering the packaging queue. 🏭', `vmp-order-${completedOrder.orderId}`);
+      }, 5000);
       closeCheckoutModal();
       scrollToSection('order-history');
     });
@@ -2256,6 +2360,8 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
     };
 
     // initialize
+     registerVmpServiceWorker();
+    bindById('pwaUpdateNowBtn', 'click', activatePwaUpdateNow);
     initEntryModeGate();
     renderCategories();
     applyProductFilters();
