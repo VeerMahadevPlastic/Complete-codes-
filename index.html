@@ -253,6 +253,15 @@
               <p class="mt-1 font-black text-white">500+ Top Caterers &amp; Sweet Shops</p>
             </div>
           </div>
+          <div class="mt-6 inline-flex rounded-full border border-[#d4af37]/50 bg-black/20 px-4 py-2 text-xs font-black text-[#d4af37]">Powered by Veer Mahadev Plastic • Direct Manufacturer Clearance</div>
+          <div id="heroAdOverlay" class="relative z-20 mx-auto mt-6 w-full max-w-[230px] rounded-2xl border border-[#d4af37]/45 bg-white/10 p-2 shadow-2xl backdrop-blur-md transition-all duration-700 ease-out sm:max-w-[260px] lg:absolute lg:right-8 lg:top-8 lg:mt-0 lg:w-64">
+            <div class="rounded-xl border border-emerald-300/40 bg-black/25 p-2">
+              <p class="mb-2 text-center text-[10px] font-semibold tracking-wide text-amber-200">VIP Factory Reel</p>
+              <video id="heroAdVideo" class="h-[220px] w-full rounded-lg object-cover sm:h-[280px] lg:h-[340px]" autoplay muted playsinline controls>
+                <source src="ad_reel.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
         </div>
 
         <aside class="rounded-[2rem] border border-[#d4af37]/35 bg-white p-5 text-[#0f2f27] shadow-2xl lg:p-6">
@@ -335,6 +344,17 @@
           <button class="md:col-span-2 rounded-lg bg-amber-500 py-2.5 text-sm font-bold text-emerald-950 hover:bg-amber-400">Submit VIP Sample Request</button>
           <p id="vipSampleMsg" class="md:col-span-2 text-xs font-semibold text-amber-200"></p>
         </form>
+      </div>
+    </section>
+
+    <section id="factorySampleBox" class="max-w-7xl mx-auto px-4 pb-8">
+      <div class="rounded-3xl border border-[#d4af37]/50 bg-white p-5 shadow-xl md:flex md:items-center md:justify-between md:gap-6">
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.2em] text-[#d4af37]">Caterer Quality Trial</p>
+          <h3 class="mt-2 text-2xl font-black text-[#064e3b]">📦 Request Factory Sample Box for Caterers</h3>
+          <p class="mt-2 max-w-2xl text-sm font-medium text-slate-600">Get a curated low-cost sample box with plates, trays, bowls, and premium packaging so your team can verify quality before high-volume B2B buying.</p>
+        </div>
+        <button id="openSampleBoxRequest" class="mt-4 rounded-2xl bg-[#064e3b] px-5 py-3 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-emerald-800 md:mt-0">Request Sample Box via PhonePe</button>
       </div>
     </section>
 
@@ -520,12 +540,7 @@
       <p class="text-xs text-slate-600 mt-1">Shipping Zone: <span id="shippingZoneLabel" class="font-semibold">Ahmedabad</span></p>
       <p class="text-xs text-slate-600">Estimated Shipping: ₹<span id="shippingCharge">0</span></p>
       <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
-       <div class="mt-3 space-y-2 border-t-4 border-[#d4af37] bg-white/95 pt-3">
-        <div class="rounded-2xl border border-emerald-100 bg-emerald-50 px-3 py-2">
-          <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[#064e3b]">Accepted Methods</p>
-          <p class="mt-1 text-xs font-semibold text-slate-700">PhonePe | GPay | UPI QR | WhatsApp Verification</p>
-        </div>
-        <button id="cartPhonePeCheckoutBtn" class="w-full rounded-xl bg-[#5f259f] py-3 text-sm font-black text-white shadow-lg shadow-[#5f259f]/25 transition hover:-translate-y-0.5 hover:bg-[#4c1d95] hover:shadow-xl">🔒 Proceed to Secure PhonePe Payment</button>
+      <div class="mt-3 grid gap-2">
         <select id="shippingZone" class="border rounded-lg px-3 py-2 text-sm">
           <option value="ahmedabad">Ahmedabad Zone</option>
           <option value="gujarat">Rest of Gujarat</option>
@@ -535,11 +550,17 @@
         <textarea id="customerAddress" class="border rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Full Address with City, State, Pincode (required)"></textarea>
         <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
       </div>
-      <div class="mt-3 space-y-2">
+      <div class="mt-3 space-y-2 border-t-4 border-[#d4af37] bg-white/95 pt-3">
+        <div class="rounded-2xl border border-emerald-100 bg-emerald-50 px-3 py-2">
+          <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[#064e3b]">Accepted Methods</p>
+          <p class="mt-1 text-xs font-semibold text-slate-700">PhonePe | GPay | UPI QR | WhatsApp Verification</p>
+        </div>
+        <button id="shareEstimateCartBtn" class="w-full rounded-xl border border-[#d4af37]/70 bg-amber-50 py-2.5 text-sm font-black text-[#064e3b] transition hover:bg-amber-100">📋 Share Estimate Quote to WhatsApp</button>
+        <button id="cartPhonePeCheckoutBtn" class="w-full rounded-xl bg-[#5f259f] py-3 text-sm font-black text-white shadow-lg shadow-[#5f259f]/25 transition hover:-translate-y-0.5 hover:bg-[#4c1d95] hover:shadow-xl">🔒 Proceed to Secure PhonePe Payment</button>
         <button id="waCart" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
           <span>💬</span><span>Order on WhatsApp</span>
         </button>
-        <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">onfirm Order & Pay via UPI</button>
+        <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Confirm Order & Pay via UPI</button>
         <button id="directorCallBtn" class="hidden w-full rounded-lg border border-amber-300 bg-amber-50 py-2 text-sm font-bold text-amber-900">👑 Large B2B Contract? Speak Directly with Director Karan Prajapati</button>
         <button id="creditRequestBtn" class="w-full rounded-lg border border-emerald-200 bg-white py-2 text-xs font-semibold text-emerald-800">Apply for Corporate Credit / Post-Paid Billing (Registered GST Businesses Only)</button>
         <div id="trustBadgeRowCart" class="grid grid-cols-2 gap-2 text-[10px] md:grid-cols-4"></div>
@@ -561,6 +582,7 @@
           <div class="rounded-xl border border-emerald-100 bg-emerald-50/60 p-3">
             <p class="text-sm font-semibold text-emerald-900">Verified Buyer Profile</p>
             <p id="checkoutProfilePreview" class="mt-1 text-sm text-slate-600">Login profile required before checkout.</p>
+            <div id="checkoutBusinessPreview" class="mt-2 hidden rounded-lg border border-[#d4af37]/40 bg-white px-3 py-2 text-xs font-semibold text-emerald-900"></div>
           </div>
           <div class="rounded-xl border border-emerald-100 p-3">
             <p class="text-sm font-semibold text-slate-700">Delivery Address</p>
@@ -603,6 +625,26 @@
       </div>
     </div>
   </div>
+  <div id="sampleRequestModal" class="hidden fixed inset-0 z-[77] flex items-end justify-center bg-black/60 px-4 pb-4 sm:items-center sm:pb-0">
+    <div class="w-full max-w-lg rounded-3xl border border-[#d4af37]/60 bg-[#064e3b] p-5 text-white shadow-2xl">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.2em] text-[#d4af37]">Factory Sample Box</p>
+          <h3 class="mt-1 text-xl font-black">Verify quality before bulk buying</h3>
+          <p class="mt-1 text-xs text-emerald-100">Sample box token: ₹199 + delivery. We will adjust it in your first wholesale invoice.</p>
+        </div>
+        <button id="closeSampleRequestModal" class="rounded-lg border border-white/20 px-3 py-1 text-sm font-bold text-white">Close</button>
+      </div>
+      <form id="sampleRequestForm" class="mt-4 grid gap-3">
+        <input id="sampleName" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Name" />
+        <input id="sampleMobile" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Mobile / WhatsApp Number" />
+        <textarea id="sampleAddress" required rows="3" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Delivery Address with City & Pincode"></textarea>
+        <button class="rounded-xl bg-[#d4af37] py-2.5 text-sm font-black text-emerald-950">Load Sample Box & Open PhonePe</button>
+        <p id="sampleRequestMsg" class="text-xs font-semibold text-amber-200"></p>
+      </form>
+    </div>
+  </div>
+
   <div id="profileGateModal" class="hidden fixed inset-0 z-[76] flex items-end justify-center bg-black/60 px-4 pb-4 sm:items-center sm:pb-0">
     <div class="vmp-auth-card w-full max-w-md rounded-2xl border border-amber-300/50 bg-[#064e3b] p-5 text-white shadow-2xl">
       <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300">VIP Buyer Access</p>
@@ -612,12 +654,28 @@
         <input id="gateFullName" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Full Name" />
         <input id="gateMobile" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Mobile / WhatsApp Number" />
         <input id="gateEmail" required type="email" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Email Address" />
+        <details id="gateBusinessDetails" class="rounded-xl border border-[#d4af37]/40 bg-emerald-950/40 p-3">
+          <summary class="cursor-pointer text-sm font-black text-[#d4af37]">🏢 Add Business Details (GST Invoice)</summary>
+          <div class="mt-3 grid gap-2">
+            <input id="gateCompanyName" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Company Name" />
+            <input id="gateGstin" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm uppercase text-white placeholder:text-emerald-200/70" placeholder="GSTIN / Tax Number" />
+          </div>
+        </details>
         <button class="rounded-lg bg-amber-500 py-2 text-sm font-bold text-emerald-950 hover:bg-amber-400">Save Profile & Continue</button>
         <p id="profileGateMsg" class="text-xs font-semibold text-amber-200"></p>
       </form>
     </div>
   </div>
- 
+  <div id="vmpToastHost" class="fixed right-4 top-24 z-[90] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2 pointer-events-none"></div>
+  <div id="pwaUpdateBanner" class="fixed inset-x-4 bottom-4 z-[95] hidden translate-y-8 rounded-2xl border border-[#d4af37]/70 bg-[#064e3b] p-4 text-white opacity-0 shadow-2xl shadow-emerald-950/40 transition-all duration-500 sm:left-1/2 sm:max-w-xl sm:-translate-x-1/2">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-[11px] font-black uppercase tracking-[0.2em] text-[#d4af37]">PWA Factory Update</p>
+        <p class="mt-1 text-sm font-bold">New Factory Update Available! 🚀 Update App now for live wholesale rates.</p>
+      </div>
+      <button id="pwaUpdateNowBtn" class="rounded-xl bg-[#d4af37] px-5 py-2 text-sm font-black text-[#064e3b] shadow-lg transition hover:bg-amber-300">Update Now</button>
+    </div>
+  </div>
   <div id="creditModal" class="hidden fixed inset-0 z-[69] bg-black/50 px-4">
     <div class="mx-auto mt-16 w-full max-w-lg rounded-2xl bg-white p-5 shadow-2xl">
       <div class="flex items-center justify-between"><h3 class="text-lg font-black text-emerald-800">Corporate Credit Request</h3><button id="closeCreditModal" class="rounded border px-2 py-1 text-xs">Close</button></div>
@@ -651,6 +709,12 @@
             <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">HSN Code</p><p id="productModalHsn" class="mt-1 font-semibold text-slate-800"></p></div>
           <div class="rounded-2xl bg-slate-50 p-3"><p class="text-xs uppercase text-slate-500">MOQ</p><p id="productModalMoq" class="mt-1 font-semibold text-slate-800"></p></div>
           </div>
+          <div id="trustBadgeRowModal" class="grid grid-cols-2 gap-2 text-[10px] md:grid-cols-4"></div>
+          <div class="rounded-[1.5rem] border border-slate-100 p-4">
+            <p class="text-sm font-semibold text-slate-800">Texture Preview</p>
+            <video id="productTextureVideo" class="mt-2 h-36 w-full rounded-xl bg-black/5 object-cover" autoplay muted loop playsinline controls>
+              <source id="productTextureVideoSource" src="" type="video/mp4">
+            </video>
           </div>
           <div class="rounded-[1.5rem] border border-emerald-100 p-4">
             <p class="text-sm font-semibold text-emerald-800">Tier Pricing</p>
@@ -801,6 +865,7 @@
       deferredPrompt = null;
       hideInstallBanner();
     });
+
 
     function slugify(value){
       return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -974,28 +1039,28 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
 
     const FIBER_PLATE_ITEMS = [
-      { id: "fp_01", name: "FIBER PLATE DESIGN NO.1", price: 80, image: "https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_02", name: "FIBER PLATE DESIGN NO.2", price: 80, image: "https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_03", name: "FIBER PLATE DESIGN NO.3", price: 80, image: "https://i.postimg.cc/Q9q0dX42/IMG-20260425-WA0002.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_04", name: "FIBER PLATE DESIGN NO.4", price: 80, image: "https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_05", name: "FIBER PLATE DESIGN NO.5", price: 80, image: "https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_06", name: "FIBER PLATE DESIGN NO.6", price: 80, image: "https://i.postimg.cc/FksGf2wc/IMG-20260425-WA0027.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_07", name: "FIBER PLATE DESIGN NO.7", price: 80, image: "https://i.postimg.cc/hQPMJHNV/IMG-20260425-WA0028.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_08", name: "FIBER PLATE DESIGN NO.8", price: 80, image: "https://i.postimg.cc/BPQN8dRB/IMG-20260425-WA0030.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_09", name: "FIBER PLATE DESIGN NO.9", price: 80, image: "https://i.postimg.cc/xNTgkWBK/IMG-20260425-WA0033.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_10", name: "FIBER PLATE DESIGN NO.10", price: 80, image: "https://i.postimg.cc/N2fbyWZP/IMG-20260425-WA0034.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_11", name: "FIBER PLATE DESIGN NO.11", price: 80, image: "https://i.postimg.cc/1V5MgLbH/IMG-20260425-WA0035.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_12", name: "FIBER PLATE DESIGN NO.12", price: 80, image: "https://i.postimg.cc/K3vQKdCq/IMG-20260425-WA0040.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_13", name: "FIBER PLATE DESIGN NO.13", price: 80, image: "https://i.postimg.cc/CnLJZW9v/IMG-20260425-WA0037.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_14", name: "FIBER PLATE DESIGN NO.14", price: 80, image: "https://i.postimg.cc/H8s3JfFN/IMG-20260425-WA0038.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_15", name: "FIBER PLATE DESIGN NO.15", price: 80, image: "https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_16", name: "FIBER PLATE DESIGN NO.16", price: 80, image: "https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_17", name: "FIBER PLATE DESIGN NO.17", price: 80, image: "https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_18", name: "FIBER PLATE DESIGN NO.18", price: 80, image: "https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_19", name: "FIBER PLATE DESIGN NO.19", price: 80, image: "https://i.postimg.cc/06DVhGpZ/IMG-20260515-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_20", name: "FIBER PLATE DESIGN NO.20", price: 80, image: "https://i.postimg.cc/rdxf7GSf/IMG-20260515-WA0023.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_21", name: "FIBER PLATE DESIGN NO.21", price: 80, image: "https://i.postimg.cc/NymdZ81G/IMG-20260515-WA0030.jpg", category: "Fiber Plates", minOrder: 100 },
-      { id: "fp_22", name: "FIBER PLATE DESIGN NO.22", price: 80, image: "https://i.postimg.cc/XZdstKwJ/IMG-20260515-WA0031.jpg", category: "Fiber Plates", minOrder: 100 }
+      { id: "fp_01", name: "FIBER PLATE DESIGN NO.1", price: 60, image: "https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_02", name: "FIBER PLATE DESIGN NO.2", price: 60, image: "https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_03", name: "FIBER PLATE DESIGN NO.3", price: 60, image: "https://i.postimg.cc/Q9q0dX42/IMG-20260425-WA0002.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_04", name: "FIBER PLATE DESIGN NO.4", price: 60, image: "https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_05", name: "FIBER PLATE DESIGN NO.5", price: 60, image: "https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_06", name: "FIBER PLATE DESIGN NO.6", price: 60, image: "https://i.postimg.cc/FksGf2wc/IMG-20260425-WA0027.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_07", name: "FIBER PLATE DESIGN NO.7", price: 60, image: "https://i.postimg.cc/hQPMJHNV/IMG-20260425-WA0028.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_08", name: "FIBER PLATE DESIGN NO.8", price: 60, image: "https://i.postimg.cc/BPQN8dRB/IMG-20260425-WA0030.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_09", name: "FIBER PLATE DESIGN NO.9", price: 60, image: "https://i.postimg.cc/xNTgkWBK/IMG-20260425-WA0033.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_10", name: "FIBER PLATE DESIGN NO.10", price: 60, image: "https://i.postimg.cc/N2fbyWZP/IMG-20260425-WA0034.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_11", name: "FIBER PLATE DESIGN NO.11", price: 60, image: "https://i.postimg.cc/1V5MgLbH/IMG-20260425-WA0035.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_12", name: "FIBER PLATE DESIGN NO.12", price: 60, image: "https://i.postimg.cc/K3vQKdCq/IMG-20260425-WA0040.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_13", name: "FIBER PLATE DESIGN NO.13", price: 60, image: "https://i.postimg.cc/CnLJZW9v/IMG-20260425-WA0037.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_14", name: "FIBER PLATE DESIGN NO.14", price: 60, image: "https://i.postimg.cc/H8s3JfFN/IMG-20260425-WA0038.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_15", name: "FIBER PLATE DESIGN NO.15", price: 60, image: "https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_16", name: "FIBER PLATE DESIGN NO.16", price: 60, image: "https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_17", name: "FIBER PLATE DESIGN NO.17", price: 60, image: "https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_18", name: "FIBER PLATE DESIGN NO.18", price: 60, image: "https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_19", name: "FIBER PLATE DESIGN NO.19", price: 60, image: "https://i.postimg.cc/06DVhGpZ/IMG-20260515-WA0022.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_20", name: "FIBER PLATE DESIGN NO.20", price: 60, image: "https://i.postimg.cc/rdxf7GSf/IMG-20260515-WA0023.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_21", name: "FIBER PLATE DESIGN NO.21", price: 60, image: "https://i.postimg.cc/NymdZ81G/IMG-20260515-WA0030.jpg", category: "Fiber Plates", minOrder: 100 },
+      { id: "fp_22", name: "FIBER PLATE DESIGN NO.22", price: 60, image: "https://i.postimg.cc/XZdstKwJ/IMG-20260515-WA0031.jpg", category: "Fiber Plates", minOrder: 100 }
     ].map((item) => ({
       ...item,
       stock: 500,
@@ -1049,6 +1114,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     }
 
     let cart = loadCart();
+    const brandingArtworkCache = {};
+    let stockScarcityState = readStockScarcityState();
     let b2bLoggedIn = false;
 
     const productGrid = document.getElementById('productGrid');
@@ -1154,7 +1221,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         setTimeout(() => item.remove(), 4200);
       }, 250);
     }
-let vmpServiceWorkerRegistration = null;
+
+    let vmpServiceWorkerRegistration = null;
     let vmpPendingUpdateWorker = null;
     let vmpRefreshingForUpdate = false;
 
@@ -1267,9 +1335,15 @@ let vmpServiceWorkerRegistration = null;
         const fullNameInput = document.getElementById('gateFullName');
         const mobileInput = document.getElementById('gateMobile');
         const emailInput = document.getElementById('gateEmail');
+        const companyInput = document.getElementById('gateCompanyName');
+        const gstinInput = document.getElementById('gateGstin');
+        const businessDetails = document.getElementById('gateBusinessDetails');
         if(fullNameInput) fullNameInput.value = existingProfile.fullName || '';
         if(mobileInput) mobileInput.value = existingProfile.mobile || '';
         if(emailInput) emailInput.value = existingProfile.email || '';
+        if(companyInput) companyInput.value = existingProfile.business?.companyName || '';
+        if(gstinInput) gstinInput.value = existingProfile.business?.gstin || '';
+        if(businessDetails && (existingProfile.business?.companyName || existingProfile.business?.gstin)) businessDetails.setAttribute('open', 'open');
       }
       const modal = document.getElementById('profileGateModal');
       if(modal) modal.classList.remove('hidden');
@@ -1338,7 +1412,7 @@ let vmpServiceWorkerRegistration = null;
     bindById('dropdownCare', 'click', () => openFactoryDesk('Hi VMP Team, I need 24x7 Caterer Care support.'));
     bindById('dropdownDownloadApp', 'click', triggerFactoryAppPrompt);
     bindById('dropdownBulkInquiry', 'click', () => scrollToSection('wholesale'));
-        bindById('dropdownNotificationSettings', 'click', requestVmpNotificationPermission);
+    bindById('dropdownNotificationSettings', 'click', requestVmpNotificationPermission);
     bindById('dropdownFactoryDesk', 'click', () => openFactoryDesk('Hi VMP Team, please connect me with the 24x7 Factory Desk.'));
     bindById('dropdownPartnerProgram', 'click', () => { scrollToSection('wholesale'); notifyVmp('Partner Program inquiry starts from the Bulk Order form.', 'Partner Program'); });
     bindById('refreshOrderHistory', 'click', renderOrderHistory);
@@ -1361,6 +1435,79 @@ let vmpServiceWorkerRegistration = null;
       if(stock === 0) return '<span class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded">Out of Stock</span>';
       if(stock < 80) return '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">Low Stock</span>';
       return '<span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">In Stock</span>';
+    }
+
+    function readStockScarcityState(){
+      try { return JSON.parse(localStorage.getItem('vmp_stock_scarcity_state') || '{}'); }
+      catch { return {}; }
+    }
+
+    function saveStockScarcityState(){
+      localStorage.setItem('vmp_stock_scarcity_state', JSON.stringify(stockScarcityState));
+    }
+
+    function stockSeed(productId){
+      return String(productId).split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    }
+
+    function stockStatusForProduct(productId){
+      const today = new Date().toISOString().slice(0, 10);
+      const existing = stockScarcityState[productId];
+      if(existing?.dateKey === today) return existing;
+      const seed = stockSeed(productId);
+      const dispatched = 72 + (seed % 19);
+      const remaining = 1800 + ((seed * 137) % 6200);
+      const state = { dateKey: today, dispatched, remaining };
+      stockScarcityState[productId] = state;
+      saveStockScarcityState();
+      return state;
+    }
+
+    function stockScarcityMarkup(product){
+      const state = stockStatusForProduct(product.id);
+      return `
+        <div class="stock-progress border-t border-emerald-50 bg-emerald-50/60 px-3 py-2" data-product-id="${product.id}">
+          <div class="h-1.5 overflow-hidden rounded-full bg-slate-200">
+            <div class="stock-progress-bar h-full rounded-full bg-gradient-to-r from-emerald-700 via-emerald-500 to-[#d4af37] transition-all duration-700" style="width:${state.dispatched}%"></div>
+          </div>
+          <p class="stock-progress-copy mt-1 text-[10px] font-bold text-emerald-900">Factory Status: ${state.dispatched}% Dispatched Today | Only ${state.remaining.toLocaleString('en-IN')} Pcs Remaining in Current Batch</p>
+        </div>`;
+    }
+
+    function updateStockScarcityDom(){
+      let changed = false;
+      document.querySelectorAll('.stock-progress[data-product-id]').forEach((node) => {
+        const productId = node.getAttribute('data-product-id');
+        const state = stockStatusForProduct(productId);
+        const decrement = 40 + (stockSeed(`${productId}-${Date.now()}`) % 180);
+        state.remaining = Math.max(250, Number(state.remaining || 0) - decrement);
+        state.dispatched = Math.min(98, Number(state.dispatched || 72) + (state.remaining < 1800 ? 1 : 0));
+        stockScarcityState[productId] = state;
+        const bar = node.querySelector('.stock-progress-bar');
+        const copy = node.querySelector('.stock-progress-copy');
+        if(bar) bar.style.width = `${state.dispatched}%`;
+        if(copy) copy.textContent = `Factory Status: ${state.dispatched}% Dispatched Today | Only ${state.remaining.toLocaleString('en-IN')} Pcs Remaining in Current Batch`;
+        changed = true;
+      });
+      if(changed) saveStockScarcityState();
+    }
+
+    function isBrandingEligible(product){
+      const value = `${product.name} ${product.category}`.toLowerCase();
+      return value.includes('fiber plate') || value.includes('tray') || value.includes('butter') || value.includes('box') || value.includes('catering');
+    }
+
+    function brandingControlsMarkup(product){
+      if(!isBrandingEligible(product)) return '';
+      return `
+        <div onclick="event.stopPropagation()" class="rounded-xl border border-[#d4af37]/40 bg-amber-50/70 p-2 text-[11px] text-emerald-950">
+          <label class="flex items-start gap-2 font-bold">
+            <input id="brand-check-${product.id}" type="checkbox" class="mt-0.5 rounded border-amber-400 text-emerald-700" onchange="toggleBrandingUpload('${product.id}', this.checked)" />
+            <span>✨ Add Custom Branding / Logo Printing (+₹1.50 per Piece)</span>
+          </label>
+          <input id="brand-file-${product.id}" type="file" accept="image/*" class="mt-2 hidden w-full text-[10px]" onchange="captureBrandingArtwork('${product.id}', this)" />
+          <p id="brand-note-${product.id}" class="mt-1 hidden font-semibold text-emerald-700">Logo artwork ready for checkout payload.</p>
+        </div>`;
     }
 
     function categoryIcon(category){
@@ -1466,11 +1613,13 @@ let vmpServiceWorkerRegistration = null;
               </svg>
             </button>
           </div>
+          ${stockScarcityMarkup(p)}
           <div class="space-y-3 p-3">
             <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${p.name}</h4>${stockBadge(p.stock)}</div>
             <p class="text-[11px] text-slate-500">${p.category}</p>
             <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
             <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
+            ${brandingControlsMarkup(p)}
             <div class="flex items-center gap-2">
               <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
               <button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
@@ -1553,16 +1702,6 @@ let vmpServiceWorkerRegistration = null;
       localStorage.setItem('vmp_order_history', JSON.stringify(history));
     }
 
-    function escapeHtml(value){
-      return String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;')
-        .replace(/`/g, '&#96;');
-    }
-
     function buildOrderHistoryRecord({ utr = '', address = '' } = {}){
       const subtotal = cartTotalAmount();
       const shipping = shippingEstimate(subtotal);
@@ -1576,9 +1715,11 @@ let vmpServiceWorkerRegistration = null;
           packSize: meta.size || 'Standard Pack',
           qty: Number(item.qty || 0),
           unit: Number(item.unit || 0),
-          lineTotal: Number((Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2))
+          lineTotal: Number((Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)),
+          customBranding: item.customBranding || null
         };
       });
+      const profile = getBuyerProfile();
       return {
         orderId: `VMP-${Date.now()}`,
         orderDate: new Date().toISOString(),
@@ -1586,6 +1727,7 @@ let vmpServiceWorkerRegistration = null;
         paymentMode: 'PhonePe / UPI',
         utr,
         address,
+        business: profile?.business || null,
         items: purchasedItems,
         subtotal: Number(subtotal.toFixed(2)),
         shipping,
@@ -1602,23 +1744,17 @@ let vmpServiceWorkerRegistration = null;
         return;
       }
       host.innerHTML = history.map((order, index) => {
-        const date = escapeHtml(new Date(order.orderDate || order.createdAt || Date.now()).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }));
-        const safeOrderId = escapeHtml(order.orderId || 'VMP-ORDER');
-        const safeStatus = escapeHtml(order.status || 'Paid / Dispatched');
+        const date = new Date(order.orderDate || order.createdAt || Date.now()).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
         const items = Array.isArray(order.items) ? order.items : [];
-        const itemRows = items.map((item) => {
-          const safeItemName = escapeHtml(item.name);
-          const safePackSize = escapeHtml(item.packSize || 'Standard Pack');
-          return `<li class="flex items-start justify-between gap-3 border-b border-slate-100 py-2 last:border-0"><span><strong>${safeItemName}</strong><br><small class="text-slate-500">${safePackSize} • Qty ${Number(item.qty || 0)} × ₹${Number(item.unit || 0).toFixed(2)}</small></span><span class="font-bold text-emerald-800">₹${Number(item.lineTotal || (item.qty * item.unit) || 0).toFixed(2)}</span></li>`;
-        }).join('');
+        const itemRows = items.map((item) => `<li class="flex items-start justify-between gap-3 border-b border-slate-100 py-2 last:border-0"><span><strong>${item.name}</strong><br><small class="text-slate-500">${item.packSize || 'Standard Pack'} • Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</small></span><span class="font-bold text-emerald-800">₹${Number(item.lineTotal || (item.qty * item.unit) || 0).toFixed(2)}</span></li>`).join('');
         return `
           <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm">
             <div class="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p class="text-xs font-black uppercase tracking-[0.18em] text-[#064e3b]">${date}</p>
-                <h4 class="mt-1 text-lg font-black text-slate-950">${safeOrderId}</h4>
+                <h4 class="mt-1 text-lg font-black text-slate-950">${order.orderId || 'VMP-ORDER'}</h4>
               </div>
-              <span class="rounded-full border border-[#d4af37]/60 bg-amber-50 px-3 py-1 text-xs font-black text-amber-800">${safeStatus}</span>
+              <span class="rounded-full border border-[#d4af37]/60 bg-amber-50 px-3 py-1 text-xs font-black text-amber-800">${order.status || 'Paid / Dispatched'}</span>
             </div>
             <ul class="mt-3 text-sm text-slate-700">${itemRows || '<li class="text-slate-500">No item details stored.</li>'}</ul>
             <div class="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900">
@@ -1664,6 +1800,33 @@ let vmpServiceWorkerRegistration = null;
       if(modalRow) modalRow.innerHTML = markup;
     }
 
+    window.toggleBrandingUpload = function(id, checked){
+      const file = document.getElementById(`brand-file-${id}`);
+      const note = document.getElementById(`brand-note-${id}`);
+      if(file) file.classList.toggle('hidden', !checked);
+      if(note && !checked) note.classList.add('hidden');
+      if(!checked) delete brandingArtworkCache[id];
+    }
+
+    window.captureBrandingArtwork = function(id, input){
+      const file = input?.files?.[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        brandingArtworkCache[id] = {
+          fileName: file.name,
+          mimeType: file.type,
+          size: file.size,
+          base64: reader.result,
+          capturedAt: new Date().toISOString(),
+        };
+        const note = document.getElementById(`brand-note-${id}`);
+        if(note) note.classList.remove('hidden');
+        notifyVmp('Logo artwork attached. It will be included in your checkout payload.', 'Branding ready');
+      };
+      reader.readAsDataURL(file);
+    }
+
     window.removeCartItem = function(idx){
       cart.splice(idx, 1);
       saveCart();
@@ -1673,10 +1836,16 @@ let vmpServiceWorkerRegistration = null;
     window.addToCart = function(id){
       const p = products.find(x => x.id === id);
       const qty = Math.max(100, Number(document.getElementById(`qty-${id}`).value || 100));
-      const unit = priceForQty(p.tiers, qty);
-      const existing = cart.find(c => c.id === id && c.unit === unit);
+      const brandingChecked = Boolean(document.getElementById(`brand-check-${id}`)?.checked);
+      const branding = brandingChecked ? {
+        requested: true,
+        pricePerPiece: 1.5,
+        artwork: brandingArtworkCache[id] || null,
+      } : null;
+      const unit = Number((priceForQty(p.tiers, qty) + (brandingChecked ? 1.5 : 0)).toFixed(2));
+      const existing = cart.find(c => c.id === id && c.unit === unit && Boolean(c.customBranding?.requested) === brandingChecked);
       if(existing) existing.qty += qty;
-      else cart.push({id, name:p.name, qty, unit});
+      else cart.push({id, name:p.name, qty, unit, customBranding: branding});
       saveCart();
       renderCart();
       notifyVmp(`${p.name} added to cart successfully.`, 'Cart updated');
@@ -2044,6 +2213,293 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       video.addEventListener('error', hideOverlay, { once: true });
     }
 
+    function launchCartPhonePeCheckout(){
+      if(cart.length === 0){
+        notifyVmp('Your cart is empty! Add premium Fiber Plates to proceed.', 'Cart empty');
+        return;
+      }
+      if(!requireBuyerProfile(launchCartPhonePeCheckout)) return;
+      closeCart();
+      openCheckoutModal();
+    }
+
+    function openCheckoutModal(){
+      if(!requireBuyerProfile(openCheckoutModal)) return;
+      const modal = document.getElementById('checkoutModal');
+      const subtotal = cartTotalAmount();
+      const estimate = shippingEstimate(subtotal);
+      const total = subtotal + Number(estimate.charge || 0);
+      const profile = getBuyerProfile();
+      const name = (document.getElementById('customerName')?.value || profile?.fullName || '').trim();
+      const address = (document.getElementById('customerAddress')?.value || '').trim();
+      const profilePreview = document.getElementById('checkoutProfilePreview');
+      const addressPreview = document.getElementById('checkoutAddressPreview');
+      if(profilePreview && profile){
+        profilePreview.textContent = `${profile.fullName} • ${profile.mobile} • ${profile.email}`;
+      }
+      const businessPreview = document.getElementById('checkoutBusinessPreview');
+      if(businessPreview){
+        const company = profile?.business?.companyName || '';
+        const gstin = profile?.business?.gstin || '';
+        businessPreview.classList.toggle('hidden', !(company || gstin));
+        businessPreview.textContent = (company || gstin) ? `GST Invoice: ${company || 'Business'}${gstin ? ` • GSTIN: ${gstin}` : ''}` : '';
+      }
+      if(addressPreview){
+        addressPreview.textContent = (name && address) ? `${name} • ${address}` : 'Please fill customer name and address in cart.';
+      }
+      const itemBreakdown = document.getElementById('checkoutItemBreakdown');
+      if(itemBreakdown){
+        itemBreakdown.innerHTML = cart.map((item) => `
+          <div class="flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2">
+            <div><p class="font-semibold">${item.name}</p><p class="text-xs text-slate-500">Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</p>${item.customBranding?.requested ? '<p class="mt-1 text-[11px] font-bold text-amber-700">Custom logo printing included</p>' : ''}</div>
+            <p class="font-bold text-emerald-800">₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}</p>
+          </div>
+        `).join('') || '<p class="text-sm text-slate-500">Cart is empty.</p>';
+      }
+      const summaryAccordion = document.getElementById('checkoutItemsAccordion');
+      if(summaryAccordion){
+        const isDesktopCheckout = window.matchMedia('(min-width: 768px)').matches;
+        if(isDesktopCheckout){
+          summaryAccordion.setAttribute('open', 'open');
+        } else {
+          summaryAccordion.removeAttribute('open');
+        }
+      }
+      const subEl = document.getElementById('checkoutSubtotal');
+      const shipEl = document.getElementById('checkoutShipping');
+      const totalEl = document.getElementById('checkoutTotal');
+      if(subEl) subEl.textContent = subtotal.toFixed(2);
+      if(shipEl) shipEl.textContent = Number(estimate.charge).toFixed(2);
+      if(totalEl) totalEl.textContent = total.toFixed(2);
+      const qr = document.getElementById('checkoutQrImage');
+      if(qr){
+        const upiUri = `upi://pay?pa=8050389261@upi&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('VMP B2B Order')}`;
+        qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(upiUri)}`;
+      }
+      const status = document.getElementById('phonepeLiveStatus');
+      if(status){
+        status.textContent = 'Secure node connecting...';
+        setTimeout(() => { status.textContent = 'Live & listening for UPI confirmation'; }, 1000);
+      }
+      if(modal) modal.classList.remove('hidden');
+      notifyVmp('Secure PhonePe B2B gateway opened.', 'Checkout ready');
+    }
+
+    function closeCheckoutModal(){
+      document.getElementById('checkoutModal')?.classList.add('hidden');
+    }
+
+    function encodeSharedCartPayload(cartItems){
+      const payload = {
+        v: 1,
+        ts: Date.now(),
+        items: (Array.isArray(cartItems) ? cartItems : []).map((item) => ({
+          id: String(item.id || ''),
+          name: String(item.name || ''),
+          qty: Number(item.qty || 0),
+          unit: Number(item.unit || 0)
+        })).filter((item) => item.id && item.qty > 0)
+      };
+      return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    }
+
+    function decodeSharedCartPayload(encoded){
+      try {
+        const json = decodeURIComponent(escape(atob(String(encoded || ''))));
+        const parsed = JSON.parse(json);
+        if(!parsed || !Array.isArray(parsed.items)) return [];
+        return parsed.items
+          .map((item) => ({
+            id: String(item.id || ''),
+            name: String(item.name || ''),
+            qty: Math.max(1, Number(item.qty || 0)),
+            unit: Math.max(0, Number(item.unit || 0))
+          }))
+          .filter((item) => item.id && item.qty > 0);
+      } catch (error) {
+        console.warn('Invalid shared cart payload.', error);
+        return [];
+      }
+    }
+
+    function handleInboundSharedCart(){
+      const url = new URL(window.location.href);
+      const sharedParam = url.searchParams.get('shared_cart');
+      if(!sharedParam) return;
+      const sharedItems = decodeSharedCartPayload(sharedParam);
+      if(!sharedItems.length) return;
+      const mergedMap = new Map();
+      for(const item of cart){
+        mergedMap.set(item.id, { ...item });
+      }
+      for(const item of sharedItems){
+        const baseProduct = products.find((p) => p.id === item.id);
+        const safeUnit = item.unit > 0 ? item.unit : Number(baseProduct?.tiers?.[0]?.price || 0);
+        if(mergedMap.has(item.id)){
+          const current = mergedMap.get(item.id);
+          mergedMap.set(item.id, { ...current, qty: Number(current.qty || 0) + item.qty });
+        } else {
+          mergedMap.set(item.id, { id: item.id, name: item.name || baseProduct?.name || item.id, qty: item.qty, unit: safeUnit });
+        }
+      }
+      cart = Array.from(mergedMap.values());
+      saveCart();
+      renderCart();
+      openCart();
+      url.searchParams.delete('shared_cart');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      alert('Shared quote items loaded into cart successfully.');
+    }
+
+    function shareCartQuoteViaWhatsApp(){
+      const sourceCart = loadCart();
+      if(!Array.isArray(sourceCart) || !sourceCart.length){
+        alert('Please add products to cart before sharing quote.');
+        return;
+      }
+      const encoded = encodeSharedCartPayload(sourceCart);
+      const sharedLink = `${window.location.origin}${window.location.pathname}?shared_cart=${encodeURIComponent(encoded)}`;
+      const summaryLines = sourceCart.map((item) => `• ${item.name} x ${item.qty} - ₹${(Number(item.qty||0) * Number(item.unit||0)).toFixed(2)}`).join('\n');
+      const subtotal = sourceCart.reduce((sum, item) => sum + (Number(item.qty || 0) * Number(item.unit || 0)), 0).toFixed(2);
+      const message = `Hello! Here is the wholesale order quotation from Veer Mahadev Plastic.\n\n*Order Summary:*\n${summaryLines}\n\n*Total Amount:* ₹${subtotal}\n\nClick this secure link to view, verify, and complete the payment directly: ${sharedLink}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function shareEstimateQuoteToWhatsApp(){
+      if(!cart.length){
+        notifyVmp('Please add products before sharing an estimate quote.', 'Cart empty');
+        return;
+      }
+      const subtotal = cartTotalAmount();
+      const estimate = shippingEstimate(subtotal);
+      const total = subtotal + Number(estimate.charge || 0);
+      const lines = cart.map((item, index) => {
+        const product = products.find((p) => p.id === item.id);
+        const meta = product ? productMeta(product) : { size: 'Standard Pack' };
+        const brandingLine = item.customBranding?.requested ? ' + Custom Logo Printing' : '';
+        return `${index + 1}. ${item.name} (${meta.size || 'Standard Pack'})\n   Qty: ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)} = ₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}${brandingLine}`;
+      });
+      const profile = getBuyerProfile();
+      const businessLine = profile?.business?.companyName || profile?.business?.gstin
+        ? `\nBusiness: ${profile.business.companyName || 'GST Buyer'}${profile.business.gstin ? ` | GSTIN: ${profile.business.gstin}` : ''}`
+        : '';
+      const message = `Hello! Please review this Veer Mahadev Plastic estimate quote for financial clearance.${businessLine}\n\n*Estimate Items:*\n${lines.join('\n\n')}\n\nSubtotal: ₹${subtotal.toFixed(2)}\nShipping (${estimate.zoneLabel}): ₹${Number(estimate.charge || 0).toFixed(2)}\n*Estimated Total: ₹${total.toFixed(2)}*\n\nPlease approve so we can complete PhonePe/UPI payment and factory dispatch.`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+
+    const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
+    const DAILY_FACTORY_CAPACITY = 1000000;
+
+    function hashFactorySeed(seed){
+      return String(seed).split('').reduce((acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) >>> 0, 0);
+    }
+
+    function formatFactoryPieces(value){
+      return Math.min(Number(value || 0), DAILY_FACTORY_CAPACITY).toLocaleString('en-IN');
+    }
+
+    function createFactoryCapacityState(now = new Date()){
+      const dateKey = now.toISOString().slice(0, 10);
+      const seededOffset = hashFactorySeed(`${dateKey}-${now.getUTCHours()}`) % 8001;
+      return {
+        dateKey,
+        booked: 842000 + seededOffset,
+        updatedAt: now.toISOString(),
+      };
+    }
+
+    function readFactoryCapacityState(){
+      const now = new Date();
+      const dateKey = now.toISOString().slice(0, 10);
+      try {
+        const stored = JSON.parse(localStorage.getItem(FACTORY_CAPACITY_STATE_KEY) || 'null');
+        if(stored && stored.dateKey === dateKey && Number(stored.booked) > 0){
+          return { ...stored, booked: Math.min(Number(stored.booked), DAILY_FACTORY_CAPACITY) };
+        }
+      } catch (error) {
+        console.warn('Factory capacity ticker state reset.', error);
+      }
+      const fresh = createFactoryCapacityState(now);
+      localStorage.setItem(FACTORY_CAPACITY_STATE_KEY, JSON.stringify(fresh));
+      return fresh;
+    }
+
+    function saveFactoryCapacityState(state){
+      localStorage.setItem(FACTORY_CAPACITY_STATE_KEY, JSON.stringify({
+        ...state,
+        booked: Math.min(Number(state.booked || 0), DAILY_FACTORY_CAPACITY),
+        updatedAt: new Date().toISOString(),
+      }));
+    }
+
+    function updateFactoryCapacityCounter(state){
+      const counter = document.getElementById('factoryCapacityCounter');
+      if(counter) counter.textContent = formatFactoryPieces(state.booked);
+    }
+
+    function updateDispatchCountdown(){
+      const label = document.getElementById('dispatchCountdownLabel');
+      const clock = document.getElementById('dispatchCountdownClock');
+      if(!label || !clock) return;
+      const now = new Date();
+      const deadline = new Date(now);
+      deadline.setHours(12, 0, 0, 0);
+      if(now >= deadline){
+        deadline.setDate(deadline.getDate() + 1);
+        label.textContent = 'Next-Day Morning Batch Dispatches close in:';
+      } else {
+        label.textContent = 'Production Line Closing for Same-Day Dispatch in:';
+      }
+      const diff = Math.max(0, deadline.getTime() - now.getTime());
+      const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+      const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+      clock.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    function initFactoryCapacityTicker(){
+      if(!document.getElementById('factoryCapacityTicker')) return;
+      let state = readFactoryCapacityState();
+      updateFactoryCapacityCounter(state);
+      maybeDispatchCapacityWarning(state);
+      updateDispatchCountdown();
+      setInterval(updateDispatchCountdown, 1000);
+      const tickCapacity = () => {
+        const increment = Math.floor(150 + Math.random() * 701);
+        state = {
+          ...state,
+          booked: Math.min(DAILY_FACTORY_CAPACITY, Number(state.booked || 0) + increment),
+        };
+        saveFactoryCapacityState(state);
+        updateFactoryCapacityCounter(state);
+        maybeDispatchCapacityWarning(state);
+        const nextDelay = 45000 + Math.floor(Math.random() * 15001);
+        window.setTimeout(tickCapacity, nextDelay);
+      };
+      window.setTimeout(tickCapacity, 45000 + Math.floor(Math.random() * 15001));
+    }
+
+    function initHeroAdOverlay(){
+      const overlay = document.getElementById('heroAdOverlay');
+      const video = document.getElementById('heroAdVideo');
+      if(!overlay || !video) return;
+      const seen = localStorage.getItem('vmp_ad_seen') === 'true';
+      if(seen){
+        overlay.style.display = 'none';
+        return;
+      }
+      const hideOverlay = () => {
+        overlay.classList.add('vmp-ad-fade-out');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          localStorage.setItem('vmp_ad_seen', 'true');
+        }, 800);
+      };
+      video.addEventListener('ended', hideOverlay, { once: true });
+      video.addEventListener('error', hideOverlay, { once: true });
+    }
+
     // Shipping calculator
     bindById('calcShip', 'click', ()=>{
       const w = Number(document.getElementById('weight').value||0);
@@ -2162,6 +2618,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
     // Cart controls
     bindById('openCartTop', 'click', openCart);
     bindById('openCartFromDash', 'click', openCart);
+    bindById('shareEstimateCartBtn', 'click', shareEstimateQuoteToWhatsApp);
     bindById('cartPhonePeCheckoutBtn', 'click', launchCartPhonePeCheckout);
     bindById('closeCart', 'click', closeCart);
     bindById('drawerOverlay', 'click', closeCart);
@@ -2187,12 +2644,78 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       e.target.reset();
     });
 
+    function openSampleRequestModal(){
+      const profile = getBuyerProfile();
+      if(profile){
+        const sampleName = document.getElementById('sampleName');
+        const sampleMobile = document.getElementById('sampleMobile');
+        if(sampleName) sampleName.value = profile.fullName || '';
+        if(sampleMobile) sampleMobile.value = profile.mobile || '';
+      }
+      document.getElementById('sampleRequestModal')?.classList.remove('hidden');
+    }
+
+    function closeSampleRequestModal(){
+      document.getElementById('sampleRequestModal')?.classList.add('hidden');
+    }
+
+    function loadFactorySampleBoxCheckout({ name, mobile, address }){
+      const existingProfile = getBuyerProfile() || {};
+      const sampleProfile = {
+        ...existingProfile,
+        fullName: name,
+        mobile,
+        email: existingProfile.email || `sample-${mobile.replace(/\D/g, '').slice(-10) || Date.now()}@veermahadevplastic.in`,
+        sampleLead: true,
+        capturedAt: new Date().toISOString(),
+      };
+      localStorage.setItem('vmp_user_profile', JSON.stringify(sampleProfile));
+      cart = [{
+        id: 'factory-sample-box',
+        name: 'Factory Sample Box for Caterers',
+        qty: 1,
+        unit: 199,
+        sampleBox: true,
+      }];
+      saveCart();
+      const customerName = document.getElementById('customerName');
+      const customerAddress = document.getElementById('customerAddress');
+      if(customerName) customerName.value = name;
+      if(customerAddress) customerAddress.value = address;
+      renderCart();
+      closeSampleRequestModal();
+      closeCart();
+      notifyVmp('Factory Sample Box loaded. Complete PhonePe token payment to reserve dispatch.', 'Sample box ready');
+      openCheckoutModal();
+    }
+
+    bindById('openSampleBoxRequest', 'click', openSampleRequestModal);
+    bindById('closeSampleRequestModal', 'click', closeSampleRequestModal);
+    bindById('sampleRequestModal', 'click', (e)=>{ if(e.target.id === 'sampleRequestModal') closeSampleRequestModal(); });
+    bindById('sampleRequestForm', 'submit', (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('sampleName')?.value.trim() || '';
+      const mobile = document.getElementById('sampleMobile')?.value.trim() || '';
+      const address = document.getElementById('sampleAddress')?.value.trim() || '';
+      const msg = document.getElementById('sampleRequestMsg');
+      if(!name || !mobile || !address){
+        if(msg) msg.textContent = 'Name, mobile, and address are required for sample dispatch.';
+        return;
+      }
+      loadFactorySampleBoxCheckout({ name, mobile, address });
+      e.target.reset();
+    });
+
     bindById('profileGateForm', 'submit', (e)=>{
       e.preventDefault();
       const profile = {
         fullName: document.getElementById('gateFullName')?.value.trim() || '',
         mobile: document.getElementById('gateMobile')?.value.trim() || '',
         email: document.getElementById('gateEmail')?.value.trim() || '',
+        business: {
+          companyName: document.getElementById('gateCompanyName')?.value.trim() || '',
+          gstin: (document.getElementById('gateGstin')?.value.trim() || '').toUpperCase(),
+        },
         capturedAt: new Date().toISOString()
       };
       const msg = document.getElementById('profileGateMsg');
@@ -2262,6 +2785,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       const address = (document.getElementById('customerAddress')?.value || '').trim();
       const payload = {
         profile: getBuyerProfile(),
+        business: getBuyerProfile()?.business || null,
         address,
         shipping: shippingEstimate(cartTotalAmount()),
         paymentMode: 'PhonePe / UPI',
@@ -2283,7 +2807,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       renderCart();
       renderOrderHistory();
       notifyVmp(`Order ${completedOrder.orderId} paid and moved to Order History. Cart cleared.`, 'Payment verified');
-       setTimeout(() => {
+      setTimeout(() => {
         dispatchLocalFactoryNotification('Veer Mahadev Plastic', 'Order Dispatched! Your bulk batch is entering the packaging queue. 🏭', `vmp-order-${completedOrder.orderId}`);
       }, 5000);
       closeCheckoutModal();
@@ -2351,7 +2875,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
     };
 
     // initialize
-     registerVmpServiceWorker();
+    registerVmpServiceWorker();
     bindById('pwaUpdateNowBtn', 'click', activatePwaUpdateNow);
     initEntryModeGate();
     renderCategories();
@@ -2360,6 +2884,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
     renderOrderHistory();
     renderTrustBadges();
     initFactoryCapacityTicker();
+    setInterval(updateStockScarcityDom, 30000);
     initHeroAdOverlay();
     handleInboundSharedCart();
     const reorderBtn = document.getElementById('repeatOrder');

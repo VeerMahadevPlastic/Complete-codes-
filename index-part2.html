@@ -206,6 +206,26 @@
     </div>
   </header>
 
+  <section id="factoryCapacityTicker" class="relative z-40 border-b border-[#b88916]/50 bg-[#d4af37] text-[#064e3b] shadow-lg shadow-amber-900/20">
+    <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-2 text-xs font-black sm:flex-row sm:items-center sm:justify-between sm:text-sm">
+      <div class="flex min-w-0 items-center gap-2">
+        <span class="inline-flex h-8 w-8 flex-shrink-0 animate-pulse items-center justify-center rounded-full bg-[#064e3b] text-lg text-[#d4af37] shadow-md shadow-emerald-950/30" aria-hidden="true">🏭</span>
+        <p class="min-w-0 leading-snug sm:truncate">
+          <span class="uppercase tracking-[0.18em]">FACTORY FLOOR CAPACITIES:</span>
+          <span id="factoryCapacityCounter" class="mx-1 rounded-md bg-[#064e3b] px-2 py-0.5 font-black tabular-nums text-white">8,42,000</span>
+          <span>Pcs Daily Target Booked.</span>
+        </p>
+      </div>
+      <div class="flex min-w-0 items-center gap-2 rounded-full border border-[#064e3b]/25 bg-white/35 px-3 py-1 shadow-inner">
+        <span class="flex-shrink-0" aria-hidden="true">⏱️</span>
+        <p class="min-w-0 text-[11px] leading-snug sm:text-xs">
+          <span id="dispatchCountdownLabel" class="font-black">Production Line Closing for Same-Day Dispatch in:</span>
+          <span id="dispatchCountdownClock" class="ml-1 rounded-md bg-[#064e3b] px-2 py-0.5 font-black tabular-nums text-white">--:--:--</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
   <main id="home">
     <section class="relative overflow-hidden bg-[#064e3b] text-white">
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(212,175,55,0.22),transparent_28%),linear-gradient(135deg,#064e3b_0%,#052e24_58%,#031b16_100%)]"></div>
@@ -324,6 +344,17 @@
           <button class="md:col-span-2 rounded-lg bg-amber-500 py-2.5 text-sm font-bold text-emerald-950 hover:bg-amber-400">Submit VIP Sample Request</button>
           <p id="vipSampleMsg" class="md:col-span-2 text-xs font-semibold text-amber-200"></p>
         </form>
+      </div>
+    </section>
+
+    <section id="factorySampleBox" class="max-w-7xl mx-auto px-4 pb-8">
+      <div class="rounded-3xl border border-[#d4af37]/50 bg-white p-5 shadow-xl md:flex md:items-center md:justify-between md:gap-6">
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.2em] text-[#d4af37]">Caterer Quality Trial</p>
+          <h3 class="mt-2 text-2xl font-black text-[#064e3b]">📦 Request Factory Sample Box for Caterers</h3>
+          <p class="mt-2 max-w-2xl text-sm font-medium text-slate-600">Get a curated low-cost sample box with plates, trays, bowls, and premium packaging so your team can verify quality before high-volume B2B buying.</p>
+        </div>
+        <button id="openSampleBoxRequest" class="mt-4 rounded-2xl bg-[#064e3b] px-5 py-3 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-emerald-800 md:mt-0">Request Sample Box via PhonePe</button>
       </div>
     </section>
 
@@ -503,7 +534,7 @@
       <h4 class="text-xl font-bold">Your Cart</h4>
       <button id="closeCart" class="text-xl">✕</button>
     </div>
-    <div id="cartItems" class="p-4 h-[calc(100%-220px)] overflow-y-auto hide-scrollbar"></div>
+    <div id="cartItems" class="p-4 h-[calc(100%-360px)] overflow-y-auto hide-scrollbar"></div>
     <div class="p-4 border-t bg-slate-50">
       <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
       <p class="text-xs text-slate-600 mt-1">Shipping Zone: <span id="shippingZoneLabel" class="font-semibold">Ahmedabad</span></p>
@@ -519,11 +550,17 @@
         <textarea id="customerAddress" class="border rounded-lg px-3 py-2 text-sm" rows="2" placeholder="Full Address with City, State, Pincode (required)"></textarea>
         <p id="cartCustomerMsg" class="text-xs font-semibold text-rose-600"></p>
       </div>
-      <div class="mt-3 space-y-2">
+      <div class="mt-3 space-y-2 border-t-4 border-[#d4af37] bg-white/95 pt-3">
+        <div class="rounded-2xl border border-emerald-100 bg-emerald-50 px-3 py-2">
+          <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[#064e3b]">Accepted Methods</p>
+          <p class="mt-1 text-xs font-semibold text-slate-700">PhonePe | GPay | UPI QR | WhatsApp Verification</p>
+        </div>
+        <button id="shareEstimateCartBtn" class="w-full rounded-xl border border-[#d4af37]/70 bg-amber-50 py-2.5 text-sm font-black text-[#064e3b] transition hover:bg-amber-100">📋 Share Estimate Quote to WhatsApp</button>
+        <button id="cartPhonePeCheckoutBtn" class="w-full rounded-xl bg-[#5f259f] py-3 text-sm font-black text-white shadow-lg shadow-[#5f259f]/25 transition hover:-translate-y-0.5 hover:bg-[#4c1d95] hover:shadow-xl">🔒 Proceed to Secure PhonePe Payment</button>
         <button id="waCart" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
           <span>💬</span><span>Order on WhatsApp</span>
         </button>
-        <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Buy Now</button>
+        <button id="buyNowCart" class="w-full border py-2 rounded-lg font-semibold">Confirm Order & Pay via UPI</button>
         <button id="directorCallBtn" class="hidden w-full rounded-lg border border-amber-300 bg-amber-50 py-2 text-sm font-bold text-amber-900">👑 Large B2B Contract? Speak Directly with Director Karan Prajapati</button>
         <button id="creditRequestBtn" class="w-full rounded-lg border border-emerald-200 bg-white py-2 text-xs font-semibold text-emerald-800">Apply for Corporate Credit / Post-Paid Billing (Registered GST Businesses Only)</button>
         <div id="trustBadgeRowCart" class="grid grid-cols-2 gap-2 text-[10px] md:grid-cols-4"></div>
@@ -545,6 +582,7 @@
           <div class="rounded-xl border border-emerald-100 bg-emerald-50/60 p-3">
             <p class="text-sm font-semibold text-emerald-900">Verified Buyer Profile</p>
             <p id="checkoutProfilePreview" class="mt-1 text-sm text-slate-600">Login profile required before checkout.</p>
+            <div id="checkoutBusinessPreview" class="mt-2 hidden rounded-lg border border-[#d4af37]/40 bg-white px-3 py-2 text-xs font-semibold text-emerald-900"></div>
           </div>
           <div class="rounded-xl border border-emerald-100 p-3">
             <p class="text-sm font-semibold text-slate-700">Delivery Address</p>
@@ -587,6 +625,26 @@
       </div>
     </div>
   </div>
+  <div id="sampleRequestModal" class="hidden fixed inset-0 z-[77] flex items-end justify-center bg-black/60 px-4 pb-4 sm:items-center sm:pb-0">
+    <div class="w-full max-w-lg rounded-3xl border border-[#d4af37]/60 bg-[#064e3b] p-5 text-white shadow-2xl">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.2em] text-[#d4af37]">Factory Sample Box</p>
+          <h3 class="mt-1 text-xl font-black">Verify quality before bulk buying</h3>
+          <p class="mt-1 text-xs text-emerald-100">Sample box token: ₹199 + delivery. We will adjust it in your first wholesale invoice.</p>
+        </div>
+        <button id="closeSampleRequestModal" class="rounded-lg border border-white/20 px-3 py-1 text-sm font-bold text-white">Close</button>
+      </div>
+      <form id="sampleRequestForm" class="mt-4 grid gap-3">
+        <input id="sampleName" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Name" />
+        <input id="sampleMobile" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Mobile / WhatsApp Number" />
+        <textarea id="sampleAddress" required rows="3" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Delivery Address with City & Pincode"></textarea>
+        <button class="rounded-xl bg-[#d4af37] py-2.5 text-sm font-black text-emerald-950">Load Sample Box & Open PhonePe</button>
+        <p id="sampleRequestMsg" class="text-xs font-semibold text-amber-200"></p>
+      </form>
+    </div>
+  </div>
+
   <div id="profileGateModal" class="hidden fixed inset-0 z-[76] flex items-end justify-center bg-black/60 px-4 pb-4 sm:items-center sm:pb-0">
     <div class="vmp-auth-card w-full max-w-md rounded-2xl border border-amber-300/50 bg-[#064e3b] p-5 text-white shadow-2xl">
       <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300">VIP Buyer Access</p>
@@ -596,12 +654,28 @@
         <input id="gateFullName" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Full Name" />
         <input id="gateMobile" required class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Mobile / WhatsApp Number" />
         <input id="gateEmail" required type="email" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Email Address" />
+        <details id="gateBusinessDetails" class="rounded-xl border border-[#d4af37]/40 bg-emerald-950/40 p-3">
+          <summary class="cursor-pointer text-sm font-black text-[#d4af37]">🏢 Add Business Details (GST Invoice)</summary>
+          <div class="mt-3 grid gap-2">
+            <input id="gateCompanyName" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm text-white placeholder:text-emerald-200/70" placeholder="Company Name" />
+            <input id="gateGstin" class="rounded-lg border border-emerald-700 bg-emerald-950/50 px-3 py-2 text-sm uppercase text-white placeholder:text-emerald-200/70" placeholder="GSTIN / Tax Number" />
+          </div>
+        </details>
         <button class="rounded-lg bg-amber-500 py-2 text-sm font-bold text-emerald-950 hover:bg-amber-400">Save Profile & Continue</button>
         <p id="profileGateMsg" class="text-xs font-semibold text-amber-200"></p>
       </form>
     </div>
   </div>
   <div id="vmpToastHost" class="fixed right-4 top-24 z-[90] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2 pointer-events-none"></div>
+  <div id="pwaUpdateBanner" class="fixed inset-x-4 bottom-4 z-[95] hidden translate-y-8 rounded-2xl border border-[#d4af37]/70 bg-[#064e3b] p-4 text-white opacity-0 shadow-2xl shadow-emerald-950/40 transition-all duration-500 sm:left-1/2 sm:max-w-xl sm:-translate-x-1/2">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="text-[11px] font-black uppercase tracking-[0.2em] text-[#d4af37]">PWA Factory Update</p>
+        <p class="mt-1 text-sm font-bold">New Factory Update Available! 🚀 Update App now for live wholesale rates.</p>
+      </div>
+      <button id="pwaUpdateNowBtn" class="rounded-xl bg-[#d4af37] px-5 py-2 text-sm font-black text-[#064e3b] shadow-lg transition hover:bg-amber-300">Update Now</button>
+    </div>
+  </div>
   <div id="creditModal" class="hidden fixed inset-0 z-[69] bg-black/50 px-4">
     <div class="mx-auto mt-16 w-full max-w-lg rounded-2xl bg-white p-5 shadow-2xl">
       <div class="flex items-center justify-between"><h3 class="text-lg font-black text-emerald-800">Corporate Credit Request</h3><button id="closeCreditModal" class="rounded border px-2 py-1 text-xs">Close</button></div>
@@ -792,11 +866,6 @@
       hideInstallBanner();
     });
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
-      });
-    }
 
     function slugify(value){
       return value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -1174,6 +1243,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     }
 
     let cart = loadCart();
+    const brandingArtworkCache = {};
+    let stockScarcityState = readStockScarcityState();
     let b2bLoggedIn = false;
 
     const productGrid = document.getElementById('productGrid');
@@ -1280,6 +1351,102 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       }, 250);
     }
 
+    let vmpServiceWorkerRegistration = null;
+    let vmpPendingUpdateWorker = null;
+    let vmpRefreshingForUpdate = false;
+
+    function showPwaUpdateBanner(worker){
+      vmpPendingUpdateWorker = worker || vmpPendingUpdateWorker;
+      const banner = document.getElementById('pwaUpdateBanner');
+      if(!banner) return;
+      banner.classList.remove('hidden');
+      requestAnimationFrame(() => banner.classList.remove('translate-y-8', 'opacity-0'));
+      notifyVmp('New Factory Update Available! 🚀 Update App now for live wholesale rates.', 'PWA update ready');
+    }
+
+    function activatePwaUpdateNow(){
+      const banner = document.getElementById('pwaUpdateBanner');
+      if(banner) banner.classList.add('translate-y-8', 'opacity-0');
+      if(vmpPendingUpdateWorker){
+        vmpPendingUpdateWorker.postMessage({ type: 'SKIP_WAITING' });
+      }
+      setTimeout(() => window.location.reload(true), 700);
+    }
+
+    async function registerVmpServiceWorker(){
+      if(!('serviceWorker' in navigator)) return;
+      try {
+        const registration = await navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' });
+        vmpServiceWorkerRegistration = registration;
+        if(registration.waiting) showPwaUpdateBanner(registration.waiting);
+        registration.addEventListener('updatefound', () => {
+          const installingWorker = registration.installing;
+          if(!installingWorker) return;
+          installingWorker.addEventListener('statechange', () => {
+            if(installingWorker.state === 'installed' && navigator.serviceWorker.controller){
+              showPwaUpdateBanner(installingWorker);
+            }
+          });
+        });
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if(vmpRefreshingForUpdate) return;
+          vmpRefreshingForUpdate = true;
+          window.location.reload(true);
+        });
+        setTimeout(() => registration.update(), 2500);
+        setInterval(() => registration.update(), 30000);
+      } catch (error) {
+        console.warn('VMP service worker registration failed.', error);
+      }
+    }
+
+    async function requestVmpNotificationPermission(){
+      if(!('Notification' in window)){
+        notifyVmp('Browser notifications are not supported here. In-app alerts remain active.', 'Notifications');
+        return 'unsupported';
+      }
+      const permission = Notification.permission === 'default' ? await Notification.requestPermission() : Notification.permission;
+      if(permission === 'granted'){
+        notifyVmp('Wholesale alert channel activated securely!', 'Notifications enabled');
+      } else {
+        notifyVmp('Notification permission was not enabled. You will still receive in-app updates.', 'Notifications');
+      }
+      return permission;
+    }
+
+    async function dispatchLocalFactoryNotification(title, body, tag = 'vmp-local-alert'){
+      if(!('Notification' in window) || Notification.permission !== 'granted'){
+        notifyVmp(body, title);
+        return;
+      }
+      try {
+        const registration = vmpServiceWorkerRegistration || (navigator.serviceWorker?.ready ? await navigator.serviceWorker.ready : null);
+        if(registration?.showNotification){
+          registration.showNotification(title, {
+            body,
+            tag,
+            renotify: true,
+            icon: './icons/icon-192.svg',
+            badge: './icons/icon-192.svg',
+            data: { url: window.location.href, createdAt: new Date().toISOString() },
+          });
+        } else {
+          new Notification(title, { body, tag });
+        }
+      } catch (error) {
+        console.warn('Local notification dispatch failed.', error);
+        notifyVmp(body, title);
+      }
+    }
+
+    function maybeDispatchCapacityWarning(state){
+      if(!state || Number(state.booked || 0) < 950000) return;
+      const warningKey = `vmp_capacity_warning_${state.dateKey || new Date().toISOString().slice(0, 10)}`;
+      if(localStorage.getItem(warningKey) === 'true') return;
+      localStorage.setItem(warningKey, 'true');
+      dispatchLocalFactoryNotification('Urgent: Factory floor capacity reaching 98%!', 'Lock your catering orders now.', 'vmp-capacity-warning');
+    }
+
     function getBuyerProfile(){
       try { return JSON.parse(localStorage.getItem('vmp_user_profile') || 'null'); }
       catch { return null; }
@@ -1297,9 +1464,15 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         const fullNameInput = document.getElementById('gateFullName');
         const mobileInput = document.getElementById('gateMobile');
         const emailInput = document.getElementById('gateEmail');
+        const companyInput = document.getElementById('gateCompanyName');
+        const gstinInput = document.getElementById('gateGstin');
+        const businessDetails = document.getElementById('gateBusinessDetails');
         if(fullNameInput) fullNameInput.value = existingProfile.fullName || '';
         if(mobileInput) mobileInput.value = existingProfile.mobile || '';
         if(emailInput) emailInput.value = existingProfile.email || '';
+        if(companyInput) companyInput.value = existingProfile.business?.companyName || '';
+        if(gstinInput) gstinInput.value = existingProfile.business?.gstin || '';
+        if(businessDetails && (existingProfile.business?.companyName || existingProfile.business?.gstin)) businessDetails.setAttribute('open', 'open');
       }
       const modal = document.getElementById('profileGateModal');
       if(modal) modal.classList.remove('hidden');
@@ -1334,6 +1507,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     }
 
     function triggerFactoryAppPrompt(){
+      registerVmpServiceWorker();
       const installButton = document.getElementById('installNowBtn');
       if(installButton){
         installButton.click();
@@ -1363,11 +1537,11 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     bindById('dropdownMyProfile', 'click', () => openProfileGate(null));
     bindById('dropdownOrderHistory', 'click', () => { renderOrderHistory(); scrollToSection('order-history'); });
     bindById('dropdownWishlist', 'click', () => { activeCategory = 'All'; searchTerm = ''; applyProductFilters(); scrollToSection('shop'); notifyVmp('Wishlist shortcut opened. Add products to cart to save your buying list.', 'Wishlist'); });
-    bindById('dropdownNotifications', 'click', () => notifyVmp('Notifications are active for profile, cart, checkout, and payment updates.', 'Notification Settings'));
+    bindById('dropdownNotifications', 'click', requestVmpNotificationPermission);
     bindById('dropdownCare', 'click', () => openFactoryDesk('Hi VMP Team, I need 24x7 Caterer Care support.'));
     bindById('dropdownDownloadApp', 'click', triggerFactoryAppPrompt);
     bindById('dropdownBulkInquiry', 'click', () => scrollToSection('wholesale'));
-    bindById('dropdownNotificationSettings', 'click', () => notifyVmp('Notification settings are managed automatically for cart, checkout, and order updates.', 'Notifications'));
+    bindById('dropdownNotificationSettings', 'click', requestVmpNotificationPermission);
     bindById('dropdownFactoryDesk', 'click', () => openFactoryDesk('Hi VMP Team, please connect me with the 24x7 Factory Desk.'));
     bindById('dropdownPartnerProgram', 'click', () => { scrollToSection('wholesale'); notifyVmp('Partner Program inquiry starts from the Bulk Order form.', 'Partner Program'); });
     bindById('refreshOrderHistory', 'click', renderOrderHistory);
@@ -1390,6 +1564,79 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(stock === 0) return '<span class="text-xs bg-rose-100 text-rose-700 px-2 py-1 rounded">Out of Stock</span>';
       if(stock < 80) return '<span class="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded">Low Stock</span>';
       return '<span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">In Stock</span>';
+    }
+
+    function readStockScarcityState(){
+      try { return JSON.parse(localStorage.getItem('vmp_stock_scarcity_state') || '{}'); }
+      catch { return {}; }
+    }
+
+    function saveStockScarcityState(){
+      localStorage.setItem('vmp_stock_scarcity_state', JSON.stringify(stockScarcityState));
+    }
+
+    function stockSeed(productId){
+      return String(productId).split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    }
+
+    function stockStatusForProduct(productId){
+      const today = new Date().toISOString().slice(0, 10);
+      const existing = stockScarcityState[productId];
+      if(existing?.dateKey === today) return existing;
+      const seed = stockSeed(productId);
+      const dispatched = 72 + (seed % 19);
+      const remaining = 1800 + ((seed * 137) % 6200);
+      const state = { dateKey: today, dispatched, remaining };
+      stockScarcityState[productId] = state;
+      saveStockScarcityState();
+      return state;
+    }
+
+    function stockScarcityMarkup(product){
+      const state = stockStatusForProduct(product.id);
+      return `
+        <div class="stock-progress border-t border-emerald-50 bg-emerald-50/60 px-3 py-2" data-product-id="${product.id}">
+          <div class="h-1.5 overflow-hidden rounded-full bg-slate-200">
+            <div class="stock-progress-bar h-full rounded-full bg-gradient-to-r from-emerald-700 via-emerald-500 to-[#d4af37] transition-all duration-700" style="width:${state.dispatched}%"></div>
+          </div>
+          <p class="stock-progress-copy mt-1 text-[10px] font-bold text-emerald-900">Factory Status: ${state.dispatched}% Dispatched Today | Only ${state.remaining.toLocaleString('en-IN')} Pcs Remaining in Current Batch</p>
+        </div>`;
+    }
+
+    function updateStockScarcityDom(){
+      let changed = false;
+      document.querySelectorAll('.stock-progress[data-product-id]').forEach((node) => {
+        const productId = node.getAttribute('data-product-id');
+        const state = stockStatusForProduct(productId);
+        const decrement = 40 + (stockSeed(`${productId}-${Date.now()}`) % 180);
+        state.remaining = Math.max(250, Number(state.remaining || 0) - decrement);
+        state.dispatched = Math.min(98, Number(state.dispatched || 72) + (state.remaining < 1800 ? 1 : 0));
+        stockScarcityState[productId] = state;
+        const bar = node.querySelector('.stock-progress-bar');
+        const copy = node.querySelector('.stock-progress-copy');
+        if(bar) bar.style.width = `${state.dispatched}%`;
+        if(copy) copy.textContent = `Factory Status: ${state.dispatched}% Dispatched Today | Only ${state.remaining.toLocaleString('en-IN')} Pcs Remaining in Current Batch`;
+        changed = true;
+      });
+      if(changed) saveStockScarcityState();
+    }
+
+    function isBrandingEligible(product){
+      const value = `${product.name} ${product.category}`.toLowerCase();
+      return value.includes('fiber plate') || value.includes('tray') || value.includes('butter') || value.includes('box') || value.includes('catering');
+    }
+
+    function brandingControlsMarkup(product){
+      if(!isBrandingEligible(product)) return '';
+      return `
+        <div onclick="event.stopPropagation()" class="rounded-xl border border-[#d4af37]/40 bg-amber-50/70 p-2 text-[11px] text-emerald-950">
+          <label class="flex items-start gap-2 font-bold">
+            <input id="brand-check-${product.id}" type="checkbox" class="mt-0.5 rounded border-amber-400 text-emerald-700" onchange="toggleBrandingUpload('${product.id}', this.checked)" />
+            <span>✨ Add Custom Branding / Logo Printing (+₹1.50 per Piece)</span>
+          </label>
+          <input id="brand-file-${product.id}" type="file" accept="image/*" class="mt-2 hidden w-full text-[10px]" onchange="captureBrandingArtwork('${product.id}', this)" />
+          <p id="brand-note-${product.id}" class="mt-1 hidden font-semibold text-emerald-700">Logo artwork ready for checkout payload.</p>
+        </div>`;
     }
 
     function categoryIcon(category){
@@ -1495,11 +1742,13 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
               </svg>
             </button>
           </div>
+          ${stockScarcityMarkup(p)}
           <div class="space-y-3 p-3">
             <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${p.name}</h4>${stockBadge(p.stock)}</div>
             <p class="text-[11px] text-slate-500">${p.category}</p>
             <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
             <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
+            ${brandingControlsMarkup(p)}
             <div class="flex items-center gap-2">
               <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
               <button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
@@ -1582,16 +1831,6 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       localStorage.setItem('vmp_order_history', JSON.stringify(history));
     }
 
-    function escapeHtml(value){
-      return String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;')
-        .replace(/`/g, '&#96;');
-    }
-
     function buildOrderHistoryRecord({ utr = '', address = '' } = {}){
       const subtotal = cartTotalAmount();
       const shipping = shippingEstimate(subtotal);
@@ -1605,9 +1844,11 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
           packSize: meta.size || 'Standard Pack',
           qty: Number(item.qty || 0),
           unit: Number(item.unit || 0),
-          lineTotal: Number((Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2))
+          lineTotal: Number((Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)),
+          customBranding: item.customBranding || null
         };
       });
+      const profile = getBuyerProfile();
       return {
         orderId: `VMP-${Date.now()}`,
         orderDate: new Date().toISOString(),
@@ -1615,6 +1856,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         paymentMode: 'PhonePe / UPI',
         utr,
         address,
+        business: profile?.business || null,
         items: purchasedItems,
         subtotal: Number(subtotal.toFixed(2)),
         shipping,
@@ -1631,23 +1873,17 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         return;
       }
       host.innerHTML = history.map((order, index) => {
-        const date = escapeHtml(new Date(order.orderDate || order.createdAt || Date.now()).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }));
-        const safeOrderId = escapeHtml(order.orderId || 'VMP-ORDER');
-        const safeStatus = escapeHtml(order.status || 'Paid / Dispatched');
+        const date = new Date(order.orderDate || order.createdAt || Date.now()).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
         const items = Array.isArray(order.items) ? order.items : [];
-        const itemRows = items.map((item) => {
-          const safeItemName = escapeHtml(item.name);
-          const safePackSize = escapeHtml(item.packSize || 'Standard Pack');
-          return `<li class="flex items-start justify-between gap-3 border-b border-slate-100 py-2 last:border-0"><span><strong>${safeItemName}</strong><br><small class="text-slate-500">${safePackSize} • Qty ${Number(item.qty || 0)} × ₹${Number(item.unit || 0).toFixed(2)}</small></span><span class="font-bold text-emerald-800">₹${Number(item.lineTotal || (item.qty * item.unit) || 0).toFixed(2)}</span></li>`;
-        }).join('');
+        const itemRows = items.map((item) => `<li class="flex items-start justify-between gap-3 border-b border-slate-100 py-2 last:border-0"><span><strong>${item.name}</strong><br><small class="text-slate-500">${item.packSize || 'Standard Pack'} • Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</small></span><span class="font-bold text-emerald-800">₹${Number(item.lineTotal || (item.qty * item.unit) || 0).toFixed(2)}</span></li>`).join('');
         return `
           <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm">
             <div class="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p class="text-xs font-black uppercase tracking-[0.18em] text-[#064e3b]">${date}</p>
-                <h4 class="mt-1 text-lg font-black text-slate-950">${safeOrderId}</h4>
+                <h4 class="mt-1 text-lg font-black text-slate-950">${order.orderId || 'VMP-ORDER'}</h4>
               </div>
-              <span class="rounded-full border border-[#d4af37]/60 bg-amber-50 px-3 py-1 text-xs font-black text-amber-800">${safeStatus}</span>
+              <span class="rounded-full border border-[#d4af37]/60 bg-amber-50 px-3 py-1 text-xs font-black text-amber-800">${order.status || 'Paid / Dispatched'}</span>
             </div>
             <ul class="mt-3 text-sm text-slate-700">${itemRows || '<li class="text-slate-500">No item details stored.</li>'}</ul>
             <div class="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900">
@@ -1693,6 +1929,33 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(modalRow) modalRow.innerHTML = markup;
     }
 
+    window.toggleBrandingUpload = function(id, checked){
+      const file = document.getElementById(`brand-file-${id}`);
+      const note = document.getElementById(`brand-note-${id}`);
+      if(file) file.classList.toggle('hidden', !checked);
+      if(note && !checked) note.classList.add('hidden');
+      if(!checked) delete brandingArtworkCache[id];
+    }
+
+    window.captureBrandingArtwork = function(id, input){
+      const file = input?.files?.[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        brandingArtworkCache[id] = {
+          fileName: file.name,
+          mimeType: file.type,
+          size: file.size,
+          base64: reader.result,
+          capturedAt: new Date().toISOString(),
+        };
+        const note = document.getElementById(`brand-note-${id}`);
+        if(note) note.classList.remove('hidden');
+        notifyVmp('Logo artwork attached. It will be included in your checkout payload.', 'Branding ready');
+      };
+      reader.readAsDataURL(file);
+    }
+
     window.removeCartItem = function(idx){
       cart.splice(idx, 1);
       saveCart();
@@ -1702,10 +1965,16 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     window.addToCart = function(id){
       const p = products.find(x => x.id === id);
       const qty = Math.max(100, Number(document.getElementById(`qty-${id}`).value || 100));
-      const unit = priceForQty(p.tiers, qty);
-      const existing = cart.find(c => c.id === id && c.unit === unit);
+      const brandingChecked = Boolean(document.getElementById(`brand-check-${id}`)?.checked);
+      const branding = brandingChecked ? {
+        requested: true,
+        pricePerPiece: 1.5,
+        artwork: brandingArtworkCache[id] || null,
+      } : null;
+      const unit = Number((priceForQty(p.tiers, qty) + (brandingChecked ? 1.5 : 0)).toFixed(2));
+      const existing = cart.find(c => c.id === id && c.unit === unit && Boolean(c.customBranding?.requested) === brandingChecked);
       if(existing) existing.qty += qty;
-      else cart.push({id, name:p.name, qty, unit});
+      else cart.push({id, name:p.name, qty, unit, customBranding: branding});
       saveCart();
       renderCart();
       notifyVmp(`${p.name} added to cart successfully.`, 'Cart updated');
@@ -1793,6 +2062,16 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(drawerOverlay) drawerOverlay.classList.add('hidden');
     }
 
+    function launchCartPhonePeCheckout(){
+      if(cart.length === 0){
+        notifyVmp('Your cart is empty! Add premium Fiber Plates to proceed.', 'Cart empty');
+        return;
+      }
+      if(!requireBuyerProfile(launchCartPhonePeCheckout)) return;
+      closeCart();
+      openCheckoutModal();
+    }
+
     function openCheckoutModal(){
       if(!requireBuyerProfile(openCheckoutModal)) return;
       const modal = document.getElementById('checkoutModal');
@@ -1807,41 +2086,24 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       if(profilePreview && profile){
         profilePreview.textContent = `${profile.fullName} • ${profile.mobile} • ${profile.email}`;
       }
+      const businessPreview = document.getElementById('checkoutBusinessPreview');
+      if(businessPreview){
+        const company = profile?.business?.companyName || '';
+        const gstin = profile?.business?.gstin || '';
+        businessPreview.classList.toggle('hidden', !(company || gstin));
+        businessPreview.textContent = (company || gstin) ? `GST Invoice: ${company || 'Business'}${gstin ? ` • GSTIN: ${gstin}` : ''}` : '';
+      }
       if(addressPreview){
         addressPreview.textContent = (name && address) ? `${name} • ${address}` : 'Please fill customer name and address in cart.';
       }
       const itemBreakdown = document.getElementById('checkoutItemBreakdown');
       if(itemBreakdown){
-        itemBreakdown.textContent = '';
-        if(cart.length === 0){
-          const emptyMsg = document.createElement('p');
-          emptyMsg.className = 'text-sm text-slate-500';
-          emptyMsg.textContent = 'Cart is empty.';
-          itemBreakdown.appendChild(emptyMsg);
-        } else {
-          cart.forEach((item) => {
-            const row = document.createElement('div');
-            row.className = 'flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2';
-
-            const left = document.createElement('div');
-            const name = document.createElement('p');
-            name.className = 'font-semibold';
-            name.textContent = item.name;
-            const qty = document.createElement('p');
-            qty.className = 'text-xs text-slate-500';
-            qty.textContent = `Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}`;
-            left.appendChild(name);
-            left.appendChild(qty);
-
-            const total = document.createElement('p');
-            total.className = 'font-bold text-emerald-800';
-            total.textContent = `₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}`;
-
-            row.appendChild(left);
-            row.appendChild(total);
-            itemBreakdown.appendChild(row);
-          });
-        }
+        itemBreakdown.innerHTML = cart.map((item) => `
+          <div class="flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2">
+            <div><p class="font-semibold">${item.name}</p><p class="text-xs text-slate-500">Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</p>${item.customBranding?.requested ? '<p class="mt-1 text-[11px] font-bold text-amber-700">Custom logo printing included</p>' : ''}</div>
+            <p class="font-bold text-emerald-800">₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}</p>
+          </div>
+        `).join('') || '<p class="text-sm text-slate-500">Cart is empty.</p>';
       }
       const summaryAccordion = document.getElementById('checkoutItemsAccordion');
       if(summaryAccordion){
@@ -1950,6 +2212,121 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       const subtotal = sourceCart.reduce((sum, item) => sum + (Number(item.qty || 0) * Number(item.unit || 0)), 0).toFixed(2);
       const message = `Hello! Here is the wholesale order quotation from Veer Mahadev Plastic.\n\n*Order Summary:*\n${summaryLines}\n\n*Total Amount:* ₹${subtotal}\n\nClick this secure link to view, verify, and complete the payment directly: ${sharedLink}`;
       window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function shareEstimateQuoteToWhatsApp(){
+      if(!cart.length){
+        notifyVmp('Please add products before sharing an estimate quote.', 'Cart empty');
+        return;
+      }
+      const subtotal = cartTotalAmount();
+      const estimate = shippingEstimate(subtotal);
+      const total = subtotal + Number(estimate.charge || 0);
+      const lines = cart.map((item, index) => {
+        const product = products.find((p) => p.id === item.id);
+        const meta = product ? productMeta(product) : { size: 'Standard Pack' };
+        const brandingLine = item.customBranding?.requested ? ' + Custom Logo Printing' : '';
+        return `${index + 1}. ${item.name} (${meta.size || 'Standard Pack'})\n   Qty: ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)} = ₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}${brandingLine}`;
+      });
+      const profile = getBuyerProfile();
+      const businessLine = profile?.business?.companyName || profile?.business?.gstin
+        ? `\nBusiness: ${profile.business.companyName || 'GST Buyer'}${profile.business.gstin ? ` | GSTIN: ${profile.business.gstin}` : ''}`
+        : '';
+      const message = `Hello! Please review this Veer Mahadev Plastic estimate quote for financial clearance.${businessLine}\n\n*Estimate Items:*\n${lines.join('\n\n')}\n\nSubtotal: ₹${subtotal.toFixed(2)}\nShipping (${estimate.zoneLabel}): ₹${Number(estimate.charge || 0).toFixed(2)}\n*Estimated Total: ₹${total.toFixed(2)}*\n\nPlease approve so we can complete PhonePe/UPI payment and factory dispatch.`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+
+    const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
+    const DAILY_FACTORY_CAPACITY = 1000000;
+
+    function hashFactorySeed(seed){
+      return String(seed).split('').reduce((acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) >>> 0, 0);
+    }
+
+    function formatFactoryPieces(value){
+      return Math.min(Number(value || 0), DAILY_FACTORY_CAPACITY).toLocaleString('en-IN');
+    }
+
+    function createFactoryCapacityState(now = new Date()){
+      const dateKey = now.toISOString().slice(0, 10);
+      const seededOffset = hashFactorySeed(`${dateKey}-${now.getUTCHours()}`) % 8001;
+      return {
+        dateKey,
+        booked: 842000 + seededOffset,
+        updatedAt: now.toISOString(),
+      };
+    }
+
+    function readFactoryCapacityState(){
+      const now = new Date();
+      const dateKey = now.toISOString().slice(0, 10);
+      try {
+        const stored = JSON.parse(localStorage.getItem(FACTORY_CAPACITY_STATE_KEY) || 'null');
+        if(stored && stored.dateKey === dateKey && Number(stored.booked) > 0){
+          return { ...stored, booked: Math.min(Number(stored.booked), DAILY_FACTORY_CAPACITY) };
+        }
+      } catch (error) {
+        console.warn('Factory capacity ticker state reset.', error);
+      }
+      const fresh = createFactoryCapacityState(now);
+      localStorage.setItem(FACTORY_CAPACITY_STATE_KEY, JSON.stringify(fresh));
+      return fresh;
+    }
+
+    function saveFactoryCapacityState(state){
+      localStorage.setItem(FACTORY_CAPACITY_STATE_KEY, JSON.stringify({
+        ...state,
+        booked: Math.min(Number(state.booked || 0), DAILY_FACTORY_CAPACITY),
+        updatedAt: new Date().toISOString(),
+      }));
+    }
+
+    function updateFactoryCapacityCounter(state){
+      const counter = document.getElementById('factoryCapacityCounter');
+      if(counter) counter.textContent = formatFactoryPieces(state.booked);
+    }
+
+    function updateDispatchCountdown(){
+      const label = document.getElementById('dispatchCountdownLabel');
+      const clock = document.getElementById('dispatchCountdownClock');
+      if(!label || !clock) return;
+      const now = new Date();
+      const deadline = new Date(now);
+      deadline.setHours(12, 0, 0, 0);
+      if(now >= deadline){
+        deadline.setDate(deadline.getDate() + 1);
+        label.textContent = 'Next-Day Morning Batch Dispatches close in:';
+      } else {
+        label.textContent = 'Production Line Closing for Same-Day Dispatch in:';
+      }
+      const diff = Math.max(0, deadline.getTime() - now.getTime());
+      const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+      const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+      clock.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    function initFactoryCapacityTicker(){
+      if(!document.getElementById('factoryCapacityTicker')) return;
+      let state = readFactoryCapacityState();
+      updateFactoryCapacityCounter(state);
+      maybeDispatchCapacityWarning(state);
+      updateDispatchCountdown();
+      setInterval(updateDispatchCountdown, 1000);
+      const tickCapacity = () => {
+        const increment = Math.floor(150 + Math.random() * 701);
+        state = {
+          ...state,
+          booked: Math.min(DAILY_FACTORY_CAPACITY, Number(state.booked || 0) + increment),
+        };
+        saveFactoryCapacityState(state);
+        updateFactoryCapacityCounter(state);
+        maybeDispatchCapacityWarning(state);
+        const nextDelay = 45000 + Math.floor(Math.random() * 15001);
+        window.setTimeout(tickCapacity, nextDelay);
+      };
+      window.setTimeout(tickCapacity, 45000 + Math.floor(Math.random() * 15001));
     }
 
     function initHeroAdOverlay(){
@@ -2090,6 +2467,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     // Cart controls
     bindById('openCartTop', 'click', openCart);
     bindById('openCartFromDash', 'click', openCart);
+    bindById('shareEstimateCartBtn', 'click', shareEstimateQuoteToWhatsApp);
+    bindById('cartPhonePeCheckoutBtn', 'click', launchCartPhonePeCheckout);
     bindById('closeCart', 'click', closeCart);
     bindById('drawerOverlay', 'click', closeCart);
     bindById('directorCallBtn', 'click', ()=>{
@@ -2114,12 +2493,78 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       e.target.reset();
     });
 
+    function openSampleRequestModal(){
+      const profile = getBuyerProfile();
+      if(profile){
+        const sampleName = document.getElementById('sampleName');
+        const sampleMobile = document.getElementById('sampleMobile');
+        if(sampleName) sampleName.value = profile.fullName || '';
+        if(sampleMobile) sampleMobile.value = profile.mobile || '';
+      }
+      document.getElementById('sampleRequestModal')?.classList.remove('hidden');
+    }
+
+    function closeSampleRequestModal(){
+      document.getElementById('sampleRequestModal')?.classList.add('hidden');
+    }
+
+    function loadFactorySampleBoxCheckout({ name, mobile, address }){
+      const existingProfile = getBuyerProfile() || {};
+      const sampleProfile = {
+        ...existingProfile,
+        fullName: name,
+        mobile,
+        email: existingProfile.email || `sample-${mobile.replace(/\D/g, '').slice(-10) || Date.now()}@veermahadevplastic.in`,
+        sampleLead: true,
+        capturedAt: new Date().toISOString(),
+      };
+      localStorage.setItem('vmp_user_profile', JSON.stringify(sampleProfile));
+      cart = [{
+        id: 'factory-sample-box',
+        name: 'Factory Sample Box for Caterers',
+        qty: 1,
+        unit: 199,
+        sampleBox: true,
+      }];
+      saveCart();
+      const customerName = document.getElementById('customerName');
+      const customerAddress = document.getElementById('customerAddress');
+      if(customerName) customerName.value = name;
+      if(customerAddress) customerAddress.value = address;
+      renderCart();
+      closeSampleRequestModal();
+      closeCart();
+      notifyVmp('Factory Sample Box loaded. Complete PhonePe token payment to reserve dispatch.', 'Sample box ready');
+      openCheckoutModal();
+    }
+
+    bindById('openSampleBoxRequest', 'click', openSampleRequestModal);
+    bindById('closeSampleRequestModal', 'click', closeSampleRequestModal);
+    bindById('sampleRequestModal', 'click', (e)=>{ if(e.target.id === 'sampleRequestModal') closeSampleRequestModal(); });
+    bindById('sampleRequestForm', 'submit', (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('sampleName')?.value.trim() || '';
+      const mobile = document.getElementById('sampleMobile')?.value.trim() || '';
+      const address = document.getElementById('sampleAddress')?.value.trim() || '';
+      const msg = document.getElementById('sampleRequestMsg');
+      if(!name || !mobile || !address){
+        if(msg) msg.textContent = 'Name, mobile, and address are required for sample dispatch.';
+        return;
+      }
+      loadFactorySampleBoxCheckout({ name, mobile, address });
+      e.target.reset();
+    });
+
     bindById('profileGateForm', 'submit', (e)=>{
       e.preventDefault();
       const profile = {
         fullName: document.getElementById('gateFullName')?.value.trim() || '',
         mobile: document.getElementById('gateMobile')?.value.trim() || '',
         email: document.getElementById('gateEmail')?.value.trim() || '',
+        business: {
+          companyName: document.getElementById('gateCompanyName')?.value.trim() || '',
+          gstin: (document.getElementById('gateGstin')?.value.trim() || '').toUpperCase(),
+        },
         capturedAt: new Date().toISOString()
       };
       const msg = document.getElementById('profileGateMsg');
@@ -2189,6 +2634,7 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       const address = (document.getElementById('customerAddress')?.value || '').trim();
       const payload = {
         profile: getBuyerProfile(),
+        business: getBuyerProfile()?.business || null,
         address,
         shipping: shippingEstimate(cartTotalAmount()),
         paymentMode: 'PhonePe / UPI',
@@ -2210,6 +2656,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       renderCart();
       renderOrderHistory();
       notifyVmp(`Order ${completedOrder.orderId} paid and moved to Order History. Cart cleared.`, 'Payment verified');
+      setTimeout(() => {
+        dispatchLocalFactoryNotification('Veer Mahadev Plastic', 'Order Dispatched! Your bulk batch is entering the packaging queue. 🏭', `vmp-order-${completedOrder.orderId}`);
+      }, 5000);
       closeCheckoutModal();
       scrollToSection('order-history');
     });
@@ -2275,12 +2724,16 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     };
 
     // initialize
+    registerVmpServiceWorker();
+    bindById('pwaUpdateNowBtn', 'click', activatePwaUpdateNow);
     initEntryModeGate();
     renderCategories();
     applyProductFilters();
     renderCart();
     renderOrderHistory();
     renderTrustBadges();
+    initFactoryCapacityTicker();
+    setInterval(updateStockScarcityDom, 30000);
     initHeroAdOverlay();
     handleInboundSharedCart();
     const reorderBtn = document.getElementById('repeatOrder');
