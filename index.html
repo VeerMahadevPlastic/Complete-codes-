@@ -88,7 +88,6 @@
       0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.35); }
       50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
     }
-    .vmp-ad-fade-out { opacity: 0; transform: translateY(10px) scale(0.98); pointer-events: none; }
     .vmp-toast-enter { animation: vmpToastIn 0.35s ease-out both; }
     @keyframes vmpToastIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
     .vmp-auth-card { animation: authSlideUp 0.32s ease-out both; }
@@ -221,6 +220,7 @@
         <a href="#vipSampleKit" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37]/60 bg-emerald-950/50 px-4 py-2 text-[#d4af37]">VIP Sample Kit</a>
         <button id="downloadCatalogBtn" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37] bg-[#d4af37] px-4 py-2 text-[#064e3b] shadow-sm">📄 Download Factory Price Catalog</button>
         <button id="openAiPackagingAdvisor" class="min-w-max flex-shrink-0 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-white shadow-sm">🤖 AI Packaging Advisor</button>
+        <button id="openExpressCheckoutTop" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37] bg-emerald-950/70 px-4 py-2 text-[#d4af37] shadow-sm">⚡ Express Checkout</button>
       </div>
 
       <div class="overflow-hidden rounded-xl border border-[#d4af37]/30 bg-emerald-950/60">
@@ -277,14 +277,6 @@
             </div>
           </div>
           <div class="mt-6 inline-flex rounded-full border border-[#d4af37]/50 bg-black/20 px-4 py-2 text-xs font-black text-[#d4af37]">Powered by Veer Mahadev Plastic • Direct Manufacturer Clearance</div>
-          <div id="heroAdOverlay" class="relative z-20 mx-auto mt-6 w-full max-w-[230px] rounded-2xl border border-[#d4af37]/45 bg-white/10 p-2 shadow-2xl backdrop-blur-md transition-all duration-700 ease-out sm:max-w-[260px] lg:absolute lg:right-8 lg:top-8 lg:mt-0 lg:w-64">
-            <div class="rounded-xl border border-emerald-300/40 bg-black/25 p-2">
-              <p class="mb-2 text-center text-[10px] font-semibold tracking-wide text-amber-200">VIP Factory Reel</p>
-              <video id="heroAdVideo" class="h-[220px] w-full rounded-lg object-cover sm:h-[280px] lg:h-[340px]" autoplay muted playsinline controls>
-                <source src="ad_reel.mp4" type="video/mp4" />
-              </video>
-            </div>
-          </div>
         </div>
 
         <aside class="rounded-[2rem] border border-[#d4af37]/35 bg-white p-5 text-[#0f2f27] shadow-2xl lg:p-6">
@@ -639,19 +631,7 @@
     </div>
   </div>
 
-  <aside id="verticalVideoSlider" class="fixed left-3 top-1/2 z-[46] hidden w-28 -translate-y-1/2 rounded-3xl border border-[#d4af37]/60 bg-[#064e3b]/95 p-2 text-white shadow-2xl lg:block">
-    <p class="mb-2 text-center text-[10px] font-black uppercase tracking-[0.16em] text-[#d4af37]">Factory Reels</p>
-    <div id="verticalReelTrack" class="scrollbar-none flex max-h-[360px] snap-y snap-mandatory flex-col gap-2 overflow-y-auto rounded-2xl">
-      <video class="vertical-reel-card h-40 w-full rounded-2xl object-cover" src="ad_reel.mp4" autoplay muted playsinline></video>
-      <video class="vertical-reel-card h-40 w-full rounded-2xl object-cover" src="https://cdn.coverr.co/videos/coverr-hands-holding-a-box-1579/1080p.mp4" muted playsinline></video>
-      <video class="vertical-reel-card h-40 w-full rounded-2xl object-cover" src="https://cdn.coverr.co/videos/coverr-working-with-baking-paper-1578/1080p.mp4" muted playsinline></video>
-    </div>
-    <div class="mt-2 flex justify-center gap-2">
-      <button id="prevVerticalReel" class="rounded-full border border-[#d4af37]/50 px-2 text-xs text-[#d4af37]">↑</button>
-      <button id="nextVerticalReel" class="rounded-full border border-[#d4af37]/50 px-2 text-xs text-[#d4af37]">↓</button>
-    </div>
-  </aside>
-
+        
   <div id="bulkSocialProofHost" class="pointer-events-none fixed bottom-5 left-4 z-[70] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2"></div>
 
   <div id="priceMatchModal" class="hidden fixed inset-0 z-[89] flex items-center justify-center bg-black/60 px-4">
@@ -731,7 +711,7 @@
   </aside>
   <button id="expressCheckoutDock" class="fixed bottom-[156px] left-4 z-[59] rounded-full border-2 border-[#d4af37] bg-[#064e3b] px-4 py-3 text-xs font-black text-[#d4af37] shadow-2xl lg:hidden">⚡ Express Checkout</button>
 
-  <aside id="expressCheckoutPane" class="fixed bottom-4 right-4 top-24 z-[49] hidden w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-[#d4af37]/60 bg-white shadow-2xl lg:flex">
+<aside id="expressCheckoutPane" class="fixed bottom-4 right-4 top-24 z-[49] hidden w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-[#d4af37]/60 bg-white shadow-2xl">
     <div class="flex items-center justify-between bg-[#064e3b] px-4 py-3 text-white">
       <div>
         <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[#d4af37]">1-Page Billing Matrix</p>
@@ -1335,7 +1315,26 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     });
 
     const products = [...parsedCatalogProducts, ...FIBER_PLATE_ITEMS]
-      .filter((item) => !/negotiable|test grid|plain wholesale/i.test(`${item.name || ''} ${item.category || ''}`));
+     .filter((item) => !/negotiable|test grid|plain wholesale/i.test(`${item.name || ''} ${item.category || ''}`))
+      .map((item, index) => {
+        const basePrice = Number(item.tiers?.[0]?.price || item.price || 1);
+        const tiers = Array.isArray(item.tiers) && item.tiers.length >= 3
+          ? item.tiers
+          : [
+              { min: 100, price: basePrice },
+              { min: 200, price: Number(Math.max(basePrice - 1, 0).toFixed(2)) },
+              { min: 500, price: Number(Math.max(basePrice - 2, 0).toFixed(2)) },
+            ];
+        return {
+          ...item,
+          id: item.id || slugify(`${item.name || 'vmp-product'}-${index}`),
+          name: item.name || `VMP Product ${index + 1}`,
+          category: item.category || 'Catering Essentials',
+          image: item.image || imageFrom(item.name || ''),
+          stock: Number.isFinite(Number(item.stock)) ? Number(item.stock) : 200,
+          tiers,
+        };
+      });
 
     writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
       id: product.id,
@@ -1878,7 +1877,14 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
     function renderProducts(){
       if(!productGrid) return;
-      productGrid.innerHTML = filteredProducts.map(p => `
+     try {
+        if(!Array.isArray(filteredProducts) || filteredProducts.length === 0){
+          productGrid.innerHTML = '<p class="rounded-2xl border border-dashed border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">No products found. Try another category or search keyword.</p>';
+          return;
+        }
+        productGrid.innerHTML = filteredProducts.map((p) => {
+          const tiers = Array.isArray(p.tiers) && p.tiers.length >= 3 ? p.tiers : [{ price: Number(p.price || 0) }, { price: Number(p.price || 0) }, { price: Number(p.price || 0) }];
+          return `  
         <article onclick="openProductDetails('${p.id}')" class="product-card-premium cursor-pointer overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-300 hover:shadow-lg" tabindex="0">
           <div class="relative">
             <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
@@ -1896,8 +1902,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
           <div class="space-y-3 p-3">
             <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${p.name}</h4>${stockBadge(p.stock)}</div>
             <p class="text-[11px] text-slate-500">${p.category}</p>
-            <p class="text-sm font-bold text-emerald-800">₹${p.tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
-            <p class="text-[11px] text-slate-500">200+ @ ₹${p.tiers[1].price} • 500+ @ ₹${p.tiers[2].price}</p>
+                   <p class="text-sm font-bold text-emerald-800">₹${tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
+            <p class="text-[11px] text-slate-500">200+ @ ₹${tiers[1].price} • 500+ @ ₹${tiers[2].price}</p>
             ${brandingControlsMarkup(p)}
             <div class="flex items-center gap-2">
               <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
@@ -1906,7 +1912,12 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
             <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
           </div>
         </article>
-      `).join('') || '<p class="text-sm text-slate-600">No products found. Try another category or search keyword.</p>';
+          `;
+        }).join('');
+      } catch (error) {
+        console.error('Product grid render failed.', error);
+        productGrid.innerHTML = '<p class="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-700">Product catalog temporarily failed to render. Please refresh once.</p>';
+      }
     }
 
     function saveCart(){
@@ -2164,22 +2175,14 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     }
 
     function openCatalogPrintWindow(){
-      const rows = products.map((product) => {
-        const meta = productMeta(product);
-        const firstTier = product.tiers?.[0] || { min: 100, price: 0 };
-        return `<tr><td>${product.name}</td><td>${meta.moq || `${firstTier.min}+ pcs`}</td><td>₹${Number(firstTier.price || 0).toFixed(2)}</td><td>${product.category}</td></tr>`;
-      }).join('');
-      const generatedAt = new Date().toLocaleString('en-IN');
-      const html = `<!doctype html><html><head><title>VMP Factory Price Catalog</title><style>@page{size:A4;margin:14mm}body{font-family:Arial,sans-serif;color:#0f172a}header{border:2px solid #d4af37;background:#064e3b;color:white;padding:18px;border-radius:18px}h1{margin:0;color:#d4af37}table{width:100%;border-collapse:collapse;margin-top:16px;font-size:11px}th{background:#d4af37;color:#064e3b;text-align:left}td,th{border:1px solid #d9e5df;padding:6px}tr{break-inside:avoid}.note{margin-top:10px;color:#475569;font-size:12px}</style></head><body><header><h1>Veer Mahadev Plastic</h1><p>Factory Direct Wholesale Price Catalog • Generated ${generatedAt}</p><p>MOQ, factory pricing and B2B dispatch-ready lines.</p></header><table><thead><tr><th>Item Name</th><th>MOQ</th><th>Factory Price</th><th>Category</th></tr></thead><tbody>${rows}</tbody></table><p class="note">Use browser print dialog and choose “Save as PDF” for a two-page catalog export.</p><script>window.onload=()=>setTimeout(()=>window.print(),350)<\/script></body></html>`;
-      const printWindow = window.open('', '_blank');
-      if(!printWindow){
-        notifyVmp('Please allow pop-ups to generate the printable factory catalog.', 'Catalog blocked');
-        return;
-      }
-      printWindow.document.write(html);
-      printWindow.document.close();
-      notifyVmp('Factory price catalog prepared. Choose Save as PDF in the print dialog.', 'Catalog ready');
-    }
+          const link = document.createElement('a');
+      link.href = './wholesale-price-list.pdf';
+      link.download = 'veer-mahadev-factory-price-catalog.pdf';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      notifyVmp('Factory price catalog download started from the official B2B PDF asset.', 'Catalog download');    }
 
     function getAdvisorRecommendation(){
       const guests = Math.max(50, Number(document.getElementById('advisorGuests')?.value || 500));
@@ -3020,27 +3023,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       };
       window.setTimeout(tickCapacity, 45000 + Math.floor(Math.random() * 15001));
     }
-
-    function initHeroAdOverlay(){
-      const overlay = document.getElementById('heroAdOverlay');
-      const video = document.getElementById('heroAdVideo');
-      if(!overlay || !video) return;
-      const seen = localStorage.getItem('vmp_ad_seen') === 'true';
-      if(seen){
-        overlay.style.display = 'none';
-        return;
-      }
-      const hideOverlay = () => {
-        overlay.classList.add('vmp-ad-fade-out');
-        setTimeout(() => {
-          overlay.style.display = 'none';
-          localStorage.setItem('vmp_ad_seen', 'true');
-        }, 800);
-      };
-      video.addEventListener('ended', hideOverlay, { once: true });
-      video.addEventListener('error', hideOverlay, { once: true });
-    }
-
+    
     function launchCartPhonePeCheckout(){
       if(cart.length === 0){
         notifyVmp('Your cart is empty! Add premium Fiber Plates to proceed.', 'Cart empty');
@@ -3307,27 +3290,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       };
       window.setTimeout(tickCapacity, 45000 + Math.floor(Math.random() * 15001));
     }
-
-    function initHeroAdOverlay(){
-      const overlay = document.getElementById('heroAdOverlay');
-      const video = document.getElementById('heroAdVideo');
-      if(!overlay || !video) return;
-      const seen = localStorage.getItem('vmp_ad_seen') === 'true';
-      if(seen){
-        overlay.style.display = 'none';
-        return;
-      }
-      const hideOverlay = () => {
-        overlay.classList.add('vmp-ad-fade-out');
-        setTimeout(() => {
-          overlay.style.display = 'none';
-          localStorage.setItem('vmp_ad_seen', 'true');
-        }, 800);
-      };
-      video.addEventListener('ended', hideOverlay, { once: true });
-      video.addEventListener('error', hideOverlay, { once: true });
-    }
-
+    
     function launchCartPhonePeCheckout(){
       if(cart.length === 0){
         notifyVmp('Your cart is empty! Add premium Fiber Plates to proceed.', 'Cart empty');
@@ -3627,26 +3590,6 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
         window.setTimeout(tickCapacity, nextDelay);
       };
       window.setTimeout(tickCapacity, 45000 + Math.floor(Math.random() * 15001));
-    }
-
-    function initHeroAdOverlay(){
-      const overlay = document.getElementById('heroAdOverlay');
-      const video = document.getElementById('heroAdVideo');
-      if(!overlay || !video) return;
-      const seen = localStorage.getItem('vmp_ad_seen') === 'true';
-      if(seen){
-        overlay.style.display = 'none';
-        return;
-      }
-      const hideOverlay = () => {
-        overlay.classList.add('vmp-ad-fade-out');
-        setTimeout(() => {
-          overlay.style.display = 'none';
-          localStorage.setItem('vmp_ad_seen', 'true');
-        }, 800);
-      };
-      video.addEventListener('ended', hideOverlay, { once: true });
-      video.addEventListener('error', hideOverlay, { once: true });
     }
 
     function logisticsRouteLine(){
@@ -4131,25 +4074,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       bindById('scratchCouponModal', 'click', (event) => { if(event.target.id === 'scratchCouponModal') modal.classList.add('hidden'); });
       bindById('applyScratchCoupon', 'click', applyScratchCouponToCart);
     }
-
-    function initVerticalVideoSlider(){
-      const track = document.getElementById('verticalReelTrack');
-      if(!track) return;
-      const videos = Array.from(track.querySelectorAll('video'));
-      let active = 0;
-      const playActive = () => {
-        videos.forEach((video, index) => {
-          if(index === active){ video.play().catch(() => {}); }
-          else { video.pause(); video.currentTime = 0; }
-        });
-        videos[active]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      };
-      bindById('nextVerticalReel', 'click', () => { active = (active + 1) % videos.length; playActive(); });
-      bindById('prevVerticalReel', 'click', () => { active = (active - 1 + videos.length) % videos.length; playActive(); });
-      videos.forEach((video, index) => video.addEventListener('ended', () => { active = (index + 1) % videos.length; playActive(); }));
-      playActive();
-    }
-
+    
     const socialProofBusinesses = ['Shreeji Caterers', 'Raj Elite Events', 'Surat Sweet Mart', 'Anand Party Plot', 'Mehsana Wedding Foods', 'Bhavnagar Caterer Hub', 'Vadodara Snacks Co.'];
     const socialProofCities = ['Ahmedabad', 'Rajkot', 'Surat', 'Vadodara', 'Mehsana', 'Anand', 'Bhavnagar'];
     const socialProofLines = ['Fiber Plates', '5 CP Meal Trays', 'Soup Bowls', 'Paper Cups', 'Heavy Catering Bags', 'Sweet Boxes', 'Premium Disposable Plates'];
@@ -4241,9 +4166,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
     initFactoryCapacityTicker();
     initProductCardTouchGlow();
     setInterval(updateStockScarcityDom, 30000);
-    initHeroAdOverlay();
     initScratchCoupon();
-    initVerticalVideoSlider();
     initSavingsCalculator();
     initPriceMatchChallenge();
     initBulkPurchaseSocialProof();
@@ -4257,6 +4180,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
     bindById('recurringDispatchToggle', 'change', updateRecurringDispatchUi);
     bindById('recurringDispatchFrequency', 'change', updateRecurringDispatchUi);
     bindById('expressCheckoutDock', 'click', openExpressCheckoutPane);
+    bindById('openExpressCheckoutTop', 'click', openExpressCheckoutPane);
     bindById('closeExpressPane', 'click', closeExpressCheckoutPane);
     bindById('expressVerifyProfile', 'click', () => openProfileGate(renderExpressCheckout));
     bindById('loadWalletBtn', 'click', handleWalletLoad);
