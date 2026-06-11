@@ -52,6 +52,76 @@
   </script>
   <title>Veer Mahadev Plastic | Best Disposable Items Wholesaler in Ahmedabad, Gujarat</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    window.onerror = window.onerror || function(msg, url, line) {
+      console.log('CRITICAL VMP LOG: ' + msg + ' on line ' + line);
+      return false;
+    };
+    window.downloadCatalog = window.downloadCatalog || function() {
+      window.open('wholesale-price-list.pdf', '_blank');
+    };
+    window.toggleExpressCheckout = window.toggleExpressCheckout || function() {
+      var pane = document.getElementById('expressCheckoutPane');
+      if(!pane){ console.warn('CRITICAL VMP LOG: expressCheckoutPane not found.'); return; }
+      pane.classList.toggle('express-pane-open');
+    };
+    window.openAiPackagingAdvisorModal = window.openAiPackagingAdvisorModal || function() {
+      var modal = document.getElementById('aiPackagingModal');
+      if(!modal){ console.warn('CRITICAL VMP LOG: aiPackagingModal not found.'); return; }
+      modal.classList.remove('hidden');
+      if(typeof window.renderAdvisorRecommendation === 'function') window.renderAdvisorRecommendation();
+    };
+    window.VMP_FALLBACK_FIBER_PRODUCTS = window.VMP_FALLBACK_FIBER_PRODUCTS || [
+      ['fp_01','FIBER PLATE DESIGN NO.1','https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg'],
+      ['fp_02','FIBER PLATE DESIGN NO.2','https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg'],
+      ['fp_03','FIBER PLATE DESIGN NO.3','https://i.postimg.cc/Q9q0dX42/IMG-20260425-WA0002.jpg'],
+      ['fp_04','FIBER PLATE DESIGN NO.4','https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg'],
+      ['fp_05','FIBER PLATE DESIGN NO.5','https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg'],
+      ['fp_06','FIBER PLATE DESIGN NO.6','https://i.postimg.cc/FksGf2wc/IMG-20260425-WA0027.jpg'],
+      ['fp_07','FIBER PLATE DESIGN NO.7','https://i.postimg.cc/hQPMJHNV/IMG-20260425-WA0028.jpg'],
+      ['fp_08','FIBER PLATE DESIGN NO.8','https://i.postimg.cc/BPQN8dRB/IMG-20260425-WA0030.jpg'],
+      ['fp_09','FIBER PLATE DESIGN NO.9','https://i.postimg.cc/xNTgkWBK/IMG-20260425-WA0033.jpg'],
+      ['fp_10','FIBER PLATE DESIGN NO.10','https://i.postimg.cc/N2fbyWZP/IMG-20260425-WA0034.jpg'],
+      ['fp_11','FIBER PLATE DESIGN NO.11','https://i.postimg.cc/1V5MgLbH/IMG-20260425-WA0035.jpg'],
+      ['fp_12','FIBER PLATE DESIGN NO.12','https://i.postimg.cc/K3vQKdCq/IMG-20260425-WA0040.jpg'],
+      ['fp_13','FIBER PLATE DESIGN NO.13','https://i.postimg.cc/CnLJZW9v/IMG-20260425-WA0037.jpg'],
+      ['fp_14','FIBER PLATE DESIGN NO.14','https://i.postimg.cc/H8s3JfFN/IMG-20260425-WA0038.jpg'],
+      ['fp_15','FIBER PLATE DESIGN NO.15','https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg'],
+      ['fp_16','FIBER PLATE DESIGN NO.16','https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg'],
+      ['fp_17','FIBER PLATE DESIGN NO.17','https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg'],
+      ['fp_18','FIBER PLATE DESIGN NO.18','https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg'],
+      ['fp_19','FIBER PLATE DESIGN NO.19','https://i.postimg.cc/06DVhGpZ/IMG-20260515-WA0022.jpg'],
+      ['fp_20','FIBER PLATE DESIGN NO.20','https://i.postimg.cc/rdxf7GSf/IMG-20260515-WA0023.jpg'],
+      ['fp_21','FIBER PLATE DESIGN NO.21','https://i.postimg.cc/NymdZ81G/IMG-20260515-WA0030.jpg'],
+      ['fp_22','FIBER PLATE DESIGN NO.22','https://i.postimg.cc/XZdstKwJ/IMG-20260515-WA0031.jpg']
+    ];
+    window.vmpEmergencyAdd = window.vmpEmergencyAdd || function(id) {
+      if(window.addToCart){ window.addToCart(id); return; }
+      alert('Cart engine loading. Please refresh once.');
+    };
+    window.vmpEmergencyRenderProducts = window.vmpEmergencyRenderProducts || function(force) {
+      var grid = document.getElementById('productGrid') || document.getElementById('product-grid-container');
+      if(!grid){ console.warn('CRITICAL VMP LOG: product grid container not found.'); return; }
+      if(!force && grid.children.length > 0) return;
+      var html = '';
+      for(var i = 0; i < window.VMP_FALLBACK_FIBER_PRODUCTS.length; i += 1){
+        var item = window.VMP_FALLBACK_FIBER_PRODUCTS[i];
+        html += '<article class="product-card-premium overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-300 hover:shadow-lg">'
+          + '<img src="' + item[2] + '" alt="' + item[1] + '" loading="lazy" decoding="async" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src=&quot;./images/plate.jpg&quot;;" />'
+          + '<div class="space-y-3 p-3"><p class="text-xs font-bold text-emerald-700">Fiber Plates</p><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">' + item[1] + '</h4>'
+          + '<p class="text-sm font-bold text-emerald-800">₹60 <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>'
+          + '<p class="text-[11px] text-slate-500">500+ @ ₹56.40 • 5000+ @ ₹52.80</p>'
+          + '<button onclick="window.vmpEmergencyAdd(&quot;' + item[0] + '&quot;)" class="w-full rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white">ADD</button></div></article>';
+      }
+      grid.innerHTML = html;
+    };
+    document.addEventListener('DOMContentLoaded', function(){ window.vmpEmergencyRenderProducts(false); });
+    setTimeout(function(){
+      var grid = document.getElementById('productGrid') || document.getElementById('product-grid-container');
+      var failedText = grid && /temporarily failed|No products found|Products will appear/i.test(grid.textContent || '');
+      if (!grid || !grid.children.length || failedText) window.vmpEmergencyRenderProducts(true);
+    }, 1200);
+  </script>
   <style>
     html { scroll-behavior: smooth; }
     html, body { max-width: 100%; overflow-x: hidden; }
@@ -1009,17 +1079,17 @@
   </div>
 
   <script>
-    window.onerror = function(msg, url, line) {
+  window.onerror = window.onerror || function(msg, url, line) {
       console.log("CRITICAL VMP LOG: " + msg + " on line " + line);
       return false;
     };
     window.addEventListener('unhandledrejection', (event) => {
       console.log('CRITICAL VMP LOG: Unhandled promise rejection', event.reason);
     });
-    window.downloadCatalog = function() {
+    window.downloadCatalog = window.downloadCatalog || function() {
       window.open('wholesale-price-list.pdf', '_blank');
     };
-    window.toggleExpressCheckout = function() {
+    window.toggleExpressCheckout = window.toggleExpressCheckout || function() {
       const pane = document.getElementById('expressCheckoutPane');
       if(!pane){
         console.warn('CRITICAL VMP LOG: expressCheckoutPane not found.');
@@ -1027,7 +1097,7 @@
       }
       pane.classList.toggle('express-pane-open');
     };
-    window.openAiPackagingAdvisorModal = function() {
+    window.openAiPackagingAdvisorModal = window.openAiPackagingAdvisorModal || function() {
       const modal = document.getElementById('aiPackagingModal');
       if(!modal){
         console.warn('CRITICAL VMP LOG: aiPackagingModal not found.');
@@ -1965,7 +2035,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
           return `
         <article onclick="openProductDetails('${safeProduct.id}')" class="product-card-premium cursor-pointer overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-300 hover:shadow-lg" tabindex="0">
           <div class="relative">
-            <img src="${safeProduct.image}" alt="${safeProduct.name}" loading="lazy" decoding="async" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
+           <img src="${safeProduct.image}" alt="${safeProduct.name}" loading="lazy" decoding="async" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src=&quot;./images/plate.jpg&quot;;"/>
             <button onclick="event.stopPropagation();shareProduct('${safeProduct.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${safeProduct.name}">
               <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="18" cy="5" r="3"></circle>
