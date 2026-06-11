@@ -91,3 +91,9 @@ class UrgencyAlert(BaseModel):
     order_id: str
     customer_name: str
     pending_hours: float
+
+
+class DispatchSecurityVerification(BaseModel):
+    phone: str
+    order_id: Optional[str] = None
+    session_id: Optional[str] = None

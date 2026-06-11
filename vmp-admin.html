@@ -114,54 +114,53 @@
         const tr = document.createElement('tr');
         tr.className = 'border-t';
 
-        const tdImg = document.createElement('td');
-        tdImg.className = 'px-2 py-2';
+        const imgTd = document.createElement('td');
+        imgTd.className = 'px-2 py-2';
         const img = document.createElement('img');
-        img.src = p.image || FALLBACK_IMG;
         img.className = 'h-12 w-16 rounded object-cover';
+        img.src = p.image || FALLBACK_IMG;
         img.onerror = () => { img.src = FALLBACK_IMG; };
-        tdImg.appendChild(img);
+        imgTd.appendChild(img);
 
-        const tdName = document.createElement('td');
-        tdName.className = 'px-2 py-2 font-semibold';
-        tdName.textContent = p.name || '-';
+        const nameTd = document.createElement('td');
+        nameTd.className = 'px-2 py-2 font-semibold';
+        nameTd.textContent = p.name || '-';
 
-        const tdCategory = document.createElement('td');
-        tdCategory.className = 'px-2 py-2';
-        tdCategory.textContent = p.category || '-';
+        const categoryTd = document.createElement('td');
+        categoryTd.className = 'px-2 py-2';
+        categoryTd.textContent = p.category || '-';
 
-        const tdBase = document.createElement('td');
-        tdBase.className = 'px-2 py-2';
-        tdBase.textContent = `₹${Number(p.base_wholesale_rate || 0).toFixed(2)}`;
+        const baseTd = document.createElement('td');
+        baseTd.className = 'px-2 py-2';
+        baseTd.textContent = `₹${Number(p.base_wholesale_rate || 0).toFixed(2)}`;
 
-        const tdRetail = document.createElement('td');
-        tdRetail.className = 'px-2 py-2';
-        tdRetail.textContent = `₹${Number(p.retail_price || 0).toFixed(2)}`;
+        const retailTd = document.createElement('td');
+        retailTd.className = 'px-2 py-2';
+        retailTd.textContent = `₹${Number(p.retail_price || 0).toFixed(2)}`;
 
-        const tdActions = document.createElement('td');
-        tdActions.className = 'px-2 py-2';
+        const actionsTd = document.createElement('td');
+        actionsTd.className = 'px-2 py-2';
 
         const editBtn = document.createElement('button');
-        editBtn.dataset.edit = p.id;
+        editBtn.dataset.edit = p.id || '';
         editBtn.className = 'edit rounded border px-2 py-1 text-xs';
         editBtn.textContent = 'Edit';
 
         const delBtn = document.createElement('button');
-        delBtn.dataset.del = p.id;
+        delBtn.dataset.del = p.id || '';
         delBtn.className = 'del rounded border border-rose-300 bg-rose-50 px-2 py-1 text-xs text-rose-700';
         delBtn.textContent = 'Delete';
 
-        tdActions.appendChild(editBtn);
-        tdActions.appendChild(document.createTextNode(' '));
-        tdActions.appendChild(delBtn);
+        actionsTd.appendChild(editBtn);
+        actionsTd.appendChild(document.createTextNode(' '));
+        actionsTd.appendChild(delBtn);
 
-        tr.appendChild(tdImg);
-        tr.appendChild(tdName);
-        tr.appendChild(tdCategory);
-        tr.appendChild(tdBase);
-        tr.appendChild(tdRetail);
-        tr.appendChild(tdActions);
-
+        tr.appendChild(imgTd);
+        tr.appendChild(nameTd);
+        tr.appendChild(categoryTd);
+        tr.appendChild(baseTd);
+        tr.appendChild(retailTd);
+        tr.appendChild(actionsTd);
         rows.appendChild(tr);
       });
 

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, BackgroundTasks
+from fastapi import APIRouter, UploadFile, File, BackgroundTasks, Request
 from fastapi.responses import Response
 from datetime import date
 
@@ -7,6 +7,7 @@ from app.schemas import (
     CashSaleEntry,
     PurchaseBillEntry,
     BankEntry,
+    DispatchSecurityVerification,
 )
 from app.services.firebase_repo import FirebaseRepository
 from app.services.analytics import business_pulse, order_status_center
@@ -55,6 +56,26 @@ def get_stock_insights():
 @router.get("/alerts/urgency")
 def get_urgency_alerts():
     return urgency_alerts(repo.list("orders"))
+
+
+
+
+@router.post("/security/verify-dispatch")
+def verify_dispatch_security(payload: DispatchSecurityVerification, request: Request):
+    digits = payload.phone.replace(" ", "").replace("-", "")
+    if digits.startswith("+91"):
+        digits = digits[3:]
+    elif digits.startswith("91") and len(digits) == 12:
+        digits = digits[2:]
+    phone_verified = len(digits) == 10 and digits[0] in "6789" and digits.isdigit()
+    return {
+        "ok": phone_verified,
+        "verified_business_at": date.today().isoformat() if phone_verified else None,
+        "client_ip": request.client.host if request.client else None,
+        "session_id": payload.session_id,
+        "order_id": payload.order_id,
+        "message": "Verified Secure Factory Dispatch" if phone_verified else "Invalid Indian mobile number",
+    }
 
 
 @router.post("/orders")

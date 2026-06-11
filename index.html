@@ -93,6 +93,27 @@
     @keyframes vmpToastIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
     .vmp-auth-card { animation: authSlideUp 0.32s ease-out both; }
     @keyframes authSlideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+
+    @keyframes bulkProofSlide { from { opacity: 0; transform: translateX(-18px) translateY(12px); } to { opacity: 1; transform: translateX(0) translateY(0); } }
+    .bulk-proof-toast { animation: bulkProofSlide 0.42s ease-out both; }
+
+    @keyframes goldGlow {
+      0%, 100% { box-shadow: 0 0 0 rgba(212, 175, 55, 0); }
+      50% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.6), 0 16px 34px rgba(6, 78, 59, 0.16); }
+    }
+    .product-card-premium { border-color: rgba(226, 232, 240, 1); -webkit-tap-highlight-color: transparent; }
+    .product-card-premium:hover, .product-card-premium:focus-within, .product-card-premium.vmp-touch-glow {
+      border-color: #d4af37;
+      animation: goldGlow 1.45s ease-in-out infinite;
+      transform: translateY(-4px);
+    }
+    .scratch-canvas { touch-action: none; }
+    .vertical-reel-card { scroll-snap-align: center; }
+    .express-pane-open { display: flex !important; }
+    .macro-zoom-stage img { transition: transform 0.45s ease, filter 0.45s ease; transform-origin: center; }
+
+
     @media (min-width: 1024px) {
       .app-shell { padding-bottom: 128px; }
       .install-banner { bottom: 20px; }
@@ -198,6 +219,8 @@
         <a href="#shop" class="min-w-max flex-shrink-0 rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Trays</a>
         <a href="#shop" class="min-w-max flex-shrink-0 rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Packaging</a>
         <a href="#vipSampleKit" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37]/60 bg-emerald-950/50 px-4 py-2 text-[#d4af37]">VIP Sample Kit</a>
+        <button id="downloadCatalogBtn" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37] bg-[#d4af37] px-4 py-2 text-[#064e3b] shadow-sm">📄 Download Factory Price Catalog</button>
+        <button id="openAiPackagingAdvisor" class="min-w-max flex-shrink-0 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-white shadow-sm">🤖 AI Packaging Advisor</button>
       </div>
 
       <div class="overflow-hidden rounded-xl border border-[#d4af37]/30 bg-emerald-950/60">
@@ -281,6 +304,9 @@
           </div>
           <button id="calcShip" class="mt-3 w-full rounded-xl bg-[#064e3b] py-3 text-sm font-black uppercase tracking-wide text-white shadow-lg hover:bg-emerald-900">Calculate Shipping</button>
           <p id="shipOut" class="mt-2 text-sm font-bold text-[#064e3b]"></p>
+          <div class="mt-2 overflow-hidden rounded-xl border border-[#d4af37]/40 bg-amber-50 px-3 py-2">
+            <p id="logisticsRouteTicker" class="whitespace-nowrap text-xs font-black text-[#064e3b]">🚛 Select shipment details to view verified transport routing.</p>
+          </div>
           <div class="mt-5 grid grid-cols-2 gap-3 text-xs font-bold">
             <div class="rounded-2xl border border-[#d4af37]/40 bg-amber-50 p-3">✅ GST invoices ready</div>
             <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-3">🚚 Same-day Ahmedabad</div>
@@ -355,6 +381,34 @@
           <p class="mt-2 max-w-2xl text-sm font-medium text-slate-600">Get a curated low-cost sample box with plates, trays, bowls, and premium packaging so your team can verify quality before high-volume B2B buying.</p>
         </div>
         <button id="openSampleBoxRequest" class="mt-4 rounded-2xl bg-[#064e3b] px-5 py-3 text-sm font-black text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-emerald-800 md:mt-0">Request Sample Box via PhonePe</button>
+      </div>
+    </section>
+
+    <section id="savingsCalculator" class="max-w-7xl mx-auto px-4 pb-8">
+      <div class="rounded-3xl border border-[#d4af37]/60 bg-gradient-to-br from-[#064e3b] via-emerald-900 to-emerald-950 p-5 text-white shadow-2xl md:p-6">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div class="max-w-2xl">
+            <p class="text-xs font-black uppercase tracking-[0.22em] text-[#d4af37]">Factory Savings Intelligence</p>
+            <h3 class="mt-2 text-2xl font-black">📊 Calculate Your B2B Factory Savings Margin</h3>
+            <p class="mt-2 text-sm font-semibold text-emerald-100">Retail Market average price per plate = ₹12.00; Veer Mahadev Direct Factory price per plate = ₹6.50.</p>
+          </div>
+          <button id="openPriceMatchBtn" class="rounded-2xl border border-[#d4af37]/70 bg-gradient-to-r from-red-700 to-red-900 px-5 py-3 text-sm font-black text-[#fff8df] shadow-lg transition hover:-translate-y-0.5 hover:shadow-red-900/30">💥 Got a Lower Factory Quote? Challenge Our Price!</button>
+        </div>
+        <div class="mt-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+          <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
+            <div class="flex items-center justify-between gap-3 text-sm font-bold">
+              <span>Quantity</span>
+              <span><span id="savingsQtyOut">10,000</span> Pcs</span>
+            </div>
+            <input id="savingsQtySlider" type="range" min="500" max="50000" step="500" value="10000" class="mt-4 w-full accent-[#d4af37]" />
+            <div class="mt-3 flex justify-between text-[11px] font-semibold text-emerald-100"><span>500 Pcs</span><span>50,000 Pcs</span></div>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+            <div class="rounded-2xl border border-white/10 bg-white/10 p-3"><p class="text-[11px] uppercase tracking-wide text-emerald-100">Market Price</p><p class="mt-1 text-xl font-black">₹<span id="marketPriceOut">1,20,000</span></p></div>
+            <div class="rounded-2xl border border-white/10 bg-white/10 p-3"><p class="text-[11px] uppercase tracking-wide text-emerald-100">VMP Factory Price</p><p class="mt-1 text-xl font-black">₹<span id="vmpPriceOut">65,000</span></p></div>
+            <div class="rounded-2xl border border-[#d4af37]/60 bg-[#d4af37]/15 p-3"><p class="text-[11px] uppercase tracking-wide text-[#d4af37]">Instant Cash Saving</p><p id="savingsOut" class="mt-1 text-2xl font-black text-[#d4af37] drop-shadow">₹55,000 💰</p></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -444,6 +498,38 @@
           </div>
           <button id="refreshOrderHistory" class="rounded-xl border border-emerald-200 px-4 py-2 text-sm font-bold text-emerald-800 hover:bg-emerald-50">Refresh History</button>
         </div>
+        <div class="mt-5 grid gap-4 lg:grid-cols-2">
+          <div id="loyaltyTierCard" class="rounded-3xl border border-[#d4af37]/50 bg-gradient-to-br from-[#064e3b] to-emerald-900 p-5 text-white shadow-xl">
+            <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[#d4af37]">Enterprise Loyalty Matrix</p>
+            <div class="mt-3 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <h4 id="loyaltyTierName" class="text-2xl font-black">Silver Buyer</h4>
+                <p id="loyaltyTierSpend" class="mt-1 text-sm font-semibold text-emerald-50">Lifetime Spend: ₹0.00</p>
+              </div>
+              <span id="loyaltyTierDiscountBadge" class="rounded-full border border-[#d4af37]/70 bg-[#d4af37]/15 px-3 py-1 text-xs font-black text-[#d4af37]">0% markdown</span>
+            </div>
+            <div class="mt-4 h-3 overflow-hidden rounded-full bg-white/15">
+              <div id="loyaltyTierProgress" class="h-full w-0 rounded-full bg-gradient-to-r from-[#d4af37] to-amber-200 transition-all duration-700"></div>
+            </div>
+            <p id="loyaltyTierBenefit" class="mt-3 text-sm font-semibold text-emerald-50">Spend ₹50,000 to unlock Gold Partner 3% direct factory markdown.</p>
+          </div>
+          <div id="walletCard" class="rounded-3xl border border-emerald-100 bg-emerald-50 p-5 shadow-sm">
+            <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[#064e3b]">Persistent Advance Channel</p>
+            <h4 class="mt-2 text-2xl font-black text-slate-950">💰 VMP Factory Advance Deposit Wallet</h4>
+            <p class="mt-2 text-sm font-semibold text-slate-700">Active Balance: <span class="text-xl font-black text-[#064e3b]">₹<span id="walletBalanceOut">0.00</span></span></p>
+            <div class="mt-4 grid gap-2 sm:grid-cols-2">
+              <input id="walletLoadAmount" type="number" min="1" class="rounded-xl border border-emerald-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="Advance amount" />
+              <input id="walletLoadUtr" class="rounded-xl border border-emerald-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="PhonePe UTR for deposit" />
+            </div>
+            <button id="loadWalletBtn" class="mt-3 w-full rounded-xl bg-[#064e3b] py-3 text-sm font-black text-[#d4af37] shadow-lg transition hover:-translate-y-0.5">+ Load Advance Token Tokens</button>
+            <p id="walletMsg" class="mt-2 text-xs font-bold text-emerald-800">Wallet balance can be deducted inside Express Checkout beside PhonePe QR mode.</p>
+          </div>
+        </div>
+        <div id="dispatchQrPanel" class="mt-5 hidden rounded-3xl border border-[#d4af37]/50 bg-amber-50 p-5 text-center shadow-sm">
+          <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[#064e3b]">Warehouse Dispatch QR: Show this to factory packing floor</p>
+          <img id="dispatchQrImage" alt="Warehouse Dispatch QR" class="mx-auto mt-3 h-44 w-44 rounded-2xl border border-[#d4af37]/70 bg-white p-2 shadow-lg" />
+          <p id="dispatchQrCaption" class="mt-2 text-xs font-bold text-emerald-900"></p>
+        </div>
         <div id="orderHistoryList" class="mt-5 grid gap-4"></div>
       </div>
     </section>
@@ -529,6 +615,66 @@
     </svg>
   </a>
 
+  <button id="scratchCouponBtn" class="pulse-soft fixed bottom-[96px] right-4 z-[58] flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#d4af37] bg-[#d4af37] text-2xl shadow-2xl shadow-amber-700/30 transition hover:scale-105 lg:bottom-24" aria-label="Open wholesale scratch coupon">🎁</button>
+
+  <div id="scratchCouponModal" class="hidden fixed inset-0 z-[88] flex items-center justify-center bg-black/60 px-4">
+    <div class="w-full max-w-md rounded-[2rem] border border-[#d4af37]/70 bg-[#064e3b] p-5 text-white shadow-2xl">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.22em] text-[#d4af37]">Wholesale Scratch Card</p>
+          <h3 class="mt-1 text-2xl font-black">Scratch to Reveal Factory Clearance Discount</h3>
+        </div>
+        <button id="closeScratchCoupon" class="rounded-lg border border-white/20 px-3 py-1 text-sm font-bold">Close</button>
+      </div>
+      <div class="relative mt-5 overflow-hidden rounded-2xl border border-[#d4af37]/60 bg-white p-4 text-center text-[#064e3b]">
+        <div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl bg-amber-50 px-4 py-6">
+          <p class="text-3xl">🎉</p>
+          <p class="mt-2 text-xl font-black">Code: VMP500</p>
+          <p class="mt-2 text-sm font-bold">Get Flat ₹500 OFF on your first B2B order over MOQ 10000!</p>
+        </div>
+        <canvas id="scratchCouponCanvas" width="360" height="210" class="scratch-canvas absolute inset-0 h-full w-full cursor-crosshair rounded-2xl"></canvas>
+      </div>
+      <button id="applyScratchCoupon" class="mt-4 w-full rounded-xl bg-[#d4af37] py-3 text-sm font-black text-[#064e3b] shadow-lg transition hover:bg-amber-300">Apply Automatically to Cart</button>
+      <p id="scratchCouponMsg" class="mt-2 text-center text-xs font-semibold text-amber-100">Scratch the matte layer or apply directly to save this coupon in your cart session.</p>
+    </div>
+  </div>
+
+  <aside id="verticalVideoSlider" class="fixed left-3 top-1/2 z-[46] hidden w-28 -translate-y-1/2 rounded-3xl border border-[#d4af37]/60 bg-[#064e3b]/95 p-2 text-white shadow-2xl lg:block">
+    <p class="mb-2 text-center text-[10px] font-black uppercase tracking-[0.16em] text-[#d4af37]">Factory Reels</p>
+    <div id="verticalReelTrack" class="scrollbar-none flex max-h-[360px] snap-y snap-mandatory flex-col gap-2 overflow-y-auto rounded-2xl">
+      <video class="vertical-reel-card h-40 w-full rounded-2xl object-cover" src="ad_reel.mp4" autoplay muted playsinline></video>
+      <video class="vertical-reel-card h-40 w-full rounded-2xl object-cover" src="https://cdn.coverr.co/videos/coverr-hands-holding-a-box-1579/1080p.mp4" muted playsinline></video>
+      <video class="vertical-reel-card h-40 w-full rounded-2xl object-cover" src="https://cdn.coverr.co/videos/coverr-working-with-baking-paper-1578/1080p.mp4" muted playsinline></video>
+    </div>
+    <div class="mt-2 flex justify-center gap-2">
+      <button id="prevVerticalReel" class="rounded-full border border-[#d4af37]/50 px-2 text-xs text-[#d4af37]">↑</button>
+      <button id="nextVerticalReel" class="rounded-full border border-[#d4af37]/50 px-2 text-xs text-[#d4af37]">↓</button>
+    </div>
+  </aside>
+
+  <div id="bulkSocialProofHost" class="pointer-events-none fixed bottom-5 left-4 z-[70] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2"></div>
+
+  <div id="priceMatchModal" class="hidden fixed inset-0 z-[89] flex items-center justify-center bg-black/60 px-4">
+    <div class="w-full max-w-lg rounded-[2rem] border border-[#d4af37]/70 bg-white p-5 shadow-2xl">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.22em] text-red-700">Competitive Price Match</p>
+          <h3 class="mt-1 text-2xl font-black text-[#064e3b]">Challenge Our Factory Price</h3>
+          <p class="mt-1 text-sm font-semibold text-slate-600">Upload any lower quote and our billing desk will review it immediately.</p>
+        </div>
+        <button id="closePriceMatchModal" class="rounded-lg border border-slate-200 px-3 py-1 text-sm font-bold text-slate-600">Close</button>
+      </div>
+      <form id="priceMatchForm" class="mt-4 grid gap-3">
+        <input id="priceMatchName" required class="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="Buyer Name" />
+        <input id="priceMatchPhone" required class="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="Phone Number" />
+        <input id="priceMatchQuote" required type="number" min="0" step="0.01" class="rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="Competitor Price Quote Per Piece (₹)" />
+        <input id="priceMatchFile" type="file" accept="image/*,.pdf" class="rounded-xl border border-dashed border-[#d4af37]/70 bg-amber-50 px-3 py-2 text-sm" />
+        <button class="rounded-xl bg-gradient-to-r from-red-700 to-red-900 py-3 text-sm font-black text-white shadow-lg">Submit Price Challenge</button>
+        <p id="priceMatchMsg" class="text-sm font-bold text-emerald-700"></p>
+      </form>
+    </div>
+  </div>
+
   <aside id="cartDrawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl border-l z-[60] translate-x-full transition-transform duration-300">
     <div class="p-4 border-b flex justify-between items-center">
       <h4 class="text-xl font-bold">Your Cart</h4>
@@ -539,6 +685,22 @@
       <p class="font-semibold">Subtotal: ₹<span id="cartSubtotal">0</span></p>
       <p class="text-xs text-slate-600 mt-1">Shipping Zone: <span id="shippingZoneLabel" class="font-semibold">Ahmedabad</span></p>
       <p class="text-xs text-slate-600">Estimated Shipping: ₹<span id="shippingCharge">0</span></p>
+      <p id="cartCouponRow" class="hidden text-xs font-bold text-emerald-700">Coupon VMP500 Applied: -₹<span id="cartCouponDiscount">0</span></p>
+      <div id="masterCartonTracker" class="mt-3 rounded-2xl border border-[#d4af37]/40 bg-white px-3 py-3">
+        <div class="flex items-center justify-between gap-2 text-[11px] font-black uppercase tracking-[0.14em] text-[#064e3b]"><span>📦 Master Carton Optimization Tracker</span><span>Save Logistics Cost</span></div>
+        <div class="mt-2 h-3 overflow-hidden rounded-full bg-emerald-100"><div id="masterCartonBar" class="h-full w-0 rounded-full bg-gradient-to-r from-[#064e3b] via-emerald-500 to-[#d4af37] transition-all duration-500"></div></div>
+        <p id="masterCartonText" class="mt-2 text-xs font-semibold text-slate-700">Add products to begin carton optimization.</p>
+      </div>
+      <div class="mt-3 rounded-2xl border border-emerald-100 bg-white px-3 py-3">
+        <label class="flex items-center gap-2 text-xs font-black text-[#064e3b]"><input id="recurringDispatchToggle" type="checkbox" class="h-4 w-4 rounded border-emerald-300 text-[#064e3b]" /> 🗓️ Setup Automated Recurring Dispatches</label>
+        <select id="recurringDispatchFrequency" class="mt-2 hidden w-full rounded-xl border border-emerald-200 px-3 py-2 text-xs font-bold text-slate-700">
+          <option value="Every Friday">Every Friday</option>
+          <option value="Weekly Monday Morning">Weekly Monday Morning</option>
+          <option value="Bi-Weekly Friday">Bi-Weekly Friday</option>
+          <option value="Monthly 1st Dispatch">Monthly 1st Dispatch</option>
+        </select>
+        <p id="recurringDispatchMsg" class="mt-2 text-[11px] font-semibold text-slate-500">Optional standing order schedule for wholesale merchants.</p>
+      </div>
       <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
       <div class="mt-3 grid gap-2">
         <select id="shippingZone" class="border rounded-lg px-3 py-2 text-sm">
@@ -555,7 +717,7 @@
           <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[#064e3b]">Accepted Methods</p>
           <p class="mt-1 text-xs font-semibold text-slate-700">PhonePe | GPay | UPI QR | WhatsApp Verification</p>
         </div>
-        <button id="shareEstimateCartBtn" class="w-full rounded-xl border border-[#d4af37]/70 bg-amber-50 py-2.5 text-sm font-black text-[#064e3b] transition hover:bg-amber-100">📋 Share Estimate Quote to WhatsApp</button>
+        <button id="shareEstimateCartBtn" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-transparent bg-transparent py-2 text-sm font-black text-[#064e3b] underline decoration-[#d4af37] decoration-2 underline-offset-4 transition hover:border-[#d4af37]/60 hover:bg-amber-50">📋 Share Estimate Quote to WhatsApp</button>
         <button id="cartPhonePeCheckoutBtn" class="w-full rounded-xl bg-[#5f259f] py-3 text-sm font-black text-white shadow-lg shadow-[#5f259f]/25 transition hover:-translate-y-0.5 hover:bg-[#4c1d95] hover:shadow-xl">🔒 Proceed to Secure PhonePe Payment</button>
         <button id="waCart" disabled class="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 py-2.5 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40">
           <span>💬</span><span>Order on WhatsApp</span>
@@ -567,6 +729,53 @@
       </div>
     </div>
   </aside>
+  <button id="expressCheckoutDock" class="fixed bottom-[156px] left-4 z-[59] rounded-full border-2 border-[#d4af37] bg-[#064e3b] px-4 py-3 text-xs font-black text-[#d4af37] shadow-2xl lg:hidden">⚡ Express Checkout</button>
+
+  <aside id="expressCheckoutPane" class="fixed bottom-4 right-4 top-24 z-[49] hidden w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-[#d4af37]/60 bg-white shadow-2xl lg:flex">
+    <div class="flex items-center justify-between bg-[#064e3b] px-4 py-3 text-white">
+      <div>
+        <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[#d4af37]">1-Page Billing Matrix</p>
+        <h3 class="text-lg font-black">⚡ Express Checkout</h3>
+      </div>
+      <button id="closeExpressPane" class="rounded-lg border border-white/20 px-2 py-1 text-xs font-bold lg:hidden">Close</button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-4 text-sm">
+      <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-3">
+        <p class="text-xs font-black uppercase tracking-wide text-[#064e3b]">Buyer Verification</p>
+        <p id="expressBuyerStatus" class="mt-1 font-semibold text-slate-700">Profile not verified.</p>
+        <button id="expressVerifyProfile" class="mt-2 rounded-lg bg-[#064e3b] px-3 py-2 text-xs font-black text-white">Verify Buyer</button>
+      </div>
+      <div class="mt-3 rounded-2xl border border-slate-100 p-3">
+        <div class="flex items-center justify-between"><p class="font-black text-slate-800">Cart Lines</p><span id="expressCartQty" class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-800">0 pcs</span></div>
+        <div id="expressCartLines" class="mt-2 max-h-40 space-y-2 overflow-y-auto pr-1 text-xs text-slate-600"></div>
+        <label class="mt-3 block rounded-2xl border border-dashed border-[#d4af37]/60 bg-amber-50 p-3 text-xs font-bold text-[#064e3b]">
+          <span class="block text-[11px] uppercase tracking-[0.16em] text-amber-800">📥 Submit Corporate Purchase Order (PO)</span>
+          <span id="poUploadStatus" class="mt-1 block text-slate-600">Upload PDF, DOC, JPG or PNG for billing desk verification.</span>
+          <input id="poUploadInput" type="file" accept=".pdf,.doc,.docx,.jpg,.png" class="mt-2 block w-full text-[11px] text-slate-700 file:mr-2 file:rounded-lg file:border-0 file:bg-[#064e3b] file:px-3 file:py-1.5 file:text-xs file:font-bold file:text-white" />
+        </label>
+      </div>
+      <div class="mt-3 rounded-2xl border border-[#d4af37]/40 bg-amber-50 p-3">
+        <p class="text-xs font-black uppercase tracking-wide text-[#064e3b]">Dynamic Shipping</p>
+        <p id="expressShippingOut" class="mt-1 font-bold text-slate-700">Ahmedabad estimate pending</p>
+        <textarea id="expressAddress" rows="2" class="mt-2 w-full rounded-xl border border-amber-200 px-3 py-2 text-xs outline-none focus:border-[#d4af37]" placeholder="Delivery address for billing matrix"></textarea>
+      </div>
+      <div class="mt-3 rounded-2xl border border-[#5f259f]/20 bg-[#5f259f]/5 p-3">
+        <p class="text-xs font-black uppercase tracking-wide text-[#5f259f]">Direct PhonePe UTR</p>
+        <input id="expressUtrInput" class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-xs outline-none focus:border-[#5f259f]" placeholder="Paste UTR / Transaction ID" />
+        <div class="mt-3 space-y-1 text-xs font-bold text-slate-700">
+          <div class="flex justify-between"><span>Subtotal</span><span>₹<span id="expressSubtotal">0</span></span></div>
+          <div class="flex justify-between"><span>Shipping</span><span>₹<span id="expressShipping">0</span></span></div>
+          <div class="flex justify-between text-emerald-700"><span>Coupon</span><span>-₹<span id="expressCoupon">0</span></span></div>
+          <div class="flex justify-between text-[#d4af37]"><span id="expressLoyaltyLabel">Loyalty Markdown</span><span>-₹<span id="expressLoyaltyDiscount">0</span></span></div>
+          <div class="flex justify-between text-[#5f259f]"><span>Wallet Deduction</span><span>-₹<span id="expressWalletDeduction">0</span></span></div>
+          <div class="flex justify-between border-t border-slate-200 pt-2 text-base text-[#064e3b]"><span>Total</span><span>₹<span id="expressTotal">0</span></span></div>
+        </div>
+        <button id="expressWalletPayBtn" class="mt-3 w-full rounded-xl border border-[#d4af37] bg-white py-2.5 text-xs font-black text-[#064e3b] shadow-sm">💰 Deduct From Wallet Balance</button>
+        <button id="expressPayBtn" class="mt-2 w-full rounded-xl bg-[#5f259f] py-3 text-sm font-black text-white shadow-lg">Verify UTR & Complete</button>
+      </div>
+    </div>
+  </aside>
+
   <div id="drawerOverlay" class="hidden fixed inset-0 bg-black/40 z-50"></div>
   <div id="checkoutModal" class="hidden fixed inset-0 z-[75] bg-black/60 flex items-center justify-center min-h-screen p-4">
     <div class="w-full max-w-5xl bg-white rounded-xl shadow-2xl flex flex-col my-auto max-h-[95vh] md:max-h-[90vh] overflow-hidden border border-emerald-100">
@@ -583,6 +792,9 @@
             <p class="text-sm font-semibold text-emerald-900">Verified Buyer Profile</p>
             <p id="checkoutProfilePreview" class="mt-1 text-sm text-slate-600">Login profile required before checkout.</p>
             <div id="checkoutBusinessPreview" class="mt-2 hidden rounded-lg border border-[#d4af37]/40 bg-white px-3 py-2 text-xs font-semibold text-emerald-900"></div>
+            <div id="checkoutSecuritySeal" class="mt-3 rounded-xl border border-[#d4af37]/60 bg-white px-3 py-2 text-xs font-black text-[#064e3b] shadow-sm">
+              🛡️ Verified Secure Factory Dispatch • IP session checking • Business phone pending
+            </div>
           </div>
           <div class="rounded-xl border border-emerald-100 p-3">
             <p class="text-sm font-semibold text-slate-700">Delivery Address</p>
@@ -614,6 +826,9 @@
             <div class="mt-3 space-y-2 text-sm font-medium tabular-nums">
               <div class="flex justify-between"><span>Order Value</span><span>₹<span id="checkoutSubtotal">0</span></span></div>
               <div class="flex justify-between"><span>Dynamic Tiered Shipping</span><span>₹<span id="checkoutShipping">0</span></span></div>
+              <div id="checkoutCouponRow" class="hidden items-center justify-between text-emerald-700"><span>Factory Coupon VMP500</span><span>-₹<span id="checkoutCouponDiscount">0</span></span></div>
+              <div id="checkoutLoyaltyRow" class="hidden items-center justify-between text-[#d4af37]"><span id="checkoutLoyaltyLabel">Loyalty markdown</span><span>-₹<span id="checkoutLoyaltyDiscount">0</span></span></div>
+              <div id="checkoutWalletRow" class="hidden items-center justify-between text-[#5f259f]"><span>Wallet deduction</span><span>-₹<span id="checkoutWalletDeduction">0</span></span></div>
               <hr />
               <div class="flex justify-between text-lg font-black text-emerald-900"><span>Total Final Amount</span><span>₹<span id="checkoutTotal">0</span></span></div>
             </div>
@@ -666,6 +881,25 @@
       </form>
     </div>
   </div>
+  <div id="aiPackagingModal" class="hidden fixed inset-0 z-[77] flex items-center justify-center bg-black/60 p-4">
+    <div class="w-full max-w-lg rounded-3xl border border-[#d4af37]/60 bg-white p-5 shadow-2xl">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[#064e3b]">AI Event Planner</p>
+          <h3 class="mt-1 text-2xl font-black text-slate-950">Packaging Advisor</h3>
+          <p class="mt-1 text-sm text-slate-600">Enter event size and menu type to generate a bulk packaging kit.</p>
+        </div>
+        <button id="closeAiPackagingAdvisor" class="rounded-xl border border-slate-200 px-3 py-1 text-sm font-bold">Close</button>
+      </div>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <label class="text-xs font-bold uppercase tracking-wide text-slate-600">Number of guests<input id="advisorGuests" type="number" min="50" value="500" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm normal-case outline-none focus:border-[#d4af37]" /></label>
+        <label class="text-xs font-bold uppercase tracking-wide text-slate-600">Menu Type<select id="advisorMenuType" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm normal-case outline-none focus:border-[#d4af37]"><option>Buffet</option><option>Thali</option><option>Soup-based</option></select></label>
+      </div>
+      <button id="runAdvisorBtn" class="mt-4 w-full rounded-xl bg-[#064e3b] py-3 text-sm font-black text-[#d4af37]">Calculate Recommended Pack</button>
+      <div id="advisorResult" class="mt-4 rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">Recommended Pack will appear here.</div>
+      <button id="addAdvisorKitBtn" class="mt-3 w-full rounded-xl bg-[#d4af37] py-3 text-sm font-black text-[#064e3b]">Add Recommended Kit to Cart</button>
+    </div>
+  </div>
   <div id="vmpToastHost" class="fixed right-4 top-24 z-[90] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2 pointer-events-none"></div>
   <div id="pwaUpdateBanner" class="fixed inset-x-4 bottom-4 z-[95] hidden translate-y-8 rounded-2xl border border-[#d4af37]/70 bg-[#064e3b] p-4 text-white opacity-0 shadow-2xl shadow-emerald-950/40 transition-all duration-500 sm:left-1/2 sm:max-w-xl sm:-translate-x-1/2">
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -699,7 +933,18 @@
         <button id="closeProductModal" class="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600">✕</button>
       </div>
       <div class="grid gap-6 px-5 py-5 md:grid-cols-[1fr_1fr]">
-        <img id="productModalImage" src="" alt="" class="h-80 w-full rounded-[1.5rem] bg-slate-50 object-cover" />
+        <div class="space-y-3">
+          <img id="productModalImage" src="" alt="" class="h-80 w-full rounded-[1.5rem] bg-slate-50 object-cover" />
+          <button id="openMacroTextureBtn" class="w-full rounded-2xl border border-[#d4af37]/60 bg-amber-50 px-4 py-3 text-sm font-black text-[#064e3b] transition hover:bg-amber-100">🔍 Inspect Micro Finishing & Gilded Gloss</button>
+          <div id="macroTexturePanel" class="hidden rounded-[1.5rem] border border-[#d4af37]/60 bg-[#064e3b] p-3 text-white">
+            <p class="text-[11px] font-black uppercase tracking-[0.18em] text-[#d4af37]">360° Macro Quality Texture Engine</p>
+            <div class="macro-zoom-stage mt-2 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+              <img id="macroTextureImage" src="" alt="Macro texture zoom" class="h-56 w-full object-cover" />
+            </div>
+            <input id="macroTextureSlider" type="range" min="0" max="3" value="0" step="1" class="mt-3 w-full accent-[#d4af37]" />
+            <p id="macroTextureLabel" class="mt-2 text-xs font-semibold text-emerald-50">Edge thickness inspection • 1x zoom</p>
+          </div>
+        </div>
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-3 text-sm">
             <div class="rounded-2xl bg-emerald-50 p-3"><p class="text-xs uppercase text-slate-500">Category</p><p id="productModalCategory" class="mt-1 font-semibold text-slate-800"></p></div>
@@ -1554,6 +1799,10 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       document.getElementById('productModalTitle').textContent = product.name;
       document.getElementById('productModalImage').src = product.image;
       document.getElementById('productModalImage').alt = product.name;
+      activeMacroProduct = product;
+      document.getElementById('macroTexturePanel')?.classList.add('hidden');
+      const macroImage = document.getElementById('macroTextureImage');
+      if(macroImage){ macroImage.src = product.image; macroImage.alt = `${product.name} macro texture`; }
       document.getElementById('productModalCategory').textContent = product.category;
       document.getElementById('productModalStock').textContent = product.stock > 0 ? `${product.stock} packs ready` : 'Currently unavailable';
       document.getElementById('productModalSize').textContent = meta.size;
@@ -1574,6 +1823,36 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         video.load();
       }
       productModal.classList.remove('hidden');
+    }
+
+    let activeMacroProduct = null;
+
+    function updateMacroTextureView(){
+      if(!activeMacroProduct) return;
+      const slider = document.getElementById('macroTextureSlider');
+      const image = document.getElementById('macroTextureImage');
+      const label = document.getElementById('macroTextureLabel');
+      const frame = Number(slider?.value || 0);
+      const zoomLevels = [1.25, 1.75, 2.35, 3.1];
+      const labels = [
+        'Edge thickness inspection • 1.25x zoom',
+        'Pattern micro-embossing sweep • 1.75x zoom',
+        'Heavy-fiber rigidity grain • 2.35x zoom',
+        'Gilded gloss finishing check • 3.10x zoom'
+      ];
+      if(image){
+        image.src = activeMacroProduct.image;
+        image.style.transform = `scale(${zoomLevels[frame] || 1.25}) translate(${frame * -4}px, ${frame * 3}px)`;
+        image.style.filter = `contrast(${1 + frame * 0.08}) saturate(${1 + frame * 0.1})`;
+      }
+      if(label) label.textContent = labels[frame] || labels[0];
+    }
+
+    function openMacroTextureEngine(){
+      const panel = document.getElementById('macroTexturePanel');
+      if(!panel) return;
+      panel.classList.remove('hidden');
+      updateMacroTextureView();
     }
 
     function renderCategories(){
@@ -1600,7 +1879,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     function renderProducts(){
       if(!productGrid) return;
       productGrid.innerHTML = filteredProducts.map(p => `
-        <article onclick="openProductDetails('${p.id}')" class="cursor-pointer overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+        <article onclick="openProductDetails('${p.id}')" class="product-card-premium cursor-pointer overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-300 hover:shadow-lg" tabindex="0">
           <div class="relative">
             <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
             <button onclick="event.stopPropagation();shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
@@ -1657,6 +1936,342 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       return { zoneLabel: 'Outside Gujarat', charge: 1250 };
     }
 
+    function getAppliedCoupon(){
+      try { return JSON.parse(localStorage.getItem('vmp_applied_coupon') || 'null'); }
+      catch { return null; }
+    }
+
+    function activeCouponDiscount(){
+      const coupon = getAppliedCoupon();
+      if(coupon?.code !== 'VMP500') return 0;
+      return cartTotalQty() >= 10000 ? 500 : 0;
+    }
+
+
+    function lifetimeSpendTotal(){
+      return readOrderHistory().reduce((sum, order) => sum + Number(order.total || 0), 0);
+    }
+
+    function getLoyaltyTier(){
+      const spend = lifetimeSpendTotal();
+      if(spend >= 150000){
+        return { name: 'Platinum Fleet', rate: 0.05, spend, next: null, badge: '5% direct factory markdown', benefit: 'Platinum Fleet active: 5% direct factory markdown applied to premium checkout lines.' };
+      }
+      if(spend >= 50000){
+        return { name: 'Gold Partner', rate: 0.03, spend, next: 150000, badge: '3% checkout markdown', benefit: `Gold Partner active: 3% checkout markdown. Spend ₹${Math.max(0, 150000 - spend).toLocaleString('en-IN')} more to unlock Platinum Fleet.` };
+      }
+      return { name: 'Silver Buyer', rate: 0, spend, next: 50000, badge: '0% markdown', benefit: `Spend ₹${Math.max(0, 50000 - spend).toLocaleString('en-IN')} to unlock Gold Partner 3% direct factory markdown.` };
+    }
+
+    function premiumLineSubtotal(){
+      return cart.reduce((sum, item) => {
+        const name = String(item.name || '').toLowerCase();
+        const isSample = item.id === 'sample_box' || name.includes('sample box');
+        return isSample ? sum : sum + (Number(item.qty || 0) * Number(item.unit || 0));
+      }, 0);
+    }
+
+    function loyaltyDiscountAmount(){
+      const tier = getLoyaltyTier();
+      return Number((premiumLineSubtotal() * Number(tier.rate || 0)).toFixed(2));
+    }
+
+    function walletBalance(){
+      return Math.max(0, Number(localStorage.getItem('vmp_wallet_balance') || 0));
+    }
+
+    function setWalletBalance(amount){
+      const safeAmount = Math.max(0, Number(amount || 0));
+      localStorage.setItem('vmp_wallet_balance', safeAmount.toFixed(2));
+      return safeAmount;
+    }
+
+    function checkoutTotalBeforeWallet(){
+      const subtotal = cartTotalAmount();
+      const shipping = shippingEstimate(subtotal);
+      return Math.max(0, subtotal + Number(shipping.charge || 0) - activeCouponDiscount() - loyaltyDiscountAmount());
+    }
+
+    function currentWalletDeduction(){
+      if(!expressUseWallet) return 0;
+      return Number(Math.min(walletBalance(), checkoutTotalBeforeWallet()).toFixed(2));
+    }
+
+    function renderLoyaltyAndWallet(){
+      const tier = getLoyaltyTier();
+      const nextTarget = tier.next || 150000;
+      const progress = tier.next ? Math.min(100, (tier.spend / nextTarget) * 100) : 100;
+      const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
+      setText('loyaltyTierName', tier.name);
+      setText('loyaltyTierSpend', `Lifetime Spend: ₹${tier.spend.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+      setText('loyaltyTierDiscountBadge', tier.badge);
+      setText('loyaltyTierBenefit', tier.benefit);
+      const bar = document.getElementById('loyaltyTierProgress');
+      if(bar) bar.style.width = `${progress}%`;
+      setText('walletBalanceOut', walletBalance().toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+    }
+
+    function cartonUnitsForItem(item){
+      const name = String(item.name || '').toLowerCase();
+      if(name.includes('tray')) return 4;
+      if(name.includes('cup') || name.includes('glass') || name.includes('spoon') || name.includes('cutlery')) return 1;
+      if(name.includes('plate') || name.includes('fiber')) return 2;
+      return 2;
+    }
+
+    function renderMasterCartonTracker(){
+      const totalUnits = cart.reduce((sum, item) => sum + (Number(item.qty || 0) * cartonUnitsForItem(item)), 0);
+      const bar = document.getElementById('masterCartonBar');
+      const text = document.getElementById('masterCartonText');
+      if(!bar || !text) return;
+      if(totalUnits <= 0){
+        bar.style.width = '0%';
+        text.textContent = 'Add products to begin carton optimization.';
+        return;
+      }
+      const capacity = 500;
+      const currentBoxUnits = totalUnits % capacity === 0 ? capacity : totalUnits % capacity;
+      const percent = Math.min(100, (currentBoxUnits / capacity) * 100);
+      const remaining = Math.max(0, capacity - currentBoxUnits);
+      bar.style.width = `${percent}%`;
+      text.textContent = remaining === 0
+        ? `Perfect master carton load: ${Math.round(percent)}% full. Current shipment uses ${Math.ceil(totalUnits / capacity).toLocaleString('en-IN')} optimized carton(s).`
+        : `Your Master Carton is ${Math.round(percent)}% Full. Add ${remaining.toLocaleString('en-IN')} more pieces of cutlery to optimize spatial transport volume!`;
+    }
+
+    function addWalletTransaction(amount, utr, mode = 'load'){
+      const history = JSON.parse(localStorage.getItem('vmp_wallet_transactions') || '[]');
+      history.unshift({ amount: Number(amount || 0), utr, mode, createdAt: new Date().toISOString() });
+      localStorage.setItem('vmp_wallet_transactions', JSON.stringify(history.slice(0, 50)));
+    }
+
+
+    function handleWalletLoad(){
+      const amountInput = document.getElementById('walletLoadAmount');
+      const utrInput = document.getElementById('walletLoadUtr');
+      const amount = Number(amountInput?.value || 0);
+      const utr = (utrInput?.value || '').trim();
+      if(amount <= 0){
+        notifyVmp('Enter an advance wallet amount before loading tokens.', 'Wallet amount required');
+        return;
+      }
+      if(!utr){
+        notifyVmp('Enter the PhonePe UTR used for your advance deposit.', 'Wallet UTR required');
+        return;
+      }
+      const nextBalance = setWalletBalance(walletBalance() + amount);
+      addWalletTransaction(amount, utr, 'advance-load');
+      if(amountInput) amountInput.value = '';
+      if(utrInput) utrInput.value = '';
+      const msg = document.getElementById('walletMsg');
+      if(msg) msg.textContent = `Advance wallet loaded. New balance ₹${nextBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}.`;
+      notifyVmp('Advance wallet token loaded securely for B2B checkout.', 'Wallet updated');
+      renderLoyaltyAndWallet();
+      renderExpressCheckout();
+    }
+
+    function activateWalletCheckout(){
+      if(cart.length === 0){
+        notifyVmp('Cart is empty. Add products before using wallet checkout.', 'Cart required');
+        return;
+      }
+      if(!requireBuyerProfile(activateWalletCheckout)) return;
+      if(walletBalance() <= 0){
+        notifyVmp('Wallet balance is ₹0. Load advance tokens from My Account first.', 'Wallet balance required');
+        scrollToSection('order-history');
+        return;
+      }
+      expressUseWallet = true;
+      renderExpressCheckout();
+      const totalDue = checkoutTotalBeforeWallet() - currentWalletDeduction();
+      const utrInput = document.getElementById('expressUtrInput');
+      if(utrInput && !utrInput.value) utrInput.value = totalDue <= 0 ? `WALLET-${Date.now()}` : '';
+      notifyVmp(totalDue <= 0 ? 'Wallet covers this checkout. Confirm to finalize order.' : `Wallet deduction applied. Pay remaining ₹${totalDue.toFixed(2)} via PhonePe and paste UTR.`, 'Wallet channel active');
+    }
+
+
+    function normalizeIndianPhone(phone){
+      return String(phone || '').replace(/\s|-/g, '').replace(/^\+91/, '').replace(/^91(?=[6-9]\d{9}$)/, '');
+    }
+
+    function verifyIndianPhoneNumber(phone){
+      return /^[6-9]\d{9}$/.test(normalizeIndianPhone(phone));
+    }
+
+    function buildBusinessVerification(profile){
+      const phoneVerified = verifyIndianPhoneNumber(profile?.mobile);
+      return {
+        phoneVerified,
+        verifiedBusinessAt: phoneVerified ? new Date().toISOString() : null,
+        clientSessionId: localStorage.getItem('vmp_ip_session_id') || (() => {
+          const id = `VMP-IP-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
+          localStorage.setItem('vmp_ip_session_id', id);
+          return id;
+        })(),
+        phoneHash: phoneVerified ? btoa(normalizeIndianPhone(profile.mobile)).slice(0, 12) : null,
+      };
+    }
+
+    function updateSecuritySeal(){
+      const profile = getBuyerProfile();
+      const seal = document.getElementById('checkoutSecuritySeal');
+      if(!seal) return null;
+      const verification = buildBusinessVerification(profile || {});
+      seal.textContent = verification.phoneVerified
+        ? `🛡️ Verified Secure Factory Dispatch • Verified Business ${new Date(verification.verifiedBusinessAt).toLocaleString('en-IN')} • Session ${verification.clientSessionId}`
+        : '🛡️ Verified Secure Factory Dispatch • Indian mobile verification pending';
+      seal.classList.toggle('border-rose-300', !verification.phoneVerified);
+      seal.classList.toggle('text-rose-700', !verification.phoneVerified);
+      return verification;
+    }
+
+    function getRecurringDispatchPreference(){
+      const enabled = Boolean(document.getElementById('recurringDispatchToggle')?.checked);
+      return enabled ? {
+        enabled: true,
+        frequency: document.getElementById('recurringDispatchFrequency')?.value || 'Every Friday',
+        capturedAt: new Date().toISOString(),
+      } : { enabled: false };
+    }
+
+    function updateRecurringDispatchUi(){
+      const enabled = Boolean(document.getElementById('recurringDispatchToggle')?.checked);
+      const select = document.getElementById('recurringDispatchFrequency');
+      const msg = document.getElementById('recurringDispatchMsg');
+      if(select) select.classList.toggle('hidden', !enabled);
+      if(msg) msg.textContent = enabled
+        ? `Standing order schedule enabled: ${select?.value || 'Every Friday'}. This will be attached to checkout payload.`
+        : 'Optional standing order schedule for wholesale merchants.';
+    }
+
+    function handlePoUpload(event){
+      const file = event.target.files?.[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        checkoutPoDocument = {
+          fileName: file.name,
+          fileType: file.type || 'application/octet-stream',
+          fileSize: file.size,
+          base64: String(reader.result || ''),
+          capturedAt: new Date().toISOString(),
+        };
+        const status = document.getElementById('poUploadStatus');
+        if(status) status.textContent = `Logged: ${file.name} (${Math.ceil(file.size / 1024).toLocaleString('en-IN')} KB)`;
+        notifyVmp('Official PO Successfully Logged! Our billing desk will contact you shortly for corporate invoicing.', 'Corporate PO logged');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function openCatalogPrintWindow(){
+      const rows = products.map((product) => {
+        const meta = productMeta(product);
+        const firstTier = product.tiers?.[0] || { min: 100, price: 0 };
+        return `<tr><td>${product.name}</td><td>${meta.moq || `${firstTier.min}+ pcs`}</td><td>₹${Number(firstTier.price || 0).toFixed(2)}</td><td>${product.category}</td></tr>`;
+      }).join('');
+      const generatedAt = new Date().toLocaleString('en-IN');
+      const html = `<!doctype html><html><head><title>VMP Factory Price Catalog</title><style>@page{size:A4;margin:14mm}body{font-family:Arial,sans-serif;color:#0f172a}header{border:2px solid #d4af37;background:#064e3b;color:white;padding:18px;border-radius:18px}h1{margin:0;color:#d4af37}table{width:100%;border-collapse:collapse;margin-top:16px;font-size:11px}th{background:#d4af37;color:#064e3b;text-align:left}td,th{border:1px solid #d9e5df;padding:6px}tr{break-inside:avoid}.note{margin-top:10px;color:#475569;font-size:12px}</style></head><body><header><h1>Veer Mahadev Plastic</h1><p>Factory Direct Wholesale Price Catalog • Generated ${generatedAt}</p><p>MOQ, factory pricing and B2B dispatch-ready lines.</p></header><table><thead><tr><th>Item Name</th><th>MOQ</th><th>Factory Price</th><th>Category</th></tr></thead><tbody>${rows}</tbody></table><p class="note">Use browser print dialog and choose “Save as PDF” for a two-page catalog export.</p><script>window.onload=()=>setTimeout(()=>window.print(),350)<\/script></body></html>`;
+      const printWindow = window.open('', '_blank');
+      if(!printWindow){
+        notifyVmp('Please allow pop-ups to generate the printable factory catalog.', 'Catalog blocked');
+        return;
+      }
+      printWindow.document.write(html);
+      printWindow.document.close();
+      notifyVmp('Factory price catalog prepared. Choose Save as PDF in the print dialog.', 'Catalog ready');
+    }
+
+    function getAdvisorRecommendation(){
+      const guests = Math.max(50, Number(document.getElementById('advisorGuests')?.value || 500));
+      const menuType = document.getElementById('advisorMenuType')?.value || 'Buffet';
+      const lower = menuType.toLowerCase();
+      const primary = lower.includes('soup') ? 'BOWL' : lower.includes('thali') ? '4CP' : '5CP';
+      const product = products.find((item) => item.name.toUpperCase().includes(primary)) || products.find((item) => item.category === 'Fiber Plates') || products[0];
+      const multiplier = lower.includes('soup') ? 1.25 : lower.includes('thali') ? 1.1 : 1.15;
+      const qty = Math.ceil((guests * multiplier) / 50) * 50;
+      return {
+        guests,
+        menuType,
+        productId: product?.id,
+        productName: product?.name || 'Recommended Catering Pack',
+        qty,
+        recommendation: lower.includes('soup') ? 'Soup bowl + spoon service pack' : lower.includes('thali') ? '4CP Thali serving pack' : '5CP Tray buffet service pack',
+      };
+    }
+
+    function renderAdvisorRecommendation(){
+      advisorRecommendation = getAdvisorRecommendation();
+      const host = document.getElementById('advisorResult');
+      if(host){
+        host.innerHTML = `<p class="text-lg font-black text-[#064e3b]">${advisorRecommendation.recommendation}</p><p class="mt-1">Recommended Pack: <strong>${advisorRecommendation.productName}</strong></p><p class="mt-1">Estimated Qty: <strong>${advisorRecommendation.qty.toLocaleString('en-IN')} pcs</strong> for ${advisorRecommendation.guests.toLocaleString('en-IN')} guests (${advisorRecommendation.menuType}).</p>`;
+      }
+      return advisorRecommendation;
+    }
+
+    function addAdvisorKitToCart(){
+      const recommendation = advisorRecommendation || renderAdvisorRecommendation();
+      const product = products.find((item) => item.id === recommendation.productId);
+      if(!product){
+        notifyVmp('Recommended product is unavailable right now.', 'Advisor unavailable');
+        return;
+      }
+      const qty = recommendation.qty;
+      const unit = Number(priceForQty(product.tiers, qty).toFixed(2));
+      const existing = cart.find((item) => item.id === product.id && item.unit === unit && !item.customBranding);
+      if(existing) existing.qty += qty;
+      else cart.push({ id: product.id, name: product.name, qty, unit, advisorPack: recommendation });
+      saveCart();
+      renderCart();
+      document.getElementById('aiPackagingModal')?.classList.add('hidden');
+      notifyVmp(`${recommendation.recommendation} added to cart.`, 'AI kit added');
+      openCart();
+    }
+
+    function makeDispatchQrDataUrl(order){
+      const payload = `${order.orderId || 'VMP-ORDER'} | ${(order.items || []).map((item) => `${item.name} x ${item.qty}`).join('; ')}`;
+      const encoded = btoa(unescape(encodeURIComponent(payload)));
+      let cells = '';
+      for(let y=0; y<13; y += 1){
+        for(let x=0; x<13; x += 1){
+          const code = encoded.charCodeAt((x + y * 13) % encoded.length) || 0;
+          if((code + x * 7 + y * 11) % 3 !== 0){
+            cells += `<rect x="${x * 10}" y="${y * 10}" width="8" height="8" rx="1" fill="#064e3b"/>`;
+          }
+        }
+      }
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180"><rect width="180" height="180" rx="18" fill="#fff8e1"/><rect x="14" y="14" width="152" height="152" rx="14" fill="white" stroke="#d4af37" stroke-width="4"/><g transform="translate(25 25)">${cells}</g><text x="90" y="168" text-anchor="middle" font-size="10" font-family="Arial" fill="#064e3b">${order.orderId || 'VMP'}</text></svg>`;
+      return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
+    }
+
+    function renderDispatchQr(order){
+      const panel = document.getElementById('dispatchQrPanel');
+      const image = document.getElementById('dispatchQrImage');
+      const caption = document.getElementById('dispatchQrCaption');
+      if(!panel || !image || !order) return;
+      image.src = makeDispatchQrDataUrl(order);
+      image.dataset.orderId = order.orderId || '';
+      image.dataset.orderPayload = btoa(unescape(encodeURIComponent(JSON.stringify({ orderId: order.orderId, items: order.items || [] }))));
+      if(caption) caption.textContent = `${order.orderId} • ${(order.items || []).length} line items ready for packing-floor scan.`;
+      panel.classList.remove('hidden');
+    }
+
+    function applyScratchCouponToCart(){
+      const coupon = {
+        code: 'VMP500',
+        discount: 500,
+        minQty: 10000,
+        appliedAt: new Date().toISOString(),
+      };
+      localStorage.setItem('vmp_applied_coupon', JSON.stringify(coupon));
+      renderCart();
+      const msg = document.getElementById('scratchCouponMsg');
+      const status = cartTotalQty() >= coupon.minQty
+        ? 'Coupon VMP500 applied: ₹500 OFF active on this cart.'
+        : 'Coupon VMP500 saved. Add 10,000+ total pcs to activate ₹500 OFF.';
+      if(msg) msg.textContent = status;
+      notifyVmp(status, 'Factory coupon saved');
+    }
+
     function renderCart(){
       if(!cartCount || !cartSubtotal || !cartItems) return;
       cartCount.textContent = cartTotalQty();
@@ -1667,6 +2282,11 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       const shippingZoneLabel = document.getElementById('shippingZoneLabel');
       if(shippingCharge) shippingCharge.textContent = Number(estimate.charge).toFixed(2);
       if(shippingZoneLabel) shippingZoneLabel.textContent = estimate.zoneLabel;
+      const couponDiscount = activeCouponDiscount();
+      const cartCouponRow = document.getElementById('cartCouponRow');
+      const cartCouponDiscount = document.getElementById('cartCouponDiscount');
+      if(cartCouponRow) cartCouponRow.classList.toggle('hidden', !getAppliedCoupon());
+      if(cartCouponDiscount) cartCouponDiscount.textContent = couponDiscount.toFixed(2);
       const directorBtn = document.getElementById('directorCallBtn');
       if(directorBtn){
         directorBtn.classList.toggle('hidden', cartTotalAmount() < 100000);
@@ -1674,6 +2294,9 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       if(cart.length === 0){
         cartItems.innerHTML = '<p class="text-sm text-slate-500">Cart is empty. Add products to continue.</p>';
         updateWhatsappButton();
+        renderMasterCartonTracker();
+        renderLoyaltyAndWallet();
+        renderExpressCheckout();
         return;
       }
       cartItems.innerHTML = cart.map((item, idx) => `
@@ -1683,10 +2306,212 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
             <button onclick="removeCartItem(${idx})" class="text-rose-600 text-sm">Remove</button>
           </div>
           <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
+          ${item.customBranding?.requested ? `<p class="mt-1 rounded-lg bg-amber-50 px-2 py-1 text-[11px] font-bold text-amber-800">✨ Custom logo printing added${item.customBranding?.artwork?.fileName ? ` • ${item.customBranding.artwork.fileName}` : ''}</p>` : ''}
         </div>
       `).join('');
       renderTrustBadges();
       updateWhatsappButton();
+      renderMasterCartonTracker();
+      renderLoyaltyAndWallet();
+      renderExpressCheckout();
+    }
+
+
+    function renderExpressCheckout(){
+      const qty = cartTotalQty();
+      const subtotal = cartTotalAmount();
+      const estimate = shippingEstimate(subtotal);
+      const couponDiscount = activeCouponDiscount();
+      const loyaltyDiscount = loyaltyDiscountAmount();
+      const walletDeduction = currentWalletDeduction();
+      const total = Math.max(0, subtotal + Number(estimate.charge || 0) - couponDiscount - loyaltyDiscount - walletDeduction);
+      const profile = getBuyerProfile();
+      const buyer = document.getElementById('expressBuyerStatus');
+      if(buyer) buyer.textContent = profile?.fullName ? `${profile.fullName} • ${profile.mobile || 'Mobile pending'}` : 'Profile not verified.';
+      const qtyOut = document.getElementById('expressCartQty');
+      if(qtyOut) qtyOut.textContent = `${qty.toLocaleString('en-IN')} pcs`;
+      const lines = document.getElementById('expressCartLines');
+      if(lines){
+        lines.innerHTML = cart.length ? cart.map((item) => `<div class="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2"><p class="font-bold text-slate-800">${item.name}</p><p>${item.qty} pcs × ₹${Number(item.unit || 0).toFixed(2)}</p></div>`).join('') : '<p class="rounded-xl border border-dashed border-slate-200 p-3 text-slate-500">Cart empty. Add products to activate express billing.</p>';
+      }
+      const customerAddress = document.getElementById('customerAddress')?.value || '';
+      const expressAddress = document.getElementById('expressAddress');
+      if(expressAddress && !expressAddress.value && customerAddress) expressAddress.value = customerAddress;
+      const shipOut = document.getElementById('expressShippingOut');
+      if(shipOut) shipOut.textContent = `${estimate.zoneLabel}: ₹${Number(estimate.charge || 0).toFixed(2)} dynamic dispatch estimate`;
+      const set = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = Number(value || 0).toFixed(2); };
+      set('expressSubtotal', subtotal);
+      set('expressShipping', estimate.charge);
+      set('expressCoupon', couponDiscount);
+      const tier = getLoyaltyTier();
+      const loyaltyLabel = document.getElementById('expressLoyaltyLabel');
+      if(loyaltyLabel) loyaltyLabel.textContent = `${tier.name} Markdown`;
+      set('expressLoyaltyDiscount', loyaltyDiscount);
+      set('expressWalletDeduction', walletDeduction);
+      set('expressTotal', total);
+    }
+
+    function openExpressCheckoutPane(){
+      document.getElementById('expressCheckoutPane')?.classList.add('express-pane-open');
+      renderExpressCheckout();
+    }
+
+    function closeExpressCheckoutPane(){
+      document.getElementById('expressCheckoutPane')?.classList.remove('express-pane-open');
+    }
+
+    function readOrderHistory(){
+      try {
+        return JSON.parse(localStorage.getItem('vmp_order_history') || '[]');
+      } catch (error) {
+        console.warn('Unable to read vmp_order_history.', error);
+        return [];
+      }
+    }
+
+    function writeOrderHistory(history){
+      localStorage.setItem('vmp_order_history', JSON.stringify(history));
+    }
+
+    function buildOrderHistoryRecord({ utr = '', address = '' } = {}){
+      const subtotal = cartTotalAmount();
+      const shipping = shippingEstimate(subtotal);
+      const shippingCharge = Number(shipping.charge || 0);
+      const couponDiscount = activeCouponDiscount();
+      const loyaltyTier = getLoyaltyTier();
+      const loyaltyDiscount = loyaltyDiscountAmount();
+      const walletDeduction = currentWalletDeduction();
+      const purchasedItems = cart.map((item) => {
+        const product = products.find((p) => p.id === item.id);
+        const meta = product ? productMeta(product) : { size: 'Standard Pack' };
+        return {
+          id: item.id,
+          name: item.name,
+          packSize: meta.size || 'Standard Pack',
+          qty: Number(item.qty || 0),
+          unit: Number(item.unit || 0),
+          lineTotal: Number((Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)),
+          customBranding: item.customBranding || null
+        };
+      });
+      const profile = getBuyerProfile();
+      return {
+        orderId: `VMP-${Date.now()}`,
+        orderDate: new Date().toISOString(),
+        status: 'Paid / Dispatched',
+        paymentMode: 'PhonePe / UPI',
+        utr,
+        address,
+        business: profile?.business || null,
+        verifiedBusiness: buildBusinessVerification(profile || {}),
+        corporatePo: checkoutPoDocument,
+        recurringDispatch: getRecurringDispatchPreference(),
+        dispatchQr: null,
+        coupon: getAppliedCoupon(),
+        couponDiscount,
+        loyalty: { tier: loyaltyTier.name, rate: loyaltyTier.rate, discount: loyaltyDiscount },
+        walletDeduction,
+        items: purchasedItems,
+        subtotal: Number(subtotal.toFixed(2)),
+        shipping,
+        total: Number(Math.max(0, subtotal + shippingCharge - couponDiscount - loyaltyDiscount - walletDeduction).toFixed(2))
+      };
+    }
+
+    function renderOrderHistory(){
+      const host = document.getElementById('orderHistoryList');
+      if(!host) return;
+      const history = readOrderHistory();
+      if(!history.length){
+        host.innerHTML = '<div class="rounded-2xl border border-dashed border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">No paid orders saved yet. Complete PhonePe UTR verification to create your first order history record.</div>';
+        document.getElementById('dispatchQrPanel')?.classList.add('hidden');
+        renderLoyaltyAndWallet();
+        return;
+      }
+      host.innerHTML = history.map((order, index) => {
+        const date = new Date(order.orderDate || order.createdAt || Date.now()).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+        const items = Array.isArray(order.items) ? order.items : [];
+        const itemRows = items.map((item) => `<li class="flex items-start justify-between gap-3 border-b border-slate-100 py-2 last:border-0"><span><strong>${item.name}</strong><br><small class="text-slate-500">${item.packSize || 'Standard Pack'} • Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</small></span><span class="font-bold text-emerald-800">₹${Number(item.lineTotal || (item.qty * item.unit) || 0).toFixed(2)}</span></li>`).join('');
+        return `
+          <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p class="text-xs font-black uppercase tracking-[0.18em] text-[#064e3b]">${date}</p>
+                <h4 class="mt-1 text-lg font-black text-slate-950">${order.orderId || 'VMP-ORDER'}</h4>
+              </div>
+              <span class="rounded-full border border-[#d4af37]/60 bg-amber-50 px-3 py-1 text-xs font-black text-amber-800">${order.status || 'Paid / Dispatched'}</span>
+            </div>
+            <ul class="mt-3 text-sm text-slate-700">${itemRows || '<li class="text-slate-500">No item details stored.</li>'}</ul>
+            <div class="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-900">
+              <span>Subtotal ₹${Number(order.subtotal || 0).toFixed(2)} • Shipping ₹${Number(order.shipping?.charge || 0).toFixed(2)}${order.loyalty?.discount ? ` • ${order.loyalty.tier} -₹${Number(order.loyalty.discount || 0).toFixed(2)}` : ''}${order.walletDeduction ? ` • Wallet -₹${Number(order.walletDeduction || 0).toFixed(2)}` : ''}</span>
+              <span>Total ₹${Number(order.total || 0).toFixed(2)}</span>
+            </div>
+            <button onclick="reorderHistoryOrder(${index})" class="mt-3 rounded-xl bg-[#064e3b] px-4 py-2 text-sm font-bold text-white hover:bg-emerald-900">Re-order Last Order</button>
+          </article>
+        `;
+      }).join('');
+      renderDispatchQr(history[0]);
+      renderLoyaltyAndWallet();
+    }
+
+    window.reorderHistoryOrder = function(index){
+      const history = readOrderHistory();
+      const order = history[index];
+      if(!order || !Array.isArray(order.items)) return;
+      cart = order.items.map((item) => ({
+        id: item.id,
+        name: item.name,
+        qty: Number(item.qty || 0),
+        unit: Number(item.unit || 0)
+      })).filter((item) => item.id && item.qty > 0);
+      saveCart();
+      renderCart();
+      openCart();
+      notifyVmp('Previous order items reloaded into your cart.', 'Re-order ready');
+    }
+
+    function trustBadgesMarkup(){
+      return [
+        '🛡️ 100% Secure Payments',
+        '🏭 Direct from Ahmedabad Factory',
+        '📦 Safe & Hygienic Packaging',
+        '✅ Genuine Biodegradable Quality'
+      ].map((t) => `<div class="rounded-lg border border-emerald-100 bg-white px-2 py-1"><span class="font-semibold text-slate-700">${t}</span></div>`).join('');
+    }
+
+    function renderTrustBadges(){
+      const cartRow = document.getElementById('trustBadgeRowCart');
+      const modalRow = document.getElementById('trustBadgeRowModal');
+      const markup = trustBadgesMarkup();
+      if(cartRow) cartRow.innerHTML = markup;
+      if(modalRow) modalRow.innerHTML = markup;
+    }
+
+    window.toggleBrandingUpload = function(id, checked){
+      const file = document.getElementById(`brand-file-${id}`);
+      const note = document.getElementById(`brand-note-${id}`);
+      if(file) file.classList.toggle('hidden', !checked);
+      if(note && !checked) note.classList.add('hidden');
+      if(!checked) delete brandingArtworkCache[id];
+    }
+
+    window.captureBrandingArtwork = function(id, input){
+      const file = input?.files?.[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        brandingArtworkCache[id] = {
+          fileName: file.name,
+          mimeType: file.type,
+          size: file.size,
+          base64: reader.result,
+          capturedAt: new Date().toISOString(),
+        };
+        const note = document.getElementById(`brand-note-${id}`);
+        if(note) note.classList.remove('hidden');
+        notifyVmp('Logo artwork attached. It will be included in your checkout payload.', 'Branding ready');
+      };
+      reader.readAsDataURL(file);
     }
 
     function readOrderHistory(){
@@ -1844,7 +2669,10 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       } : null;
       const unit = Number((priceForQty(p.tiers, qty) + (brandingChecked ? 1.5 : 0)).toFixed(2));
       const existing = cart.find(c => c.id === id && c.unit === unit && Boolean(c.customBranding?.requested) === brandingChecked);
-      if(existing) existing.qty += qty;
+      if(existing){
+        existing.qty += qty;
+        if(branding?.artwork) existing.customBranding = branding;
+      }
       else cart.push({id, name:p.name, qty, unit, customBranding: branding});
       saveCart();
       renderCart();
@@ -2500,6 +3328,341 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       video.addEventListener('error', hideOverlay, { once: true });
     }
 
+    function launchCartPhonePeCheckout(){
+      if(cart.length === 0){
+        notifyVmp('Your cart is empty! Add premium Fiber Plates to proceed.', 'Cart empty');
+        return;
+      }
+      if(!requireBuyerProfile(launchCartPhonePeCheckout)) return;
+      expressUseWallet = false;
+      closeCart();
+      openCheckoutModal();
+    }
+
+    function openCheckoutModal(){
+      if(!requireBuyerProfile(openCheckoutModal)) return;
+      const modal = document.getElementById('checkoutModal');
+      const subtotal = cartTotalAmount();
+      const estimate = shippingEstimate(subtotal);
+      const couponDiscount = activeCouponDiscount();
+      const loyaltyDiscount = loyaltyDiscountAmount();
+      const walletDeduction = currentWalletDeduction();
+      const total = Math.max(0, subtotal + Number(estimate.charge || 0) - couponDiscount - loyaltyDiscount - walletDeduction);
+      const profile = getBuyerProfile();
+      const businessVerification = updateSecuritySeal();
+      const name = (document.getElementById('customerName')?.value || profile?.fullName || '').trim();
+      const address = (document.getElementById('customerAddress')?.value || '').trim();
+      const profilePreview = document.getElementById('checkoutProfilePreview');
+      const addressPreview = document.getElementById('checkoutAddressPreview');
+      if(profilePreview && profile){
+        profilePreview.textContent = `${profile.fullName} • ${profile.mobile} • ${profile.email}`;
+      }
+      const businessPreview = document.getElementById('checkoutBusinessPreview');
+      if(businessPreview){
+        const company = profile?.business?.companyName || '';
+        const gstin = profile?.business?.gstin || '';
+        businessPreview.classList.toggle('hidden', !(company || gstin));
+        businessPreview.textContent = (company || gstin) ? `GST Invoice: ${company || 'Business'}${gstin ? ` • GSTIN: ${gstin}` : ''}` : '';
+      }
+      if(addressPreview){
+        addressPreview.textContent = (name && address) ? `${name} • ${address}` : 'Please fill customer name and address in cart.';
+      }
+      const itemBreakdown = document.getElementById('checkoutItemBreakdown');
+      if(itemBreakdown){
+        itemBreakdown.innerHTML = cart.map((item) => `
+          <div class="flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2">
+            <div><p class="font-semibold">${item.name}</p><p class="text-xs text-slate-500">Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</p>${item.customBranding?.requested ? '<p class="mt-1 text-[11px] font-bold text-amber-700">Custom logo printing included</p>' : ''}</div>
+            <p class="font-bold text-emerald-800">₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}</p>
+          </div>
+        `).join('') || '<p class="text-sm text-slate-500">Cart is empty.</p>';
+      }
+      const summaryAccordion = document.getElementById('checkoutItemsAccordion');
+      if(summaryAccordion){
+        const isDesktopCheckout = window.matchMedia('(min-width: 768px)').matches;
+        if(isDesktopCheckout){
+          summaryAccordion.setAttribute('open', 'open');
+        } else {
+          summaryAccordion.removeAttribute('open');
+        }
+      }
+      const subEl = document.getElementById('checkoutSubtotal');
+      const shipEl = document.getElementById('checkoutShipping');
+      const totalEl = document.getElementById('checkoutTotal');
+      if(subEl) subEl.textContent = subtotal.toFixed(2);
+      if(shipEl) shipEl.textContent = Number(estimate.charge).toFixed(2);
+      const checkoutCouponRow = document.getElementById('checkoutCouponRow');
+      const checkoutCouponDiscount = document.getElementById('checkoutCouponDiscount');
+      if(checkoutCouponRow){
+        const hasCoupon = Boolean(getAppliedCoupon());
+        checkoutCouponRow.classList.toggle('hidden', !hasCoupon);
+        checkoutCouponRow.classList.toggle('flex', hasCoupon);
+      }
+      if(checkoutCouponDiscount) checkoutCouponDiscount.textContent = couponDiscount.toFixed(2);
+      const tier = getLoyaltyTier();
+      const checkoutLoyaltyRow = document.getElementById('checkoutLoyaltyRow');
+      const checkoutLoyaltyLabel = document.getElementById('checkoutLoyaltyLabel');
+      const checkoutLoyaltyDiscount = document.getElementById('checkoutLoyaltyDiscount');
+      if(checkoutLoyaltyRow){
+        const hasLoyalty = loyaltyDiscount > 0;
+        checkoutLoyaltyRow.classList.toggle('hidden', !hasLoyalty);
+        checkoutLoyaltyRow.classList.toggle('flex', hasLoyalty);
+      }
+      if(checkoutLoyaltyLabel) checkoutLoyaltyLabel.textContent = `${tier.name} loyalty markdown`;
+      if(checkoutLoyaltyDiscount) checkoutLoyaltyDiscount.textContent = loyaltyDiscount.toFixed(2);
+      const checkoutWalletRow = document.getElementById('checkoutWalletRow');
+      const checkoutWalletDeduction = document.getElementById('checkoutWalletDeduction');
+      if(checkoutWalletRow){
+        const hasWallet = walletDeduction > 0;
+        checkoutWalletRow.classList.toggle('hidden', !hasWallet);
+        checkoutWalletRow.classList.toggle('flex', hasWallet);
+      }
+      if(checkoutWalletDeduction) checkoutWalletDeduction.textContent = walletDeduction.toFixed(2);
+      if(totalEl) totalEl.textContent = total.toFixed(2);
+      const qr = document.getElementById('checkoutQrImage');
+      if(qr){
+        const upiUri = `upi://pay?pa=8050389261@upi&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('VMP B2B Order')}`;
+        qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(upiUri)}`;
+      }
+      const status = document.getElementById('phonepeLiveStatus');
+      if(status){
+        status.textContent = 'Secure node connecting...';
+        setTimeout(() => { status.textContent = 'Live & listening for UPI confirmation'; }, 1000);
+      }
+      if(modal) modal.classList.remove('hidden');
+      notifyVmp('Secure PhonePe B2B gateway opened.', 'Checkout ready');
+    }
+
+    function closeCheckoutModal(){
+      document.getElementById('checkoutModal')?.classList.add('hidden');
+    }
+
+    function encodeSharedCartPayload(cartItems){
+      const payload = {
+        v: 1,
+        ts: Date.now(),
+        items: (Array.isArray(cartItems) ? cartItems : []).map((item) => ({
+          id: String(item.id || ''),
+          name: String(item.name || ''),
+          qty: Number(item.qty || 0),
+          unit: Number(item.unit || 0)
+        })).filter((item) => item.id && item.qty > 0)
+      };
+      return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    }
+
+    function decodeSharedCartPayload(encoded){
+      try {
+        const json = decodeURIComponent(escape(atob(String(encoded || ''))));
+        const parsed = JSON.parse(json);
+        if(!parsed || !Array.isArray(parsed.items)) return [];
+        return parsed.items
+          .map((item) => ({
+            id: String(item.id || ''),
+            name: String(item.name || ''),
+            qty: Math.max(1, Number(item.qty || 0)),
+            unit: Math.max(0, Number(item.unit || 0))
+          }))
+          .filter((item) => item.id && item.qty > 0);
+      } catch (error) {
+        console.warn('Invalid shared cart payload.', error);
+        return [];
+      }
+    }
+
+    function handleInboundSharedCart(){
+      const url = new URL(window.location.href);
+      const sharedParam = url.searchParams.get('shared_cart');
+      if(!sharedParam) return;
+      const sharedItems = decodeSharedCartPayload(sharedParam);
+      if(!sharedItems.length) return;
+      const mergedMap = new Map();
+      for(const item of cart){
+        mergedMap.set(item.id, { ...item });
+      }
+      for(const item of sharedItems){
+        const baseProduct = products.find((p) => p.id === item.id);
+        const safeUnit = item.unit > 0 ? item.unit : Number(baseProduct?.tiers?.[0]?.price || 0);
+        if(mergedMap.has(item.id)){
+          const current = mergedMap.get(item.id);
+          mergedMap.set(item.id, { ...current, qty: Number(current.qty || 0) + item.qty });
+        } else {
+          mergedMap.set(item.id, { id: item.id, name: item.name || baseProduct?.name || item.id, qty: item.qty, unit: safeUnit });
+        }
+      }
+      cart = Array.from(mergedMap.values());
+      saveCart();
+      renderCart();
+      openCart();
+      url.searchParams.delete('shared_cart');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      alert('Shared quote items loaded into cart successfully.');
+    }
+
+    function shareCartQuoteViaWhatsApp(){
+      const sourceCart = loadCart();
+      if(!Array.isArray(sourceCart) || !sourceCart.length){
+        alert('Please add products to cart before sharing quote.');
+        return;
+      }
+      const encoded = encodeSharedCartPayload(sourceCart);
+      const sharedLink = `${window.location.origin}${window.location.pathname}?shared_cart=${encodeURIComponent(encoded)}`;
+      const summaryLines = sourceCart.map((item) => `• ${item.name} x ${item.qty} - ₹${(Number(item.qty||0) * Number(item.unit||0)).toFixed(2)}`).join('\n');
+      const subtotal = sourceCart.reduce((sum, item) => sum + (Number(item.qty || 0) * Number(item.unit || 0)), 0).toFixed(2);
+      const message = `Hello! Here is the wholesale order quotation from Veer Mahadev Plastic.\n\n*Order Summary:*\n${summaryLines}\n\n*Total Amount:* ₹${subtotal}\n\nClick this secure link to view, verify, and complete the payment directly: ${sharedLink}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function shareEstimateQuoteToWhatsApp(){
+      if(!cart.length){
+        notifyVmp('Please add products before sharing an estimate quote.', 'Cart empty');
+        return;
+      }
+      const subtotal = cartTotalAmount();
+      const estimate = shippingEstimate(subtotal);
+      const couponDiscount = activeCouponDiscount();
+      const total = Math.max(0, subtotal + Number(estimate.charge || 0) - couponDiscount);
+      const lines = cart.map((item, index) => {
+        const product = products.find((p) => p.id === item.id);
+        const meta = product ? productMeta(product) : { size: 'Standard Pack' };
+        const brandingLine = item.customBranding?.requested ? ` + Custom Logo Printing${item.customBranding?.artwork?.fileName ? ` (Artwork: ${item.customBranding.artwork.fileName})` : ''}` : '';
+        return `${index + 1}. ${item.name} (${meta.size || 'Standard Pack'})\n   Qty: ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)} = ₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}${brandingLine}`;
+      });
+      const profile = getBuyerProfile();
+      const businessLine = profile?.business?.companyName || profile?.business?.gstin
+        ? `\nBusiness: ${profile.business.companyName || 'GST Buyer'}${profile.business.gstin ? ` | GSTIN: ${profile.business.gstin}` : ''}`
+        : '';
+      const couponLine = getAppliedCoupon() ? `\nCoupon VMP500: -₹${couponDiscount.toFixed(2)}` : '';
+      const message = `Hello! Please review this Veer Mahadev Plastic estimate quote for financial clearance.${businessLine}\n\n*Estimate Items:*\n${lines.join('\n\n')}\n\nSubtotal: ₹${subtotal.toFixed(2)}\nShipping (${estimate.zoneLabel}): ₹${Number(estimate.charge || 0).toFixed(2)}${couponLine}\n*Estimated Total: ₹${total.toFixed(2)}*\n\nPlease approve so we can complete PhonePe/UPI payment and factory dispatch.`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+
+    const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
+    const DAILY_FACTORY_CAPACITY = 1000000;
+
+    function hashFactorySeed(seed){
+      return String(seed).split('').reduce((acc, char) => ((acc << 5) - acc + char.charCodeAt(0)) >>> 0, 0);
+    }
+
+    function formatFactoryPieces(value){
+      return Math.min(Number(value || 0), DAILY_FACTORY_CAPACITY).toLocaleString('en-IN');
+    }
+
+    function createFactoryCapacityState(now = new Date()){
+      const dateKey = now.toISOString().slice(0, 10);
+      const seededOffset = hashFactorySeed(`${dateKey}-${now.getUTCHours()}`) % 8001;
+      return {
+        dateKey,
+        booked: 842000 + seededOffset,
+        updatedAt: now.toISOString(),
+      };
+    }
+
+    function readFactoryCapacityState(){
+      const now = new Date();
+      const dateKey = now.toISOString().slice(0, 10);
+      try {
+        const stored = JSON.parse(localStorage.getItem(FACTORY_CAPACITY_STATE_KEY) || 'null');
+        if(stored && stored.dateKey === dateKey && Number(stored.booked) > 0){
+          return { ...stored, booked: Math.min(Number(stored.booked), DAILY_FACTORY_CAPACITY) };
+        }
+      } catch (error) {
+        console.warn('Factory capacity ticker state reset.', error);
+      }
+      const fresh = createFactoryCapacityState(now);
+      localStorage.setItem(FACTORY_CAPACITY_STATE_KEY, JSON.stringify(fresh));
+      return fresh;
+    }
+
+    function saveFactoryCapacityState(state){
+      localStorage.setItem(FACTORY_CAPACITY_STATE_KEY, JSON.stringify({
+        ...state,
+        booked: Math.min(Number(state.booked || 0), DAILY_FACTORY_CAPACITY),
+        updatedAt: new Date().toISOString(),
+      }));
+    }
+
+    function updateFactoryCapacityCounter(state){
+      const counter = document.getElementById('factoryCapacityCounter');
+      if(counter) counter.textContent = formatFactoryPieces(state.booked);
+    }
+
+    function updateDispatchCountdown(){
+      const label = document.getElementById('dispatchCountdownLabel');
+      const clock = document.getElementById('dispatchCountdownClock');
+      if(!label || !clock) return;
+      const now = new Date();
+      const deadline = new Date(now);
+      deadline.setHours(12, 0, 0, 0);
+      if(now >= deadline){
+        deadline.setDate(deadline.getDate() + 1);
+        label.textContent = 'Next-Day Morning Batch Dispatches close in:';
+      } else {
+        label.textContent = 'Production Line Closing for Same-Day Dispatch in:';
+      }
+      const diff = Math.max(0, deadline.getTime() - now.getTime());
+      const hours = String(Math.floor(diff / 3600000)).padStart(2, '0');
+      const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+      clock.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    function initFactoryCapacityTicker(){
+      if(!document.getElementById('factoryCapacityTicker')) return;
+      let state = readFactoryCapacityState();
+      updateFactoryCapacityCounter(state);
+      maybeDispatchCapacityWarning(state);
+      updateDispatchCountdown();
+      setInterval(updateDispatchCountdown, 1000);
+      const tickCapacity = () => {
+        const increment = Math.floor(150 + Math.random() * 701);
+        state = {
+          ...state,
+          booked: Math.min(DAILY_FACTORY_CAPACITY, Number(state.booked || 0) + increment),
+        };
+        saveFactoryCapacityState(state);
+        updateFactoryCapacityCounter(state);
+        maybeDispatchCapacityWarning(state);
+        const nextDelay = 45000 + Math.floor(Math.random() * 15001);
+        window.setTimeout(tickCapacity, nextDelay);
+      };
+      window.setTimeout(tickCapacity, 45000 + Math.floor(Math.random() * 15001));
+    }
+
+    function initHeroAdOverlay(){
+      const overlay = document.getElementById('heroAdOverlay');
+      const video = document.getElementById('heroAdVideo');
+      if(!overlay || !video) return;
+      const seen = localStorage.getItem('vmp_ad_seen') === 'true';
+      if(seen){
+        overlay.style.display = 'none';
+        return;
+      }
+      const hideOverlay = () => {
+        overlay.classList.add('vmp-ad-fade-out');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          localStorage.setItem('vmp_ad_seen', 'true');
+        }, 800);
+      };
+      video.addEventListener('ended', hideOverlay, { once: true });
+      video.addEventListener('error', hideOverlay, { once: true });
+    }
+
+    function logisticsRouteLine(){
+      const zoneSelect = document.getElementById('zone');
+      const zoneValue = Number(zoneSelect?.value || 1);
+      const carriers = zoneValue <= 1 ? ['Patel Transport', 'Shreeji Logistics'] : zoneValue <= 1.4 ? ['Patel Transport', 'Falcon Express', 'Shreeji Logistics'] : ['Falcon Express', 'Patel Transport'];
+      const zones = zoneValue <= 1 ? 'Ahmedabad local delivery belt' : zoneValue <= 1.4 ? 'Gujarat transport hub' : 'interstate buyer zone';
+      const carrier = carriers[Math.floor(Date.now() / 60000) % carriers.length];
+      return `🚛 Next Factory Consignment Route: Wired via ${carrier} directly heading to your zone (${zones}). Scheduled departure: Tonight 6:00 PM.`;
+    }
+
+    function updateLogisticsRouteTicker(){
+      const ticker = document.getElementById('logisticsRouteTicker');
+      if(ticker) ticker.textContent = logisticsRouteLine();
+    }
+
     // Shipping calculator
     bindById('calcShip', 'click', ()=>{
       const w = Number(document.getElementById('weight').value||0);
@@ -2509,12 +3672,14 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       const zone = Number(document.getElementById('zone').value||1);
       if(!w && !(l&&wi&&h)){
         document.getElementById('shipOut').textContent = 'Please enter weight or dimensions.';
+        updateLogisticsRouteTicker();
         return;
       }
       const volumetric = (l*wi*h)/5000;
       const chargeable = Math.max(w, volumetric || 0);
       const cost = Math.max(60, chargeable * 32 * zone);
       document.getElementById('shipOut').textContent = `Chargeable Weight: ${chargeable.toFixed(2)} kg | Estimated Shipping: ₹${cost.toFixed(0)}`;
+      updateLogisticsRouteTicker();
     });
 
     // Bulk inquiry
@@ -2667,15 +3832,18 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
         mobile,
         email: existingProfile.email || `sample-${mobile.replace(/\D/g, '').slice(-10) || Date.now()}@veermahadevplastic.in`,
         sampleLead: true,
+        requestedFrom: 'factory_sample_box_layer',
         capturedAt: new Date().toISOString(),
       };
       localStorage.setItem('vmp_user_profile', JSON.stringify(sampleProfile));
+      localStorage.setItem('vmp_last_sample_request', JSON.stringify({ name, mobile, address, requestedAt: new Date().toISOString() }));
       cart = [{
         id: 'factory-sample-box',
         name: 'Factory Sample Box for Caterers',
         qty: 1,
         unit: 199,
         sampleBox: true,
+        packSize: 'Curated Trial Pack',
       }];
       saveCart();
       const customerName = document.getElementById('customerName');
@@ -2723,6 +3891,11 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
         if(msg) msg.textContent = 'Full name, mobile, and email are required.';
         return;
       }
+      if(!verifyIndianPhoneNumber(profile.mobile)){
+        if(msg) msg.textContent = 'Please enter a valid Indian WhatsApp number starting with 6, 7, 8 or 9.';
+        return;
+      }
+      profile.verifiedBusiness = buildBusinessVerification(profile);
       localStorage.setItem('vmp_user_profile', JSON.stringify(profile));
       const abandonedWebhookPayload = {
         type: 'abandoned_cart_alert',
@@ -2767,12 +3940,19 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       if(!requireBuyerProfile(() => document.getElementById('buyNowCart')?.click())) return;
       const details = getCustomerDetails();
       if(!details) { openCart(); return; }
+      expressUseWallet = false;
       openCheckoutModal();
     });
     bindById('closeCheckoutModal', 'click', closeCheckoutModal);
     bindById('checkoutModal', 'click', (e)=>{ if(e.target.id === 'checkoutModal') closeCheckoutModal(); });
     bindById('confirmPayBtn', 'click', ()=>{
       if(!requireBuyerProfile(openCheckoutModal)) return;
+      const profile = getBuyerProfile();
+      if(!verifyIndianPhoneNumber(profile?.mobile)){
+        notifyVmp('Valid Indian WhatsApp number is required for Verified Secure Factory Dispatch.', 'Security verification failed');
+        openProfileGate(openCheckoutModal);
+        return;
+      }
       const utr = (document.getElementById('utrInput')?.value || '').trim();
       if(!utr){
         notifyVmp('Please enter UTR / Transaction ID after payment.', 'UTR required');
@@ -2783,12 +3963,22 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
         return;
       }
       const address = (document.getElementById('customerAddress')?.value || '').trim();
+      const loyaltyTier = getLoyaltyTier();
+      const loyaltyDiscount = loyaltyDiscountAmount();
+      const walletDeduction = currentWalletDeduction();
       const payload = {
         profile: getBuyerProfile(),
         business: getBuyerProfile()?.business || null,
+        verifiedBusiness: buildBusinessVerification(getBuyerProfile() || {}),
+        corporatePo: checkoutPoDocument,
+        recurringDispatch: getRecurringDispatchPreference(),
         address,
         shipping: shippingEstimate(cartTotalAmount()),
-        paymentMode: 'PhonePe / UPI',
+        coupon: getAppliedCoupon(),
+        couponDiscount: activeCouponDiscount(),
+        loyalty: { tier: loyaltyTier.name, rate: loyaltyTier.rate, discount: loyaltyDiscount },
+        walletDeduction,
+        paymentMode: walletDeduction > 0 ? 'Wallet + PhonePe / UPI' : 'PhonePe / UPI',
         utr,
         items: cart,
         subtotal: cartTotalAmount(),
@@ -2799,13 +3989,24 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       localStorage.setItem('vmp_order_setups', JSON.stringify(orders.slice(0, 25)));
       const orderHistory = readOrderHistory();
       const completedOrder = buildOrderHistoryRecord({ utr, address });
+      completedOrder.dispatchQr = makeDispatchQrDataUrl(completedOrder);
       orderHistory.unshift(completedOrder);
       writeOrderHistory(orderHistory);
+      renderDispatchQr(completedOrder);
+      if(walletDeduction > 0){
+        setWalletBalance(walletBalance() - walletDeduction);
+        addWalletTransaction(-walletDeduction, utr, 'checkout-deduction');
+      }
+      expressUseWallet = false;
+      checkoutPoDocument = null;
+      const poStatus = document.getElementById('poUploadStatus');
+      if(poStatus) poStatus.textContent = 'Upload PDF, DOC, JPG or PNG for billing desk verification.';
       cart = [];
       localStorage.setItem('cart', JSON.stringify([]));
       localStorage.setItem('vmpCart', JSON.stringify([]));
       renderCart();
       renderOrderHistory();
+      renderLoyaltyAndWallet();
       notifyVmp(`Order ${completedOrder.orderId} paid and moved to Order History. Cart cleared.`, 'Payment verified');
       setTimeout(() => {
         dispatchLocalFactoryNotification('Veer Mahadev Plastic', 'Order Dispatched! Your bulk batch is entering the packaging queue. 🏭', `vmp-order-${completedOrder.orderId}`);
@@ -2874,6 +4075,158 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       input.value = '';
     };
 
+
+    function initProductCardTouchGlow(){
+      if(!productGrid) return;
+      productGrid.addEventListener('touchstart', (event) => {
+        const card = event.target.closest('.product-card-premium');
+        if(!card) return;
+        card.classList.add('vmp-touch-glow');
+        setTimeout(() => card.classList.remove('vmp-touch-glow'), 1600);
+      }, { passive: true });
+    }
+
+    function initScratchCoupon(){
+      const canvas = document.getElementById('scratchCouponCanvas');
+      const modal = document.getElementById('scratchCouponModal');
+      if(!canvas || !modal) return;
+      const ctx = canvas.getContext('2d');
+      const paintCover = () => {
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, '#c8c8c8');
+        gradient.addColorStop(0.45, '#f4d06f');
+        gradient.addColorStop(1, '#8f8f8f');
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(6,78,59,0.88)';
+        ctx.font = 'bold 18px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Scratch to Reveal', canvas.width / 2, canvas.height / 2 - 8);
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('Factory Clearance Discount', canvas.width / 2, canvas.height / 2 + 18);
+      };
+      paintCover();
+      let scratching = false;
+      const scratch = (event) => {
+        if(!scratching) return;
+        const rect = canvas.getBoundingClientRect();
+        const point = event.touches?.[0] || event;
+        const x = ((point.clientX - rect.left) / rect.width) * canvas.width;
+        const y = ((point.clientY - rect.top) / rect.height) * canvas.height;
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 22, 0, Math.PI * 2);
+        ctx.fill();
+        event.preventDefault();
+      };
+      canvas.addEventListener('pointerdown', (event) => { scratching = true; scratch(event); });
+      canvas.addEventListener('pointermove', scratch);
+      window.addEventListener('pointerup', () => { scratching = false; });
+      canvas.addEventListener('touchstart', (event) => { scratching = true; scratch(event); }, { passive: false });
+      canvas.addEventListener('touchmove', scratch, { passive: false });
+      window.addEventListener('touchend', () => { scratching = false; });
+      bindById('scratchCouponBtn', 'click', () => { modal.classList.remove('hidden'); paintCover(); });
+      bindById('closeScratchCoupon', 'click', () => modal.classList.add('hidden'));
+      bindById('scratchCouponModal', 'click', (event) => { if(event.target.id === 'scratchCouponModal') modal.classList.add('hidden'); });
+      bindById('applyScratchCoupon', 'click', applyScratchCouponToCart);
+    }
+
+    function initVerticalVideoSlider(){
+      const track = document.getElementById('verticalReelTrack');
+      if(!track) return;
+      const videos = Array.from(track.querySelectorAll('video'));
+      let active = 0;
+      const playActive = () => {
+        videos.forEach((video, index) => {
+          if(index === active){ video.play().catch(() => {}); }
+          else { video.pause(); video.currentTime = 0; }
+        });
+        videos[active]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      };
+      bindById('nextVerticalReel', 'click', () => { active = (active + 1) % videos.length; playActive(); });
+      bindById('prevVerticalReel', 'click', () => { active = (active - 1 + videos.length) % videos.length; playActive(); });
+      videos.forEach((video, index) => video.addEventListener('ended', () => { active = (index + 1) % videos.length; playActive(); }));
+      playActive();
+    }
+
+    const socialProofBusinesses = ['Shreeji Caterers', 'Raj Elite Events', 'Surat Sweet Mart', 'Anand Party Plot', 'Mehsana Wedding Foods', 'Bhavnagar Caterer Hub', 'Vadodara Snacks Co.'];
+    const socialProofCities = ['Ahmedabad', 'Rajkot', 'Surat', 'Vadodara', 'Mehsana', 'Anand', 'Bhavnagar'];
+    const socialProofLines = ['Fiber Plates', '5 CP Meal Trays', 'Soup Bowls', 'Paper Cups', 'Heavy Catering Bags', 'Sweet Boxes', 'Premium Disposable Plates'];
+
+    function initBulkPurchaseSocialProof(){
+      const host = document.getElementById('bulkSocialProofHost');
+      if(!host) return;
+      const showProof = () => {
+        const business = socialProofBusinesses[Math.floor(Math.random() * socialProofBusinesses.length)];
+        const city = socialProofCities[Math.floor(Math.random() * socialProofCities.length)];
+        const pcs = (5000 + Math.floor(Math.random() * 41) * 500).toLocaleString('en-IN');
+        const line = socialProofLines[Math.floor(Math.random() * socialProofLines.length)];
+        const mins = 1 + Math.floor(Math.random() * 25);
+        const toast = document.createElement('div');
+        toast.className = 'bulk-proof-toast pointer-events-auto rounded-2xl border border-[#d4af37]/70 bg-[#064e3b] px-4 py-3 text-sm font-bold text-white shadow-2xl shadow-emerald-950/30';
+        toast.innerHTML = `🔥 <span class="text-[#d4af37]">${business}</span> from ${city} just booked ${pcs} Pcs of ${line}! <span class="text-emerald-100">(${mins} mins ago).</span>`;
+        host.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateX(-18px) translateY(12px)';
+          toast.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+          setTimeout(() => toast.remove(), 380);
+        }, 4000);
+        const nextDelay = 90000 + Math.floor(Math.random() * 30001);
+        window.setTimeout(showProof, nextDelay);
+      };
+      window.setTimeout(showProof, 90000 + Math.floor(Math.random() * 30001));
+    }
+
+    function updateSavingsCalculator(){
+      const slider = document.getElementById('savingsQtySlider');
+      if(!slider) return;
+      const qty = Number(slider.value || 10000);
+      const market = qty * 12;
+      const vmp = qty * 6.5;
+      const savings = market - vmp;
+      const fmt = (value) => Number(value).toLocaleString('en-IN', { maximumFractionDigits: 0 });
+      const qtyOut = document.getElementById('savingsQtyOut');
+      const marketOut = document.getElementById('marketPriceOut');
+      const vmpOut = document.getElementById('vmpPriceOut');
+      const savingsOut = document.getElementById('savingsOut');
+      if(qtyOut) qtyOut.textContent = fmt(qty);
+      if(marketOut) marketOut.textContent = fmt(market);
+      if(vmpOut) vmpOut.textContent = fmt(vmp);
+      if(savingsOut) savingsOut.textContent = `₹${fmt(savings)} 💰`;
+    }
+
+    function initSavingsCalculator(){
+      const slider = document.getElementById('savingsQtySlider');
+      if(!slider) return;
+      slider.addEventListener('input', updateSavingsCalculator);
+      updateSavingsCalculator();
+    }
+
+    function initPriceMatchChallenge(){
+      const modal = document.getElementById('priceMatchModal');
+      bindById('openPriceMatchBtn', 'click', () => modal?.classList.remove('hidden'));
+      bindById('closePriceMatchModal', 'click', () => modal?.classList.add('hidden'));
+      bindById('priceMatchModal', 'click', (event) => { if(event.target.id === 'priceMatchModal') modal?.classList.add('hidden'); });
+      bindById('priceMatchForm', 'submit', (event) => {
+        event.preventDefault();
+        const file = document.getElementById('priceMatchFile')?.files?.[0] || null;
+        const payload = {
+          buyerName: document.getElementById('priceMatchName')?.value.trim() || '',
+          phone: document.getElementById('priceMatchPhone')?.value.trim() || '',
+          competitorPrice: Number(document.getElementById('priceMatchQuote')?.value || 0),
+          attachment: file ? { name: file.name, type: file.type, size: file.size } : null,
+          capturedAt: new Date().toISOString(),
+        };
+        localStorage.setItem('vmp_price_match_challenge', JSON.stringify(payload));
+        const msg = document.getElementById('priceMatchMsg');
+        const confirmation = 'Factory Billing Desk alert triggered! We will review and beat this quote within 10 minutes on WhatsApp.';
+        if(msg) msg.textContent = confirmation;
+        notifyVmp(confirmation, 'Price challenge received');
+      });
+    }
+
     // initialize
     registerVmpServiceWorker();
     bindById('pwaUpdateNowBtn', 'click', activatePwaUpdateNow);
@@ -2882,10 +4235,47 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
     applyProductFilters();
     renderCart();
     renderOrderHistory();
+    renderLoyaltyAndWallet();
+    renderMasterCartonTracker();
     renderTrustBadges();
     initFactoryCapacityTicker();
+    initProductCardTouchGlow();
     setInterval(updateStockScarcityDom, 30000);
     initHeroAdOverlay();
+    initScratchCoupon();
+    initVerticalVideoSlider();
+    initSavingsCalculator();
+    initPriceMatchChallenge();
+    initBulkPurchaseSocialProof();
+    bindById('downloadCatalogBtn', 'click', openCatalogPrintWindow);
+    bindById('openAiPackagingAdvisor', 'click', () => { document.getElementById('aiPackagingModal')?.classList.remove('hidden'); renderAdvisorRecommendation(); });
+    bindById('closeAiPackagingAdvisor', 'click', () => document.getElementById('aiPackagingModal')?.classList.add('hidden'));
+    bindById('aiPackagingModal', 'click', (event) => { if(event.target.id === 'aiPackagingModal') event.target.classList.add('hidden'); });
+    bindById('runAdvisorBtn', 'click', renderAdvisorRecommendation);
+    bindById('addAdvisorKitBtn', 'click', addAdvisorKitToCart);
+    bindById('poUploadInput', 'change', handlePoUpload);
+    bindById('recurringDispatchToggle', 'change', updateRecurringDispatchUi);
+    bindById('recurringDispatchFrequency', 'change', updateRecurringDispatchUi);
+    bindById('expressCheckoutDock', 'click', openExpressCheckoutPane);
+    bindById('closeExpressPane', 'click', closeExpressCheckoutPane);
+    bindById('expressVerifyProfile', 'click', () => openProfileGate(renderExpressCheckout));
+    bindById('loadWalletBtn', 'click', handleWalletLoad);
+    bindById('expressWalletPayBtn', 'click', activateWalletCheckout);
+    bindById('expressPayBtn', 'click', () => {
+      const expressUtr = (document.getElementById('expressUtrInput')?.value || '').trim();
+      const mainUtr = document.getElementById('utrInput');
+      const address = document.getElementById('expressAddress')?.value.trim();
+      const customerAddress = document.getElementById('customerAddress');
+      if(mainUtr) mainUtr.value = expressUtr;
+      if(address && customerAddress) customerAddress.value = address;
+      document.getElementById('confirmPayBtn')?.click();
+    });
+    bindById('macroTextureSlider', 'input', updateMacroTextureView);
+    bindById('openMacroTextureBtn', 'click', openMacroTextureEngine);
+    bindById('zone', 'change', updateLogisticsRouteTicker);
+    updateLogisticsRouteTicker();
+    updateRecurringDispatchUi();
+    renderExpressCheckout();
     handleInboundSharedCart();
     const reorderBtn = document.getElementById('repeatOrder');
     if(reorderBtn) reorderBtn.textContent = '🔁 Re-Order Last Cart';
@@ -2893,7 +4283,7 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
     if(shippingZone) shippingZone.addEventListener('change', renderCart);
     ['customerName','customerAddress'].forEach(id => {
       const element = document.getElementById(id);
-      if(element) element.addEventListener('input', updateWhatsappButton);
+      if(element) element.addEventListener('input', () => { updateWhatsappButton(); renderExpressCheckout(); });
     });
     updateWhatsappButton();
 
