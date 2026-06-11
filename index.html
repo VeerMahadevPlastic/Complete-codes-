@@ -193,7 +193,7 @@
             </div>
           </div>
 
-          <div class="group relative hidden lg:block">
+        <div class="group relative hidden lg:block">
             <button class="rounded-xl border border-white/15 bg-emerald-950/60 px-3 py-2 text-xs font-bold text-emerald-100 transition hover:bg-emerald-900">More ▾</button>
             <div class="pointer-events-auto invisible absolute right-0 top-full z-[90] mt-2 w-64 translate-y-2 rounded-2xl border border-[#d4af37]/40 bg-white p-3 text-sm font-semibold text-slate-800 opacity-0 shadow-2xl transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
               <button id="dropdownBulkInquiry" class="block w-full rounded-lg px-3 py-2 text-left hover:bg-emerald-50">Bulk Inquiry Form</button>
@@ -218,9 +218,9 @@
         <a href="#shop" class="min-w-max flex-shrink-0 rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Trays</a>
         <a href="#shop" class="min-w-max flex-shrink-0 rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Packaging</a>
         <a href="#vipSampleKit" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37]/60 bg-emerald-950/50 px-4 py-2 text-[#d4af37]">VIP Sample Kit</a>
-        <button id="downloadCatalogBtn" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37] bg-[#d4af37] px-4 py-2 text-[#064e3b] shadow-sm">📄 Download Factory Price Catalog</button>
-        <button id="openAiPackagingAdvisor" class="min-w-max flex-shrink-0 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-white shadow-sm">🤖 AI Packaging Advisor</button>
-        <button id="openExpressCheckoutTop" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37] bg-emerald-950/70 px-4 py-2 text-[#d4af37] shadow-sm">⚡ Express Checkout</button>
+        <button id="downloadCatalogBtn" onclick="window.downloadCatalog()" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37] bg-[#d4af37] px-4 py-2 text-[#064e3b] shadow-sm">📄 Download Factory Price Catalog</button>
+        <button id="openAiPackagingAdvisor" onclick="window.openAiPackagingAdvisorModal()" class="min-w-max flex-shrink-0 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-white shadow-sm">🤖 AI Packaging Advisor</button>
+        <button id="openExpressCheckoutTop" onclick="window.toggleExpressCheckout()" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37] bg-emerald-950/70 px-4 py-2 text-[#d4af37] shadow-sm">⚡ Express Checkout</button>
       </div>
 
       <div class="overflow-hidden rounded-xl border border-[#d4af37]/30 bg-emerald-950/60">
@@ -246,7 +246,6 @@
           <span id="dispatchCountdownClock" class="ml-1 rounded-md bg-[#064e3b] px-2 py-0.5 font-black tabular-nums text-white">--:--:--</span>
         </p>
       </div>
-    </div>
   </section>
 
   <main id="home">
@@ -684,7 +683,7 @@
       <p class="text-xs text-slate-500 mt-1">Shipping will be added based on weight/volume zone.</p>
       <div class="mt-3 grid gap-2">
         <select id="shippingZone" class="border rounded-lg px-3 py-2 text-sm">
-          <option value="ahmedabad">Ahmedabad Zone</option>
+ <option value="ahmedabad">Ahmedabad Zone</option>
           <option value="gujarat">Rest of Gujarat</option>
           <option value="interstate">Outside Gujarat</option>
         </select>
@@ -709,9 +708,9 @@
       </div>
     </div>
   </aside>
-  <button id="expressCheckoutDock" class="fixed bottom-[156px] left-4 z-[59] rounded-full border-2 border-[#d4af37] bg-[#064e3b] px-4 py-3 text-xs font-black text-[#d4af37] shadow-2xl lg:hidden">⚡ Express Checkout</button>
+  <button id="expressCheckoutDock" onclick="window.toggleExpressCheckout()" class="fixed bottom-[156px] left-4 z-[59] rounded-full border-2 border-[#d4af37] bg-[#064e3b] px-4 py-3 text-xs font-black text-[#d4af37] shadow-2xl lg:hidden">⚡ Express Checkout</button>
 
-<aside id="expressCheckoutPane" class="fixed bottom-4 right-4 top-24 z-[49] hidden w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-[#d4af37]/60 bg-white shadow-2xl">
+  <aside id="expressCheckoutPane" class="fixed bottom-4 right-4 top-24 z-[49] hidden w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-3xl border border-[#d4af37]/60 bg-white shadow-2xl">
     <div class="flex items-center justify-between bg-[#064e3b] px-4 py-3 text-white">
       <div>
         <p class="text-[10px] font-black uppercase tracking-[0.18em] text-[#d4af37]">1-Page Billing Matrix</p>
@@ -985,7 +984,7 @@
       <p class="text-sm text-slate-600">Login to access wholesale price list and business tools.</p>
       <form id="loginForm" class="mt-4 grid gap-3">
         <input id="loginEmail" type="email" required placeholder="Business Email" class="border rounded-lg px-3 py-2"/>
-        <input id="loginPass" type="password" required placeholder="Password" class="border rounded-lg px-3 py-2"/>
+                <input id="loginPass" type="password" required placeholder="Password" class="border rounded-lg px-3 py-2"/>
         <div class="flex gap-2">
           <button type="submit" class="flex-1 bg-emerald-700 text-white py-2 rounded-lg font-semibold">Login</button>
           <button type="button" id="closeLogin" class="flex-1 border py-2 rounded-lg font-semibold">Close</button>
@@ -1010,6 +1009,34 @@
   </div>
 
   <script>
+    window.onerror = function(msg, url, line) {
+      console.log("CRITICAL VMP LOG: " + msg + " on line " + line);
+      return false;
+    };
+    window.addEventListener('unhandledrejection', (event) => {
+      console.log('CRITICAL VMP LOG: Unhandled promise rejection', event.reason);
+    });
+    window.downloadCatalog = function() {
+      window.open('wholesale-price-list.pdf', '_blank');
+    };
+    window.toggleExpressCheckout = function() {
+      const pane = document.getElementById('expressCheckoutPane');
+      if(!pane){
+        console.warn('CRITICAL VMP LOG: expressCheckoutPane not found.');
+        return;
+      }
+      pane.classList.toggle('express-pane-open');
+    };
+    window.openAiPackagingAdvisorModal = function() {
+      const modal = document.getElementById('aiPackagingModal');
+      if(!modal){
+        console.warn('CRITICAL VMP LOG: aiPackagingModal not found.');
+        return;
+      }
+      modal.classList.remove('hidden');
+      if(typeof window.renderAdvisorRecommendation === 'function') window.renderAdvisorRecommendation();
+    };
+
     let deferredPrompt;
     let installBannerTimer = null;
 
@@ -1362,7 +1389,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     let stockScarcityState = readStockScarcityState();
     let b2bLoggedIn = false;
 
-    const productGrid = document.getElementById('productGrid');
+   const productGrid = document.getElementById('productGrid') || document.getElementById('product-grid-container');
     const categoryGrid = document.getElementById('categoryGrid');
     const categoryFilter = document.getElementById('categoryFilter');
     const cartCount = document.getElementById('cartCount');
@@ -1876,19 +1903,70 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     }
 
     function renderProducts(){
-      if(!productGrid) return;
-     try {
-        if(!Array.isArray(filteredProducts) || filteredProducts.length === 0){
-          productGrid.innerHTML = '<p class="rounded-2xl border border-dashed border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">No products found. Try another category or search keyword.</p>';
+ const gridHost = document.getElementById('productGrid') || document.getElementById('product-grid-container') || productGrid;
+      if(!gridHost){
+        console.warn('CRITICAL VMP LOG: product grid container not found (expected #productGrid).');
+        return;
+      }
+      const fallbackFiberProducts = [
+        { id: 'fp_01', name: 'FIBER PLATE DESIGN NO.1', price: 60, image: 'https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_02', name: 'FIBER PLATE DESIGN NO.2', price: 60, image: 'https://i.postimg.cc/Q9q0dX4z/IMG-20260425-WA0000.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_03', name: 'FIBER PLATE DESIGN NO.3', price: 60, image: 'https://i.postimg.cc/Q9q0dX42/IMG-20260425-WA0002.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_04', name: 'FIBER PLATE DESIGN NO.4', price: 60, image: 'https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_05', name: 'FIBER PLATE DESIGN NO.5', price: 60, image: 'https://i.postimg.cc/30J9yPzk/IMG-20260425-WA0022.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_06', name: 'FIBER PLATE DESIGN NO.6', price: 60, image: 'https://i.postimg.cc/FksGf2wc/IMG-20260425-WA0027.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_07', name: 'FIBER PLATE DESIGN NO.7', price: 60, image: 'https://i.postimg.cc/hQPMJHNV/IMG-20260425-WA0028.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_08', name: 'FIBER PLATE DESIGN NO.8', price: 60, image: 'https://i.postimg.cc/BPQN8dRB/IMG-20260425-WA0030.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_09', name: 'FIBER PLATE DESIGN NO.9', price: 60, image: 'https://i.postimg.cc/xNTgkWBK/IMG-20260425-WA0033.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_10', name: 'FIBER PLATE DESIGN NO.10', price: 60, image: 'https://i.postimg.cc/N2fbyWZP/IMG-20260425-WA0034.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_11', name: 'FIBER PLATE DESIGN NO.11', price: 60, image: 'https://i.postimg.cc/1V5MgLbH/IMG-20260425-WA0035.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_12', name: 'FIBER PLATE DESIGN NO.12', price: 60, image: 'https://i.postimg.cc/K3vQKdCq/IMG-20260425-WA0040.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_13', name: 'FIBER PLATE DESIGN NO.13', price: 60, image: 'https://i.postimg.cc/CnLJZW9v/IMG-20260425-WA0037.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_14', name: 'FIBER PLATE DESIGN NO.14', price: 60, image: 'https://i.postimg.cc/H8s3JfFN/IMG-20260425-WA0038.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_15', name: 'FIBER PLATE DESIGN NO.15', price: 60, image: 'https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_16', name: 'FIBER PLATE DESIGN NO.16', price: 60, image: 'https://i.postimg.cc/6T9M1vTK/IMG-20260425-WA0041.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_17', name: 'FIBER PLATE DESIGN NO.17', price: 60, image: 'https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_18', name: 'FIBER PLATE DESIGN NO.18', price: 60, image: 'https://i.postimg.cc/WFV5VDnH/IMG-20260515-WA0004.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_19', name: 'FIBER PLATE DESIGN NO.19', price: 60, image: 'https://i.postimg.cc/06DVhGpZ/IMG-20260515-WA0022.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_20', name: 'FIBER PLATE DESIGN NO.20', price: 60, image: 'https://i.postimg.cc/rdxf7GSf/IMG-20260515-WA0023.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_21', name: 'FIBER PLATE DESIGN NO.21', price: 60, image: 'https://i.postimg.cc/NymdZ81G/IMG-20260515-WA0030.jpg', category: 'Fiber Plates', minOrder: 100 },
+        { id: 'fp_22', name: 'FIBER PLATE DESIGN NO.22', price: 60, image: 'https://i.postimg.cc/XZdstKwJ/IMG-20260515-WA0031.jpg', category: 'Fiber Plates', minOrder: 100 }
+      ].map((item) => ({
+        ...item,
+        stock: 500,
+        tiers: [
+          { min: 100, price: item.price },
+          { min: 500, price: Number((item.price * 0.94).toFixed(2)) },
+          { min: 5000, price: Number((item.price * 0.88).toFixed(2)) },
+        ],
+      }));
+      try {
+        const sourceProducts = Array.isArray(filteredProducts) && filteredProducts.length
+          ? filteredProducts
+          : (Array.isArray(products) && products.length ? products : fallbackFiberProducts);
+        if(!sourceProducts.length){
+          gridHost.innerHTML = '<p class="rounded-2xl border border-dashed border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">No products found. Try another category or search keyword.</p>';
           return;
         }
-        productGrid.innerHTML = filteredProducts.map((p) => {
-          const tiers = Array.isArray(p.tiers) && p.tiers.length >= 3 ? p.tiers : [{ price: Number(p.price || 0) }, { price: Number(p.price || 0) }, { price: Number(p.price || 0) }];
-          return `  
-        <article onclick="openProductDetails('${p.id}')" class="product-card-premium cursor-pointer overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-300 hover:shadow-lg" tabindex="0">
+        gridHost.innerHTML = sourceProducts.map((p) => {
+          const safeProduct = {
+            id: p.id || slugify(p.name || 'vmp-product'),
+            name: p.name || 'VMP Product',
+            category: p.category || 'Catering Essentials',
+            image: p.image || './images/plate.jpg',
+            stock: Number.isFinite(Number(p.stock)) ? Number(p.stock) : 200,
+            tiers: Array.isArray(p.tiers) && p.tiers.length >= 3 ? p.tiers : [
+              { min: 100, price: Number(p.price || 0) },
+              { min: 200, price: Number(p.price || 0) },
+              { min: 500, price: Number(p.price || 0) },
+            ],
+          };
+          const tiers = safeProduct.tiers;
+          return `
+        <article onclick="openProductDetails('${safeProduct.id}')" class="product-card-premium cursor-pointer overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-300 hover:shadow-lg" tabindex="0">
           <div class="relative">
-            <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
-            <button onclick="event.stopPropagation();shareProduct('${p.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${p.name}">
+            <img src="${safeProduct.image}" alt="${safeProduct.name}" loading="lazy" decoding="async" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src='./images/plate.jpg';"/>
+            <button onclick="event.stopPropagation();shareProduct('${safeProduct.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${safeProduct.name}">
               <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="18" cy="5" r="3"></circle>
                 <circle cx="6" cy="12" r="3"></circle>
@@ -1898,27 +1976,28 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
               </svg>
             </button>
           </div>
-          ${stockScarcityMarkup(p)}
+          ${stockScarcityMarkup(safeProduct)}
           <div class="space-y-3 p-3">
-            <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${p.name}</h4>${stockBadge(p.stock)}</div>
-            <p class="text-[11px] text-slate-500">${p.category}</p>
-                   <p class="text-sm font-bold text-emerald-800">₹${tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
+            <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${safeProduct.name}</h4>${stockBadge(safeProduct.stock)}</div>
+            <p class="text-[11px] text-slate-500">${safeProduct.category}</p>
+            <p class="text-sm font-bold text-emerald-800">₹${tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for 100+ pcs</span></p>
             <p class="text-[11px] text-slate-500">200+ @ ₹${tiers[1].price} • 500+ @ ₹${tiers[2].price}</p>
-            ${brandingControlsMarkup(p)}
+            ${brandingControlsMarkup(safeProduct)}
             <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" id="qty-${p.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
-              <button onclick="event.stopPropagation();addToCart('${p.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${p.stock===0?'disabled':''}>ADD</button>
+              <input onclick="event.stopPropagation()" id="qty-${safeProduct.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
+              <button onclick="event.stopPropagation();addToCart('${safeProduct.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${safeProduct.stock===0?'disabled':''}>ADD</button>
             </div>
-            <button onclick="event.stopPropagation();buyNow('${p.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${p.stock===0?'disabled':''}>View Cart / Buy Now</button>
+            <button onclick="event.stopPropagation();buyNow('${safeProduct.id}')" class="w-full rounded-xl border border-emerald-200 py-2 text-xs font-semibold text-emerald-800 disabled:opacity-40" ${safeProduct.stock===0?'disabled':''}>View Cart / Buy Now</button>
           </div>
         </article>
-          `;
+      `;
         }).join('');
       } catch (error) {
-        console.error('Product grid render failed.', error);
-        productGrid.innerHTML = '<p class="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-700">Product catalog temporarily failed to render. Please refresh once.</p>';
+        console.error('CRITICAL VMP LOG: Product grid render failed.', error);
+        gridHost.innerHTML = '<p class="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-700">Product catalog temporarily failed to render. Please refresh once.</p>';
       }
     }
+
 
     function saveCart(){
       try {
@@ -4152,65 +4231,80 @@ const FACTORY_CAPACITY_STATE_KEY = 'vmp_factory_capacity_state';
       });
     }
 
-    // initialize
-    registerVmpServiceWorker();
-    bindById('pwaUpdateNowBtn', 'click', activatePwaUpdateNow);
-    initEntryModeGate();
-    renderCategories();
-    applyProductFilters();
-    renderCart();
-    renderOrderHistory();
-    renderLoyaltyAndWallet();
-    renderMasterCartonTracker();
-    renderTrustBadges();
-    initFactoryCapacityTicker();
-    initProductCardTouchGlow();
-    setInterval(updateStockScarcityDom, 30000);
-    initScratchCoupon();
-    initSavingsCalculator();
-    initPriceMatchChallenge();
-    initBulkPurchaseSocialProof();
-    bindById('downloadCatalogBtn', 'click', openCatalogPrintWindow);
-    bindById('openAiPackagingAdvisor', 'click', () => { document.getElementById('aiPackagingModal')?.classList.remove('hidden'); renderAdvisorRecommendation(); });
-    bindById('closeAiPackagingAdvisor', 'click', () => document.getElementById('aiPackagingModal')?.classList.add('hidden'));
-    bindById('aiPackagingModal', 'click', (event) => { if(event.target.id === 'aiPackagingModal') event.target.classList.add('hidden'); });
-    bindById('runAdvisorBtn', 'click', renderAdvisorRecommendation);
-    bindById('addAdvisorKitBtn', 'click', addAdvisorKitToCart);
-    bindById('poUploadInput', 'change', handlePoUpload);
-    bindById('recurringDispatchToggle', 'change', updateRecurringDispatchUi);
-    bindById('recurringDispatchFrequency', 'change', updateRecurringDispatchUi);
-    bindById('expressCheckoutDock', 'click', openExpressCheckoutPane);
-    bindById('openExpressCheckoutTop', 'click', openExpressCheckoutPane);
-    bindById('closeExpressPane', 'click', closeExpressCheckoutPane);
-    bindById('expressVerifyProfile', 'click', () => openProfileGate(renderExpressCheckout));
-    bindById('loadWalletBtn', 'click', handleWalletLoad);
-    bindById('expressWalletPayBtn', 'click', activateWalletCheckout);
-    bindById('expressPayBtn', 'click', () => {
-      const expressUtr = (document.getElementById('expressUtrInput')?.value || '').trim();
-      const mainUtr = document.getElementById('utrInput');
-      const address = document.getElementById('expressAddress')?.value.trim();
-      const customerAddress = document.getElementById('customerAddress');
-      if(mainUtr) mainUtr.value = expressUtr;
-      if(address && customerAddress) customerAddress.value = address;
-      document.getElementById('confirmPayBtn')?.click();
-    });
-    bindById('macroTextureSlider', 'input', updateMacroTextureView);
-    bindById('openMacroTextureBtn', 'click', openMacroTextureEngine);
-    bindById('zone', 'change', updateLogisticsRouteTicker);
-    updateLogisticsRouteTicker();
-    updateRecurringDispatchUi();
-    renderExpressCheckout();
-    handleInboundSharedCart();
-    const reorderBtn = document.getElementById('repeatOrder');
-    if(reorderBtn) reorderBtn.textContent = '🔁 Re-Order Last Cart';
-    const shippingZone = document.getElementById('shippingZone');
-    if(shippingZone) shippingZone.addEventListener('change', renderCart);
-    ['customerName','customerAddress'].forEach(id => {
-      const element = document.getElementById(id);
-      if(element) element.addEventListener('input', () => { updateWhatsappButton(); renderExpressCheckout(); });
-    });
-    updateWhatsappButton();
+ let vmpStorefrontInitialized = false;
+    function initializeVmpStorefront(){
+      if(vmpStorefrontInitialized) return;
+      vmpStorefrontInitialized = true;
+      try {
+      registerVmpServiceWorker();
+      bindById('pwaUpdateNowBtn', 'click', activatePwaUpdateNow);
+      initEntryModeGate();
+      renderCategories();
+      applyProductFilters();
+      renderCart();
+      renderOrderHistory();
+      renderLoyaltyAndWallet();
+      renderMasterCartonTracker();
+      renderTrustBadges();
+      initFactoryCapacityTicker();
+      initProductCardTouchGlow();
+      setInterval(updateStockScarcityDom, 30000);
+      initScratchCoupon();
+      initSavingsCalculator();
+      initPriceMatchChallenge();
+      initBulkPurchaseSocialProof();
+        bindById('openAiPackagingAdvisor', 'click', () => { document.getElementById('aiPackagingModal')?.classList.remove('hidden'); renderAdvisorRecommendation(); });
+      bindById('closeAiPackagingAdvisor', 'click', () => document.getElementById('aiPackagingModal')?.classList.add('hidden'));
+      bindById('aiPackagingModal', 'click', (event) => { if(event.target.id === 'aiPackagingModal') event.target.classList.add('hidden'); });
+      bindById('runAdvisorBtn', 'click', renderAdvisorRecommendation);
+      bindById('addAdvisorKitBtn', 'click', addAdvisorKitToCart);
+      bindById('poUploadInput', 'change', handlePoUpload);
+      bindById('recurringDispatchToggle', 'change', updateRecurringDispatchUi);
+      bindById('recurringDispatchFrequency', 'change', updateRecurringDispatchUi);
+      bindById('expressCheckoutDock', 'click', openExpressCheckoutPane);
+      bindById('openExpressCheckoutTop', 'click', openExpressCheckoutPane);
+      bindById('closeExpressPane', 'click', closeExpressCheckoutPane);
+      bindById('expressVerifyProfile', 'click', () => openProfileGate(renderExpressCheckout));
+      bindById('loadWalletBtn', 'click', handleWalletLoad);
+      bindById('expressWalletPayBtn', 'click', activateWalletCheckout);
+      bindById('expressPayBtn', 'click', () => {
+        const expressUtr = (document.getElementById('expressUtrInput')?.value || '').trim();
+        const mainUtr = document.getElementById('utrInput');
+        const address = document.getElementById('expressAddress')?.value.trim();
+        const customerAddress = document.getElementById('customerAddress');
+        if(mainUtr) mainUtr.value = expressUtr;
+        if(address && customerAddress) customerAddress.value = address;
+        document.getElementById('confirmPayBtn')?.click();
+      });
+      bindById('macroTextureSlider', 'input', updateMacroTextureView);
+      bindById('openMacroTextureBtn', 'click', openMacroTextureEngine);
+      bindById('zone', 'change', updateLogisticsRouteTicker);
+      updateLogisticsRouteTicker();
+      updateRecurringDispatchUi();
+      renderExpressCheckout();
+      handleInboundSharedCart();
+      const reorderBtn = document.getElementById('repeatOrder');
+      if(reorderBtn) reorderBtn.textContent = '🔁 Re-Order Last Cart';
+      const shippingZone = document.getElementById('shippingZone');
+      if(shippingZone) shippingZone.addEventListener('change', renderCart);
+      ['customerName','customerAddress'].forEach(id => {
+        const element = document.getElementById(id);
+        if(element) element.addEventListener('input', () => { updateWhatsappButton(); renderExpressCheckout(); });
+      });
+      updateWhatsappButton();
+      } catch (error) {
+        vmpStorefrontInitialized = false;
+        console.error('CRITICAL VMP LOG: Storefront initialization failed.', error);
+        try { renderProducts(); } catch (renderError) { console.error('CRITICAL VMP LOG: fallback render failed.', renderError); }
+      }
+    }
 
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initializeVmpStorefront, { once: true });
+    } else {
+      initializeVmpStorefront();
+    }
+    
   </script>
   </div>
 </body>
