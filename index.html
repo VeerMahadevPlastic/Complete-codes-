@@ -461,16 +461,16 @@
       </div>
       <div id="b2bAdvancedFilters" class="mt-4 grid gap-3 rounded-3xl border border-emerald-100 bg-white/90 p-3 shadow-sm md:grid-cols-2">
         <label class="text-xs font-black uppercase tracking-wide text-emerald-900">Material Type
-          <select id="materialFilter" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
-            <option value="all">All Materials</option>
+          <select id="material-type-select" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
+            <option value="all" selected>All Materials</option>
             <option value="fiber">Premium Rigid Fiber</option>
             <option value="metallic">Heavy-Duty Metallic Finish</option>
             <option value="bagasse">Eco-Friendly Sugarcane Bagasse</option>
           </select>
         </label>
         <label class="text-xs font-black uppercase tracking-wide text-emerald-900">Event / Utility Use Case
-          <select id="useCaseFilter" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
-            <option value="all">All Use Cases</option>
+          <select id="use-case-select" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
+            <option value="all" selected>All Use Cases</option>
             <option value="buffet">Buffet Catering Trays</option>
             <option value="wedding">Luxury Wedding Plates</option>
             <option value="bakery">Bulk Bakery Boxes</option>
@@ -1341,28 +1341,6 @@
 
     const products = window.vmp_catalog_dataset;
 
-    const products = [...parsedCatalogProducts, ...FIBER_PLATE_ITEMS]
-     .filter((item) => !/negotiable|test grid|plain wholesale/i.test(`${item.name || ''} ${item.category || ''}`))
-      .map((item, index) => {
-        const basePrice = Number(item.tiers?.[0]?.price || item.price || 1);
-        const tiers = Array.isArray(item.tiers) && item.tiers.length >= 3
-          ? item.tiers
-          : [
-              { min: 100, price: basePrice },
-              { min: 200, price: Number(Math.max(basePrice - 1, 0).toFixed(2)) },
-              { min: 500, price: Number(Math.max(basePrice - 2, 0).toFixed(2)) },
-            ];
-        return {
-          ...item,
-          id: item.id || slugify(`${item.name || 'vmp-product'}-${index}`),
-          name: item.name || `VMP Product ${index + 1}`,
-          category: item.category || 'Catering Essentials',
-          image: item.image || imageFrom(item.name || ''),
-          stock: Number.isFinite(Number(item.stock)) ? Number(item.stock) : 200,
-          tiers,
-        };
-      });
-
     writeStorage('vmpProductSnapshot', JSON.stringify(products.map(product => ({
       id: product.id,
       name: product.name,
@@ -1394,8 +1372,8 @@
     const productGrid = document.getElementById('productGrid') || document.getElementById('product-grid-container');
     const categoryGrid = document.getElementById('categoryGrid');
     const categoryFilter = document.getElementById('categoryFilter');
-    const materialFilter = document.getElementById('materialFilter');
-    const useCaseFilter = document.getElementById('useCaseFilter');
+    const materialFilter = document.getElementById('material-type-select') || document.getElementById('materialFilter');
+    const useCaseFilter = document.getElementById('use-case-select') || document.getElementById('useCaseFilter');
     const cartCount = document.getElementById('cartCount');
     const cartItems = document.getElementById('cartItems');
     const cartSubtotal = document.getElementById('cartSubtotal');
@@ -1898,6 +1876,8 @@
     }
 
     function applyProductFilters(){
+      activeMaterialFilter = document.getElementById('material-type-select')?.value || document.getElementById('materialFilter')?.value || 'all';
+      activeUseCaseFilter = document.getElementById('use-case-select')?.value || document.getElementById('useCaseFilter')?.value || 'all';
       renderProducts(activeCategory || 'all');
     }
 
@@ -1912,16 +1892,20 @@
         gridHost.classList.add('catalog-fade');
         const requestedFilter = String(filter || activeCategory || 'all');
         const normalizedFilter = requestedFilter.toLowerCase() === 'all' ? 'All' : requestedFilter;
+        const selectedMaterialFilter = document.getElementById('material-type-select')?.value || document.getElementById('materialFilter')?.value || activeMaterialFilter || 'all';
+        const selectedUseCaseFilter = document.getElementById('use-case-select')?.value || document.getElementById('useCaseFilter')?.value || activeUseCaseFilter || 'all';
+        activeMaterialFilter = selectedMaterialFilter || 'all';
+        activeUseCaseFilter = selectedUseCaseFilter || 'all';
         const sourceProducts = catalog.filter((p) => {
           const categoryOk = normalizedFilter === 'All' || p.category === normalizedFilter;
-          const materialOk = activeMaterialFilter === 'all' || p.materialType === activeMaterialFilter;
-          const useCaseOk = activeUseCaseFilter === 'all' || p.useCase === activeUseCaseFilter;
+          const materialOk = selectedMaterialFilter === 'all' || p.materialType === selectedMaterialFilter;
+          const useCaseOk = selectedUseCaseFilter === 'all' || p.useCase === selectedUseCaseFilter;
           const searchOk = !searchTerm || String(p.name || '').toLowerCase().includes(searchTerm.toLowerCase());
           return categoryOk && materialOk && useCaseOk && searchOk;
         });
         filteredProducts = sourceProducts;
         if(!sourceProducts.length){
-          gridHost.innerHTML = '<p class="rounded-2xl border border-dashed border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">No products found. Try another category or search keyword.</p>';
+          gridHost.innerHTML = '<div class="text-center py-10 col-span-full font-semibold text-gray-500">🏭 Selected batch quantity currently routing in production. Choose "All" to view live factory stock!</div>';
           gridHost.classList.remove('catalog-fade');
           return;
         }
@@ -2510,11 +2494,46 @@
         renderExpressCheckout();
         return;
       }
-      cartItems.innerHTML = cart.map((item, idx) => `
-        <div class="border rounded-xl p-3 mb-2">
-          <div class="flex justify-between gap-2">
-            <p class="font-semibold">${item.name}</p>
-            <button onclick="removeCartItem(${idx})" class="text-rose-600 text-sm">Remove</button>
+      if(!requireBuyerProfile(launchCartPhonePeCheckout)) return;
+      expressUseWallet = false;
+      closeCart();
+      openCheckoutModal();
+    }
+
+    function openCheckoutModal(){
+      if(!requireBuyerProfile(openCheckoutModal)) return;
+      const modal = document.getElementById('checkoutModal');
+      const subtotal = cartTotalAmount();
+      const estimate = shippingEstimate(subtotal);
+      const couponDiscount = activeCouponDiscount();
+      const loyaltyDiscount = loyaltyDiscountAmount();
+      const walletDeduction = currentWalletDeduction();
+      const total = Math.max(0, subtotal + Number(estimate.charge || 0) - couponDiscount - loyaltyDiscount - walletDeduction);
+      const profile = getBuyerProfile();
+      const businessVerification = updateSecuritySeal();
+      const name = (document.getElementById('customerName')?.value || profile?.fullName || '').trim();
+      const address = (document.getElementById('customerAddress')?.value || '').trim();
+      const profilePreview = document.getElementById('checkoutProfilePreview');
+      const addressPreview = document.getElementById('checkoutAddressPreview');
+      if(profilePreview && profile){
+        profilePreview.textContent = `${profile.fullName} • ${profile.mobile} • ${profile.email}`;
+      }
+      const businessPreview = document.getElementById('checkoutBusinessPreview');
+      if(businessPreview){
+        const company = profile?.business?.companyName || '';
+        const gstin = profile?.business?.gstin || '';
+        businessPreview.classList.toggle('hidden', !(company || gstin));
+        businessPreview.textContent = (company || gstin) ? `GST Invoice: ${company || 'Business'}${gstin ? ` • GSTIN: ${gstin}` : ''}` : '';
+      }
+      if(addressPreview){
+        addressPreview.textContent = (name && address) ? `${name} • ${address}` : 'Please fill customer name and address in cart.';
+      }
+      const itemBreakdown = document.getElementById('checkoutItemBreakdown');
+      if(itemBreakdown){
+        itemBreakdown.innerHTML = cart.map((item) => `
+          <div class="flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2">
+            <div><p class="font-semibold">${item.name}</p><p class="text-xs text-slate-500">Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</p>${item.customBranding?.requested ? '<p class="mt-1 text-[11px] font-bold text-amber-700">Custom logo printing included</p>' : ''}</div>
+            <p class="font-bold text-emerald-800">₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}</p>
           </div>
           <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
           ${item.customBranding?.requested ? `<p class="mt-1 rounded-lg bg-amber-50 px-2 py-1 text-[11px] font-bold text-amber-800">✨ Custom logo printing added${item.customBranding?.artwork?.fileName ? ` • ${item.customBranding.artwork.fileName}` : ''}</p>` : ''}
@@ -2725,97 +2744,8 @@
       reader.readAsDataURL(file);
     }
 
-    function openCheckoutModal(){
-      if(!requireBuyerProfile(openCheckoutModal)) return;
-      const modal = document.getElementById('checkoutModal');
-      const subtotal = cartTotalAmount();
-      const estimate = shippingEstimate(subtotal);
-      const couponDiscount = activeCouponDiscount();
-      const loyaltyDiscount = loyaltyDiscountAmount();
-      const walletDeduction = currentWalletDeduction();
-      const total = Math.max(0, subtotal + Number(estimate.charge || 0) - couponDiscount - loyaltyDiscount - walletDeduction);
-      const profile = getBuyerProfile();
-      const businessVerification = updateSecuritySeal();
-      const name = (document.getElementById('customerName')?.value || profile?.fullName || '').trim();
-      const address = (document.getElementById('customerAddress')?.value || '').trim();
-      const profilePreview = document.getElementById('checkoutProfilePreview');
-      const addressPreview = document.getElementById('checkoutAddressPreview');
-      if(profilePreview && profile){
-        profilePreview.textContent = `${profile.fullName} • ${profile.mobile} • ${profile.email}`;
-      }
-      const businessPreview = document.getElementById('checkoutBusinessPreview');
-      if(businessPreview){
-        const company = profile?.business?.companyName || '';
-        const gstin = profile?.business?.gstin || '';
-        businessPreview.classList.toggle('hidden', !(company || gstin));
-        businessPreview.textContent = (company || gstin) ? `GST Invoice: ${company || 'Business'}${gstin ? ` • GSTIN: ${gstin}` : ''}` : '';
-      }
-      if(addressPreview){
-        addressPreview.textContent = (name && address) ? `${name} • ${address}` : 'Please fill customer name and address in cart.';
-      }
-      const itemBreakdown = document.getElementById('checkoutItemBreakdown');
-      if(itemBreakdown){
-        itemBreakdown.innerHTML = cart.map((item) => `
-          <div class="flex items-start justify-between gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2">
-            <div><p class="font-semibold">${item.name}</p><p class="text-xs text-slate-500">Qty ${item.qty} × ₹${Number(item.unit || 0).toFixed(2)}</p>${item.customBranding?.requested ? '<p class="mt-1 text-[11px] font-bold text-amber-700">Custom logo printing included</p>' : ''}</div>
-            <p class="font-bold text-emerald-800">₹${(Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)}</p>
-          </div>
-        `).join('') || '<p class="text-sm text-slate-500">Cart is empty.</p>';
-      }
-      const summaryAccordion = document.getElementById('checkoutItemsAccordion');
-      if(summaryAccordion){
-        const isDesktopCheckout = window.matchMedia('(min-width: 768px)').matches;
-        if(isDesktopCheckout){
-          summaryAccordion.setAttribute('open', 'open');
-        } else {
-          summaryAccordion.removeAttribute('open');
-        }
-      }
-      const subEl = document.getElementById('checkoutSubtotal');
-      const shipEl = document.getElementById('checkoutShipping');
-      const totalEl = document.getElementById('checkoutTotal');
-      if(subEl) subEl.textContent = subtotal.toFixed(2);
-      if(shipEl) shipEl.textContent = Number(estimate.charge).toFixed(2);
-      const checkoutCouponRow = document.getElementById('checkoutCouponRow');
-      const checkoutCouponDiscount = document.getElementById('checkoutCouponDiscount');
-      if(checkoutCouponRow){
-        const hasCoupon = Boolean(getAppliedCoupon());
-        checkoutCouponRow.classList.toggle('hidden', !hasCoupon);
-        checkoutCouponRow.classList.toggle('flex', hasCoupon);
-      }
-      if(checkoutCouponDiscount) checkoutCouponDiscount.textContent = couponDiscount.toFixed(2);
-      const tier = getLoyaltyTier();
-      const checkoutLoyaltyRow = document.getElementById('checkoutLoyaltyRow');
-      const checkoutLoyaltyLabel = document.getElementById('checkoutLoyaltyLabel');
-      const checkoutLoyaltyDiscount = document.getElementById('checkoutLoyaltyDiscount');
-      if(checkoutLoyaltyRow){
-        const hasLoyalty = loyaltyDiscount > 0;
-        checkoutLoyaltyRow.classList.toggle('hidden', !hasLoyalty);
-        checkoutLoyaltyRow.classList.toggle('flex', hasLoyalty);
-      }
-      if(checkoutLoyaltyLabel) checkoutLoyaltyLabel.textContent = `${tier.name} loyalty markdown`;
-      if(checkoutLoyaltyDiscount) checkoutLoyaltyDiscount.textContent = loyaltyDiscount.toFixed(2);
-      const checkoutWalletRow = document.getElementById('checkoutWalletRow');
-      const checkoutWalletDeduction = document.getElementById('checkoutWalletDeduction');
-      if(checkoutWalletRow){
-        const hasWallet = walletDeduction > 0;
-        checkoutWalletRow.classList.toggle('hidden', !hasWallet);
-        checkoutWalletRow.classList.toggle('flex', hasWallet);
-      }
-      if(checkoutWalletDeduction) checkoutWalletDeduction.textContent = walletDeduction.toFixed(2);
-      if(totalEl) totalEl.textContent = total.toFixed(2);
-      const qr = document.getElementById('checkoutQrImage');
-      if(qr){
-        const upiUri = `upi://pay?pa=8050389261@upi&pn=${encodeURIComponent('Veer Mahadev Plastic')}&am=${total.toFixed(2)}&cu=INR&tn=${encodeURIComponent('VMP B2B Order')}`;
-        qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(upiUri)}`;
-      }
-      const status = document.getElementById('phonepeLiveStatus');
-      if(status){
-        status.textContent = 'Secure node connecting...';
-        setTimeout(() => { status.textContent = 'Live & listening for UPI confirmation'; }, 1000);
-      }
-      if(modal) modal.classList.remove('hidden');
-      notifyVmp('Secure PhonePe B2B gateway opened.', 'Checkout ready');
+    function closeCheckoutModal(){
+      document.getElementById('checkoutModal')?.classList.add('hidden');
     }
 
     window.addToCart = function(id){
@@ -2843,25 +2773,6 @@
       if(!requireBuyerProfile(() => { addToCart(id); openCart(); })) return;
       addToCart(id);
       openCart();
-    }
-
-    function decodeSharedCartPayload(encoded){
-      try {
-        const json = decodeURIComponent(escape(atob(String(encoded || ''))));
-        const parsed = JSON.parse(json);
-        if(!parsed || !Array.isArray(parsed.items)) return [];
-        return parsed.items
-          .map((item) => ({
-            id: String(item.id || ''),
-            name: String(item.name || ''),
-            qty: Math.max(1, Number(item.qty || 0)),
-            unit: Math.max(0, Number(item.unit || 0))
-          }))
-          .filter((item) => item.id && item.qty > 0);
-      } catch (error) {
-        console.warn('Invalid shared cart payload.', error);
-        return [];
-      }
     }
 
     function handleInboundSharedCart(){
@@ -3774,6 +3685,228 @@
       input.value = '';
     };
 
+
+    function initProductCardTouchGlow(){
+      if(!productGrid) return;
+      productGrid.addEventListener('touchstart', (event) => {
+        const card = event.target.closest('.product-card-premium');
+        if(!card) return;
+        card.classList.add('vmp-touch-glow');
+        setTimeout(() => card.classList.remove('vmp-touch-glow'), 1600);
+      }, { passive: true });
+    }
+
+    function initScratchCoupon(){
+      const canvas = document.getElementById('scratchCouponCanvas');
+      const modal = document.getElementById('scratchCouponModal');
+      if(!canvas || !modal) return;
+      const ctx = canvas.getContext('2d');
+      const paintCover = () => {
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, '#c8c8c8');
+        gradient.addColorStop(0.45, '#f4d06f');
+        gradient.addColorStop(1, '#8f8f8f');
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(6,78,59,0.88)';
+        ctx.font = 'bold 18px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Scratch to Reveal', canvas.width / 2, canvas.height / 2 - 8);
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('Factory Clearance Discount', canvas.width / 2, canvas.height / 2 + 18);
+      };
+      paintCover();
+      let scratching = false;
+      const scratch = (event) => {
+        if(!scratching) return;
+        const rect = canvas.getBoundingClientRect();
+        const point = event.touches?.[0] || event;
+        const x = ((point.clientX - rect.left) / rect.width) * canvas.width;
+        const y = ((point.clientY - rect.top) / rect.height) * canvas.height;
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 22, 0, Math.PI * 2);
+        ctx.fill();
+        event.preventDefault();
+      };
+      canvas.addEventListener('pointerdown', (event) => { scratching = true; scratch(event); });
+      canvas.addEventListener('pointermove', scratch);
+      window.addEventListener('pointerup', () => { scratching = false; });
+      canvas.addEventListener('touchstart', (event) => { scratching = true; scratch(event); }, { passive: false });
+      canvas.addEventListener('touchmove', scratch, { passive: false });
+      window.addEventListener('touchend', () => { scratching = false; });
+      bindById('scratchCouponBtn', 'click', () => { modal.classList.remove('hidden'); paintCover(); });
+      bindById('closeScratchCoupon', 'click', () => modal.classList.add('hidden'));
+      bindById('scratchCouponModal', 'click', (event) => { if(event.target.id === 'scratchCouponModal') modal.classList.add('hidden'); });
+      bindById('applyScratchCoupon', 'click', applyScratchCouponToCart);
+    }
+
+    const socialProofBusinesses = ['Shreeji Caterers', 'Raj Elite Events', 'Surat Sweet Mart', 'Anand Party Plot', 'Mehsana Wedding Foods', 'Bhavnagar Caterer Hub', 'Vadodara Snacks Co.'];
+    const socialProofCities = ['Ahmedabad', 'Rajkot', 'Surat', 'Vadodara', 'Mehsana', 'Anand', 'Bhavnagar'];
+    const socialProofLines = ['Fiber Plates', '5 CP Meal Trays', 'Soup Bowls', 'Paper Cups', 'Heavy Catering Bags', 'Sweet Boxes', 'Premium Disposable Plates'];
+
+    function initBulkPurchaseSocialProof(){
+      const host = document.getElementById('bulkSocialProofHost');
+      if(!host) return;
+      const showProof = () => {
+        const business = socialProofBusinesses[Math.floor(Math.random() * socialProofBusinesses.length)];
+        const city = socialProofCities[Math.floor(Math.random() * socialProofCities.length)];
+        const pcs = (5000 + Math.floor(Math.random() * 41) * 500).toLocaleString('en-IN');
+        const line = socialProofLines[Math.floor(Math.random() * socialProofLines.length)];
+        const mins = 1 + Math.floor(Math.random() * 25);
+        const toast = document.createElement('div');
+        toast.className = 'bulk-proof-toast pointer-events-auto rounded-2xl border border-[#d4af37]/70 bg-[#064e3b] px-4 py-3 text-sm font-bold text-white shadow-2xl shadow-emerald-950/30';
+        toast.innerHTML = `🔥 <span class="text-[#d4af37]">${business}</span> from ${city} just booked ${pcs} Pcs of ${line}! <span class="text-emerald-100">(${mins} mins ago).</span>`;
+        host.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateX(-18px) translateY(12px)';
+          toast.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+          setTimeout(() => toast.remove(), 380);
+        }, 4000);
+        const nextDelay = 90000 + Math.floor(Math.random() * 30001);
+        window.setTimeout(showProof, nextDelay);
+      };
+      window.setTimeout(showProof, 90000 + Math.floor(Math.random() * 30001));
+    }
+
+    function updateSavingsCalculator(){
+      const slider = document.getElementById('savingsQtySlider');
+      if(!slider) return;
+      const qty = Number(slider.value || 10000);
+      const market = qty * 12;
+      const vmp = qty * 6.5;
+      const savings = market - vmp;
+      const fmt = (value) => Number(value).toLocaleString('en-IN', { maximumFractionDigits: 0 });
+      const qtyOut = document.getElementById('savingsQtyOut');
+      const marketOut = document.getElementById('marketPriceOut');
+      const vmpOut = document.getElementById('vmpPriceOut');
+      const savingsOut = document.getElementById('savingsOut');
+      if(qtyOut) qtyOut.textContent = fmt(qty);
+      if(marketOut) marketOut.textContent = fmt(market);
+      if(vmpOut) vmpOut.textContent = fmt(vmp);
+      if(savingsOut) savingsOut.textContent = `₹${fmt(savings)} 💰`;
+    }
+
+    function initSavingsCalculator(){
+      const slider = document.getElementById('savingsQtySlider');
+      if(!slider) return;
+      slider.addEventListener('input', updateSavingsCalculator);
+      updateSavingsCalculator();
+    }
+
+    function initPriceMatchChallenge(){
+      const modal = document.getElementById('priceMatchModal');
+      bindById('openPriceMatchBtn', 'click', () => modal?.classList.remove('hidden'));
+      bindById('closePriceMatchModal', 'click', () => modal?.classList.add('hidden'));
+      bindById('priceMatchModal', 'click', (event) => { if(event.target.id === 'priceMatchModal') modal?.classList.add('hidden'); });
+      bindById('priceMatchForm', 'submit', (event) => {
+        event.preventDefault();
+        const file = document.getElementById('priceMatchFile')?.files?.[0] || null;
+        const payload = {
+          buyerName: document.getElementById('priceMatchName')?.value.trim() || '',
+          phone: document.getElementById('priceMatchPhone')?.value.trim() || '',
+          competitorPrice: Number(document.getElementById('priceMatchQuote')?.value || 0),
+          attachment: file ? { name: file.name, type: file.type, size: file.size } : null,
+          capturedAt: new Date().toISOString(),
+        };
+        localStorage.setItem('vmp_price_match_challenge', JSON.stringify(payload));
+        const msg = document.getElementById('priceMatchMsg');
+        const confirmation = 'Factory Billing Desk alert triggered! We will review and beat this quote within 10 minutes on WhatsApp.';
+        if(msg) msg.textContent = confirmation;
+        notifyVmp(confirmation, 'Price challenge received');
+      });
+    }
+
+    let vmpStorefrontInitialized = false;
+    function initializeVmpStorefront(){
+      if(vmpStorefrontInitialized) return;
+      vmpStorefrontInitialized = true;
+      try {
+      registerVmpServiceWorker();
+      bindById('pwaUpdateNowBtn', 'click', activatePwaUpdateNow);
+      initEntryModeGate();
+      renderCategories();
+      applyProductFilters();
+      renderCart();
+      renderOrderHistory();
+      renderLoyaltyAndWallet();
+      renderMasterCartonTracker();
+      renderTrustBadges();
+      initFactoryCapacityTicker();
+      initProductCardTouchGlow();
+      setInterval(updateStockScarcityDom, 30000);
+      initScratchCoupon();
+      initSavingsCalculator();
+      initPriceMatchChallenge();
+      initBulkPurchaseSocialProof();
+      initVmpMarketingAnalytics();
+        bindById('openAiPackagingAdvisor', 'click', () => { document.getElementById('aiPackagingModal')?.classList.remove('hidden'); renderAdvisorRecommendation(); });
+      bindById('closeAiPackagingAdvisor', 'click', () => document.getElementById('aiPackagingModal')?.classList.add('hidden'));
+      bindById('aiPackagingModal', 'click', (event) => { if(event.target.id === 'aiPackagingModal') event.target.classList.add('hidden'); });
+      bindById('runAdvisorBtn', 'click', renderAdvisorRecommendation);
+      bindById('addAdvisorKitBtn', 'click', addAdvisorKitToCart);
+      bindById('poUploadInput', 'change', handlePoUpload);
+      bindById('recurringDispatchToggle', 'change', updateRecurringDispatchUi);
+      bindById('recurringDispatchFrequency', 'change', updateRecurringDispatchUi);
+      bindById('expressCheckoutDock', 'click', openExpressCheckoutPane);
+      bindById('openExpressCheckoutTop', 'click', openExpressCheckoutPane);
+      bindById('closeExpressPane', 'click', closeExpressCheckoutPane);
+      bindById('expressVerifyProfile', 'click', () => openProfileGate(renderExpressCheckout));
+      bindById('loadWalletBtn', 'click', handleWalletLoad);
+      bindById('expressWalletPayBtn', 'click', activateWalletCheckout);
+      bindById('expressPayBtn', 'click', () => {
+        const expressUtr = (document.getElementById('expressUtrInput')?.value || '').trim();
+        const mainUtr = document.getElementById('utrInput');
+        const address = document.getElementById('expressAddress')?.value.trim();
+        const customerAddress = document.getElementById('customerAddress');
+        if(mainUtr) mainUtr.value = expressUtr;
+        if(address && customerAddress) customerAddress.value = address;
+        document.getElementById('confirmPayBtn')?.click();
+      });
+      bindById('macroTextureSlider', 'input', updateMacroTextureView);
+      bindById('openMacroTextureBtn', 'click', openMacroTextureEngine);
+      bindById('zone', 'change', updateLogisticsRouteTicker);
+      updateLogisticsRouteTicker();
+      updateRecurringDispatchUi();
+      renderExpressCheckout();
+      handleInboundSharedCart();
+      const reorderBtn = document.getElementById('repeatOrder');
+      if(reorderBtn) reorderBtn.textContent = '🔁 Re-Order Last Cart';
+      const shippingZone = document.getElementById('shippingZone');
+      if(shippingZone) shippingZone.addEventListener('change', renderCart);
+      ['customerName','customerAddress'].forEach(id => {
+        const element = document.getElementById(id);
+        if(element) element.addEventListener('input', () => { updateWhatsappButton(); renderExpressCheckout(); });
+      });
+      updateWhatsappButton();
+      } catch (error) {
+        vmpStorefrontInitialized = false;
+        console.error('CRITICAL VMP LOG: Storefront initialization failed.', error);
+        try { renderProducts(); } catch (renderError) { console.error('CRITICAL VMP LOG: fallback render failed.', renderError); }
+      }
+    }
+
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initializeVmpStorefront, { once: true });
+    } else {
+      initializeVmpStorefront();
+    }
+
+
+    (function() {
+      console.log("VMP FORCE RUN: Initializing Core Storefront...");
+      try {
+        if (typeof window.applyProductFilters === 'function') {
+          window.applyProductFilters();
+        } else if (typeof renderProducts === 'function') {
+          renderProducts('all');
+        }
+      } catch (e) {
+        console.error("Forced execution bypassed: ", e);
+      }
+    })();
 
     function initProductCardTouchGlow(){
       if(!productGrid) return;

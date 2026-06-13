@@ -461,16 +461,16 @@
       </div>
       <div id="b2bAdvancedFilters" class="mt-4 grid gap-3 rounded-3xl border border-emerald-100 bg-white/90 p-3 shadow-sm md:grid-cols-2">
         <label class="text-xs font-black uppercase tracking-wide text-emerald-900">Material Type
-          <select id="materialFilter" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
-            <option value="all">All Materials</option>
+          <select id="material-type-select" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
+            <option value="all" selected>All Materials</option>
             <option value="fiber">Premium Rigid Fiber</option>
             <option value="metallic">Heavy-Duty Metallic Finish</option>
             <option value="bagasse">Eco-Friendly Sugarcane Bagasse</option>
           </select>
         </label>
         <label class="text-xs font-black uppercase tracking-wide text-emerald-900">Event / Utility Use Case
-          <select id="useCaseFilter" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
-            <option value="all">All Use Cases</option>
+          <select id="use-case-select" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
+            <option value="all" selected>All Use Cases</option>
             <option value="buffet">Buffet Catering Trays</option>
             <option value="wedding">Luxury Wedding Plates</option>
             <option value="bakery">Bulk Bakery Boxes</option>
@@ -1597,8 +1597,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     const productGrid = document.getElementById('productGrid') || document.getElementById('product-grid-container');
     const categoryGrid = document.getElementById('categoryGrid');
     const categoryFilter = document.getElementById('categoryFilter');
-    const materialFilter = document.getElementById('materialFilter');
-    const useCaseFilter = document.getElementById('useCaseFilter');
+    const materialFilter = document.getElementById('material-type-select') || document.getElementById('materialFilter');
+    const useCaseFilter = document.getElementById('use-case-select') || document.getElementById('useCaseFilter');
     const cartCount = document.getElementById('cartCount');
     const cartItems = document.getElementById('cartItems');
     const cartSubtotal = document.getElementById('cartSubtotal');
@@ -2101,6 +2101,8 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     }
 
     function applyProductFilters(){
+      activeMaterialFilter = document.getElementById('material-type-select')?.value || document.getElementById('materialFilter')?.value || 'all';
+      activeUseCaseFilter = document.getElementById('use-case-select')?.value || document.getElementById('useCaseFilter')?.value || 'all';
       renderProducts(activeCategory || 'all');
     }
 
@@ -2115,16 +2117,20 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         gridHost.classList.add('catalog-fade');
         const requestedFilter = String(filter || activeCategory || 'all');
         const normalizedFilter = requestedFilter.toLowerCase() === 'all' ? 'All' : requestedFilter;
+        const selectedMaterialFilter = document.getElementById('material-type-select')?.value || document.getElementById('materialFilter')?.value || activeMaterialFilter || 'all';
+        const selectedUseCaseFilter = document.getElementById('use-case-select')?.value || document.getElementById('useCaseFilter')?.value || activeUseCaseFilter || 'all';
+        activeMaterialFilter = selectedMaterialFilter || 'all';
+        activeUseCaseFilter = selectedUseCaseFilter || 'all';
         const sourceProducts = catalog.filter((p) => {
           const categoryOk = normalizedFilter === 'All' || p.category === normalizedFilter;
-          const materialOk = activeMaterialFilter === 'all' || p.materialType === activeMaterialFilter;
-          const useCaseOk = activeUseCaseFilter === 'all' || p.useCase === activeUseCaseFilter;
+          const materialOk = selectedMaterialFilter === 'all' || p.materialType === selectedMaterialFilter;
+          const useCaseOk = selectedUseCaseFilter === 'all' || p.useCase === selectedUseCaseFilter;
           const searchOk = !searchTerm || String(p.name || '').toLowerCase().includes(searchTerm.toLowerCase());
           return categoryOk && materialOk && useCaseOk && searchOk;
         });
         filteredProducts = sourceProducts;
         if(!sourceProducts.length){
-          gridHost.innerHTML = '<p class="rounded-2xl border border-dashed border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">No products found. Try another category or search keyword.</p>';
+          gridHost.innerHTML = '<div class="text-center py-10 col-span-full font-semibold text-gray-500">🏭 Selected batch quantity currently routing in production. Choose "All" to view live factory stock!</div>';
           gridHost.classList.remove('catalog-fade');
           return;
         }
@@ -3970,6 +3976,20 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
     } else {
       initializeVmpStorefront();
     }
+
+
+    (function() {
+      console.log("VMP FORCE RUN: Initializing Core Storefront...");
+      try {
+        if (typeof window.applyProductFilters === 'function') {
+          window.applyProductFilters();
+        } else if (typeof renderProducts === 'function') {
+          renderProducts('all');
+        }
+      } catch (e) {
+        console.error("Forced execution bypassed: ", e);
+      }
+    })();
 
   </script>
   </div>
