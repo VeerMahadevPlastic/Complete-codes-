@@ -66,6 +66,18 @@
       return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     }
 
+    function safeImageUrl(value){
+      const raw = String(value || '').trim();
+      if(!raw) return FALLBACK_IMG;
+      try {
+        const url = new URL(raw, window.location.origin);
+        if(url.protocol === 'http:' || url.protocol === 'https:'){
+          return url.href;
+        }
+      } catch {}
+      return FALLBACK_IMG;
+    }
+
     function notify(msg){
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -115,7 +127,7 @@
           const tdImg = document.createElement('td');
           tdImg.className = 'px-2 py-2';
           const img = document.createElement('img');
-          img.src = p.image || FALLBACK_IMG;
+          img.src = safeImageUrl(p.image);
           img.className = 'h-12 w-16 rounded object-cover';
           img.onerror = function(){ this.src = FALLBACK_IMG; };
           tdImg.appendChild(img);
@@ -208,7 +220,7 @@
         category: document.getElementById('category').value,
         base_wholesale_rate: Number(baseRate.toFixed(2)),
         retail_price: Number(retailPrice.toFixed(2)),
-        image: document.getElementById('image').value.trim() || FALLBACK_IMG,
+        image: safeImageUrl(document.getElementById('image').value),
         hsn: document.getElementById('hsn').value.trim() || '3924',
         description: document.getElementById('desc').value.trim(),
         tiers: [
