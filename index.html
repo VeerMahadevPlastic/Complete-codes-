@@ -4322,7 +4322,20 @@
     } else {
       initializeVmpStorefront();
     }
-    
+
+      (function() {
+      console.log("VMP FORCE RUN: Initializing Core Storefront...");
+      try {
+        if (typeof window.applyProductFilters === 'function') {
+          window.applyProductFilters();
+        } else if (typeof renderProducts === 'function') {
+          renderProducts('all');
+        }
+      } catch (e) {
+        console.error("Forced execution bypassed: ", e);
+      }
+    })();
+      
   </script>
   </div>
 </body>
