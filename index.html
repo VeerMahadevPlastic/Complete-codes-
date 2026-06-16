@@ -1428,6 +1428,12 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       if(/spoon|cutlery/.test(text)) return 1;
       return 2;
     }
+    
+ const autonomousDisposableTrendLines = [
+      { id: 'auto-bagasse-clamshell-9x9', name: 'Biodegradable Sugarcane Bagasse Clamshell Boxes 9x9', category: 'boxes', materialType: 'bagasse', useCase: 'bakery', image: 'https://via.placeholder.com/420x320?text=Bagasse+Clamshell', stock: 1850, dimensions: { l: 9, w: 9, h: 3, unit: 'inch' }, cartonUnits: 4, tiers: [{ min: 500, price: 8.9 }, { min: 2500, price: 8.25 }, { min: 10000, price: 7.65 }] },
+      { id: 'auto-metallic-rim-bowl-350ml', name: 'Leak-Proof Metallic Rim Premium Bowls 350ML', category: 'bowls', materialType: 'metallic', useCase: 'soup-dessert', image: 'https://via.placeholder.com/420x320?text=Metallic+Rim+Bowl', stock: 1600, dimensions: { dia: 95, h: 58, unit: 'mm' }, cartonUnits: 2, tiers: [{ min: 500, price: 6.75 }, { min: 2500, price: 6.25 }, { min: 10000, price: 5.8 }] },
+      { id: 'auto-dessert-cup-gilded-spoon-combo', name: 'Heavy-Duty Clear Rigid Dessert Cups & Elegant Gilded Spoons', category: 'cups & spoons', materialType: 'metallic', useCase: 'soup-dessert', image: 'https://via.placeholder.com/420x320?text=Dessert+Cups+Gilded+Spoons', stock: 2400, dimensions: { cupMl: 180, spoonMm: 125, unit: 'combo' }, cartonUnits: 3, tiers: [{ min: 500, price: 5.9 }, { min: 2500, price: 5.35 }, { min: 10000, price: 4.95 }] }
+    ];
 
     window.vmp_catalog_dataset = [
       ...parsedCatalogProducts,
