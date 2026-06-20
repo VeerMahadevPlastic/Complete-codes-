@@ -169,7 +169,7 @@ export function Navbar({ onSearch }: NavbarProps) {
                       <img src={p.image} alt={p.name} className="h-8 w-8 object-contain shrink-0 rounded" />
                       <div>
                         <p className="text-sm font-medium text-gray-900 line-clamp-1">{p.name}</p>
-                        <p className="text-xs text-gray-500">{p.category} · {p.packSize}</p>
+                        <p className="text-xs text-gray-500">{p.category} · {p.packSize.toLocaleString("en-IN")} pcs/box</p>
                       </div>
                       <Search className="ml-auto h-3.5 w-3.5 text-gray-400 shrink-0" />
                     </button>

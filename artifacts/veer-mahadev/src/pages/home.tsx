@@ -101,7 +101,7 @@ export default function Home() {
                       <img src={p.image} alt={p.name} className="h-9 w-9 object-contain rounded-lg bg-gray-50 border border-gray-100 shrink-0" />
                       <div className="flex-1 text-left min-w-0">
                         <p className="text-sm font-bold text-gray-900 truncate">{p.name}</p>
-                        <p className="text-xs text-gray-400">{p.category} · {p.packSize}</p>
+                        <p className="text-xs text-gray-400">{p.category} · {p.packSize.toLocaleString("en-IN")} pcs/box</p>
                       </div>
                       <span className="text-[10px] font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full shrink-0">Bulk</span>
                     </button>
