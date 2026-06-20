@@ -40,6 +40,7 @@ export function Navbar({ onSearch }: NavbarProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const { count } = useCart();
 
@@ -56,8 +57,15 @@ export function Navbar({ onSearch }: NavbarProps) {
         setShowSuggestions(false);
       }
     }
+    function handleScroll() {
+      setScrolled(window.scrollY > 8);
+    }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   function handleSearchInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -98,7 +106,7 @@ export function Navbar({ onSearch }: NavbarProps) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full shadow-lg" data-testid="navbar">
+      <header className={`sticky top-0 z-50 w-full transition-shadow duration-200 ${scrolled ? "shadow-[0_4px_24px_rgba(0,0,0,0.45)]" : "shadow-lg"}`} data-testid="navbar">
         {/* Top bar — dark charcoal */}
         <div className="bg-gray-900 text-white">
           <div className="container mx-auto px-4 md:px-6 flex h-16 items-center gap-3 md:gap-4">
