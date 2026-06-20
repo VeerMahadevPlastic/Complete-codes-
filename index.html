@@ -1954,9 +1954,87 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       dispatchLocalFactoryNotification('Urgent: Factory floor capacity reaching 98%!', 'Lock your catering orders now.', 'vmp-capacity-warning');
     }
 
+    const VMP_STORAGE_CRYPTO = {
+      passphrase: 'vmp-storage-key-v1',
+      salt: 'vmp-storage-salt-v1'
+    };
+
+    async function deriveStorageKey(){
+      const enc = new TextEncoder();
+      const baseKey = await crypto.subtle.importKey(
+        'raw',
+        enc.encode(VMP_STORAGE_CRYPTO.passphrase),
+        'PBKDF2',
+        false,
+        ['deriveKey']
+      );
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: enc.encode(VMP_STORAGE_CRYPTO.salt), iterations: 120000, hash: 'SHA-256' },
+        baseKey,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    function bytesToBase64(bytes){
+      let str = '';
+      bytes.forEach((b) => { str += String.fromCharCode(b); });
+      return btoa(str);
+    }
+
+    function base64ToBytes(base64){
+      const bin = atob(base64);
+      const out = new Uint8Array(bin.length);
+      for(let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+      return out;
+    }
+
+    async function encryptForStorage(plainText){
+      const key = await deriveStorageKey();
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const enc = new TextEncoder();
+      const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(plainText));
+      return JSON.stringify({ v: 1, iv: bytesToBase64(iv), data: bytesToBase64(new Uint8Array(cipherBuf)) });
+    }
+
+    async function decryptFromStorage(payload){
+      const parsed = JSON.parse(payload || 'null');
+      if(!parsed || !parsed.iv || !parsed.data) return null;
+      const key = await deriveStorageKey();
+      const plainBuf = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: base64ToBytes(parsed.iv) },
+        key,
+        base64ToBytes(parsed.data)
+      );
+      return new TextDecoder().decode(plainBuf);
+    }
+
+    async function setEncryptedJsonStorage(key, value){
+      const encrypted = await encryptForStorage(JSON.stringify(value));
+      localStorage.setItem(key, encrypted);
+    }
+
+    async function getEncryptedJsonStorage(key){
+      const raw = localStorage.getItem(key);
+      if(!raw) return null;
+      try {
+        const plain = await decryptFromStorage(raw);
+        if(plain) return JSON.parse(plain);
+      } catch {}
+      try { return JSON.parse(raw); } catch { return null; }
+    }
+
     function getBuyerProfile(){
-      try { return JSON.parse(localStorage.getItem('vmp_user_profile') || 'null'); }
-      catch { return null; }
+      const cached = window.__vmpBuyerProfileCache;
+      if(cached !== undefined) return cached;
+      window.__vmpBuyerProfileCache = null;
+      getEncryptedJsonStorage('vmp_user_profile').then((profile) => {
+        window.__vmpBuyerProfileCache = profile;
+      }).catch(() => {
+        window.__vmpBuyerProfileCache = null;
+      });
+      return null;
     }
 
     function hasBuyerProfile(){
@@ -4076,7 +4154,9 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         notifyVmp('Complete the B2B Delivery Matrix before confirming payment.', 'Delivery matrix required');
         return;
       }
-      localStorage.setItem('vmp_b2b_delivery_matrix', JSON.stringify(b2bDeliveryMatrix));
+      setEncryptedJsonStorage('vmp_b2b_delivery_matrix', b2bDeliveryMatrix).catch(() => {
+        localStorage.setItem('vmp_b2b_delivery_matrix', JSON.stringify(b2bDeliveryMatrix));
+      });
       const address = [b2bDeliveryMatrix.streetAddress, b2bDeliveryMatrix.landmark, b2bDeliveryMatrix.districtState, b2bDeliveryMatrix.pinCode].filter(Boolean).join(', ');
       const loyaltyTier = getLoyaltyTier();
       const loyaltyDiscount = loyaltyDiscountAmount();
