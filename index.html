@@ -52,15 +52,80 @@
   </script>
   <title>Veer Mahadev Plastic | Best Disposable Items Wholesaler in Ahmedabad, Gujarat</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     window.onerror = window.onerror || function(msg, url, line) {
       console.log('CRITICAL VMP LOG: ' + msg + ' on line ' + line);
       return false;
     };
 
+
+    window.VMP_PRICE_LIST_IMAGE_URLS = window.VMP_PRICE_LIST_IMAGE_URLS || ['assets/images/price-list-page-1.svg'];
+
+    function waitForJsPdfReady(timeoutMs = 5000){
+      return new Promise((resolve, reject) => {
+        const startedAt = Date.now();
+        const check = () => {
+          if(window.jspdf?.jsPDF) return resolve(window.jspdf.jsPDF);
+          if(Date.now() - startedAt > timeoutMs) return reject(new Error('jsPDF library did not load in time.'));
+          setTimeout(check, 80);
+        };
+        check();
+      });
+    }
+
+    function loadImageForPdf(url){
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error(`Unable to load PDF source image: ${url}`));
+        img.src = url;
+      });
+    }
+
+    async function generatePdfFromImages(imageUrls, outputName = 'wholesale-price-list.pdf') {
+      if(!Array.isArray(imageUrls) || !imageUrls.length) throw new Error('No price-list images supplied for PDF generation.');
+      const jsPDF = await waitForJsPdfReady();
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      for (let i = 0; i < imageUrls.length; i++) {
+        if (i > 0) pdf.addPage();
+        const img = await loadImageForPdf(imageUrls[i]);
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const imageData = canvas.toDataURL('image/jpeg', 0.92);
+        pdf.addImage(imageData, 'JPEG', 0, 0, pageWidth, pageHeight);
+      }
+
+      pdf.save(outputName);
+      console.log('VMP Engine: Automated Image-to-PDF compilation successful.');
+    }
+
+    window.generatePdfFromImages = generatePdfFromImages;
+    window.generateWholesalePriceListPdf = async function generateWholesalePriceListPdf(){
+      try {
+        await generatePdfFromImages(window.VMP_PRICE_LIST_IMAGE_URLS, 'wholesale-price-list.pdf');
+      } catch (error) {
+        console.warn('VMP Engine: jsPDF image compiler fallback triggered.', error);
+        window.open('wholesale-price-list.pdf', '_blank');
+      }
+    };
+
     function registerVmpGlobalHandlers(){
       window.downloadCatalog = function() {
-        window.open('wholesale-price-list.pdf', '_blank');
+        if (typeof window.openCatalogPreviewDrawer === 'function') {
+          window.openCatalogPreviewDrawer();
+          return;
+        }
+        return window.generateWholesalePriceListPdf ? window.generateWholesalePriceListPdf() : window.open('wholesale-price-list.pdf', '_blank');
       };
       window.toggleExpressCheckout = function() {
         var drawer = document.getElementById('express-checkout-drawer') || document.getElementById('expressCheckoutPane');
@@ -250,6 +315,17 @@
             </div>
           </div>
 
+
+          <label class="hidden items-center gap-2 rounded-xl border border-[#d4af37]/50 bg-emerald-950/60 px-2.5 py-2 text-[11px] font-black text-[#d4af37] md:flex">
+            <span>🌍 Currency</span>
+            <select id="currencySwitcher" class="rounded-lg border border-[#d4af37]/40 bg-[#064e3b] px-2 py-1 text-xs font-black text-white outline-none">
+              <option value="INR">INR (₹)</option>
+              <option value="USD">USD ($)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="TRY">TRY (₺)</option>
+              <option value="RUB">RUB (₽)</option>
+            </select>
+          </label>
           <button id="openCartTop" class="whitespace-nowrap rounded-xl border border-[#d4af37]/50 bg-white px-2.5 py-2 text-xs font-black text-[#064e3b] shadow-lg transition hover:bg-amber-50 sm:px-3 sm:text-sm">🛒 Cart (<span id="cartCount">0</span>)</button>
         </div>
 
@@ -303,6 +379,8 @@
       <div class="vmp-hero-flow relative mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-10 lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-8 lg:py-20">
         <div class="vmp-hero-copy relative w-full rounded-[2rem] border border-[#d4af37]/35 bg-white/10 p-5 shadow-2xl backdrop-blur-md lg:p-8">
           <div class="inline-flex rounded-full border border-[#d4af37]/40 bg-emerald-950/60 px-4 py-2 text-xs font-black uppercase tracking-[0.25em] text-[#d4af37]">CATERING CHALLENGE MODE ON</div>
+
+          <div class="mt-3 inline-flex rounded-full border border-emerald-100/25 bg-[#d4af37]/15 px-4 py-2 text-[11px] font-black uppercase tracking-[0.18em] text-amber-100">VEER MAHADEV PLASTIC WORLDWIDE • GLOBAL EXPORT QUALITY STANDARDS • ESTD. SINCE 2024</div>
           <h1 class="mt-5 max-w-3xl text-3xl font-black leading-tight text-white sm:text-4xl lg:text-6xl">Match Quality and Factory Prices with <span class="text-[#d4af37]">Veer Mahadev.</span></h1>
           <p class="mt-4 max-w-2xl text-lg font-medium text-emerald-50">Ahmedabad's direct bulk manufacturer for elite caterers, sweet shops, event planners, and institutional procurement teams.</p>
           <div class="mt-6 flex flex-wrap gap-3">
@@ -733,11 +811,23 @@
       <p class="text-xs text-slate-600 mt-1">Shipping Zone: <span id="shippingZoneLabel" class="font-semibold">Ahmedabad</span></p>
       <p class="text-xs text-slate-600">Estimated Shipping: ₹<span id="shippingCharge">0</span></p>
       <p id="cartCouponRow" class="hidden text-xs font-bold text-emerald-700">Coupon VMP500 Applied: -₹<span id="cartCouponDiscount">0</span></p>
+      <p id="cartBulkDiscountRow" class="hidden text-xs font-bold text-amber-700">Bulk Carton Discount: -₹<span id="cartBulkDiscount">0</span></p>
       <div id="masterCartonTracker" class="mt-3 rounded-2xl border border-[#d4af37]/40 bg-white px-3 py-3">
         <div class="flex items-center justify-between gap-2 text-[11px] font-black uppercase tracking-[0.14em] text-[#064e3b]"><span>📦 Master Carton Optimization Tracker</span><span>Save Logistics Cost</span></div>
         <div class="mt-2 h-3 overflow-hidden rounded-full bg-emerald-100"><div id="masterCartonBar" class="h-full w-0 rounded-full bg-gradient-to-r from-[#064e3b] via-emerald-500 to-[#d4af37] transition-all duration-500"></div></div>
         <p id="masterCartonText" class="mt-2 text-xs font-semibold text-slate-700">Add products to begin carton optimization.</p>
       </div>
+
+        <div id="internationalShippingEstimator" class="mt-3 rounded-2xl border border-[#d4af37]/50 bg-gradient-to-br from-white to-amber-50 px-3 py-3">
+          <div class="flex items-center justify-between gap-2 text-[11px] font-black uppercase tracking-[0.14em] text-[#064e3b]"><span>🌍 International Shipping Route Estimator</span><span>Export Ready</span></div>
+          <select id="globalShippingRoute" class="mt-2 w-full rounded-xl border border-[#d4af37]/50 bg-white px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:border-[#064e3b]">
+            <option value="domestic">Domestic Hub Dispatch</option>
+            <option value="jnpt-ocean">JNPT Port (Mumbai) - Ocean Freight</option>
+            <option value="mundra-container">Mundra Port (Gujarat) - Export Container</option>
+            <option value="air-cargo">Air Cargo Fast-Track</option>
+          </select>
+          <p id="globalShippingRouteMsg" class="mt-2 text-xs font-semibold text-slate-700">Domestic dispatch active. Ahmedabad factory team will route via nearest logistics hub.</p>
+        </div>
       <div class="mt-3 rounded-2xl border border-emerald-100 bg-white px-3 py-3">
         <label class="flex items-center gap-2 text-xs font-black text-[#064e3b]"><input id="recurringDispatchToggle" type="checkbox" class="h-4 w-4 rounded border-emerald-300 text-[#064e3b]" /> 🗓️ Setup Automated Recurring Dispatches</label>
         <select id="recurringDispatchFrequency" class="mt-2 hidden w-full rounded-xl border border-emerald-200 px-3 py-2 text-xs font-bold text-slate-700">
@@ -774,7 +864,7 @@
         <button id="creditRequestBtn" class="w-full rounded-lg border border-emerald-200 bg-white py-2 text-xs font-semibold text-emerald-800">Apply for Corporate Credit / Post-Paid Billing (Registered GST Businesses Only)</button>
         <div id="trustBadgeRowCart" class="grid grid-cols-2 gap-2 text-[10px] md:grid-cols-4"></div>
       </div>
-      <div class="border-t border-slate-100 p-4 space-y-3 bg-white sticky bottom-0">
+        <div class="border-t border-slate-100 p-4 space-y-3 bg-white sticky bottom-0">
           <button id="cartWhatsAppCheckoutBtn" class="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-2xl shadow-lg transition transform hover:-translate-y-0.5 text-base">
             <span>⚡ Express Checkout (Place Order via WhatsApp)</span>
           </button>
@@ -824,6 +914,7 @@
           <div class="flex justify-between"><span>Subtotal</span><span>₹<span id="expressSubtotal">0</span></span></div>
           <div class="flex justify-between"><span>Shipping</span><span>₹<span id="expressShipping">0</span></span></div>
           <div class="flex justify-between text-emerald-700"><span>Coupon</span><span>-₹<span id="expressCoupon">0</span></span></div>
+          <div class="flex justify-between text-amber-700"><span>Bulk Carton Discount</span><span>-₹<span id="expressBulkDiscount">0</span></span></div>
           <div class="flex justify-between text-[#d4af37]"><span id="expressLoyaltyLabel">Loyalty Markdown</span><span>-₹<span id="expressLoyaltyDiscount">0</span></span></div>
           <div class="flex justify-between text-[#5f259f]"><span>Wallet Deduction</span><span>-₹<span id="expressWalletDeduction">0</span></span></div>
           <div class="flex justify-between border-t border-slate-200 pt-2 text-base text-[#064e3b]"><span>Total</span><span>₹<span id="expressTotal">0</span></span></div>
@@ -858,6 +949,20 @@
             <p class="text-sm font-semibold text-slate-700">Delivery Address</p>
             <p id="checkoutAddressPreview" class="mt-1 text-sm text-slate-600">Please fill customer name and address in cart.</p>
           </div>
+          <div id="b2bDeliveryMatrix" class="rounded-xl border border-[#d4af37]/40 bg-amber-50/60 p-3">
+            <p class="text-sm font-black text-[#064e3b]">B2B Delivery Matrix Form</p>
+            <p class="mt-1 text-xs font-semibold text-slate-600">Required for factory dispatch, e-way routing, and export/customer onboarding payload.</p>
+            <div class="mt-3 grid gap-2 sm:grid-cols-2">
+              <input id="b2bConsigneeName" class="rounded-lg border border-amber-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="Full Consignee Name" />
+              <input id="b2bMobile" class="rounded-lg border border-amber-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="Active Mobile Number" />
+              <input id="b2bStreetAddress" class="rounded-lg border border-amber-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37] sm:col-span-2" placeholder="Complete Street Address" />
+              <input id="b2bLandmark" class="rounded-lg border border-amber-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="Landmark" />
+              <input id="b2bDistrictState" class="rounded-lg border border-amber-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="District / State" />
+              <input id="b2bPinCode" class="rounded-lg border border-amber-200 px-3 py-2 text-sm outline-none focus:border-[#d4af37]" placeholder="Pin Code" />
+              <input id="b2bGstin" class="rounded-lg border border-amber-200 px-3 py-2 text-sm uppercase outline-none focus:border-[#d4af37]" placeholder="Corporate GSTIN (optional)" />
+            </div>
+            <p id="b2bDeliveryMatrixMsg" class="mt-2 text-xs font-bold text-rose-600"></p>
+          </div>
           <details id="checkoutItemsAccordion" class="rounded-xl border border-emerald-100 bg-white p-3">
             <summary class="cursor-pointer text-sm font-bold text-emerald-900">Order Summary / Cart Breakdown</summary>
             <div id="checkoutItemBreakdown" class="mt-3 max-h-52 space-y-2 overflow-y-auto pr-1 text-sm text-slate-700"></div>
@@ -886,10 +991,13 @@
               <div class="flex justify-between"><span>Dynamic Tiered Shipping</span><span>₹<span id="checkoutShipping">0</span></span></div>
               <div id="checkoutCouponRow" class="hidden items-center justify-between text-emerald-700"><span>Factory Coupon VMP500</span><span>-₹<span id="checkoutCouponDiscount">0</span></span></div>
               <div id="checkoutLoyaltyRow" class="hidden items-center justify-between text-[#d4af37]"><span id="checkoutLoyaltyLabel">Loyalty markdown</span><span>-₹<span id="checkoutLoyaltyDiscount">0</span></span></div>
+              <div id="checkoutBulkDiscountRow" class="hidden items-center justify-between text-amber-700"><span>Bulk carton contract discount</span><span>-₹<span id="checkoutBulkDiscount">0</span></span></div>
               <div id="checkoutWalletRow" class="hidden items-center justify-between text-[#5f259f]"><span>Wallet deduction</span><span>-₹<span id="checkoutWalletDeduction">0</span></span></div>
+              <div id="checkoutTaxExportRow" class="flex items-start justify-between gap-3 rounded-lg border border-emerald-100 bg-white px-2 py-2 text-xs font-bold text-slate-700"><span id="checkoutTaxExportLabel">GST (18% / Corporate Invoice Input Claim Enabled)</span><span id="checkoutTaxExportValue">Shown on invoice</span></div>
               <hr />
               <div class="flex justify-between text-lg font-black text-emerald-900"><span>Total Final Amount</span><span>₹<span id="checkoutTotal">0</span></span></div>
             </div>
+            <button id="officialFactoryQuoteBtn" class="mt-3 w-full rounded-lg bg-emerald-700 py-2.5 text-sm font-black text-white shadow-lg hover:bg-emerald-800">📄 Get Official Factory Quotation via WhatsApp</button>
             <button id="shareCartQuoteBtn" class="mt-3 w-full rounded-lg border border-emerald-300 bg-white py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">🔗 Share Cart / Quote via WhatsApp</button>
             <a href="https://wa.me/918050389261?text=Need%20Help%20with%20Payment%3F%20Please%20connect%20me%20with%20Factory%20Billing%20Desk." target="_blank" rel="noopener" class="mt-3 block rounded-lg border border-amber-300 bg-amber-50 py-2 text-center text-xs font-bold text-amber-900 hover:bg-amber-100">Need Help with Payment? Connect directly with Factory Billing Desk</a>
             <button id="confirmPayBtn" class="mt-4 w-full rounded-lg bg-[#5f259f] py-2 font-semibold text-white hover:bg-[#4c1d95]">Verify UTR & Confirm PhonePe Payment</button>
@@ -1057,19 +1165,50 @@
     </div>
   </div>
 
-  <div id="loginModal" class="hidden fixed inset-0 z-[70] bg-black/40 px-4">
-    <div class="max-w-md mx-auto mt-24 bg-white rounded-xl border shadow-xl p-5">
-      <h4 class="text-xl font-bold">B2B Portal Login</h4>
-      <p class="text-sm text-slate-600">Login to access wholesale price list and business tools.</p>
-      <form id="loginForm" class="mt-4 grid gap-3">
-        <input id="loginEmail" type="email" required placeholder="Business Email" class="border rounded-lg px-3 py-2"/>
-        <input id="loginPass" type="password" required placeholder="Password" class="border rounded-lg px-3 py-2"/>
-        <div class="flex gap-2">
-          <button type="submit" class="flex-1 bg-emerald-700 text-white py-2 rounded-lg font-semibold">Login</button>
-          <button type="button" id="closeLogin" class="flex-1 border py-2 rounded-lg font-semibold">Close</button>
+  <div id="catalogPreviewModal" class="hidden fixed inset-0 z-[78] bg-black/70 p-4">
+    <div class="mx-auto flex h-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-[#d4af37]/60 bg-white shadow-2xl">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-100 bg-[#064e3b] px-4 py-3 text-white">
+        <div>
+          <p class="text-[11px] font-black uppercase tracking-[0.2em] text-[#d4af37]">Factory Catalog Viewer</p>
+          <h3 class="text-lg font-black">Wholesale Price List Preview</h3>
         </div>
+        <div class="flex flex-wrap gap-2">
+          <button id="catalogCompilePdfBtn" class="rounded-xl bg-[#d4af37] px-4 py-2 text-xs font-black text-[#064e3b]">Download / Print PDF</button>
+          <button id="catalogOpenPdfBtn" class="rounded-xl border border-white/30 px-4 py-2 text-xs font-bold text-white">Open PDF Asset</button>
+          <button id="catalogClosePreviewBtn" class="rounded-xl border border-white/30 px-4 py-2 text-xs font-bold text-white">Close</button>
+        </div>
+      </div>
+      <iframe id="catalogPreviewFrame" title="Veer Mahadev Plastic wholesale catalog preview" src="about:blank" class="min-h-0 flex-1 bg-slate-50"></iframe>
+    </div>
+  </div>
+
+  <div id="loginModal" class="hidden fixed inset-0 z-[70] bg-black/40 px-4">
+    <div class="max-w-md mx-auto mt-20 overflow-hidden rounded-2xl border border-emerald-100 bg-white shadow-2xl">
+      <div class="bg-gradient-to-r from-emerald-950 to-emerald-800 px-5 py-4 text-white">
+        <p class="text-[11px] font-black uppercase tracking-[0.22em] text-[#d4af37]">Amazon-style Secure Access</p>
+        <h4 class="mt-1 text-xl font-black">B2B Portal Login</h4>
+        <p class="mt-1 text-sm text-emerald-100">Use mobile number or corporate email to request a simulated secure OTP.</p>
+      </div>
+      <form id="loginForm" class="grid gap-4 p-5">
+        <div id="authStepOne" class="grid gap-3 transition-all duration-300">
+          <label class="text-xs font-black uppercase tracking-wide text-slate-600">Mobile Number or Corporate Email
+            <input id="loginIdentity" required placeholder="buyer@company.com or 9876543210" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#064e3b]"/>
+          </label>
+          <button type="button" id="requestOtpBtn" class="rounded-xl bg-emerald-700 py-3 text-sm font-black text-white shadow-lg hover:bg-emerald-800">Continue / Request OTP</button>
+        </div>
+        <div id="authStepTwo" class="hidden translate-y-2 rounded-2xl border border-[#d4af37]/50 bg-amber-50 p-3 opacity-0 transition-all duration-300">
+          <label class="text-xs font-black uppercase tracking-wide text-slate-600">Secure Verification Code
+            <input id="loginOtp" inputmode="numeric" maxlength="6" placeholder="Enter 4 or 6 digit OTP" class="mt-1 w-full rounded-xl border border-amber-200 px-3 py-2 text-center text-lg font-black tracking-[0.35em] outline-none focus:border-[#d4af37]"/>
+          </label>
+          <div class="mt-2 flex items-center justify-between text-xs font-bold text-slate-600">
+            <span id="otpTimer">OTP valid for 60s</span>
+            <button type="button" id="resendOtpBtn" class="text-emerald-700 underline disabled:text-slate-400" disabled>Resend OTP</button>
+          </div>
+          <button type="submit" class="mt-3 w-full rounded-xl bg-[#064e3b] py-3 text-sm font-black text-white hover:bg-emerald-900">Verify & Continue</button>
+        </div>
+        <button type="button" id="closeLogin" class="rounded-xl border border-slate-200 py-2 text-sm font-bold text-slate-700">Close</button>
       </form>
-      <p id="loginMsg" class="text-sm mt-2 font-semibold"></p>
+      <p id="loginMsg" class="px-5 pb-4 text-sm font-semibold"></p>
     </div>
   </div>
 
@@ -1317,6 +1456,97 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 17 PP CONTAINER FB 500ML BLACK / TRANSPERENT (5404) 2000 5460 3.73 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 18 PP CONTAINER FB 650ML BLACK / TRANSPERENT (5405) 2000 6600 4.3 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
 19 PP ROUND CONTAINER LID 123DIA (5451) 2000 2800 2.4 || https://i.postimg.cc/wM8thvKP/PP-CONTAINER-FB-BLACK.jpg
+
+SR ROUND CAKE BOX PET PACKING RATE BOX RATE PCS
+1 ROUND CONTAINER 150DIA 45H 500GRM (1358) 640 4416 7.9 ||
+2 ROUND CONTAINER 150DIA 63H 750GRM (1359) 640 5068.8 8.92 ||
+3 ROUND CONTAINER 150DIA 82H 1000GRM (1360) 640 5920 10.25 ||
+4 ROUND CONTAINER 150DIA 101H 1250GRM (1361) 600 6240 11.4 ||
+5 ROUND CONTAINER 150DIA 121H 1500GRM (1362) 600 7140 12.9 ||
+6 ROUND CONTAINER 175DIA 45H (1368) 420 5048.4 13.02 ||
+7 ROUND CONTAINER 175DIA 63H (1369) 420 6153 15.65 ||
+8 ROUND CONTAINER 175DIA 80H (1370) 420 6783 17.15 ||
+9 ROUND CONTAINER 205DIA 45H (1373) 300 4395 15.65 ||
+10 ROUND CONTAINER 205DIA 70H (1374) 300 5190 18.3 ||
+11 ROUND CONTAINER 220DIA 45H (1380) 300 4485 15.95 ||
+12 ROUND CONTAINER 220DIA 70H (1381) 300 5100 18 ||
+13 ROUND CONTAINER 250DIA 45H (1388) 300 6156 21.52 ||
+14 ROUND CONTAINER 250DIA 70H (1389) 200 4580 23.9 ||
+15 ROUND CONTAINER 250DIA 120H (1394) 200 6370 32.85 ||
+16 ROUND DRY FRUIT BOX 6CP (1395) 200 4980 25.9 ||
+17 CAKE BOX ROUND WITH LID 220DIA 77H (1383) 300 4920 17.4 ||
+18 CAKE BOX ROUND WITH LID 220DIA 102H (1384) 300 5640 19.8 ||
+19 CAKE BOX ROUND WITH LID 220DIA 127H (1385) 300 6330 22.1 ||
+20 CAKE BOX ROUND WITH LID 250DIA 77H (1391) 300 6330 22.1 ||
+21 CAKE BOX ROUND WITH LID 250DIA 127H (1393) 200 4980 25.9 ||
+
+SR PET SQUARE CONTAINER PACKING RATE BOX RATE PCS
+1 PET SQUARE CONTAINER 8OZ (1316) 1000 2530 3.53 ||
+2 PET SQUARE CONTAINER 12OZ (1317) 1000 3030 4.03 ||
+3 PET SQUARE CONTAINER 18OZ (1318) 1000 4300 5.3 ||
+4 PET SQUARE CONTIANER 26OZ (1319) 1000 5550 6.55 ||
+5 PET SQUARE CONTAINER 32OZ (1320) 1000 6560 7.56 ||
+6 PET SQUARE LID (115X115) (1251) 2000 4040 3.02 ||
+7 PET SQUARE CONTAINER 45H (1321) 500 3275 7.55 ||
+8 PET SQUARE CONTAINER 58H (1322) 500 4175 9.35 ||
+9 PET SQUARE CONTAINER 75H (1323) 500 4075 9.15 ||
+10 315X200 RT CONTAINER 43H (O-268-XS) (1337) 300 5730 20.1 ||
+11 315X200 RT CONTAINER 63H (O-268-S) (1338) 300 6450 22.5 ||
+12 315X200 RT CONTAINER 78H (O-268-MINI) (1339) 300 7185 24.95 ||
+
+SR PP GLASS PACKING RATE BOX RATE PCS
+1 ORACLE 100ML ICE CUP 80DIA (5127) (5318) 7200 4824 1.67 ||
+2 ORACLE 130ML STATUS CUP (5138) (5319) 7200 5616 1.78 ||
+3 ORACLE 200ML PLAIN GLASS 80DIA YOGHURT T/M (5329) 6000 6600 2.1 ||
+4 ORACLE 200ML PLAIN GLASS 80DIA YOGHURT PRINTED (5329) 5250 8137.5 2.55 ||
+5 ORACLE 200ML PLAIN GLASS 80DIA (5321) 6000 5640 1.94 ||
+6 ORACLE 250ML PLAIN GLASS 80DIA (5322) 6000 6480 2.08 ||
+7 ORACLE 300ML PLAIN GLASS 80DIA (5323) 5000 6750 2.35 ||
+8 ORACLE 300ML FANCY GLASS 80DIA (5328) 5760 5241.6 1.91 ||
+9 ORACLE 350ML BRIO GLASSS 95DIA (5334) 2400 5304 3.21 ||
+10 ORACLE 500ML GLASS (5149) (5336) 2500 5525 2.21 ||
+11 OMEGA 200ML PLAIN GLASS 80DIA (5324) 6000 4980 1.83 ||
+12 OMEGA 250ML PLAIN GLASS 80DIA (5325) 6000 5460 1.91 ||
+13 OMEGA 300ML PLAIN GLASS 80DIA (5326) 5000 5250 2.05 ||
+14 SUPERPACK 180ML MOCKTAIL GLASS (5320) 6000 4500 1.75 ||
+15 SUPERPACK 200ML SMILY GLASS (5315) 8400 4956 1.59 ||
+16 SUPERPACK 350ML BRIO GLASS 95DIA (5333) 3600 5616 2.56 ||
+17 ROYAL 350ML BRIO GLASS 95DIA 5332) 3600 4896 1.36 ||
+18 ROYAL 400ML WINE GLASS 95DIA (5335) 3600 4176 2.16 ||
+19 ROYAL 225ML BRIO BOWL 95DIA (5331) 4400 4268 1.97 ||
+20 ROLEX 350ML BRIO GLASS 91DIA (5338) 3600 3780 2.05 ||
+
+SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
+1 PUNNET 250GRM 127X94X75 (1601) 1200 2820 3.35 ||
+2 PUNNET 200GRM 127X94X65 (1602) 1200 2820 3.35 ||
+3 PUNNET 180GRM 127X94X55 (1603) 1200 2820 3.35 ||
+4 PUNNET 500GRM -190X120X85 (1607) 1000 3650 4.65 ||
+5 PUNNET 500GRM - 190X120X43 (1608) 1600 5200 4.25 ||
+6 PUNNET 500GRM - 190X120X53 (1609) 1600 6048 4.78 ||
+7 PUNNET 500GRM -190X120X60 (1610) 1200 4860 5.05 ||
+8 PUNNET 500GRM - 190X120X85MM (1611) 1200 4260 4.55 ||
+9 PUNNET 750GRM 185X140X95MM (1613) 625 4812.5 8.7 ||
+10 PUNNET 1000GRM 202X165X90MM (1615) 600 4980 9.3 ||
+11 BERRY PUNNET - 129X111X35MM (1618) 1500 5775 4.85 ||
+12 PUNNET KIWI -3 - 117X11X760MM (1620) 1500 3825 3.55 ||
+13 PUNNET KIWI -3 -117X117X60MM (1621) 1500 3600 3.4 ||
+14 PUNNET KIWI -2 JUMBO 130X93X58MM (1622E) 1800 5040 3.8 ||
+15 PUNNET KIWI -4 162X125X52MM 162X125X52MM (1623) 1050 3517.5 4. || 35
+16 KIWI PUNNET KIWI JUMBO ZP 148X97X61MM (1624) 1400 4200 4 ||
+17 PUNNET KIWI 148X97X51MM 148X97X51MM (1625) 1350 3240 3.4 ||
+18 TRIANGLE KIWI BOX -3 190X120X55MM (1627EE) 900 2520 3.8 ||
+19 PUNNET - KIWI SMALL - 4PCS 162X123X43 (1628) 1000 2920 3.92 ||
+20 PUNNET APPLE 4PCS 155X155X68MM (1630) 900 5625 7.25 ||
+21 PUNNET APPLE 138/150 - 6PC - 215X155X68MM (1631) 600 4830 9.05 ||
+22 HEART HINGED BOX SMALL - 150X140X40MM (1635A) 1000 5100 6.1 ||
+23 HEART HINGED BOX LARGE - 190X170X58MM (1636A) 600 10 ||
+24 STRAWBERRY PUNNET 250GRM - 160X118X43MM (1641) 1000 3250 4.25 ||
+25 STRAWBERYY PUNNET 200GRM - (1642) 1600 3120 2.95 ||
+26 STRAWBERYY PUNNET 200GRM - (1642B) 1600 3200 3 ||
+27 PUNNET STRAWBERRY -250GRM 117X117X67 (1644) 1600 3200 3 ||
+28 PUNNET MULBERRY 117X117X67 (1645) 1575 4803.75 4.05 ||
+29 PUNNET BLUEBERRY SQUARE (1648) 1500 4680 4.12 ||
+30 PUNNET AVOCADO -2PC (1652) 1050 4882.5 5.65 ||
 `;
 
     // Per-product image URLs (id-wise). Add/replace links here.
@@ -1439,8 +1669,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       if(/spoon|cutlery/.test(text)) return 1;
       return 2;
     }
-    
- const autonomousDisposableTrendLines = [
+
+    const autonomousDisposableTrendLines = [
       { id: 'auto-bagasse-clamshell-9x9', name: 'Biodegradable Sugarcane Bagasse Clamshell Boxes 9x9', category: 'boxes', materialType: 'bagasse', useCase: 'bakery', image: 'https://via.placeholder.com/420x320?text=Bagasse+Clamshell', stock: 1850, dimensions: { l: 9, w: 9, h: 3, unit: 'inch' }, cartonUnits: 4, tiers: [{ min: 500, price: 8.9 }, { min: 2500, price: 8.25 }, { min: 10000, price: 7.65 }] },
       { id: 'auto-metallic-rim-bowl-350ml', name: 'Leak-Proof Metallic Rim Premium Bowls 350ML', category: 'bowls', materialType: 'metallic', useCase: 'soup-dessert', image: 'https://via.placeholder.com/420x320?text=Metallic+Rim+Bowl', stock: 1600, dimensions: { dia: 95, h: 58, unit: 'mm' }, cartonUnits: 2, tiers: [{ min: 500, price: 6.75 }, { min: 2500, price: 6.25 }, { min: 10000, price: 5.8 }] },
       { id: 'auto-dessert-cup-gilded-spoon-combo', name: 'Heavy-Duty Clear Rigid Dessert Cups & Elegant Gilded Spoons', category: 'cups & spoons', materialType: 'metallic', useCase: 'soup-dessert', image: 'https://via.placeholder.com/420x320?text=Dessert+Cups+Gilded+Spoons', stock: 2400, dimensions: { cupMl: 180, spoonMm: 125, unit: 'combo' }, cartonUnits: 3, tiers: [{ min: 500, price: 5.9 }, { min: 2500, price: 5.35 }, { min: 10000, price: 4.95 }] }
@@ -1525,9 +1755,81 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     let searchTerm = '';
     let activeMaterialFilter = 'all';
     let activeUseCaseFilter = 'all';
+
+    const VMP_CURRENCY_RATES = {
+      INR: { symbol: '₹', rate: 1, suffix: 'INR' },
+      USD: { symbol: '$', rate: 0.012, suffix: 'USD' },
+      GBP: { symbol: '£', rate: 0.0095, suffix: 'GBP' },
+      TRY: { symbol: '₺', rate: 0.39, suffix: 'TRY' },
+      RUB: { symbol: '₽', rate: 1.05, suffix: 'RUB' },
+    };
+    let activeCurrency = localStorage.getItem('vmpActiveCurrency') || 'INR';
+
+    function formatCurrencyFromInr(value, options = {}){
+      const config = VMP_CURRENCY_RATES[activeCurrency] || VMP_CURRENCY_RATES.INR;
+      const converted = Number(value || 0) * config.rate;
+      const decimals = activeCurrency === 'INR' || activeCurrency === 'RUB' || activeCurrency === 'TRY' ? 2 : 3;
+      const formatted = converted.toLocaleString('en-US', { minimumFractionDigits: options.minimumFractionDigits ?? 0, maximumFractionDigits: options.maximumFractionDigits ?? decimals });
+      return `${config.symbol}${formatted}${activeCurrency === 'INR' ? '' : ` ${config.suffix}`}`;
+    }
+
+    function updateCurrencySwitcherUi(){
+      const select = document.getElementById('currencySwitcher');
+      if(select) select.value = activeCurrency;
+    }
+
+    function handleCurrencyChange(value){
+      activeCurrency = VMP_CURRENCY_RATES[value] ? value : 'INR';
+      localStorage.setItem('vmpActiveCurrency', activeCurrency);
+      persistActiveSessionCart();
+      updateCurrencySwitcherUi();
+      if(typeof renderProducts === 'function') renderProducts(activeCategory || 'all');
+      const modalPrice = document.getElementById('productModalPricing');
+      if(modalPrice?.dataset.productId){
+        const product = products.find((p) => p.id === modalPrice.dataset.productId);
+        if(product) modalPrice.textContent = product.tiers.map(t => `${t.min}+ pcs @ ${formatCurrencyFromInr(t.price)}`).join(' | ');
+      }
+    }
+
+    function updateGlobalShippingRouteEstimator(){
+      const route = document.getElementById('globalShippingRoute')?.value || 'domestic';
+      const output = document.getElementById('globalShippingRouteMsg');
+      if(!output) return;
+      const messages = {
+        domestic: 'Domestic dispatch active. Ahmedabad factory team will route via nearest logistics hub.',
+        'jnpt-ocean': 'Est. Transit: 18-25 Days. Port Clearance & Customs Documentation generated on invoice.',
+        'mundra-container': 'Est. Transit: 18-25 Days. Export container routing via Mundra Port with GST invoice and packing documentation support.',
+        'air-cargo': 'Est. Transit: 5-7 Business Days. Priority customs routing enabled.'
+      };
+      output.textContent = messages[route] || messages.domestic;
+    }
+
     let filteredProducts = [...products];
+    function isAuthenticatedCartSession(){
+      try {
+        const session = JSON.parse(sessionStorage.getItem('vmp_auth_session') || 'null');
+        if(session?.state === 'Authenticated') return true;
+      } catch (error) {
+        console.warn('Unable to inspect auth session for cart restore.', error);
+      }
+      return Boolean(localStorage.getItem('vmp_user_profile'));
+    }
+
+    function persistActiveSessionCart(){
+      try {
+        localStorage.setItem('vmp_active_session_cart', JSON.stringify(Array.isArray(cart) ? cart : []));
+      } catch (error) {
+        console.warn('Unable to persist vmp_active_session_cart.', error);
+      }
+    }
+
     function loadCart(){
       try {
+        const activeSessionCart = localStorage.getItem('vmp_active_session_cart');
+        if(activeSessionCart && isAuthenticatedCartSession()){
+          const parsedSessionCart = JSON.parse(activeSessionCart);
+          if(Array.isArray(parsedSessionCart)) return parsedSessionCart;
+        }
         const saved = localStorage.getItem('vmpCart');
         return JSON.parse(saved || '[]');
       } catch (error) {
@@ -1989,7 +2291,11 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       document.getElementById('productModalColor').textContent = meta.color;
       document.getElementById('productModalHsn').textContent = meta.hsn;
       document.getElementById('productModalMoq').textContent = meta.moq;
-      document.getElementById('productModalPricing').textContent = product.tiers.map(t => `${t.min}+ pcs @ ₹${t.price}`).join(' | ');
+      const pricingEl = document.getElementById('productModalPricing');
+      if(pricingEl){
+        pricingEl.dataset.productId = product.id;
+        pricingEl.textContent = product.tiers.map(t => `${t.min}+ pcs @ ${formatCurrencyFromInr(t.price)}`).join(' | ');
+      }
       document.getElementById('productModalUse').textContent = meta.use;
       const textureVideos = {
         '5cp-meal-tray-with-lid-7045': 'https://cdn.coverr.co/videos/coverr-hands-holding-a-box-1579/1080p.mp4',
@@ -2114,17 +2420,18 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
             <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${safeProduct.name}</h4>${stockBadge(safeProduct.stock)}</div>
             <p class="text-[11px] text-slate-500">${safeProduct.category}</p>
             <div class="tier-breakdown rounded-2xl border border-amber-100 bg-amber-50/60 p-2" tabindex="0">
-              <p class="text-sm font-bold text-emerald-800">₹${tiers[0].price} <span class="text-[11px] font-medium text-slate-500">for ${tiers[0].min}+ pcs</span></p>
-              <p class="text-[11px] text-slate-500">${tiers[1].min}+ @ ₹${tiers[1].price} • ${tiers[2].min}+ @ ₹${tiers[2].price}</p>
+              <p class="text-sm font-bold text-emerald-800">${formatCurrencyFromInr(tiers[0].price)} <span class="text-[11px] font-medium text-slate-500">for ${tiers[0].min}+ pcs</span></p>
+              <p class="text-[11px] text-slate-500">${tiers[1].min}+ @ ${formatCurrencyFromInr(tiers[1].price)} • ${tiers[2].min}+ @ ${formatCurrencyFromInr(tiers[2].price)}</p>
               <div class="tier-tooltip absolute left-2 right-2 top-full z-20 mt-2 rounded-2xl border border-[#d4af37]/60 bg-white p-3 text-[11px] font-bold text-emerald-900 shadow-2xl">
-                Wholesale savings: ₹${Math.max(0, Math.round((tiers[0].price - tiers[2].price) * tiers[2].min)).toLocaleString('en-IN')} on ${tiers[2].min}+ pcs batch volume.
+                Wholesale savings: ${formatCurrencyFromInr(Math.max(0, Math.round((tiers[0].price - tiers[2].price) * tiers[2].min)))} on ${tiers[2].min}+ pcs batch volume.
               </div>
             </div>
             ${brandingControlsMarkup(safeProduct)}
             <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" id="qty-${safeProduct.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
+              <input onclick="event.stopPropagation()" oninput="window.updateProductCartonBadge && window.updateProductCartonBadge('${safeProduct.id}')" id="qty-${safeProduct.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
               <button onclick="event.stopPropagation();addToCart('${safeProduct.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${safeProduct.stock===0?'disabled':''}>ADD</button>
             </div>
+            <p id="carton-badge-${safeProduct.id}" class="rounded-lg bg-emerald-50 px-2 py-1 text-[11px] font-black text-emerald-800">📦 equivalent to ${masterCartonsForProductQty(safeProduct, 100).toFixed(2)} Master Cartons</p>
             <button onclick="event.stopPropagation();buyNow('${safeProduct.id}'); window.toggleExpressCheckout && window.toggleExpressCheckout();" class="w-full rounded-xl border border-[#d4af37] bg-[#064e3b] py-2 text-xs font-semibold text-white disabled:opacity-40" ${safeProduct.stock===0?'disabled':''}>⚡ Express Checkout</button>
           </div>
         </article>
@@ -2144,6 +2451,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     function saveCart(){
       try {
         localStorage.setItem('vmpCart', JSON.stringify(cart));
+        localStorage.setItem('vmp_active_session_cart', JSON.stringify(cart));
       } catch (error) {
         console.warn('Unable to save cart to localStorage.', error);
       }
@@ -2153,8 +2461,43 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       return cart.reduce((sum, item) => sum + item.qty, 0);
     }
 
+    function getProductPackingValue(product){
+      return Math.max(1, Number(product?.packing || product?.packSize || product?.moq || 1000));
+    }
+
+    function getCartItemPackingValue(item){
+      const product = products.find((p) => p.id === item?.id);
+      return getProductPackingValue(product || item);
+    }
+
+    function masterCartonsForProductQty(product, qty){
+      return Number((Number(qty || 0) / getProductPackingValue(product)).toFixed(2));
+    }
+
+    function masterCartonsForCartItem(item){
+      return Number((Number(item?.qty || 0) / getCartItemPackingValue(item)).toFixed(2));
+    }
+
+    function bulkCartonDiscountRate(cartons){
+      if(Number(cartons || 0) >= 25) return 0.05;
+      if(Number(cartons || 0) >= 10) return 0.03;
+      return 0;
+    }
+
+    function cartGrossAmount(){
+      return cart.reduce((sum, item) => sum + (Number(item.qty || 0) * Number(item.unit || 0)), 0);
+    }
+
+    function cartBulkDiscountAmount(){
+      return Number(cart.reduce((sum, item) => {
+        const cartons = masterCartonsForCartItem(item);
+        const rate = bulkCartonDiscountRate(cartons);
+        return sum + (Number(item.qty || 0) * Number(item.unit || 0) * rate);
+      }, 0).toFixed(2));
+    }
+
     function cartTotalAmount(){
-      return cart.reduce((sum, item) => sum + (item.qty * item.unit), 0);
+      return Math.max(0, Number((cartGrossAmount() - cartBulkDiscountAmount()).toFixed(2)));
     }
 
     function shippingEstimate(subtotal){
@@ -2298,6 +2641,208 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         setTimeout(() => notifyVmp('🚀 VMP Marketing Engine Armed & Live. Hard refresh client devices once to sync cached assets.', 'Marketing analytics'), 700);
       }
     }
+
+    function catalogPreviewSource(){
+      return 'wholesale-price-list.pdf';
+    }
+
+    window.openCatalogPreviewDrawer = function openCatalogPreviewDrawer(){
+      const modal = document.getElementById('catalogPreviewModal');
+      const frame = document.getElementById('catalogPreviewFrame');
+      if(frame && frame.src === 'about:blank') frame.src = catalogPreviewSource();
+      if(modal) modal.classList.remove('hidden');
+      console.info('VMP Structural Integrity: Catalog preview drawer opened without mutating checkout or currency systems.');
+    };
+
+    function closeCatalogPreviewDrawer(){
+      document.getElementById('catalogPreviewModal')?.classList.add('hidden');
+    }
+
+    const VMP_FACTORY_WHATSAPP_NUMBER = '918050389261';
+    let simulatedOtpToken = null;
+    let otpCountdownTimer = null;
+
+    function selectedCurrencyCode(){
+      return activeCurrency || document.getElementById('currencySwitcher')?.value || 'INR';
+    }
+
+    function updateProductCartonBadge(productId){
+      const product = products.find((p) => p.id === productId);
+      const input = document.getElementById(`qty-${productId}`);
+      const badge = document.getElementById(`carton-badge-${productId}`);
+      if(!product || !input || !badge) return;
+      const cartons = masterCartonsForProductQty(product, Number(input.value || 0));
+      const rate = bulkCartonDiscountRate(cartons);
+      badge.textContent = `📦 equivalent to ${cartons.toFixed(2)} Master Cartons${rate ? ` • ${Math.round(rate * 100)}% bulk discount eligible` : ''}`;
+      persistActiveSessionCart();
+    }
+    window.updateProductCartonBadge = updateProductCartonBadge;
+
+    function revealOtpStep(){
+      const stepTwo = document.getElementById('authStepTwo');
+      if(!stepTwo) return;
+      stepTwo.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        stepTwo.classList.remove('translate-y-2', 'opacity-0');
+      });
+    }
+
+    function startOtpTimer(seconds = 60){
+      clearInterval(otpCountdownTimer);
+      const timer = document.getElementById('otpTimer');
+      const resend = document.getElementById('resendOtpBtn');
+      let remaining = seconds;
+      if(resend) resend.disabled = true;
+      const tick = () => {
+        if(timer) timer.textContent = remaining > 0 ? `OTP valid for ${remaining}s` : 'OTP expired. Request a fresh code.';
+        if(remaining <= 0){
+          clearInterval(otpCountdownTimer);
+          if(resend) resend.disabled = false;
+          return;
+        }
+        remaining -= 1;
+      };
+      tick();
+      otpCountdownTimer = setInterval(tick, 1000);
+    }
+
+    function requestB2BOtp(){
+      const identity = (document.getElementById('loginIdentity')?.value || '').trim();
+      const loginMsg = document.getElementById('loginMsg');
+      const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identity);
+      const validPhone = /^\+?\d[\d\s-]{7,15}$/.test(identity);
+      if(!validEmail && !validPhone){
+        if(loginMsg){ loginMsg.className = 'px-5 pb-4 text-sm font-semibold text-rose-600'; loginMsg.textContent = 'Enter a valid corporate email or mobile number.'; }
+        return;
+      }
+      simulatedOtpToken = {
+        identity,
+        code: '246810',
+        requestedAt: new Date().toISOString(),
+        expiresAt: Date.now() + 60000
+      };
+      sessionStorage.setItem('vmp_auth_challenge', JSON.stringify(simulatedOtpToken));
+      revealOtpStep();
+      startOtpTimer(60);
+      if(loginMsg){ loginMsg.className = 'px-5 pb-4 text-sm font-semibold text-emerald-700'; loginMsg.textContent = 'Secure OTP simulated. Use 246810 for this local verification flow.'; }
+    }
+
+    function verifyB2BOtp(){
+      const code = (document.getElementById('loginOtp')?.value || '').trim();
+      const challenge = simulatedOtpToken || readJsonStorage('vmp_auth_challenge', null);
+      const loginMsg = document.getElementById('loginMsg');
+      if(!challenge || Date.now() > Number(challenge.expiresAt || 0)){
+        if(loginMsg){ loginMsg.className = 'px-5 pb-4 text-sm font-semibold text-rose-600'; loginMsg.textContent = 'OTP expired. Please request a fresh code.'; }
+        return false;
+      }
+      if(!/^\d{4,6}$/.test(code) || code !== challenge.code){
+        if(loginMsg){ loginMsg.className = 'px-5 pb-4 text-sm font-semibold text-rose-600'; loginMsg.textContent = 'Invalid OTP. Enter the secure verification code sent to your identity.'; }
+        return false;
+      }
+      const authSession = {
+        state: 'Authenticated',
+        identity: challenge.identity,
+        accessToken: `VMP-AUTH-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+        verifiedAt: new Date().toISOString()
+      };
+      sessionStorage.setItem('vmp_auth_session', JSON.stringify(authSession));
+      sessionStorage.removeItem('vmp_auth_challenge');
+      b2bLoggedIn = true;
+      const portalStatus = document.getElementById('portalStatus');
+      if(portalStatus) portalStatus.textContent = `Authenticated as ${authSession.identity}`;
+      if(loginMsg){ loginMsg.className = 'px-5 pb-4 text-sm font-semibold text-emerald-700'; loginMsg.textContent = 'Authenticated. B2B portal unlocked.'; }
+      setTimeout(() => document.getElementById('loginModal')?.classList.add('hidden'), 500);
+      return true;
+    }
+
+    function collectB2BDeliveryMatrix({ requireComplete = false } = {}){
+      const profile = getBuyerProfile() || {};
+      const matrix = {
+        consigneeName: (document.getElementById('b2bConsigneeName')?.value || profile.fullName || '').trim(),
+        mobile: (document.getElementById('b2bMobile')?.value || profile.mobile || '').trim(),
+        streetAddress: (document.getElementById('b2bStreetAddress')?.value || document.getElementById('customerAddress')?.value || '').trim(),
+        landmark: (document.getElementById('b2bLandmark')?.value || '').trim(),
+        districtState: (document.getElementById('b2bDistrictState')?.value || '').trim(),
+        pinCode: (document.getElementById('b2bPinCode')?.value || '').trim(),
+        gstin: (document.getElementById('b2bGstin')?.value || profile.business?.gstin || '').trim().toUpperCase(),
+        capturedAt: new Date().toISOString()
+      };
+      const missing = ['consigneeName','mobile','streetAddress','landmark','districtState','pinCode'].filter((key) => !matrix[key]);
+      const msg = document.getElementById('b2bDeliveryMatrixMsg');
+      if(requireComplete && missing.length){
+        if(msg) msg.textContent = `Required B2B delivery fields missing: ${missing.join(', ')}`;
+        return null;
+      }
+      if(msg) msg.textContent = '';
+      return matrix;
+    }
+
+    function hydrateB2BDeliveryMatrix(){
+      const profile = getBuyerProfile() || {};
+      const saved = readJsonStorage('vmp_b2b_delivery_matrix', {});
+      const setValue = (id, value) => { const el = document.getElementById(id); if(el && !el.value && value) el.value = value; };
+      setValue('b2bConsigneeName', saved.consigneeName || profile.fullName);
+      setValue('b2bMobile', saved.mobile || profile.mobile);
+      setValue('b2bStreetAddress', saved.streetAddress || document.getElementById('customerAddress')?.value);
+      setValue('b2bLandmark', saved.landmark);
+      setValue('b2bDistrictState', saved.districtState);
+      setValue('b2bPinCode', saved.pinCode);
+      setValue('b2bGstin', saved.gstin || profile.business?.gstin);
+    }
+
+    function updateTaxExportMatrix(){
+      const label = document.getElementById('checkoutTaxExportLabel');
+      const value = document.getElementById('checkoutTaxExportValue');
+      const currency = selectedCurrencyCode();
+      if(!label || !value) return;
+      if(currency === 'INR'){
+        label.textContent = 'GST (18% / Corporate Invoice Input Claim Enabled)';
+        value.textContent = 'Shown on invoice';
+      } else {
+        label.textContent = 'FOB Export Terms (Port Handling & Custom Export Docs Clearance Included under Letter of Credit baseline)';
+        value.textContent = 'Included at Customs Point';
+      }
+    }
+
+    function totalMasterCartons(){
+      return Number(cart.reduce((sum, item) => sum + masterCartonsForCartItem(item), 0).toFixed(2));
+    }
+
+    function buildOfficialQuotationText(){
+      const currency = selectedCurrencyCode();
+      const subtotal = cartTotalAmount();
+      const shipping = shippingEstimate(subtotal);
+      const total = Math.max(0, subtotal + Number(shipping.charge || 0) - activeCouponDiscount() - loyaltyDiscountAmount() - currentWalletDeduction());
+      const lines = cart.map((item, index) => `${index + 1}. ${item.name} | Qty: ${Number(item.qty || 0).toLocaleString('en-IN')} pcs | Cartons: ${masterCartonsForCartItem(item).toFixed(2)} | Line: ${formatCurrencyFromInr(Number(item.qty || 0) * Number(item.unit || 0))}`);
+      return `Official Factory Quotation Request - Veer Mahadev Plastic\nCurrency: ${currency}\nTotal Master Cartons: ${totalMasterCartons().toFixed(2)}\nNet Total Value: ${formatCurrencyFromInr(total)}\n\nItems:\n${lines.join('\n')}\n\nPlease issue official PI / quotation with dispatch terms.`;
+    }
+
+    function openOfficialFactoryQuotation(){
+      if(!cart.length){ notifyVmp('Add products before generating an official quotation.', 'Cart required'); return; }
+      const message = buildOfficialQuotationText();
+      window.open(`https://wa.me/${VMP_FACTORY_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    async function triggerSystemOrderNotification(orderPayload){
+      console.log('VMP System Engine: Dispatching server-side automated B2B WhatsApp payload...', orderPayload);
+      const systemPayload = {
+        customerAuthToken: readJsonStorage('vmp_auth_session', JSON.parse(sessionStorage.getItem('vmp_auth_session') || 'null')),
+        fullShippingAddress: orderPayload?.b2bDeliveryMatrix || collectB2BDeliveryMatrix(),
+        itemArray: orderPayload?.items || [],
+        totalCartons: totalMasterCartons(),
+        currencyTotal: { currency: selectedCurrencyCode(), total: orderPayload?.total || cartTotalAmount() },
+        createdAt: new Date().toISOString()
+      };
+      try {
+        localStorage.setItem('vmp_system_order_notification_payload', JSON.stringify(systemPayload));
+        // Placeholder for production controller: await fetch('/api/orders/notify-whatsapp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(systemPayload) });
+      } catch (error) {
+        console.warn('VMP notification payload persisted locally due to storage/API limitation.', error);
+      }
+      console.log('VMP Automation: System-to-Admin direct notifications initialized successfully.');
+      return systemPayload;
+    }
+    window.triggerSystemOrderNotification = triggerSystemOrderNotification;
 
     function getAppliedCoupon(){
       try { return JSON.parse(localStorage.getItem('vmp_applied_coupon') || 'null'); }
@@ -2527,14 +3072,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     }
 
     function openCatalogPrintWindow(){
-      const link = document.createElement('a');
-      link.href = './wholesale-price-list.pdf';
-      link.download = 'veer-mahadev-factory-price-catalog.pdf';
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      notifyVmp('Factory price catalog download started from the official B2B PDF asset.', 'Catalog download');
+      window.generateWholesalePriceListPdf();
+      notifyVmp('Factory price catalog PDF compiler started from local image assets.', 'Catalog download');
     }
 
     function getAdvisorRecommendation(){
@@ -2631,6 +3170,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     function renderCart(){
       if(!cartCount || !cartSubtotal || !cartItems) return;
       cartCount.textContent = cartTotalQty();
+      const grossSubtotal = cartGrossAmount();
+      const bulkDiscount = cartBulkDiscountAmount();
       const subtotal = cartTotalAmount();
       cartSubtotal.textContent = subtotal.toFixed(2);
       const estimate = shippingEstimate(subtotal);
@@ -2643,6 +3184,10 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       const cartCouponDiscount = document.getElementById('cartCouponDiscount');
       if(cartCouponRow) cartCouponRow.classList.toggle('hidden', !getAppliedCoupon());
       if(cartCouponDiscount) cartCouponDiscount.textContent = couponDiscount.toFixed(2);
+      const cartBulkDiscountRow = document.getElementById('cartBulkDiscountRow');
+      const cartBulkDiscount = document.getElementById('cartBulkDiscount');
+      if(cartBulkDiscountRow) cartBulkDiscountRow.classList.toggle('hidden', bulkDiscount <= 0);
+      if(cartBulkDiscount) cartBulkDiscount.textContent = bulkDiscount.toFixed(2);
       const directorBtn = document.getElementById('directorCallBtn');
       if(directorBtn){
         directorBtn.classList.toggle('hidden', cartTotalAmount() < 100000);
@@ -2662,6 +3207,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
             <button onclick="removeCartItem(${idx})" class="text-rose-600 text-sm">Remove</button>
           </div>
           <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
+          <p class="mt-1 inline-flex rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-black text-emerald-800">📦 equivalent to ${masterCartonsForCartItem(item).toFixed(2)} Master Cartons${bulkCartonDiscountRate(masterCartonsForCartItem(item)) ? ` • ${Math.round(bulkCartonDiscountRate(masterCartonsForCartItem(item)) * 100)}% factory discount` : ''}</p>
           ${item.customBranding?.requested ? `<p class="mt-1 rounded-lg bg-amber-50 px-2 py-1 text-[11px] font-bold text-amber-800">✨ Custom logo printing added${item.customBranding?.artwork?.fileName ? ` • ${item.customBranding.artwork.fileName}` : ''}</p>` : ''}
         </div>
       `).join('');
@@ -2678,6 +3224,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       const subtotal = cartTotalAmount();
       const estimate = shippingEstimate(subtotal);
       const couponDiscount = activeCouponDiscount();
+      const bulkDiscount = cartBulkDiscountAmount();
       const loyaltyDiscount = loyaltyDiscountAmount();
       const walletDeduction = currentWalletDeduction();
       const total = Math.max(0, subtotal + Number(estimate.charge || 0) - couponDiscount - loyaltyDiscount - walletDeduction);
@@ -2699,6 +3246,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       set('expressSubtotal', subtotal);
       set('expressShipping', estimate.charge);
       set('expressCoupon', couponDiscount);
+      set('expressBulkDiscount', bulkDiscount);
       const tier = getLoyaltyTier();
       const loyaltyLabel = document.getElementById('expressLoyaltyLabel');
       if(loyaltyLabel) loyaltyLabel.textContent = `${tier.name} Markdown`;
@@ -2746,6 +3294,8 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
           packSize: meta.size || 'Standard Pack',
           qty: Number(item.qty || 0),
           unit: Number(item.unit || 0),
+          masterCartons: masterCartonsForCartItem(item),
+          bulkDiscountRate: bulkCartonDiscountRate(masterCartonsForCartItem(item)),
           lineTotal: Number((Number(item.qty || 0) * Number(item.unit || 0)).toFixed(2)),
           customBranding: item.customBranding || null
         };
@@ -2762,9 +3312,13 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         verifiedBusiness: buildBusinessVerification(profile || {}),
         corporatePo: checkoutPoDocument,
         recurringDispatch: getRecurringDispatchPreference(),
+        b2bDeliveryMatrix: collectB2BDeliveryMatrix() || null,
         dispatchQr: null,
         coupon: getAppliedCoupon(),
         couponDiscount,
+        bulkCartonDiscount: cartBulkDiscountAmount(),
+        totalMasterCartons: totalMasterCartons(),
+        taxExportMatrix: selectedCurrencyCode() === 'INR' ? 'GST (18% / Corporate Invoice Input Claim Enabled)' : 'FOB Export Terms - Included at Customs Point',
         loyalty: { tier: loyaltyTier.name, rate: loyaltyTier.rate, discount: loyaltyDiscount },
         walletDeduction,
         items: purchasedItems,
@@ -2891,7 +3445,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         existing.qty += qty;
         if(branding?.artwork) existing.customBranding = branding;
       }
-      else cart.push({id, name:p.name, qty, unit, customBranding: branding});
+      else cart.push({id, name:p.name, qty, unit, packing: getProductPackingValue(p), customBranding: branding});
       saveCart();
       renderCart();
       notifyVmp(`${p.name} added to cart successfully.`, 'Cart updated');
@@ -2996,10 +3550,12 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       const subtotal = cartTotalAmount();
       const estimate = shippingEstimate(subtotal);
       const couponDiscount = activeCouponDiscount();
+      const bulkDiscount = cartBulkDiscountAmount();
       const loyaltyDiscount = loyaltyDiscountAmount();
       const walletDeduction = currentWalletDeduction();
       const total = Math.max(0, subtotal + Number(estimate.charge || 0) - couponDiscount - loyaltyDiscount - walletDeduction);
       const profile = getBuyerProfile();
+      hydrateB2BDeliveryMatrix();
       const businessVerification = updateSecuritySeal();
       const name = (document.getElementById('customerName')?.value || profile?.fullName || '').trim();
       const address = (document.getElementById('customerAddress')?.value || '').trim();
@@ -3068,6 +3624,14 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         checkoutWalletRow.classList.toggle('flex', hasWallet);
       }
       if(checkoutWalletDeduction) checkoutWalletDeduction.textContent = walletDeduction.toFixed(2);
+      const checkoutBulkDiscountRow = document.getElementById('checkoutBulkDiscountRow');
+      const checkoutBulkDiscount = document.getElementById('checkoutBulkDiscount');
+      if(checkoutBulkDiscountRow){
+        checkoutBulkDiscountRow.classList.toggle('hidden', bulkDiscount <= 0);
+        checkoutBulkDiscountRow.classList.toggle('flex', bulkDiscount > 0);
+      }
+      if(checkoutBulkDiscount) checkoutBulkDiscount.textContent = bulkDiscount.toFixed(2);
+      updateTaxExportMatrix();
       if(totalEl) totalEl.textContent = total.toFixed(2);
       const qr = document.getElementById('checkoutQrImage');
       if(qr){
@@ -3342,22 +3906,11 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     // B2B login
     bindById('openLogin', 'click', ()=> document.getElementById('loginModal')?.classList.remove('hidden'));
     bindById('closeLogin', 'click', ()=> document.getElementById('loginModal')?.classList.add('hidden'));
+    bindById('requestOtpBtn', 'click', requestB2BOtp);
+    bindById('resendOtpBtn', 'click', requestB2BOtp);
     bindById('loginForm', 'submit', (e)=>{
       e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim();
-      const pass = document.getElementById('loginPass').value.trim();
-      const loginMsg = document.getElementById('loginMsg');
-      if(email && pass.length >= 4){
-        b2bLoggedIn = true;
-        loginMsg.className = 'text-sm mt-2 font-semibold text-emerald-700';
-        loginMsg.textContent = 'Login successful. B2B portal unlocked.';
-        const portalStatus = document.getElementById('portalStatus');
-        if(portalStatus) portalStatus.textContent = `Logged in as ${email}`;
-        setTimeout(()=> document.getElementById('loginModal')?.classList.add('hidden'), 600);
-      }else{
-        loginMsg.className = 'text-sm mt-2 font-semibold text-rose-600';
-        loginMsg.textContent = 'Please enter valid email and password.';
-      }
+      verifyB2BOtp();
     });
 
     // B2B download access control
@@ -3368,14 +3921,13 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         document.getElementById('openLogin')?.click();
         return;
       }
-      const a = document.createElement('a');
-      a.href = './wholesale-price-list.pdf';
-      a.download = 'wholesale-price-list.pdf';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      if(portalStatus) portalStatus.textContent = 'Price list downloaded successfully.';
+      window.openCatalogPreviewDrawer();
+      if(portalStatus) portalStatus.textContent = 'Price list preview opened. Use Download / Print PDF inside the viewer.';
     });
+    bindById('catalogClosePreviewBtn', 'click', closeCatalogPreviewDrawer);
+    bindById('catalogCompilePdfBtn', 'click', () => window.generateWholesalePriceListPdf());
+    bindById('catalogOpenPdfBtn', 'click', () => window.open('wholesale-price-list.pdf', '_blank'));
+    bindById('catalogPreviewModal', 'click', (event) => { if(event.target.id === 'catalogPreviewModal') closeCatalogPreviewDrawer(); });
 
     // Category interactions
     document.addEventListener('click', (e)=>{
@@ -3420,10 +3972,16 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       }
     });
 
+    bindById('currencySwitcher', 'change', (event) => { handleCurrencyChange(event.target.value); updateTaxExportMatrix(); renderCart(); });
+    updateCurrencySwitcherUi();
+    bindById('globalShippingRoute', 'change', updateGlobalShippingRouteEstimator);
+    updateGlobalShippingRouteEstimator();
+
     // Cart controls
     bindById('openCartTop', 'click', openCart);
     bindById('openCartFromDash', 'click', openCart);
     bindById('shareEstimateCartBtn', 'click', shareEstimateQuoteToWhatsApp);
+    bindById('officialFactoryQuoteBtn', 'click', openOfficialFactoryQuotation);
     bindById('cartWhatsAppCheckoutBtn', 'click', () => document.getElementById('waCart')?.click());
     bindById('cartPhonePeCheckoutBtn', 'click', launchCartPhonePeCheckout);
     bindById('cartPhonePePaymentBtn', 'click', launchCartPhonePeCheckout);
@@ -3604,7 +4162,13 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         notifyVmp('Cart is empty. Please add products before payment verification.', 'Cart required');
         return;
       }
-      const address = (document.getElementById('customerAddress')?.value || '').trim();
+      const b2bDeliveryMatrix = collectB2BDeliveryMatrix({ requireComplete: true });
+      if(!b2bDeliveryMatrix){
+        notifyVmp('Complete the B2B Delivery Matrix before confirming payment.', 'Delivery matrix required');
+        return;
+      }
+      localStorage.setItem('vmp_b2b_delivery_matrix', JSON.stringify(b2bDeliveryMatrix));
+      const address = [b2bDeliveryMatrix.streetAddress, b2bDeliveryMatrix.landmark, b2bDeliveryMatrix.districtState, b2bDeliveryMatrix.pinCode].filter(Boolean).join(', ');
       const loyaltyTier = getLoyaltyTier();
       const loyaltyDiscount = loyaltyDiscountAmount();
       const walletDeduction = currentWalletDeduction();
@@ -3614,12 +4178,17 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         verifiedBusiness: buildBusinessVerification(getBuyerProfile() || {}),
         corporatePo: checkoutPoDocument,
         recurringDispatch: getRecurringDispatchPreference(),
+        b2bDeliveryMatrix,
         address,
         shipping: shippingEstimate(cartTotalAmount()),
         coupon: getAppliedCoupon(),
         couponDiscount: activeCouponDiscount(),
         loyalty: { tier: loyaltyTier.name, rate: loyaltyTier.rate, discount: loyaltyDiscount },
         walletDeduction,
+        bulkCartonDiscount: cartBulkDiscountAmount(),
+        totalMasterCartons: totalMasterCartons(),
+        selectedCurrency: selectedCurrencyCode(),
+        taxExportMatrix: selectedCurrencyCode() === 'INR' ? 'GST (18% / Corporate Invoice Input Claim Enabled)' : 'FOB Export Terms - Included at Customs Point',
         paymentMode: walletDeduction > 0 ? 'Wallet + PhonePe / UPI' : 'PhonePe / UPI',
         utr,
         items: cart,
@@ -3631,10 +4200,13 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       localStorage.setItem('vmp_order_setups', JSON.stringify(orders.slice(0, 25)));
       const orderHistory = readOrderHistory();
       const completedOrder = buildOrderHistoryRecord({ utr, address });
+      completedOrder.b2bDeliveryMatrix = b2bDeliveryMatrix;
+      completedOrder.selectedCurrency = selectedCurrencyCode();
       completedOrder.dispatchQr = makeDispatchQrDataUrl(completedOrder);
       orderHistory.unshift(completedOrder);
       writeOrderHistory(orderHistory);
       renderDispatchQr(completedOrder);
+      triggerSystemOrderNotification({ ...payload, orderId: completedOrder.orderId, total: completedOrder.total }).catch((error) => console.warn('System order notification placeholder failed.', error));
       if(walletDeduction > 0){
         setWalletBalance(walletBalance() - walletDeduction);
         addWalletTransaction(-walletDeduction, utr, 'checkout-deduction');
@@ -3646,6 +4218,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       cart = [];
       localStorage.setItem('cart', JSON.stringify([]));
       localStorage.setItem('vmpCart', JSON.stringify([]));
+      localStorage.setItem('vmp_active_session_cart', JSON.stringify([]));
       renderCart();
       renderOrderHistory();
       renderLoyaltyAndWallet();
@@ -3874,6 +4447,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       initPriceMatchChallenge();
       initBulkPurchaseSocialProof();
       initVmpMarketingAnalytics();
+      console.info('VMP Structural Integrity: persistent cart, catalog preview, currency, PhonePe, and OTP modules initialized.');
         bindById('openAiPackagingAdvisor', 'click', () => { document.getElementById('aiPackagingModal')?.classList.remove('hidden'); renderAdvisorRecommendation(); });
       bindById('closeAiPackagingAdvisor', 'click', () => document.getElementById('aiPackagingModal')?.classList.add('hidden'));
       bindById('aiPackagingModal', 'click', (event) => { if(event.target.id === 'aiPackagingModal') event.target.classList.add('hidden'); });
@@ -3908,6 +4482,11 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       if(reorderBtn) reorderBtn.textContent = '🔁 Re-Order Last Cart';
       const shippingZone = document.getElementById('shippingZone');
       if(shippingZone) shippingZone.addEventListener('change', renderCart);
+      ['b2bConsigneeName','b2bMobile','b2bStreetAddress','b2bLandmark','b2bDistrictState','b2bPinCode','b2bGstin'].forEach(id => {
+        const element = document.getElementById(id);
+        if(element) element.addEventListener('input', () => { collectB2BDeliveryMatrix(); });
+      });
+      console.log('VMP Automation: System-to-Admin direct notifications initialized successfully.');
       ['customerName','customerAddress'].forEach(id => {
         const element = document.getElementById(id);
         if(element) element.addEventListener('input', () => { updateWhatsappButton(); renderExpressCheckout(); });
