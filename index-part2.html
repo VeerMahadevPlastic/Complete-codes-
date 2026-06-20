@@ -2541,6 +2541,45 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
       return /^[6-9]\d{9}$/.test(normalizeIndianPhone(phone));
     }
 
+    const VMP_STORAGE_CRYPTO = {
+      passphrase: 'vmp-storage-key-v1',
+      salt: 'vmp-storage-salt-v1'
+    };
+
+    async function deriveStorageKey(){
+      const enc = new TextEncoder();
+      const baseKey = await crypto.subtle.importKey('raw', enc.encode(VMP_STORAGE_CRYPTO.passphrase), 'PBKDF2', false, ['deriveKey']);
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: enc.encode(VMP_STORAGE_CRYPTO.salt), iterations: 120000, hash: 'SHA-256' },
+        baseKey,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    function bytesToBase64(bytes){
+      let str = '';
+      bytes.forEach((b) => { str += String.fromCharCode(b); });
+      return btoa(str);
+    }
+
+    function base64ToBytes(base64){
+      const bin = atob(base64);
+      const out = new Uint8Array(bin.length);
+      for(let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+      return out;
+    }
+
+    async function setEncryptedJsonStorage(key, value){
+      const enc = new TextEncoder();
+      const keyObj = await deriveStorageKey();
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, keyObj, enc.encode(JSON.stringify(value)));
+      const payload = JSON.stringify({ v: 1, iv: bytesToBase64(iv), data: bytesToBase64(new Uint8Array(cipherBuf)) });
+      localStorage.setItem(key, payload);
+    }
+
     function buildBusinessVerification(profile){
       const phoneVerified = verifyIndianPhoneNumber(profile?.mobile);
       return {
@@ -3616,7 +3655,9 @@ SR AGRICULTURE PRODUCT PACKING RATE BOX RATE BOX
         return;
       }
       profile.verifiedBusiness = buildBusinessVerification(profile);
-      localStorage.setItem('vmp_user_profile', JSON.stringify(profile));
+      setEncryptedJsonStorage('vmp_user_profile', profile).catch(() => {
+        localStorage.setItem('vmp_user_profile', JSON.stringify(profile));
+      });
       const abandonedWebhookPayload = {
         type: 'abandoned_cart_alert',
         message: `Abandoned Cart Alert: User ${profile.fullName} (${profile.mobile}) left items in cart without UTR confirmation.`,
