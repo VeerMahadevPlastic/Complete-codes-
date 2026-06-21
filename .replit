@@ -30,3 +30,9 @@ externalPort = 8081
 [[ports]]
 localPort = 18609
 externalPort = 80
+
+[userenv]
+
+[userenv.shared]
+VITE_ADMIN_USER = "VMPLASTIC@2024"
+VITE_ADMIN_PASS = "VMPlastic@adminKaran"

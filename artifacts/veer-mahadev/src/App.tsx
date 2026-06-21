@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CartProvider } from "@/context/cart-context";
+import { AdminProvider } from "@/context/admin-context";
 import NotFound from "@/pages/not-found";
 
 import { Navbar } from "@/components/layout/Navbar";
@@ -31,6 +32,7 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <AdminProvider>
       <CartProvider>
         <TooltipProvider>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
@@ -46,6 +48,7 @@ function App() {
           <Toaster />
         </TooltipProvider>
       </CartProvider>
+      </AdminProvider>
     </QueryClientProvider>
   );
 }
