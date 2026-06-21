@@ -26,7 +26,8 @@ import { Search, ShoppingCart, Menu, X, LogIn, LogOut, ShieldCheck, Eye, EyeOff,
 import { useCart } from "@/context/cart-context";
 import { useAdmin } from "@/context/admin-context";
 import { CartDrawer } from "@/components/ui/cart-drawer";
-import { products, categories } from "@/data/products";
+import { categories } from "@/data/products";
+import { useCatalog } from "@/context/catalog-context";
 
 interface NavbarProps {
   onSearch?: (query: string) => void;
@@ -48,6 +49,7 @@ export function Navbar({ onSearch }: NavbarProps) {
   const [showPass, setShowPass] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
   const { isAdmin, login, logout } = useAdmin();
+  const { products } = useCatalog();
   const searchRef = useRef<HTMLDivElement>(null);
   const { count } = useCart();
 
@@ -284,7 +286,14 @@ export function Navbar({ onSearch }: NavbarProps) {
                 {cat}
               </Link>
             ))}
-            <div className="ml-auto">
+            <div className="ml-auto flex items-center gap-2">
+              {isAdmin && (
+                <Link href="/admin"
+                  className="flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:text-amber-300 bg-amber-400/10 hover:bg-amber-400/20 border border-amber-400/30 px-3 py-1 rounded transition-all"
+                  data-testid="link-admin-panel">
+                  <ShieldCheck className="h-3 w-3" /> Admin Panel
+                </Link>
+              )}
               <Link href="/contact" className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold px-3 py-1.5 whitespace-nowrap">
                 Get Quote →
               </Link>

@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import { categories, products } from "@/data/products";
+import { categories } from "@/data/products";
+import { useCatalog } from "@/context/catalog-context";
 import { Link, useLocation } from "wouter";
 import {
   ArrowRight, Search, Truck, ShieldCheck, Package,
@@ -9,6 +10,7 @@ import {
 export default function Home() {
   const [, setLocation] = useLocation();
   const [query, setQuery] = useState("");
+  const { products } = useCatalog();
   const [suggestions, setSuggestions] = useState<typeof products>([]);
   const [showSug, setShowSug] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -53,13 +55,11 @@ export default function Home() {
 
         <div className="relative container mx-auto px-4 md:px-6 py-16 md:py-24 flex flex-col items-center text-center">
 
-          {/* Eyebrow pill */}
           <div className="inline-flex items-center gap-2 bg-amber-500/15 border border-amber-500/30 text-amber-300 rounded-full px-4 py-1.5 text-xs font-bold tracking-wide uppercase mb-6" data-testid="badge-hero">
             <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
             India's Trusted Wholesale Supplier · Est. 2005
           </div>
 
-          {/* Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.06] mb-5 max-w-5xl" data-testid="text-hero-title">
             Leading Manufacturer &amp;{" "}
             <span className="text-amber-400">Wholesaler</span>{" "}
@@ -69,7 +69,7 @@ export default function Home() {
             Premium food-grade plates, cups, cutlery &amp; packaging — supplied in bulk to restaurants, caterers, hotels &amp; bakeries across India. Direct from our factory in Ahmedabad.
           </p>
 
-          {/* ── HERO SEARCH ── */}
+          {/* Hero Search */}
           <div className="w-full max-w-2xl" ref={searchRef}>
             <form onSubmit={handleSearch} className="relative flex shadow-2xl rounded-xl overflow-hidden">
               <input
@@ -91,7 +91,6 @@ export default function Home() {
                 <span className="hidden sm:inline">Search</span>
               </button>
 
-              {/* Suggestions dropdown */}
               {showSug && suggestions.length > 0 && (
                 <div className="absolute top-full left-0 right-0 bg-white rounded-b-xl shadow-2xl border border-gray-100 mt-0 overflow-hidden z-50" data-testid="hero-suggestions">
                   {suggestions.map(p => (
@@ -114,7 +113,6 @@ export default function Home() {
               )}
             </form>
 
-            {/* Quick category pills */}
             <div className="flex flex-wrap justify-center gap-2 mt-4">
               {categories.filter(c => c !== "All").map(cat => (
                 <Link key={cat} href={`/products?category=${encodeURIComponent(cat)}`}
@@ -127,7 +125,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Stats strip */}
         <div className="relative border-t border-white/10 bg-white/5">
           <div className="container mx-auto px-4 md:px-6 py-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
@@ -148,39 +145,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ 4 TRUST BADGES ═════════════════════════════════ */}
+      {/* Trust Badges */}
       <section className="bg-white border-b border-gray-100 py-8">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
             {[
-              {
-                icon: ShieldCheck,
-                iconBg: "bg-emerald-50 border-emerald-100",
-                iconColor: "text-emerald-700",
-                title: "Premium Quality Guaranteed",
-                desc: "All products meet BIS & FSSAI food-safety standards. Manufactured under ISO-certified quality controls.",
-              },
-              {
-                icon: Zap,
-                iconBg: "bg-amber-50 border-amber-100",
-                iconColor: "text-amber-700",
-                title: "Wholesale & Bulk Pricing",
-                desc: "Direct-manufacturer tiered rates — no middlemen. Higher volume = deeper discounts for your business.",
-              },
-              {
-                icon: Factory,
-                iconBg: "bg-blue-50 border-blue-100",
-                iconColor: "text-blue-700",
-                title: "Direct Factory Dispatch",
-                desc: "Orders dispatched directly from our Ahmedabad facility. Same-week shipping for in-stock items.",
-              },
-              {
-                icon: Smartphone,
-                iconBg: "bg-indigo-50 border-indigo-100",
-                iconColor: "text-indigo-700",
-                title: "Secure UPI & WhatsApp Billing",
-                desc: "Place orders and pay via UPI in seconds. Invoices sent directly to your WhatsApp & email.",
-              },
+              { icon: ShieldCheck, iconBg: "bg-emerald-50 border-emerald-100", iconColor: "text-emerald-700", title: "Premium Quality Guaranteed", desc: "All products meet BIS & FSSAI food-safety standards. Manufactured under ISO-certified quality controls." },
+              { icon: Zap, iconBg: "bg-amber-50 border-amber-100", iconColor: "text-amber-700", title: "Wholesale & Bulk Pricing", desc: "Direct-manufacturer tiered rates — no middlemen. Higher volume = deeper discounts for your business." },
+              { icon: Factory, iconBg: "bg-blue-50 border-blue-100", iconColor: "text-blue-700", title: "Direct Factory Dispatch", desc: "Orders dispatched directly from our Ahmedabad facility. Same-week shipping for in-stock items." },
+              { icon: Smartphone, iconBg: "bg-indigo-50 border-indigo-100", iconColor: "text-indigo-700", title: "Secure UPI & WhatsApp Billing", desc: "Place orders and pay via UPI in seconds. Invoices sent directly to your WhatsApp & email." },
             ].map(({ icon: Icon, iconBg, iconColor, title, desc }) => (
               <div key={title} className="flex gap-4 items-start p-5 md:p-6">
                 <div className={`h-11 w-11 rounded-xl border flex items-center justify-center shrink-0 ${iconBg}`}>
@@ -196,7 +169,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ CATEGORY GRID ══════════════════════════════════ */}
+      {/* Category Grid */}
       <section className="py-14 bg-[#f7f8fa]">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-end justify-between mb-8">
@@ -241,7 +214,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ FEATURED PRODUCTS ══════════════════════════════ */}
+      {/* Featured Products */}
       <section className="py-12 bg-white border-t border-gray-100">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-end justify-between mb-8">
@@ -266,10 +239,12 @@ export default function Home() {
                 </div>
                 <div className="p-2.5">
                   <p className="text-xs font-bold text-gray-900 line-clamp-2 leading-snug mb-1">{product.name}</p>
-                  <p className="text-[10px] text-gray-400 mb-1.5">{product.packSize}</p>
-                  <div className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.5 rounded-full">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    In Stock
+                  <p className="text-[10px] text-gray-400 mb-1.5">{product.packSize.toLocaleString("en-IN")} pcs/box</p>
+                  <div className="flex items-center justify-between">
+                    <div className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />In Stock
+                    </div>
+                    <span className="text-[10px] font-bold text-amber-700">₹{product.boxRate.toLocaleString("en-IN")}</span>
                   </div>
                 </div>
               </Link>
@@ -285,7 +260,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ SOCIAL PROOF STRIP ════════════════════════════ */}
+      {/* Social Proof */}
       <section className="py-10 bg-gray-50 border-t border-gray-100">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12">
@@ -311,7 +286,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ CTA BANNER ═════════════════════════════════════ */}
+      {/* CTA Banner */}
       <section className="py-14 bg-gray-900 text-white">
         <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>

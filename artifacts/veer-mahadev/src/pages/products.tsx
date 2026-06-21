@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
-import { products, categories, getTierPrice } from "@/data/products";
+import { categories, getTierPrice } from "@/data/products";
+import { useCatalog } from "@/context/catalog-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/context/cart-context";
@@ -18,6 +19,7 @@ export default function Products() {
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const { addItem, isInCart, count } = useCart();
+  const { products } = useCatalog();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function Products() {
       const matchQ = !q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q);
       return matchCat && matchQ;
     });
-  }, [activeCategory, searchQuery]);
+  }, [products, activeCategory, searchQuery]);
 
   function handleAddToCart(product: typeof products[0]) {
     addItem(product);
@@ -145,13 +147,11 @@ export default function Products() {
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  {/* In Stock */}
                   <div className="absolute top-2.5 left-2.5">
                     <span className="inline-flex items-center gap-1 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">
                       <span className="h-1.5 w-1.5 rounded-full bg-white/80" />In Stock
                     </span>
                   </div>
-                  {/* SKU */}
                   <div className="absolute top-2.5 right-2.5">
                     <span className="text-[9px] font-mono font-semibold bg-white/90 text-gray-600 px-1.5 py-0.5 rounded border border-gray-200">
                       {product.sku}
@@ -171,14 +171,12 @@ export default function Products() {
                     </p>
                   </div>
 
-                  {/* ── Tier Pricing Block ── */}
+                  {/* Tier Pricing Block */}
                   <div className="rounded-lg border border-gray-100 bg-gray-50 divide-y divide-gray-100 text-[10px]">
-                    {/* Retail */}
                     <div className="flex items-center justify-between px-2.5 py-1.5">
                       <span className="text-gray-500">Retail / pc</span>
                       <span className="font-semibold text-gray-700">₹{retailPc.toFixed(2)}</span>
                     </div>
-                    {/* Box rate */}
                     <div className="flex items-center justify-between px-2.5 py-1.5 bg-amber-50/50">
                       <span className="text-amber-800 font-semibold">Box (1+)</span>
                       <div className="text-right">
@@ -186,7 +184,6 @@ export default function Products() {
                         <span className="text-amber-600 ml-1">/box</span>
                       </div>
                     </div>
-                    {/* Factory rate */}
                     <div className="flex items-center justify-between px-2.5 py-1.5 bg-green-50/60">
                       <div className="flex items-center gap-1">
                         <span className="text-emerald-800 font-semibold">Factory (5+)</span>
