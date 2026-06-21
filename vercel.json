@@ -1,8 +1,4 @@
 {
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ]
+  "framework": "vite",
+  "outputDirectory": "dist"
 }
