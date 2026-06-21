@@ -1,0 +1,26 @@
+I want to deeply upgrade my e-commerce website to feature a Dynamic Price Tier system and load a specific pre-defined product catalog. Please analyze my current codebase and implement the following architecture and data injection:
+
+1. Brand Identity & Amazon UI Style:
+   - Ensure the entire website uses a highly professional, clean layout with modern typography (like Inter or Roboto) and balanced white space.
+   - Use a sticky, premium navigation header featuring a large centralized search bar with an integrated category dropdown.
+   - Products must display in a beautiful, uniform aspect-ratio grid (square boxes) with sleek hover effects.
+
+2. Dynamic Price Tier Logic:
+   - Update the product schema to strictly support: ID, Name, Image URL, Retail Price, Wholesale Tier 1 Price (e.g., 50+ units), and Wholesale Tier 2 Factory Price (e.g., 100+ units).
+   - In the cart and checkout logic, when a customer increases the quantity of a product, the system must automatically apply the cheaper wholesale/factory price tier based on the total quantity. This correct calculated price must reflect in the subtotal and the final WhatsApp message.
+
+3. Interactive Price Tier Display on Cards:
+   - On each product card in the grid, cleanly display the tiered pricing structure so business buyers see the savings instantly. Example:
+     * Retail Price: ₹XX
+     * Bulk (50+): ₹XX
+     * Factory Rate (100+): ₹XX
+
+4. Local Persistence & Admin View:
+   - Save this catalog state so it persists. Also, render a neat, clean "Product Management Table" or section at the very bottom of the page (accessible to me) that displays this loaded data and allows quick on-screen edits to any link or price.
+
+5. Product Data to Inject (PASTE YOUR DATA HERE):
+   Please completely replace the old product array/database in the code with the exact list provided below:
+
+   [यहाँ अपने सभी प्रोडक्ट्स के नाम, उनकी इमेज की डायरेक्ट लिंक्स, और उनके तीनों रेट्स (Retail, Bulk, Factory) बारी-बारी से लिख दीजिए। जैसे ही आप यहाँ अपना डेटा लिखेंगे, Replit Agent सीधे इन्हें वेबसाइट पर फिट कर देगा।]
+
+Please execute these frontend changes and hardcode/inject this product list into the system now without disrupting the WhatsApp ordering or UPI functions.
