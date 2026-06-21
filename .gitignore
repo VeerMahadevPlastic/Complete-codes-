@@ -39,7 +39,7 @@ testem.log
 
 # System Files
 .DS_Store
-Thumbs.db
+Thumbs.db 
 
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
