@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { products as staticProducts } from "@/data/products";
 import type { Product } from "@/data/products";
 
@@ -6,59 +6,74 @@ export type ProductOverride = Partial<Omit<Product, "id" | "sku" | "category">>;
 
 interface CatalogContextValue {
   products: Product[];
-  updateProduct: (id: string, changes: ProductOverride) => void;
-  resetProduct: (id: string) => void;
-  resetAll: () => void;
+  loading: boolean;
+  updateProduct: (id: string, changes: ProductOverride) => Promise<void>;
+  resetProduct: (id: string) => Promise<void>;
+  resetAll: () => Promise<void>;
   isModified: (id: string) => boolean;
   modifiedCount: number;
 }
 
-const STORAGE_KEY = "vm_catalog_v1";
 const CatalogContext = createContext<CatalogContextValue | null>(null);
-
-function loadOverrides(): Record<string, ProductOverride> {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch { return {}; }
-}
-
-function saveOverrides(overrides: Record<string, ProductOverride>) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides)); } catch { /* noop */ }
-}
+const API_BASE = "/api/products/overrides";
 
 export function CatalogProvider({ children }: { children: React.ReactNode }) {
-  const [overrides, setOverrides] = useState<Record<string, ProductOverride>>(loadOverrides);
+  const [overrides, setOverrides] = useState<Record<string, ProductOverride>>({});
+  const [loading, setLoading] = useState(true);
 
-  const products = staticProducts.map(p => ({ ...p, ...(overrides[p.id] ?? {}) }));
-
-  const updateProduct = useCallback((id: string, changes: ProductOverride) => {
-    setOverrides(prev => {
-      const next = { ...prev, [id]: { ...(prev[id] ?? {}), ...changes } };
-      saveOverrides(next);
-      return next;
-    });
+  useEffect(() => {
+    fetch(API_BASE)
+      .then((r) => {
+        if (!r.ok) throw new Error("API error");
+        return r.json() as Promise<Record<string, ProductOverride>>;
+      })
+      .then((data) => {
+        setOverrides(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   }, []);
 
-  const resetProduct = useCallback((id: string) => {
-    setOverrides(prev => {
+  const products = staticProducts.map((p) => ({
+    ...p,
+    ...(overrides[p.id] ?? {}),
+  }));
+
+  const updateProduct = useCallback(async (id: string, changes: ProductOverride) => {
+    setOverrides((prev) => ({ ...prev, [id]: { ...(prev[id] ?? {}), ...changes } }));
+    const res = await fetch(`${API_BASE}/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(changes),
+    });
+    if (!res.ok) throw new Error("Failed to save");
+  }, []);
+
+  const resetProduct = useCallback(async (id: string) => {
+    setOverrides((prev) => {
       const next = { ...prev };
       delete next[id];
-      saveOverrides(next);
       return next;
     });
+    const res = await fetch(`${API_BASE}/${encodeURIComponent(id)}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Failed to reset");
   }, []);
 
-  const resetAll = useCallback(() => {
+  const resetAll = useCallback(async () => {
     setOverrides({});
-    saveOverrides({});
+    const res = await fetch(API_BASE, { method: "DELETE" });
+    if (!res.ok) throw new Error("Failed to reset all");
   }, []);
 
   const isModified = useCallback((id: string) => id in overrides, [overrides]);
   const modifiedCount = Object.keys(overrides).length;
 
   return (
-    <CatalogContext.Provider value={{ products, updateProduct, resetProduct, resetAll, isModified, modifiedCount }}>
+    <CatalogContext.Provider
+      value={{ products, loading, updateProduct, resetProduct, resetAll, isModified, modifiedCount }}
+    >
       {children}
     </CatalogContext.Provider>
   );
