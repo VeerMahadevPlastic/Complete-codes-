@@ -1,72 +1,55 @@
-from io import BytesIO
-from datetime import datetime
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
+from datetime import datetime, timedelta
+from collections import defaultdict
+from typing import List, Dict
 
 
-def generate_gst_invoice_pdf(order: dict, company: str, gst_number: str, phone: str) -> bytes:
-    buffer = BytesIO()
-    pdf = canvas.Canvas(buffer, pagesize=A4)
-    width, height = A4
+def _order_total(order: dict) -> float:
+    items = order.get("items", [])
+    subtotal = sum(float(i.get("qty", 0)) * float(i.get("unit_price", 0)) for i in items)
+    return subtotal + float(order.get("delivery_charge", 0))
 
-    pdf.setFont("Helvetica-Bold", 18)
-    pdf.drawString(40, height - 40, company)
-    pdf.setFont("Helvetica-Bold", 14)
-    pdf.drawRightString(width - 40, height - 40, "GST INVOICE")
 
-    pdf.setFont("Helvetica", 10)
-    pdf.drawString(40, height - 60, f"GSTIN: {gst_number}")
-    pdf.drawString(40, height - 75, f"Phone: {phone}")
+def business_pulse(orders: List[dict]) -> Dict:
+    now = datetime.utcnow()
+    today = now.date()
+    by_day = defaultdict(float)
+    for order in orders:
+        created_raw = order.get("created_at") or order.get("updated_at")
+        try:
+            created_at = datetime.fromisoformat(str(created_raw).replace("Z", "+00:00"))
+        except Exception:
+            continue
+        by_day[created_at.date()] += _order_total(order)
 
-    pdf.drawString(40, height - 95, f"Invoice No: {order.get('order_id', '-')}")
-    pdf.drawString(40, height - 110, f"Date: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}")
+    todays_sales = by_day.get(today, 0.0)
+    seven_day_trend = []
+    for i in range(6, -1, -1):
+        d = today - timedelta(days=i)
+        seven_day_trend.append({"date": d.isoformat(), "sales": round(by_day.get(d, 0.0), 2)})
 
-    customer = order.get("customer", {})
-    pdf.drawString(40, height - 135, f"Customer: {customer.get('name', '-')}")
-    pdf.drawString(40, height - 150, f"Phone: {customer.get('phone', '-')}")
-    pdf.drawString(40, height - 165, f"Address: {customer.get('address', '-')}")
+    current_month = today.replace(day=1)
+    prev_month_end = current_month - timedelta(days=1)
+    prev_month = prev_month_end.replace(day=1)
 
-    y = height - 200
-    pdf.setFont("Helvetica-Bold", 10)
-    pdf.drawString(40, y, "Item")
-    pdf.drawRightString(360, y, "Qty")
-    pdf.drawRightString(440, y, "Unit")
-    pdf.drawRightString(width - 40, y, "Total")
-    y -= 16
+    current_sales = sum(v for k, v in by_day.items() if k >= current_month)
+    prev_sales = sum(v for k, v in by_day.items() if prev_month <= k <= prev_month_end)
+    growth = ((current_sales - prev_sales) / prev_sales * 100) if prev_sales > 0 else (100.0 if current_sales > 0 else 0.0)
 
-    subtotal = 0.0
-    pdf.setFont("Helvetica", 10)
-    for item in order.get("items", []):
-        qty = float(item.get("qty", 0))
-        unit = float(item.get("unit_price", 0))
-        total = qty * unit
-        subtotal += total
-        pdf.drawString(40, y, str(item.get("name", "-"))[:45])
-        pdf.drawRightString(360, y, f"{qty:.0f}")
-        pdf.drawRightString(440, y, f"{unit:.2f}")
-        pdf.drawRightString(width - 40, y, f"{total:.2f}")
-        y -= 14
-        if y < 120:
-            pdf.showPage()
-            y = height - 60
+    return {
+        "todays_sales": round(todays_sales, 2),
+        "seven_day_trend": seven_day_trend,
+        "monthly_growth_percent": round(growth, 2),
+    }
 
-    gst = 0.0
-    delivery = float(order.get("delivery_charge", 0))
-    grand_total = subtotal + gst + delivery
 
-    y -= 10
-    pdf.setFont("Helvetica-Bold", 10)
-    pdf.drawRightString(width - 40, y, f"Subtotal: {subtotal:.2f}")
-    y -= 14
-    pdf.drawRightString(width - 40, y, f"GST (0%): {gst:.2f}")
-    y -= 14
-    pdf.drawRightString(width - 40, y, f"Delivery: {delivery:.2f}")
-    y -= 16
-    pdf.setFont("Helvetica-Bold", 12)
-    pdf.drawRightString(width - 40, y, f"Grand Total: {grand_total:.2f}")
-
-    pdf.setFont("Helvetica", 9)
-    pdf.drawString(40, 50, "Composition scheme: tax collected as per applicable local rules.")
-
-    pdf.save()
-    return buffer.getvalue()
+def order_status_center(orders: List[dict]) -> Dict:
+    status_map = {"pending": 0, "in_dispatch": 0, "delivered": 0}
+    for order in orders:
+        st = str(order.get("status", "Pending")).strip().lower()
+        if st == "pending":
+            status_map["pending"] += 1
+        elif st in {"in-dispatch", "in dispatch"}:
+            status_map["in_dispatch"] += 1
+        elif st == "delivered":
+            status_map["delivered"] += 1
+    return status_map

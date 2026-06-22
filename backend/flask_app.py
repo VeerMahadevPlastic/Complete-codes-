@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import List, Dict
 
+
 def stock_insights(inventory_rows: List[dict]) -> List[Dict]:
     insights = []
     for row in inventory_rows:
@@ -22,6 +23,7 @@ def stock_insights(inventory_rows: List[dict]) -> List[Dict]:
             "suggested_restock_qty": restock,
         })
     return insights
+
 
 def urgency_alerts(orders: List[dict]) -> List[Dict]:
     now = datetime.utcnow()

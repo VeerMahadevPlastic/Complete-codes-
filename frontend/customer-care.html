@@ -4,10 +4,11 @@ from typing import List, Dict, Any
 try:
     import firebase_admin
     from firebase_admin import credentials, firestore
-except Exception:
+except Exception:  # pragma: no cover
     firebase_admin = None
     credentials = None
     firestore = None
+
 
 class FirebaseRepository:
     """Firestore repository with in-memory fallback for local/dev usage."""

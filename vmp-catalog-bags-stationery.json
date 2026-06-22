@@ -1,85 +1,72 @@
+from io import BytesIO
 from datetime import datetime
-from typing import List, Dict, Any
-
-try:
-    import firebase_admin
-    from firebase_admin import credentials, firestore
-except Exception:  # pragma: no cover
-    firebase_admin = None
-    credentials = None
-    firestore = None
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
 
 
-class FirebaseRepository:
-    """Firestore repository with in-memory fallback for local/dev usage."""
+def generate_gst_invoice_pdf(order: dict, company: str, gst_number: str, phone: str) -> bytes:
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=A4)
+    width, height = A4
 
-    def __init__(self) -> None:
-        self._db = None
-        self._memory: Dict[str, List[dict]] = {
-            "orders": [],
-            "cash_sales": [],
-            "purchase_bills": [],
-            "bank_entries": [],
-            "inventory": [],
-            "custom_print_requests": [],
-        }
-        if firebase_admin and firestore:
-            try:
-                if not firebase_admin._apps:
-                    firebase_admin.initialize_app()
-                self._db = firestore.client()
-            except Exception:
-                self._db = None
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawString(40, height - 40, company)
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawRightString(width - 40, height - 40, "GST INVOICE")
 
-    @property
-    def using_firestore(self) -> bool:
-        return self._db is not None
+    pdf.setFont("Helvetica", 10)
+    pdf.drawString(40, height - 60, f"GSTIN: {gst_number}")
+    pdf.drawString(40, height - 75, f"Phone: {phone}")
 
-    def add(self, collection: str, payload: Dict[str, Any]) -> None:
-        payload = {**payload, "updated_at": datetime.utcnow().isoformat()}
-        if self._db:
-            self._db.collection(collection).add(payload)
-            return
-        self._memory.setdefault(collection, []).append(payload)
+    pdf.drawString(40, height - 95, f"Invoice No: {order.get('order_id', '-')}")
+    pdf.drawString(40, height - 110, f"Date: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}")
 
-    def set_doc(self, collection: str, doc_id: str, payload: Dict[str, Any]) -> None:
-        payload = {**payload, "updated_at": datetime.utcnow().isoformat()}
-        if self._db:
-            self._db.collection(collection).document(doc_id).set(payload, merge=True)
-            return
-        rows = self._memory.setdefault(collection, [])
-        rows[:] = [r for r in rows if r.get("id") != doc_id and r.get("order_id") != doc_id]
-        rows.append(payload)
+    customer = order.get("customer", {})
+    pdf.drawString(40, height - 135, f"Customer: {customer.get('name', '-')}")
+    pdf.drawString(40, height - 150, f"Phone: {customer.get('phone', '-')}")
+    pdf.drawString(40, height - 165, f"Address: {customer.get('address', '-')}")
 
-    def list(self, collection: str) -> List[dict]:
-        if self._db:
-            docs = self._db.collection(collection).stream()
-            return [{"id": d.id, **d.to_dict()} for d in docs]
-        return list(self._memory.get(collection, []))
+    y = height - 200
+    pdf.setFont("Helvetica-Bold", 10)
+    pdf.drawString(40, y, "Item")
+    pdf.drawRightString(360, y, "Qty")
+    pdf.drawRightString(440, y, "Unit")
+    pdf.drawRightString(width - 40, y, "Total")
+    y -= 16
 
-    def decrement_inventory(self, item_id: str, qty: int) -> None:
-        qty = max(int(qty or 0), 0)
-        if qty == 0:
-            return
-        if self._db:
-            ref = self._db.collection("inventory").document(item_id)
-            snap = ref.get()
-            existing = snap.to_dict() or {}
-            current = int(existing.get("stock", existing.get("currentStock", 0)))
-            next_stock = max(current - qty, 0)
-            ref.set({
-                "stock": next_stock,
-                "currentStock": next_stock,
-                "updated_at": datetime.utcnow().isoformat(),
-            }, merge=True)
-            return
-        inventory = self._memory.setdefault("inventory", [])
-        row = next((x for x in inventory if x.get("id") == item_id), None)
-        if not row:
-            row = {"id": item_id, "stock": 0, "currentStock": 0}
-            inventory.append(row)
-        current = int(row.get("stock", row.get("currentStock", 0)))
-        next_stock = max(current - qty, 0)
-        row["stock"] = next_stock
-        row["currentStock"] = next_stock
-        row["updated_at"] = datetime.utcnow().isoformat()
+    subtotal = 0.0
+    pdf.setFont("Helvetica", 10)
+    for item in order.get("items", []):
+        qty = float(item.get("qty", 0))
+        unit = float(item.get("unit_price", 0))
+        total = qty * unit
+        subtotal += total
+        pdf.drawString(40, y, str(item.get("name", "-"))[:45])
+        pdf.drawRightString(360, y, f"{qty:.0f}")
+        pdf.drawRightString(440, y, f"{unit:.2f}")
+        pdf.drawRightString(width - 40, y, f"{total:.2f}")
+        y -= 14
+        if y < 120:
+            pdf.showPage()
+            y = height - 60
+
+    gst = 0.0
+    delivery = float(order.get("delivery_charge", 0))
+    grand_total = subtotal + gst + delivery
+
+    y -= 10
+    pdf.setFont("Helvetica-Bold", 10)
+    pdf.drawRightString(width - 40, y, f"Subtotal: {subtotal:.2f}")
+    y -= 14
+    pdf.drawRightString(width - 40, y, f"GST (0%): {gst:.2f}")
+    y -= 14
+    pdf.drawRightString(width - 40, y, f"Delivery: {delivery:.2f}")
+    y -= 16
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawRightString(width - 40, y, f"Grand Total: {grand_total:.2f}")
+
+    pdf.setFont("Helvetica", 9)
+    pdf.drawString(40, 50, "Composition scheme: tax collected as per applicable local rules.")
+
+    pdf.save()
+    return buffer.getvalue()
