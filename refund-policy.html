@@ -1,42 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import * as LocalAuthentication from 'expo-local-authentication';
-import { COLORS } from '../theme/colors';
-
-const OFFICE_PIN = '8050';
-
-export default function PinBiometricGate({ onUnlock }) {
-  const [pin, setPin] = useState('');
-
-  const unlockWithBiometric = async () => {
-    const supported = await LocalAuthentication.hasHardwareAsync();
-    if (!supported) return Alert.alert('Biometric unavailable', 'Use office PIN instead.');
-    const result = await LocalAuthentication.authenticateAsync({ promptMessage: 'Ahmedabad Office Access' });
-    if (result.success) onUnlock();
-  };
-
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', padding: 24, backgroundColor: COLORS.bg }}>
-      <Text style={{ fontSize: 24, fontWeight: '800', color: COLORS.emerald }}>VMP Admin Secure Access</Text>
-      <Text style={{ marginTop: 8, color: '#475569' }}>Ahmedabad office PIN or biometric required.</Text>
-      <TextInput
-        value={pin}
-        onChangeText={setPin}
-        placeholder="Enter 4-digit PIN"
-        secureTextEntry
-        keyboardType="number-pad"
-        maxLength={4}
-        style={{ marginTop: 16, borderWidth: 1, borderColor: '#CBD5E1', borderRadius: 12, padding: 12, backgroundColor: '#fff' }}
-      />
-      <TouchableOpacity
-        onPress={() => (pin === OFFICE_PIN ? onUnlock() : Alert.alert('Access Denied', 'Invalid office PIN'))}
-        style={{ marginTop: 14, backgroundColor: COLORS.emerald, padding: 12, borderRadius: 12 }}
-      >
-        <Text style={{ color: '#fff', textAlign: 'center', fontWeight: '700' }}>Unlock with PIN</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={unlockWithBiometric} style={{ marginTop: 10, borderWidth: 1, borderColor: COLORS.gold, padding: 12, borderRadius: 12 }}>
-        <Text style={{ color: COLORS.emerald, textAlign: 'center', fontWeight: '700' }}>Unlock with Biometric</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Refund Policy | Veer Mahadev Plastic</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-emerald-50 text-slate-800"><main class="mx-auto max-w-4xl px-4 py-10"><h1 class="text-3xl font-black text-emerald-800">Refund Policy</h1><div class="mt-6 space-y-6 rounded-2xl bg-white p-6 shadow">
+<section><h2 class="text-xl font-bold">Scope</h2><p class="mt-2">This policy applies to retail and wholesale purchases from Veer Mahadev Plastic, Ahmedabad.</p></section>
+<section><h2 class="text-xl font-bold">Eligibility</h2><p class="mt-2">Refund requests must be raised within 3 days of delivery with supporting images/video. Product must remain unused and in original condition unless transit damage is proven.</p></section>
+<section><h2 class="text-xl font-bold">Non-Refundable Cases</h2><ul class="mt-2 list-disc space-y-1 pl-6"><li>Custom/printed order items approved before production</li><li>Delay due to incomplete address, customer unavailability, or force majeure</li><li>Wholesale MOQ commitments already manufactured/allocated (5,000+ unit contracts)</li></ul></section>
+<section><h2 class="text-xl font-bold">Refund Timelines</h2><p class="mt-2">After approval, refunds are processed within 5-7 business days to the original payment method.</p></section>
+</div></main></body></html>

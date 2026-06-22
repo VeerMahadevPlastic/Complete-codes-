@@ -1,56 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { addDoc, collection } from 'firebase/firestore';
-import { db, storage } from '../services/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import * as ImagePicker from 'expo-image-picker';
-import * as ImageManipulator from 'expo-image-manipulator';
-import { COLORS } from '../theme/colors';
-
-export default function DaybookScreen() {
-  const [amount, setAmount] = useState('');
-  const [note, setNote] = useState('');
-
-  const addEntry = async (kind) => {
-    await addDoc(collection(db, 'transactions'), {
-      kind,
-      amount: Number(amount || 0),
-      note,
-      date: new Date().toISOString().slice(0, 10),
-      mode: 'cash',
-      timestamp: new Date(),
-      admin_id: 'Karan_VMP_01'
-    });
-    setAmount('');
-    setNote('');
-  };
-
-  const uploadPhoto = async () => {
-    const perm = await ImagePicker.requestCameraPermissionsAsync();
-    if (!perm.granted) return Alert.alert('Permission required', 'Camera permission is required.');
-    const capture = await ImagePicker.launchCameraAsync({ quality: 1 });
-    if (capture.canceled) return;
-
-    const uri = capture.assets[0].uri;
-    const compressed = await ImageManipulator.manipulateAsync(uri, [{ resize: { width: 1400 } }], { compress: 0.72, format: ImageManipulator.SaveFormat.JPEG });
-    const blob = await (await fetch(compressed.uri)).blob();
-    const path = `products/mobile-${Date.now()}.jpg`;
-    const storageRef = ref(storage, path);
-    await uploadBytes(storageRef, blob, { contentType: 'image/jpeg' });
-    const downloadUrl = await getDownloadURL(storageRef);
-    await addDoc(collection(db, 'mediaUploads'), { url: downloadUrl, path, createdAt: new Date().toISOString() });
-    Alert.alert('Uploaded', 'Compressed product image uploaded successfully.');
-  };
-
-  return (
-    <View style={{ flex: 1, backgroundColor: COLORS.bg, padding: 16 }}>
-      <Text style={{ fontSize: 22, fontWeight: '800', color: COLORS.emerald }}>Daybook</Text>
-      <TextInput value={amount} onChangeText={setAmount} placeholder="Amount" keyboardType="decimal-pad" style={{ marginTop: 12, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#CBD5E1', padding: 12 }} />
-      <TextInput value={note} onChangeText={setNote} placeholder="Narration" style={{ marginTop: 10, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#CBD5E1', padding: 12 }} />
-      <TouchableOpacity onPress={() => addEntry('cash_sale')} style={{ marginTop: 10, backgroundColor: '#047857', borderRadius: 12, padding: 12 }}><Text style={{ color: '#fff', textAlign: 'center', fontWeight: '700' }}>Quick Entry: Cash Sale</Text></TouchableOpacity>
-      <TouchableOpacity onPress={() => addEntry('cash_out')} style={{ marginTop: 8, backgroundColor: '#B91C1C', borderRadius: 12, padding: 12 }}><Text style={{ color: '#fff', textAlign: 'center', fontWeight: '700' }}>Quick Entry: Cash Out</Text></TouchableOpacity>
-      <TouchableOpacity onPress={() => addEntry('purchase_bill')} style={{ marginTop: 8, backgroundColor: COLORS.emerald, borderRadius: 12, padding: 12 }}><Text style={{ color: '#fff', textAlign: 'center', fontWeight: '700' }}>Add Purchase Bill</Text></TouchableOpacity>
-      <TouchableOpacity onPress={uploadPhoto} style={{ marginTop: 18, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: COLORS.gold }}><Text style={{ textAlign: 'center', color: COLORS.emerald, fontWeight: '700' }}>Media Upload (Camera + Compressor)</Text></TouchableOpacity>
-    </View>
-  );
-}
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Terms & Conditions | Veer Mahadev Plastic</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-emerald-50 text-slate-800"><main class="mx-auto max-w-4xl px-4 py-10"><h1 class="text-3xl font-black text-emerald-800">Terms & Conditions</h1><div class="mt-6 space-y-6 rounded-2xl bg-white p-6 shadow">
+<section><h2 class="text-xl font-bold">1. Account & Registration</h2><p class="mt-2">You must provide accurate and complete details while creating an account. You are responsible for your account credentials and all activity under your account. Please notify us immediately of any unauthorized use.</p></section>
+<section><h2 class="text-xl font-bold">2. Products, Pricing & Wholesale MOQ</h2><p class="mt-2">We make reasonable efforts to keep product details and pricing accurate. Prices may change without prior notice. Availability is subject to stock. Wholesale programs are intended for bulk buyers and may require a minimum order quantity of 5,000 units, unless otherwise stated.</p></section>
+<section><h2 class="text-xl font-bold">3. Orders & Payments</h2><p class="mt-2">Order confirmation does not guarantee final acceptance. Veer Mahadev Plastic reserves the right to cancel or limit any order due to suspected fraud, pricing errors, supply constraints, or policy violations. Payments are processed only through secure payment gateways.</p></section>
+</div></main></body></html>
