@@ -1,18 +1,27 @@
-# VMP Admin Mobile App (React Native / Expo)
+(function(global){
+  function buildTrackingLink(tracking = {}) {
+    const awb = String(tracking.awb || '').trim();
+    const carrier = String(tracking.carrier || 'delhivery').toLowerCase();
+    if (!awb) return './live-tracking.html';
+    if (carrier.includes('shiprocket')) return `https://shiprocket.co/tracking/${encodeURIComponent(awb)}`;
+    return `https://www.delhivery.com/track/package/${encodeURIComponent(awb)}`;
+  }
 
-Mobile-responsive admin app for Veer Mahadev Plastic with:
-- Bottom Navigation: Dashboard, Inventory, Orders, Daybook
-- PIN/Biometric gate for office-only access
-- Real-time Firestore summary (Sales, Purchases, Net Profit)
-- Inventory manager with quick edit + delete confirmation
-- Camera upload + image compression + Firebase Storage upload
-- Push alert scheduling on new paid wholesale orders
+  async function fetchDelhiveryStatus(awb) {
+    const token = global.VMP_CONFIG?.apiKeys?.delhivery;
+    const endpoint = global.VMP_CONFIG?.endpoints?.delhivery;
+    if (!awb || !token || !endpoint) {
+      global.VMP_UI?.showPopup('Tracking service is not configured.', 'error');
+      return null;
+    }
 
-## Run
-```bash
-cd mobile-admin-app
-npm install
-npm start
-```
+    const url = `${endpoint}?waybill=${encodeURIComponent(awb)}&token=${encodeURIComponent(token)}`;
+    const response = await global.VMP_UI.safeFetch(url, { method: 'GET' }, null);
+    return response ? response.json() : null;
+  }
 
-Set Firebase values in `app.json` -> `expo.extra`.
+  global.VMP_TRACKING = {
+    buildTrackingLink,
+    fetchDelhiveryStatus
+  };
+})(window);

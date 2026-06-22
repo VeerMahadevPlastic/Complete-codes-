@@ -1,144 +1,55 @@
-from fastapi import APIRouter, UploadFile, File, BackgroundTasks, Request
-from fastapi.responses import Response
-from datetime import date
-
-from app.schemas import (
-    OrderCreate,
-    CashSaleEntry,
-    PurchaseBillEntry,
-    BankEntry,
-    DispatchSecurityVerification,
-)
-from app.services.firebase_repo import FirebaseRepository
-from app.services.analytics import business_pulse, order_status_center
-from app.services.ai_engine import stock_insights, urgency_alerts
-from app.services.billing import generate_gst_invoice_pdf
-from app.services.ocr import extract_bill_text
-from app.config import settings
-
-router = APIRouter()
-repo = FirebaseRepository()
+from datetime import datetime, timedelta
+from collections import defaultdict
+from typing import List, Dict
 
 
-def run_background_reconcile() -> None:
-    """Lightweight background compute hook so UI calls return instantly."""
-    orders = repo.list("orders")
-    inventory = repo.list("inventory")
-    _ = business_pulse(orders)
-    _ = order_status_center(orders)
-    _ = stock_insights(inventory)
-    _ = urgency_alerts(orders)
+def _order_total(order: dict) -> float:
+    items = order.get("items", [])
+    subtotal = sum(float(i.get("qty", 0)) * float(i.get("unit_price", 0)) for i in items)
+    return subtotal + float(order.get("delivery_charge", 0))
 
 
-@router.get("/health")
-def health():
-    return {"ok": True, "firestore": repo.using_firestore}
+def business_pulse(orders: List[dict]) -> Dict:
+    now = datetime.utcnow()
+    today = now.date()
+    by_day = defaultdict(float)
+    for order in orders:
+        created_raw = order.get("created_at") or order.get("updated_at")
+        try:
+            created_at = datetime.fromisoformat(str(created_raw).replace("Z", "+00:00"))
+        except Exception:
+            continue
+        by_day[created_at.date()] += _order_total(order)
 
+    todays_sales = by_day.get(today, 0.0)
+    seven_day_trend = []
+    for i in range(6, -1, -1):
+        d = today - timedelta(days=i)
+        seven_day_trend.append({"date": d.isoformat(), "sales": round(by_day.get(d, 0.0), 2)})
 
-@router.get("/dashboard/business-pulse")
-def get_business_pulse():
-    orders = repo.list("orders")
-    return business_pulse(orders)
+    current_month = today.replace(day=1)
+    prev_month_end = current_month - timedelta(days=1)
+    prev_month = prev_month_end.replace(day=1)
 
+    current_sales = sum(v for k, v in by_day.items() if k >= current_month)
+    prev_sales = sum(v for k, v in by_day.items() if prev_month <= k <= prev_month_end)
+    growth = ((current_sales - prev_sales) / prev_sales * 100) if prev_sales > 0 else (100.0 if current_sales > 0 else 0.0)
 
-@router.get("/dashboard/order-status")
-def get_order_status_center():
-    orders = repo.list("orders")
-    return order_status_center(orders)
-
-
-@router.get("/dashboard/stock-insights")
-def get_stock_insights():
-    inventory = repo.list("inventory")
-    return stock_insights(inventory)
-
-
-@router.get("/alerts/urgency")
-def get_urgency_alerts():
-    return urgency_alerts(repo.list("orders"))
-
-
-
-
-@router.post("/security/verify-dispatch")
-def verify_dispatch_security(payload: DispatchSecurityVerification, request: Request):
-    digits = payload.phone.replace(" ", "").replace("-", "")
-    if digits.startswith("+91"):
-        digits = digits[3:]
-    elif digits.startswith("91") and len(digits) == 12:
-        digits = digits[2:]
-    phone_verified = len(digits) == 10 and digits[0] in "6789" and digits.isdigit()
     return {
-        "ok": phone_verified,
-        "verified_business_at": date.today().isoformat() if phone_verified else None,
-        "client_ip": request.client.host if request.client else None,
-        "session_id": payload.session_id,
-        "order_id": payload.order_id,
-        "message": "Verified Secure Factory Dispatch" if phone_verified else "Invalid Indian mobile number",
+        "todays_sales": round(todays_sales, 2),
+        "seven_day_trend": seven_day_trend,
+        "monthly_growth_percent": round(growth, 2),
     }
 
 
-@router.post("/orders")
-def create_order(order: OrderCreate):
-    payload = order.model_dump()
-    payload["created_at"] = order.created_at.isoformat()
-    repo.set_doc("orders", order.order_id, payload)
-    for item in order.items:
-        repo.decrement_inventory(item.id, item.qty)
-
-    invoice_bytes = generate_gst_invoice_pdf(
-        payload,
-        company=settings.company_name,
-        gst_number=settings.gst_number,
-        phone=settings.company_phone,
-    )
-    repo.set_doc("invoices", order.order_id, {
-        "order_id": order.order_id,
-        "generated_on": date.today().isoformat(),
-        "status": "generated",
-    })
-
-    return Response(
-        content=invoice_bytes,
-        media_type="application/pdf",
-        headers={"Content-Disposition": f"inline; filename=invoice-{order.order_id}.pdf"},
-    )
-
-
-@router.post("/custom-print-requests")
-def create_custom_print_request(payload: dict):
-    record = {**payload, "status": payload.get("status", "Pending Quote")}
-    repo.add("custom_print_requests", record)
-    return {"ok": True, "message": "Custom print request saved"}
-
-
-@router.post("/entries/cash-sales")
-def create_cash_sale(entry: CashSaleEntry):
-    repo.add("cash_sales", entry.model_dump())
-    return {"ok": True, "message": "Cash sale recorded"}
-
-
-@router.post("/entries/bank")
-def create_bank_entry(entry: BankEntry):
-    repo.add("bank_entries", entry.model_dump())
-    return {"ok": True, "message": "Bank entry recorded"}
-
-
-@router.post("/entries/purchase-bills")
-async def create_purchase_bill(
-    material: str,
-    supplier: str,
-    amount: float,
-    bill_file: UploadFile = File(...),
-):
-    raw = await bill_file.read()
-    text = extract_bill_text(raw)
-    payload = PurchaseBillEntry(material=material, supplier=supplier, amount=amount, ocr_text=text).model_dump()
-    repo.add("purchase_bills", payload)
-    return {"ok": True, "ocr_text": text, "message": "Purchase bill recorded"}
-
-
-@router.post("/compute/reconcile")
-def reconcile_in_background(background_tasks: BackgroundTasks):
-    background_tasks.add_task(run_background_reconcile)
-    return {"ok": True, "message": "Background reconciliation started"}
+def order_status_center(orders: List[dict]) -> Dict:
+    status_map = {"pending": 0, "in_dispatch": 0, "delivered": 0}
+    for order in orders:
+        st = str(order.get("status", "Pending")).strip().lower()
+        if st == "pending":
+            status_map["pending"] += 1
+        elif st in {"in-dispatch", "in dispatch"}:
+            status_map["in_dispatch"] += 1
+        elif st == "delivered":
+            status_map["delivered"] += 1
+    return status_map

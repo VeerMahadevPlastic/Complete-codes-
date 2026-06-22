@@ -1,38 +1,21 @@
-{
-  "name": "Veer Mahadev Plastic",
-  "short_name": "Veer Mahadev",
-  "description": "Veer Mahadev Plastic wholesale disposable app for Ahmedabad buyers.",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#f5f8f5",
-  "theme_color": "#047857",
-  "orientation": "portrait",
-  "shortcuts": [
-    {
-      "name": "Track Order",
-      "short_name": "Track",
-      "url": "./live-tracking.html",
-      "icons": [
-        {
-          "src": "./icons/icon-192.svg",
-          "sizes": "192x192",
-          "type": "image/svg+xml"
-        }
-      ]
-    }
-  ],
-  "icons": [
-    {
-      "src": "./icons/icon-192.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./icons/icon-512.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
-}
+# Security Policy
+
+## Supported Versions
+
+Use this section to tell people about which versions of your project are
+currently being supported with security updates.
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 5.1.x   | :white_check_mark: |
+| 5.0.x   | :x:                |
+| 4.0.x   | :white_check_mark: |
+| < 4.0   | :x:                |
+
+## Reporting a Vulnerability
+
+Use this section to tell people how to report a vulnerability.
+
+Tell them where to go, how often they can expect to get an update on a
+reported vulnerability, what to expect if the vulnerability is accepted or
+declined, etc.

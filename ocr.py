@@ -1,31 +1,48 @@
-from fastapi import APIRouter
-import os
-from fastapi.responses import JSONResponse
-from backend.app.config import settings
+from datetime import datetime
+from typing import List, Dict
 
-router = APIRouter(prefix="/api/config", tags=["config"])
 
-@router.get("/public")
-def public_config():
-    return JSONResponse({
-        "oneSignalAppId": os.getenv("ONESIGNAL_APP_ID", ""),
-        "oneSignalSafariWebId": os.getenv("ONESIGNAL_SAFARI_WEB_ID", ""),
-        "firebase": {
-            "apiKey": os.getenv("FIREBASE_API_KEY", ""),
-            "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN", ""),
-            "projectId": os.getenv("FIREBASE_PROJECT_ID", ""),
-            "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET", ""),
-            "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID", ""),
-            "appId": os.getenv("FIREBASE_APP_ID", ""),
-        },
-        "payment": {
-            "provider": settings.payment_provider,
-            "phonepe": {
-                "enabled": settings.phonepe_enabled,
-                "merchantId": settings.phonepe_merchant_id,
-                "collectEndpoint": settings.phonepe_collect_endpoint,
-                # Never expose secret values to the browser.
-                "serverSecretConfigured": bool(settings.phonepe_client_secret)
-            }
-        }
-    })
+def stock_insights(inventory_rows: List[dict]) -> List[Dict]:
+    insights = []
+    for row in inventory_rows:
+        stock = int(row.get("current_stock", row.get("stock", 0)))
+        sku = row.get("id") or row.get("sku") or "unknown"
+        if stock <= 20:
+            status = "Critical"
+            restock = max(100 - stock, 50)
+        elif stock <= 75:
+            status = "Low"
+            restock = max(150 - stock, 60)
+        else:
+            status = "Healthy"
+            restock = 0
+        insights.append({
+            "sku": sku,
+            "current_stock": stock,
+            "status": status,
+            "suggested_restock_qty": restock,
+        })
+    return insights
+
+
+def urgency_alerts(orders: List[dict]) -> List[Dict]:
+    now = datetime.utcnow()
+    alerts = []
+    for order in orders:
+        status = str(order.get("status", "Pending")).lower()
+        if status != "pending":
+            continue
+        created_raw = order.get("created_at") or order.get("updated_at")
+        try:
+            created_at = datetime.fromisoformat(str(created_raw).replace("Z", "+00:00"))
+        except Exception:
+            continue
+        delta_hours = (now - created_at.replace(tzinfo=None)).total_seconds() / 3600
+        if delta_hours > 24:
+            customer = order.get("customer", {})
+            alerts.append({
+                "order_id": order.get("order_id", order.get("id", "-")),
+                "customer_name": customer.get("name", "Unknown"),
+                "pending_hours": round(delta_hours, 2),
+            })
+    return alerts
