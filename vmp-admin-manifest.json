@@ -1,0 +1,1 @@
+{ "name": "VMP Admin Network", "short_name": "VMP Admin", "start_url": "vmp-admin.html", "display": "standalone", "background_color": "#020617", "theme_color": "#f59e0b", "icons": [{ "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }] }

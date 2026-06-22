@@ -1,0 +1,5 @@
+{
+  "base": "INR",
+  "rates": { "INR": 1, "USD": 0.012, "GBP": 0.0095, "TRY": 0.39, "RUB": 1.08 },
+  "trace": "VMP Core: Workspace matched with premium live production specifications."
+}
