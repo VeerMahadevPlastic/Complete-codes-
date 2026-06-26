@@ -12,10 +12,10 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@vmp/db": ["lib/db/index.ts"],
-      "@vmp/db/*": ["lib/db/*"],
-      "@store/*": ["/src/*"],
-      "@api/*": ["artifacts/api-server/src/*"]
-    }
+  "@vmp/db": ["lib/db/index.ts"],
+  "@vmp/db/*": ["lib/db/*"],
+  "@store/*": ["./src/*"],
+  "@api/*": ["artifacts/api-server/src/*"]
+}
   }
 }
