@@ -14,7 +14,7 @@
     "paths": {
       "@vmp/db": ["lib/db/index.ts"],
       "@vmp/db/*": ["lib/db/*"],
-      "@store/*": ["artifacts/vmp-store/src/*"],
+      "@store/*": ["/src/*"],
       "@api/*": ["artifacts/api-server/src/*"]
     }
   }
