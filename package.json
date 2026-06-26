@@ -1,0 +1,18 @@
+{
+  "name": "veer-mahadev-plastic-b2b",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @vmp/api-server --filter @vmp/store dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "workspaces": [
+    "artifacts/*"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  }
+}
