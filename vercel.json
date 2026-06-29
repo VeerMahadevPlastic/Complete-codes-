@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm install && pnpm build",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "corepack enable pnpm && pnpm install && pnpm build",
+  "installCommand": "corepack enable pnpm && pnpm install --frozen-lockfile",
   "outputDirectory": "artifacts/vmp-store/.next"
 }
