@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, BackgroundTasks, Request
 from fastapi.responses import Response
 from datetime import date
-
+ 
 from app.schemas import (
     OrderCreate,
     CashSaleEntry,
