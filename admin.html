@@ -36,58 +36,6 @@
         <p class="mt-3 max-w-3xl text-sm text-emerald-50">Real-time orders, customer list, revenue insights and stock updates.</p>
       </div>
 
-      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <article class="rounded-[1.5rem] border border-emerald-100 bg-white p-5 shadow-sm shadow-emerald-900/5 ring-1 ring-white">
-          <div class="flex items-center justify-between"><p class="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Total Gross Wholesale Revenue</p><span class="rounded-2xl bg-emerald-50 px-3 py-2 text-emerald-700">₹</span></div>
-          <p id="metricGrossRevenue" class="mt-4 text-3xl font-black text-slate-950">₹0</p>
-          <p id="metricRevenueTrend" class="mt-2 text-xs font-black text-emerald-600">▲ 0% vs previous cycle</p>
-        </article>
-        <article class="rounded-[1.5rem] border border-indigo-100 bg-white p-5 shadow-sm shadow-indigo-900/5 ring-1 ring-white">
-          <div class="flex items-center justify-between"><p class="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Active Bulk Distributors</p><span class="rounded-2xl bg-indigo-50 px-3 py-2 text-indigo-700">◎</span></div>
-          <p id="metricDistributors" class="mt-4 text-3xl font-black text-slate-950">0</p>
-          <p class="mt-2 text-xs font-black text-emerald-600">▲ Authenticated corporate contacts</p>
-        </article>
-        <article class="rounded-[1.5rem] border border-amber-100 bg-white p-5 shadow-sm shadow-amber-900/5 ring-1 ring-white">
-          <div class="flex items-center justify-between"><p class="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Total Master Cartons Dispatched</p><span class="rounded-2xl bg-amber-50 px-3 py-2 text-amber-700">▣</span></div>
-          <p id="metricMasterCartons" class="mt-4 text-3xl font-black text-slate-950">0</p>
-          <p class="mt-2 text-xs font-black text-emerald-600">▲ Volume aggregated from all entries</p>
-        </article>
-        <article class="rounded-[1.5rem] border border-rose-100 bg-white p-5 shadow-sm shadow-rose-900/5 ring-1 ring-white">
-          <div class="flex items-center justify-between"><p class="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Pending Order Enquiries</p><span class="rounded-2xl bg-rose-50 px-3 py-2 text-rose-700">!</span></div>
-          <p id="metricPendingEnquiries" class="mt-4 text-3xl font-black text-slate-950">0</p>
-          <p class="mt-2 text-xs font-black text-rose-600">● Processing state logs</p>
-        </article>
-      </div>
-
-      <div class="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
-        <section class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5">
-          <div class="flex flex-wrap items-start justify-between gap-3">
-            <div><p class="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">Order Velocity Trend</p><h3 class="mt-1 text-2xl font-black text-slate-950">Wholesale momentum analytics</h3></div>
-            <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">Interactive SVG Core</span>
-          </div>
-          <svg id="orderVelocityChart" viewBox="0 0 720 280" class="mt-5 h-72 w-full rounded-3xl bg-slate-950 p-3 text-white"></svg>
-        </section>
-        <section class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5">
-          <p class="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">Top Performing Packaging Categories</p>
-          <h3 class="mt-1 text-2xl font-black text-slate-950">Category distribution</h3>
-          <div class="mt-5 grid place-items-center"><svg id="categoryDonutChart" viewBox="0 0 280 280" class="h-72 w-72"></svg></div>
-          <div id="categoryDonutLegend" class="mt-4 grid gap-2 text-xs font-bold text-slate-600"></div>
-        </section>
-      </div>
-
-      <section class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div><p class="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">Live trans-payload matrix</p><h3 class="mt-1 text-2xl font-black text-slate-950">Recent Wholesale Inbound Enquiries</h3></div>
-          <button id="reloadEnquiries" class="rounded-xl border border-emerald-200 px-4 py-2 text-xs font-black text-emerald-800 hover:bg-emerald-50">Refresh Enquiries</button>
-        </div>
-        <div class="mt-5 overflow-x-auto rounded-2xl border border-slate-100">
-          <table class="min-w-full divide-y divide-slate-100 text-left text-sm">
-            <thead class="bg-slate-50 text-xs font-black uppercase tracking-[0.12em] text-slate-500"><tr><th class="px-4 py-3">Date</th><th class="px-4 py-3">Consignee Business Name</th><th class="px-4 py-3">Contact Phone/GSTIN</th><th class="px-4 py-3">Master Cartons</th><th class="px-4 py-3">Currency Value</th><th class="px-4 py-3">Status</th><th class="px-4 py-3">Action</th></tr></thead>
-            <tbody id="enquiryTableBody" class="divide-y divide-slate-100 bg-white"></tbody>
-          </table>
-        </div>
-      </section>
-
       <div class="grid gap-4 md:grid-cols-5">
         <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Total Orders</p><p id="metricOrders" class="mt-1 text-3xl font-black text-slate-900">0</p></article>
         <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Revenue</p><p id="metricRevenue" class="mt-1 text-3xl font-black text-slate-900">₹0</p></article>
@@ -204,7 +152,6 @@
     let latestOrders = [];
     let latestProducts = [];
     let latestInventoryMap = {};
-    let latestEnquiries = [];
     let posCart = {};
     const FIREBASE_CONFIG = (window.__FIREBASE_CONFIG__) || (window.VMP_CONFIG?.firebase) || (window.VMP_APP?.config?.firebase) || {};
 
@@ -524,110 +471,10 @@
       });
     }
 
-
-    function currencyFormat(amount, currency = 'INR'){
-      const code = currency || 'INR';
-      try { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: code, maximumFractionDigits: 0 }).format(Number(amount || 0)); }
-      catch { return `₹${Number(amount || 0).toLocaleString('en-IN')}`; }
-    }
-
-    function normalizeEnquiry(record){
-      const payload = record.payload || record;
-      const delivery = payload.deliveryMetadata || payload.b2bDeliveryMatrix || payload.fullShippingAddress || {};
-      const customer = payload.onboardingCustomer || payload.profile || payload.customerAuthToken || {};
-      const currency = payload.currencyTotal?.currency || payload.selectedCurrency || 'INR';
-      const total = Number(payload.currencyTotal?.total ?? payload.total ?? payload.subtotal ?? 0);
-      return {
-        id: payload.orderId || record.id || record.created_at || record.createdAt || `ENQ-${Date.now()}`,
-        date: record.created_at || record.createdAt || payload.createdAt || new Date().toISOString(),
-        businessName: customer.business?.companyName || delivery.consigneeName || customer.fullName || customer.identity || 'Wholesale buyer',
-        contact: [delivery.mobile || customer.mobile || customer.phone || 'Phone pending', delivery.gstin || customer.business?.gstin || 'GSTIN optional'].filter(Boolean).join(' / '),
-        cartons: Number(payload.totalCartons || payload.totalMasterCartons || 0),
-        currency,
-        total,
-        status: record.status || payload.status || 'Pending',
-        raw: payload
-      };
-    }
-
-    async function fetchEnquiries(){
-      const local = readJson('vmp_system_order_notification_payload', null);
-      const localList = local ? [normalizeEnquiry(local)] : [];
-      try {
-        const response = await fetch('/api/enquiries');
-        if(response.ok){
-          const data = await response.json();
-          const records = Array.isArray(data) ? data : (data.enquiries || data.items || []);
-          return records.map(normalizeEnquiry).concat(localList);
-        }
-      } catch (error) {
-        console.warn('Enquiries endpoint unavailable. Using local notification payload cache.', error);
-      }
-      return localList;
-    }
-
-    function renderOrderVelocityChart(enquiries, orders){
-      const svg = document.getElementById('orderVelocityChart');
-      if(!svg) return;
-      const source = [...(orders || []), ...(enquiries || [])];
-      const buckets = Array.from({ length: 8 }, (_, i) => ({ label: `W${i + 1}`, value: 0 }));
-      source.forEach((item, index) => { buckets[index % buckets.length].value += Number(item.total || item.currencyTotal?.total || 1); });
-      const max = Math.max(1, ...buckets.map((b) => b.value));
-      const points = buckets.map((b, i) => `${60 + i * 88},${230 - (b.value / max) * 170}`);
-      const area = `60,240 ${points.join(' ')} ${60 + (buckets.length - 1) * 88},240`;
-      svg.innerHTML = `<defs><linearGradient id="vel" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#22c55e" stop-opacity="0.5"/><stop offset="1" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs><rect width="720" height="280" rx="28" fill="#020617"/><g stroke="#1e293b" stroke-width="1">${[70,120,170,220].map(y => `<line x1="48" x2="680" y1="${y}" y2="${y}"/>`).join('')}</g><polygon points="${area}" fill="url(#vel)"/><polyline points="${points.join(' ')}" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>${points.map((pt, i) => { const [x,y]=pt.split(','); return `<g><circle cx="${x}" cy="${y}" r="7" fill="#facc15" stroke="#022c22" stroke-width="3"><title>${buckets[i].label}: ${currencyFormat(buckets[i].value)}</title></circle><text x="${x}" y="260" fill="#94a3b8" font-size="12" text-anchor="middle">${buckets[i].label}</text></g>`; }).join('')}<text x="52" y="42" fill="#fff" font-size="18" font-weight="800">Order Velocity Trend</text>`;
-    }
-
-    function renderCategoryDonut(enquiries, products){
-      const svg = document.getElementById('categoryDonutChart');
-      const legend = document.getElementById('categoryDonutLegend');
-      if(!svg || !legend) return;
-      const categories = ['Cornstarch Meal Trays','Cornstarch Containers','Cornstarch Plates & Cutlery','Biodegradable Glasses','Meal Trays (PP)','Hinged Boxes','Bakery Boxes','PP Containers'];
-      const counts = Object.fromEntries(categories.map((c) => [c, 0]));
-      (enquiries || []).forEach((enq) => (enq.raw?.itemArray || enq.raw?.items || []).forEach((item) => {
-        const name = String(item.name || '').toLowerCase();
-        const cat = categories.find((c) => name.includes(c.split(' ')[0].toLowerCase())) || categories[Math.abs(name.length) % categories.length];
-        counts[cat] += Number(item.qty || 1);
-      }));
-      if(!Object.values(counts).some(Boolean)) (products || []).slice(0, 40).forEach((p) => { const cat = categories.find((c) => String(p.category || '').includes(c)) || categories[Math.abs(String(p.name || '').length) % categories.length]; counts[cat] += 1; });
-      const colors = ['#10b981','#f59e0b','#6366f1','#06b6d4','#ef4444','#84cc16','#a855f7','#0f172a'];
-      const total = Math.max(1, Object.values(counts).reduce((a,b)=>a+b,0));
-      let offset = 25;
-      const circles = categories.map((cat, i) => { const dash = (counts[cat] / total) * 100; const out = `<circle r="86" cx="140" cy="140" fill="none" stroke="${colors[i]}" stroke-width="34" stroke-dasharray="${dash} ${100-dash}" stroke-dashoffset="-${offset}" pathLength="100" transform="rotate(-90 140 140)"/>`; offset += dash; return out; }).join('');
-      svg.innerHTML = `<circle r="102" cx="140" cy="140" fill="#f8fafc"/>${circles}<circle r="58" cx="140" cy="140" fill="white"/><text x="140" y="134" text-anchor="middle" font-size="28" font-weight="900" fill="#0f172a">${total}</text><text x="140" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="#64748b">category units</text>`;
-      legend.innerHTML = categories.map((cat, i) => `<div class="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-2"><span class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:${colors[i]}"></span>${cat}</span><span>${counts[cat]}</span></div>`).join('');
-    }
-
-    function renderEnquiryTable(enquiries){
-      const body = document.getElementById('enquiryTableBody');
-      if(!body) return;
-      body.innerHTML = enquiries.length ? enquiries.slice(0, 20).map((e) => {
-        const statusColor = /dispatch/i.test(e.status) ? 'bg-emerald-50 text-emerald-700' : /quotation/i.test(e.status) ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-700';
-        return `<tr class="hover:bg-slate-50"><td class="px-4 py-3 text-slate-500">${new Date(e.date).toLocaleString('en-IN', { dateStyle:'medium', timeStyle:'short' })}</td><td class="px-4 py-3 font-black text-slate-900">${e.businessName}</td><td class="px-4 py-3 text-slate-600">${e.contact}</td><td class="px-4 py-3 font-black text-slate-900">${Number(e.cartons || 0).toFixed(2)}</td><td class="px-4 py-3 font-black text-emerald-700">${currencyFormat(e.total, e.currency)}</td><td class="px-4 py-3"><span class="rounded-full px-3 py-1 text-xs font-black ${statusColor}">${e.status}</span></td><td class="px-4 py-3"><button class="text-xs font-black text-emerald-700 underline" onclick='alert(${JSON.stringify(JSON.stringify(e.raw)).replace(/</g,'\\u003c')})'>Review Details</button></td></tr>`;
-      }).join('') : '<tr><td colspan="7" class="px-4 py-8 text-center font-semibold text-slate-500">No inbound enquiries captured yet.</td></tr>';
-    }
-
-    function renderPremiumAnalytics(orders, products, enquiries){
-      const revenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0) + enquiries.reduce((sum, enq) => sum + Number(enq.total || 0), 0);
-      const previous = Math.max(1, revenue * 0.87);
-      const trend = ((revenue - previous) / previous) * 100;
-      const contacts = new Set(enquiries.map((e) => e.contact).concat(readJson('vmpCustomers', []).map((c) => c.email || c.mobile || c.name))).size;
-      const cartons = orders.reduce((sum, order) => sum + Number(order.totalMasterCartons || 0), 0) + enquiries.reduce((sum, enq) => sum + Number(enq.cartons || 0), 0);
-      const pending = enquiries.filter((e) => /pending|queued|processing/i.test(e.status)).length;
-      document.getElementById('metricGrossRevenue').textContent = currencyFormat(revenue, 'INR');
-      document.getElementById('metricRevenueTrend').textContent = `▲ ${trend.toFixed(1)}% vs previous cycle`;
-      document.getElementById('metricDistributors').textContent = String(contacts);
-      document.getElementById('metricMasterCartons').textContent = cartons.toFixed(2);
-      document.getElementById('metricPendingEnquiries').textContent = String(pending);
-      renderOrderVelocityChart(enquiries, orders);
-      renderCategoryDonut(enquiries, products);
-      renderEnquiryTable(enquiries);
-    }
-
     async function loadDashboardData(){
       const db = getDb();
       const products = readJson('vmpProductSnapshot', []);
-      let orders = readJson('vmpOrderHistory', readJson('vmp_order_history', []));
+      let orders = readJson('vmpOrderHistory', []);
       let inventoryMap = readJson('vmpInventoryOverrides', {});
       let priceMap = Object.entries(readJson('vmpPriceOverrides', {})).reduce((acc, [id, price]) => {
         acc[id] = { price100: Number(price) };
@@ -640,8 +487,6 @@
       renderPos(products, inventoryMap);
       renderBusinessHealth(orders);
       renderCustomPrintRequests();
-      latestEnquiries = await fetchEnquiries();
-      renderPremiumAnalytics(orders, products, latestEnquiries);
 
       if(db){
         try {
@@ -666,8 +511,6 @@
       renderPos(products, inventoryMap);
       renderBusinessHealth(orders);
       renderCustomPrintRequests();
-      latestEnquiries = await fetchEnquiries();
-      renderPremiumAnalytics(orders, products, latestEnquiries);
       const inventoryValue = products.reduce((sum, p) => {
         const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
         const unit = Number(priceMap[p.id]?.price100 ?? p.price100 ?? p.tiers?.[0]?.price ?? 0);
@@ -731,7 +574,6 @@
       document.getElementById('aiReply').textContent = answerAi(question);
     });
     document.getElementById('reloadPrintRequests').addEventListener('click', renderCustomPrintRequests);
-    document.getElementById('reloadEnquiries')?.addEventListener('click', async () => { latestEnquiries = await fetchEnquiries(); renderPremiumAnalytics(latestOrders, latestProducts, latestEnquiries); });
   </script>
 </body>
 </html>

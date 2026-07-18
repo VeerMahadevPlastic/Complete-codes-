@@ -1,8 +1,0 @@
-{
-  "name": "veer-mahadev-plastic-b2b",
-  "private": true,
-  "packageManager": "pnpm@9.15.0",
-  "scripts": {
-    "build": "pnpm -r build"
-  }
-}
