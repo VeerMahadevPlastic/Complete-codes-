@@ -1,579 +1,945 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard | Veer Mahadev Plastic</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="./js/vmp-config.js"></script>
-  <script src="./js/ui.js"></script>
-  <script src="./js/auth.js"></script>
-  <script src="./js/tracking.js"></script>
-  <script src="./js/vmp-app.js"></script>
-  <script src="./js/vmp-modules.js"></script>
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js" defer></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#78350F"/>
+<title>VMP Global — Checkout System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --amber:#B45309;--amber2:#D97706;--amber3:#F59E0B;--amber-pale:#FEF3C7;
+  --brown:#78350F;--ink:#111827;--muted:#6B7280;--muted2:#9CA3AF;
+  --bg:#F9FAFB;--bg2:#fff;--border:#E5E7EB;
+  --green:#065F46;--green2:#047857;--green3:#10B981;--green-pale:#D1FAE5;
+  --red:#DC2626;--red-pale:#FEF2F2;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 4px 12px rgba(180,83,9,.06);
+  --shadow-md:0 8px 32px rgba(180,83,9,.1),0 2px 8px rgba(0,0,0,.06);
+  --ease:cubic-bezier(.22,1,.36,1)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:#1a0a00;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;-webkit-font-smoothing:antialiased}
+button{font-family:'Inter',sans-serif;cursor:pointer}
+input,select,textarea{font-family:'Inter',sans-serif}
+
+/* ── DEMO CART BAR ─────────────────────────────── */
+.demo-bar{background:linear-gradient(135deg,var(--amber),var(--amber2));border-radius:16px 16px 0 0;padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.demo-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff}
+.demo-sub{font-size:11px;color:rgba(255,255,255,.75);margin-top:2px}
+.btn-open-cart{background:#fff;color:var(--amber);border:none;padding:10px 20px;border-radius:8px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px;transition:all .2s}
+.btn-open-cart:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.cart-bubble{background:var(--red);color:#fff;width:18px;height:18px;border-radius:50%;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+/* ── CART DRAWER ───────────────────────────────── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;backdrop-filter:blur(3px)}
+.overlay.show{display:block}
+#cart-drawer{position:fixed;top:0;right:0;bottom:0;z-index:400;width:100%;max-width:380px;background:#fff;box-shadow:-4px 0 32px rgba(0,0,0,.15);transform:translateX(100%);transition:transform .35s var(--ease);display:flex;flex-direction:column}
+#cart-drawer.open{transform:translateX(0)}
+.cd-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,var(--amber),var(--amber2))}
+.cd-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.cd-close{background:rgba(255,255,255,.2);border:none;width:28px;height:28px;border-radius:50%;color:#fff;font-size:14px;transition:background .15s}
+.cd-close:hover{background:rgba(255,255,255,.35)}
+.cd-body{flex:1;overflow-y:auto;padding:14px 16px}
+.cd-empty{font-size:13px;color:var(--muted);text-align:center;padding:2rem 0}
+.cd-item{border:1px solid var(--border);border-radius:10px;padding:11px 12px;margin-bottom:9px;display:flex;align-items:center;gap:10px}
+.cd-item-img{width:44px;height:44px;border-radius:6px;object-fit:cover;background:var(--amber-pale);flex-shrink:0}
+.cd-item-body{flex:1;min-width:0}
+.cd-item-name{font-size:11px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:2px}
+.cd-item-sku{font-size:9px;color:var(--muted2);letter-spacing:.5px}
+.cd-item-price{font-size:12px;font-weight:800;color:var(--amber);margin-top:3px}
+.cd-qty-row{display:flex;align-items:center;gap:6px;margin-top:5px}
+.qty-btn{width:22px;height:22px;border-radius:5px;border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.qty-btn:hover{border-color:var(--amber);color:var(--amber)}
+.qty-val{font-size:11px;font-weight:700;color:var(--ink);min-width:28px;text-align:center}
+.cd-rm{margin-left:auto;font-size:10px;color:var(--muted2);background:none;border:none;padding:4px 6px;border-radius:5px;transition:all .15s}
+.cd-rm:hover{background:var(--red-pale);color:var(--red)}
+.cd-foot{padding:14px 16px;border-top:1px solid var(--border);background:var(--bg)}
+.cd-totals{margin-bottom:10px}
+.cd-total-row{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:3px 0}
+.cd-total-row.grand{font-size:14px;font-weight:800;color:var(--ink);border-top:1px solid var(--border);padding-top:8px;margin-top:5px}
+.cd-total-row.grand span:last-child{color:var(--amber)}
+.btn-checkout{width:100%;padding:13px;background:linear-gradient(135deg,var(--amber),var(--amber2));color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;box-shadow:0 4px 14px rgba(180,83,9,.3);transition:all .2s;margin-bottom:7px;display:flex;align-items:center;justify-content:center;gap:7px}
+.btn-checkout:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(180,83,9,.4)}
+.btn-wa-quick{width:100%;padding:11px;background:#25D366;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;transition:opacity .2s}
+.btn-wa-quick:hover{opacity:.9}
+
+/* ── CHECKOUT MODAL ─────────────────────────────── */
+#checkout-modal{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:1rem;overflow-y:auto}
+#checkout-modal.open{display:flex}
+.ck-card{background:#fff;border-radius:20px;width:100%;max-width:560px;margin:auto;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.3)}
+
+/* Modal header with steps */
+.ck-header{background:linear-gradient(135deg,var(--amber),var(--amber2));padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.ck-header-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.step-track{display:flex;align-items:center;gap:5px}
+.s-dot{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:rgba(255,255,255,.6);transition:all .3s;flex-shrink:0}
+.s-dot.active{background:#fff;color:var(--amber)}
+.s-dot.done{background:rgba(255,255,255,.4);color:#fff}
+.s-line{width:18px;height:2px;background:rgba(255,255,255,.25);border-radius:2px}
+.ck-close{background:rgba(255,255,255,.2);border:none;width:28px;height:28px;border-radius:50%;color:#fff;font-size:13px;transition:background .15s}
+.ck-close:hover{background:rgba(255,255,255,.35)}
+
+/* Step panels */
+.ck-step{display:none;padding:1.5rem;animation:fadeSlide .3s var(--ease)}
+.ck-step.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.ck-section-title{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:1.1rem;display:flex;align-items:center;gap:7px}
+.ck-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Form */
+.ck-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ck-field{display:flex;flex-direction:column;gap:.35rem}
+.ck-field.full{grid-column:1/-1}
+.ck-label{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+.ck-label .req{color:var(--red)}
+.ck-input{height:40px;padding:0 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+.ck-input:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(180,83,9,.08)}
+.ck-input.err{border-color:var(--red);background:var(--red-pale)}
+textarea.ck-input{height:auto;padding-top:10px;resize:none}
+select.ck-input{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:14px}
+.ck-err-msg{font-size:10px;color:var(--red);margin-top:3px;display:none}
+.ck-err-msg.show{display:block}
+
+/* Payment options */
+.pay-opts{display:flex;flex-direction:column;gap:9px}
+.pay-opt{display:flex;align-items:center;gap:11px;padding:12px 14px;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;transition:all .2s;background:#fff;position:relative}
+.pay-opt:hover{border-color:var(--amber2)}
+.pay-opt.selected{border-color:var(--amber);background:var(--amber-pale)}
+.pay-opt-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .2s;position:relative}
+.pay-opt.selected .pay-opt-radio{border-color:var(--amber);background:var(--amber)}
+.pay-opt.selected .pay-opt-radio::after{content:'';width:5px;height:5px;background:#fff;border-radius:50%;position:absolute;inset:0;margin:auto}
+.pay-opt-icon{font-size:1.4rem;flex-shrink:0}
+.pay-opt-label{font-size:12px;font-weight:700;color:var(--ink)}
+.pay-opt-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.pay-badge{margin-left:auto;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px}
+
+/* Order summary */
+.ck-summary{background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:1rem;margin-bottom:1.25rem}
+.ck-summary-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.65rem}
+.ck-sum-item{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:3px 0;border-bottom:1px solid var(--border)}
+.ck-sum-item:last-child{border-bottom:none}
+.ck-sum-item span:last-child{font-weight:600;color:var(--ink)}
+.ck-sum-grand{display:flex;justify-content:space-between;border-top:2px solid var(--amber3);margin-top:7px;padding-top:8px;font-weight:800;font-size:14px}
+.ck-sum-grand span:last-child{color:var(--amber)}
+
+/* QR Block */
+.qr-block{text-align:center;padding:1rem 0}
+.qr-amount-badge{display:inline-block;background:linear-gradient(135deg,var(--amber),var(--amber2));color:#fff;font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;padding:8px 24px;border-radius:10px;margin-bottom:1rem;box-shadow:0 4px 16px rgba(180,83,9,.3)}
+.qr-frame{display:inline-block;background:#fff;padding:12px;border-radius:16px;border:3px solid var(--amber3);box-shadow:var(--shadow-md);margin-bottom:.75rem;position:relative}
+.qr-pulse{position:absolute;inset:-6px;border-radius:20px;border:2px solid var(--amber3);animation:qrPulse 2s ease-in-out infinite}
+@keyframes qrPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.9;transform:scale(1.02)}}
+#qr-img{width:180px;height:180px;display:block;image-rendering:crisp-edges}
+.qr-instruction{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:.75rem}
+.qr-instruction strong{color:var(--ink)}
+.upi-id-row{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--ink);margin-bottom.85rem}
+.copy-upi-btn{background:var(--amber);color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:10px;font-weight:700;transition:opacity .2s}
+.copy-upi-btn:hover{opacity:.85}
+
+/* Payment info blocks */
+.bank-info{background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:1rem;margin-bottom:1rem}
+.bank-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px}
+.bank-row:last-child{border-bottom:none}
+.bank-row span:first-child{color:var(--muted)}
+.bank-row span:last-child{font-weight:700;color:var(--ink)}
+.info-box{border-radius:10px;padding:.85rem 1rem;margin-bottom:1rem;font-size:12px;line-height:1.6}
+.info-box.green{background:#f0fdf4;border:1px solid rgba(6,95,70,.15);color:var(--green)}
+.info-box.blue{background:#eff6ff;border:1px solid rgba(37,99,235,.15);color:#1d4ed8}
+
+/* Address recap */
+.recap-box{background:var(--amber-pale);border:1px solid rgba(180,83,9,.15);border-radius:11px;padding:.85rem 1rem;margin-bottom:1.25rem;font-size:12px;color:var(--brown);line-height:1.7}
+.recap-box strong{color:var(--brown);font-weight:700}
+
+/* Nav buttons */
+.ck-nav{display:flex;gap:9px;margin-top:1.25rem}
+.btn-back{flex:1;padding:12px;background:var(--bg);color:var(--ink);border:1.5px solid var(--border);border-radius:9px;font-size:12px;font-weight:600;transition:all .2s}
+.btn-back:hover{border-color:var(--amber)}
+.btn-next{flex:2;padding:12px;background:linear-gradient(135deg,var(--amber),var(--amber2));color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;box-shadow:0 4px 14px rgba(180,83,9,.25);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(180,83,9,.35)}
+.btn-confirm{flex:2;padding:12px;background:#25D366;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 14px rgba(37,211,102,.3);transition:all .2s}
+.btn-confirm:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,211,102,.4)}
+
+/* Success State */
+.success-panel{display:none;padding:2rem 1.5rem;text-align:center;animation:fadeSlide .4s var(--ease)}
+.success-panel.show{display:block}
+.success-icon{width:70px;height:70px;border-radius:50%;background:var(--green-pale);border:3px solid var(--green3);display:flex;align-items:center;justify-content:center;font-size:1.75rem;margin:0 auto 1.25rem}
+.success-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:.5rem}
+.success-sub{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:1.5rem}
+.btn-done{display:inline-block;padding:12px 28px;background:linear-gradient(135deg,var(--amber),var(--amber2));color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;transition:all .2s}
+.btn-done:hover{transform:translateY(-1px)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:9px;font-size:12px;font-weight:600;z-index:9999;opacity:0;pointer-events:none;transition:all .3s var(--ease);white-space:nowrap;border:1px solid rgba(245,158,11,.2)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Spinner */
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── DEMO PRODUCT CARDS ───────────────────────── */
+.demo-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;padding:1rem 1.25rem 1.25rem;background:rgba(255,255,255,.04);border-radius:0 0 16px 16px}
+.dp-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .22s}
+.dp-card:hover{transform:translateY(-3px);border-color:rgba(245,158,11,.4)}
+.dp-card img{width:100%;height:90px;object-fit:cover}
+.dp-card-body{padding:8px 9px}
+.dp-name{font-size:10px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:3px}
+.dp-price{font-size:11px;font-weight:800;color:var(--amber3)}
+.dp-moq{font-size:9px;color:rgba(255,255,255,.4)}
+.dp-add{width:100%;margin-top:6px;padding:5px;background:var(--amber);color:#fff;border:none;border-radius:5px;font-size:10px;font-weight:700;transition:opacity .2s}
+.dp-add:hover{opacity:.9}
+</style>
 </head>
-<body class="min-h-screen bg-[#f7faf8] text-slate-800">
-  <div class="mx-auto max-w-7xl px-4 py-10">
-    <section id="adminLoginView" class="mx-auto max-w-lg rounded-[2rem] border border-[#D4AF37]/40 bg-white p-8 shadow-2xl">
-      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-[#065f46]">Owner Access</p>
-      <h1 class="mt-3 text-3xl font-black text-[#065f46]">Admin Login</h1>
-      <p class="mt-2 text-sm text-slate-600">Secure dashboard for orders, inventory, revenue and customers.</p>
-      <form id="adminLoginForm" class="mt-8 space-y-4">
-        <input id="adminUsername" required class="w-full rounded-2xl border border-slate-200 px-4 py-3" placeholder="Username" />
-        <input id="adminPassword" required type="password" class="w-full rounded-2xl border border-slate-200 px-4 py-3" placeholder="Password" />
-        <button type="submit" class="w-full rounded-2xl bg-[#065f46] px-4 py-3 font-semibold text-white">Login</button>
-      </form>
-      <p id="adminLoginMsg" class="mt-4 text-sm font-semibold"></p>
-    </section>
+<body>
 
-    <section id="adminDashboard" class="hidden space-y-6">
-      <div class="rounded-[2rem] bg-[#065f46] p-8 text-white shadow-2xl">
-        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-[#D4AF37]">Veer Mahadev Plastic</p>
-        <h2 class="mt-3 text-4xl font-black">Wholesale Control Center</h2>
-        <p class="mt-3 max-w-3xl text-sm text-emerald-50">Real-time orders, customer list, revenue insights and stock updates.</p>
-      </div>
+<!-- ── DEMO INTERFACE ──────────────────────────────── -->
+<div style="width:100%;max-width:900px">
 
-      <div class="grid gap-4 md:grid-cols-5">
-        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Total Orders</p><p id="metricOrders" class="mt-1 text-3xl font-black text-slate-900">0</p></article>
-        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Revenue</p><p id="metricRevenue" class="mt-1 text-3xl font-black text-slate-900">₹0</p></article>
-        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Customers</p><p id="metricCustomers" class="mt-1 text-3xl font-black text-slate-900">0</p></article>
-        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Inventory Value</p><p id="metricInventoryValue" class="mt-1 text-3xl font-black text-slate-900">₹0</p></article>
-        <article id="metricLowStockCard" class="rounded-2xl border border-rose-200 bg-rose-50 p-4 shadow-sm"><p class="text-xs uppercase text-rose-700">Low Stock Alerts</p><p id="metricLowStock" class="mt-1 text-3xl font-black text-rose-700">0</p></article>
-      </div>
-
-      <div class="grid gap-6 lg:grid-cols-2">
-        <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Zerodha-Style Analytics</p>
-          <h3 class="mt-1 text-2xl font-black text-slate-900">Live Profit / Loss</h3>
-          <div class="mt-3 flex flex-wrap gap-2 text-xs">
-            <span class="rounded-full bg-emerald-100 px-3 py-1 font-semibold text-emerald-700">Sales (Green)</span>
-            <span class="rounded-full bg-rose-100 px-3 py-1 font-semibold text-rose-700">Expenses (Red)</span>
-            <span class="rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700">Daily Expense Base: ₹2,500</span>
-          </div>
-          <svg id="plChart" viewBox="0 0 420 180" class="mt-4 h-48 w-full rounded-xl bg-slate-50 p-2"></svg>
-          <div class="mt-4 grid gap-3 sm:grid-cols-3">
-            <div class="rounded-xl border border-slate-200 p-3"><p class="text-xs text-slate-500">Today's Sales</p><p id="todaySales" class="text-2xl font-black text-emerald-800">₹0</p></div>
-            <div class="rounded-xl border border-slate-200 p-3"><p class="text-xs text-slate-500">Today's Expenses</p><p id="todayExpense" class="text-2xl font-black text-rose-700">₹2,500</p></div>
-            <div class="rounded-xl border border-slate-200 p-3"><p class="text-xs text-slate-500">Live P/L</p><p id="todayPL" class="text-2xl font-black text-slate-900">₹0</p></div>
-          </div>
-          <p id="targetAlert" class="mt-3 text-sm font-semibold"></p>
-        </div>
-
-        <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-          <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Vyapar-Style POS</p>
-          <h3 class="mt-1 text-2xl font-black text-slate-900">Quick Entry Retail Billing</h3>
-          <div id="posGrid" class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3"></div>
-          <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3">
-            <p class="text-sm font-semibold text-slate-800">POS Cart</p>
-            <div id="posCart" class="mt-2 space-y-2 text-sm text-slate-700"></div>
-            <div class="mt-3 text-sm">
-              <p>Subtotal: ₹<span id="posSubtotal">0.00</span></p>
-              <p>GST (5%): ₹<span id="posGst">0.00</span></p>
-              <p class="font-bold">Bill of Supply: ₹<span id="posTotal">0.00</span></p>
-            </div>
-            <div class="mt-3 flex flex-wrap gap-2">
-              <button id="clearPos" class="rounded-lg border px-3 py-2 text-xs font-semibold">Clear</button>
-              <button id="savePosSale" class="rounded-lg bg-[#065f46] px-3 py-2 text-xs font-semibold text-white">Save Sale & Deduct Stock</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-        <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">VMP AI Assistant</p>
-        <h3 class="mt-1 text-2xl font-black text-slate-900">Ask business questions</h3>
-        <div class="mt-4 flex flex-wrap gap-2">
-          <input id="aiQuestion" class="w-full max-w-xl rounded-xl border border-slate-200 px-4 py-3 text-sm" placeholder="Ask: What is today's total sale? / Which item is low in stock?" />
-          <button id="askAi" class="rounded-xl bg-[#065f46] px-4 py-3 text-sm font-semibold text-white">Ask AI</button>
-        </div>
-        <p id="aiReply" class="mt-3 rounded-xl bg-emerald-50 p-3 text-sm text-slate-700">AI assistant ready.</p>
-      </div>
-
-      <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Custom Branding Requests</p>
-            <h3 class="mt-1 text-2xl font-black text-slate-900">Printed Bags / Books Quote Desk</h3>
-          </div>
-          <button id="reloadPrintRequests" class="rounded-lg border border-emerald-200 px-3 py-2 text-xs font-semibold">Refresh</button>
-        </div>
-        <div id="customPrintRequestList" class="mt-4 space-y-2 text-sm"></div>
-      </div>
-
-      <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <div class="space-y-6">
-          <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Inventory</p>
-                <h3 class="text-2xl font-black text-slate-900">Stock Manager</h3>
-              </div>
-              <button id="reloadInventory" class="rounded-full border border-emerald-200 px-4 py-2 text-sm font-semibold text-emerald-800">Refresh</button>
-            </div>
-            <div id="inventoryList" class="mt-5 space-y-3"></div>
-          </div>
-
-          <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Orders</p>
-            <h3 class="mt-1 text-2xl font-black text-slate-900">Recent Paid Orders</h3>
-            <div id="orderList" class="mt-4 space-y-3"></div>
-          </div>
-        </div>
-
-        <div class="space-y-6">
-          <div class="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-sm">
-            <p class="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">Customers</p>
-            <h3 class="mt-1 text-2xl font-black text-slate-900">Buyer List</h3>
-            <div id="customerList" class="mt-4 space-y-2 text-sm"></div>
-          </div>
-
-          <div class="rounded-[2rem] border border-rose-200 bg-rose-50 p-6 shadow-sm">
-            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-rose-700">Low Stock Red Alert</p>
-            <div id="lowStockList" class="mt-3 space-y-2 text-sm text-rose-700"></div>
-          </div>
-        </div>
-      </div>
-    </section>
+  <!-- Top bar -->
+  <div class="demo-bar">
+    <div>
+      <div class="demo-title">🛒 VMP Global — Checkout Demo</div>
+      <div class="demo-sub">Add products below → Cart → Checkout → UPI QR → WhatsApp</div>
+    </div>
+    <button class="btn-open-cart" onclick="openCart()">
+      <svg style="width:15px;height:15px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 5M17 13l2.3 5M9 21h.01M15 21h.01"/></svg>
+      View Cart
+      <div class="cart-bubble" id="top-badge">0</div>
+    </button>
   </div>
 
-  <script>
-    const ADMIN_USERNAME = 'Mr.karan@admin';
-    const ADMIN_PASSWORD = 'Mr.karankumar@7';
-    const LOW_STOCK_THRESHOLD = 10;
-    const AISENSY_API_URL = 'https://backend.aisensy.com/campaign/t1/api/v2';
-    const AISENSY_API_KEY = localStorage.getItem('vmpAisensyApiKey') || '';
-    const AISENSY_CAMPAIGN_NAME = localStorage.getItem('vmpAisensyCampaign') || 'post_purchase_updates';
-    const DAILY_EXPENSE = 2500;
-    const WARNING_THRESHOLD = 10000;
-    let dashboardReloadTimer = null;
-    let latestOrders = [];
-    let latestProducts = [];
-    let latestInventoryMap = {};
-    let posCart = {};
-    const FIREBASE_CONFIG = (window.__FIREBASE_CONFIG__) || (window.VMP_CONFIG?.firebase) || (window.VMP_APP?.config?.firebase) || {};
+  <!-- Demo products -->
+  <div class="demo-products" id="demo-prods"></div>
+</div>
 
-    function readJson(key, fallback){
-      try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
-      catch { return fallback; }
-    }
+<!-- ── OVERLAY ─────────────────────────────────────── -->
+<div class="overlay" id="main-overlay" onclick="closeAll()"></div>
 
-    function writeJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+<!-- ── CART DRAWER ─────────────────────────────────── -->
+<div id="cart-drawer">
+  <div class="cd-head">
+    <div class="cd-title">🛍️ My Cart (<span id="cd-count">0</span> items)</div>
+    <button class="cd-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cd-body" id="cd-body">
+    <div class="cd-empty">Your cart is empty.<br/>Add products to continue.</div>
+  </div>
+  <div class="cd-foot">
+    <div class="cd-totals">
+      <div class="cd-total-row"><span>Subtotal</span><span id="cd-sub">₹0.00</span></div>
+      <div class="cd-total-row"><span>GST (est. 18%)</span><span id="cd-gst">₹0.00</span></div>
+      <div class="cd-total-row"><span>Shipping</span><span style="color:var(--green2);font-weight:600">FREE</span></div>
+      <div class="cd-total-row grand"><span>Grand Total</span><span id="cd-grand">₹0.00</span></div>
+    </div>
+    <button class="btn-checkout" onclick="openCheckout()">
+      <svg style="width:15px;height:15px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      Proceed to Checkout
+    </button>
+    <a class="btn-wa-quick" id="wa-quick-link" href="#" onclick="quickWAOrder(event)" target="_blank" rel="noopener">
+      <svg style="width:14px;height:14px" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Quick WhatsApp Order
+    </a>
+  </div>
+</div>
 
-    function queueDashboardReload(delay = 250){
-      if(dashboardReloadTimer) clearTimeout(dashboardReloadTimer);
-      dashboardReloadTimer = setTimeout(() => loadDashboardData(), delay);
-    }
+<!-- ── CHECKOUT MODAL ──────────────────────────────── -->
+<div id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="ck-title" onclick="if(event.target===this)closeCheckout()">
+  <div class="ck-card">
 
-    function getDb(){
-      if(!window.firebase?.firestore) return null;
-      const app = window.firebase.apps?.length ? window.firebase.app() : window.firebase.initializeApp(FIREBASE_CONFIG);
-      return window.firebase.firestore(app);
-    }
+    <!-- Header -->
+    <div class="ck-header">
+      <div class="ck-header-title" id="ck-title">Secure Checkout</div>
+      <div class="step-track">
+        <div class="s-dot active" id="sd1">1</div>
+        <div class="s-line"></div>
+        <div class="s-dot" id="sd2">2</div>
+        <div class="s-line"></div>
+        <div class="s-dot" id="sd3">✓</div>
+      </div>
+      <button class="ck-close" onclick="closeCheckout()">✕</button>
+    </div>
 
-    function safeNotifyLowStock(names){
-      if(!names.length) return;
-      const msg = `Low stock alert: ${names.join(', ')}`;
-      if(window.Notification && Notification.permission === 'granted') {
-        new Notification('Veer Mahadev Low Stock', { body: msg });
-      }
-      if(window.OneSignal?.Slidedown?.promptPush){
-        window.OneSignal.Slidedown.promptPush().catch(()=>{});
-      }
-    }
+    <!-- ── STEP 1: ADDRESS ─────────────────────────── -->
+    <div class="ck-step active" id="ck-step-1">
+      <div class="ck-section-title">📍 Step 1 — Delivery Details</div>
+      <div class="ck-grid">
 
-    function buildTrackingLink(tracking = {}){
-      const awb = String(tracking.awb || '').trim();
-      const carrier = String(tracking.carrier || 'delhivery').toLowerCase();
-      if(!awb) return './live-tracking.html';
-      if(carrier.includes('shiprocket')) return `https://shiprocket.co/tracking/${encodeURIComponent(awb)}`;
-      return `https://www.delhivery.com/track/package/${encodeURIComponent(awb)}`;
-    }
+        <div class="ck-field full">
+          <label class="ck-label">Full Name <span class="req">*</span></label>
+          <input id="ck-name" class="ck-input" type="text" placeholder="Ravi Kumar Sharma" autocomplete="name"/>
+          <span class="ck-err-msg" id="err-name">Please enter your full name</span>
+        </div>
 
-    async function resolveTrackingLink(order, carrier, awb){
-      try {
-        const response = await fetch(`/api/generate-tracking-link?carrier=${encodeURIComponent(carrier)}&awb=${encodeURIComponent(awb)}&orderId=${encodeURIComponent(order.orderId)}`);
-        if(response.ok){
-          const payload = await response.json();
-          if(payload?.trackingLink) return payload.trackingLink;
-        }
-      } catch (error) {
-        console.warn('Tracking API unavailable. Using fallback URL.', error);
-      }
-      return buildTrackingLink({ carrier, awb });
-    }
+        <div class="ck-field full">
+          <label class="ck-label">Business / Company Name <span class="req">*</span></label>
+          <input id="ck-biz" class="ck-input" type="text" placeholder="Ravi Enterprises Pvt. Ltd." autocomplete="organization"/>
+          <span class="ck-err-msg" id="err-biz">Please enter your business name</span>
+        </div>
 
-    async function sendAiSensyUpdate(order, status){
-      if(!AISENSY_API_KEY) return;
-      const whatsapp = String(order.details?.whatsapp || '').replace(/\D/g, '');
-      if(whatsapp.length < 10) return;
-      const trackingUrl = order.trackingLink || buildTrackingLink(order.tracking);
-      const isDelivered = String(status || '').toLowerCase().includes('deliver');
-      const message = isDelivered
-        ? `Hey ${order.details?.name || 'Customer'}, aapka order successfully deliver ho gaya hai. Track: ${trackingUrl}. Upload Unboxing Video & Get Extra Discount.`
-        : `Hey ${order.details?.name || 'Customer'}, aapka order aaj dispatch ho gaya hai 🚚. Live tracking: ${trackingUrl}`;
-      try {
-        await fetch(AISENSY_API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${AISENSY_API_KEY}`
-          },
-          body: JSON.stringify({
-            apiKey: AISENSY_API_KEY,
-            campaignName: AISENSY_CAMPAIGN_NAME,
-            destination: `91${whatsapp.slice(-10)}`,
-            userName: order.details?.name || 'Customer',
-            templateParams: [order.orderId, status, trackingUrl, 'Upload Unboxing Video & Get Extra Discount'],
-            message
-          })
-        });
-      } catch (error) {
-        console.warn('AiSensy webhook failed.', error);
-      }
-    }
+        <div class="ck-field">
+          <label class="ck-label">WhatsApp Number <span class="req">*</span></label>
+          <input id="ck-phone" class="ck-input" type="tel" placeholder="+91 98765 43210" autocomplete="tel"/>
+          <span class="ck-err-msg" id="err-phone">Please enter a valid 10-digit number</span>
+        </div>
 
-    function renderCustomers(){
-      const customers = readJson('vmpCustomers', []);
-      document.getElementById('metricCustomers').textContent = customers.length;
-      document.getElementById('customerList').innerHTML = customers.length
-        ? customers.map((c) => `<div class="rounded-xl border border-slate-100 px-3 py-2"><p class="font-semibold text-slate-900">${c.name}</p><p class="text-slate-600">${c.email}</p></div>`).join('')
-        : '<p class="text-slate-500">No customers captured yet.</p>';
-    }
+        <div class="ck-field">
+          <label class="ck-label">Email (optional)</label>
+          <input id="ck-email" class="ck-input" type="email" placeholder="ravi@business.com" autocomplete="email"/>
+        </div>
 
-    function renderOrders(orders){
-      const totalRevenue = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
-      document.getElementById('metricOrders').textContent = String(orders.length);
-      document.getElementById('metricRevenue').textContent = `₹${totalRevenue.toFixed(2)}`;
-      document.getElementById('orderList').innerHTML = orders.length
-        ? orders.slice(0, 30).map((o) => `<article class="rounded-xl border border-slate-100 p-3">
-            <p class="font-semibold text-slate-900">${o.orderId}</p>
-            <p class="text-xs text-slate-500">${o.date || ''} • ${o.status || 'Order Placed'}</p>
-            <p class="mt-1 text-sm text-slate-700">Customer: ${o.details?.name || '-'} | ₹${o.total}</p>
-            <div class="mt-2 grid gap-2 sm:grid-cols-3">
-              <input id="awb-${o.orderId}" class="rounded-lg border px-2 py-1 text-xs" placeholder="AWB Number" value="${o.tracking?.awb || ''}" />
-              <select id="carrier-${o.orderId}" class="rounded-lg border px-2 py-1 text-xs">
-                <option value="delhivery" ${(o.tracking?.carrier || '').includes('delhivery') ? 'selected' : ''}>Delhivery</option>
-                <option value="shiprocket" ${(o.tracking?.carrier || '').includes('shiprocket') ? 'selected' : ''}>Shiprocket</option>
-              </select>
-              <select id="status-${o.orderId}" class="rounded-lg border px-2 py-1 text-xs">
-                <option ${(o.status || '').includes('Order') ? 'selected' : ''}>Order Placed</option>
-                <option ${(o.status || '').includes('Dispatch') ? 'selected' : ''}>Dispatched</option>
-                <option ${(o.status || '').includes('Transit') ? 'selected' : ''}>In Transit</option>
-                <option ${(o.status || '').includes('Deliver') ? 'selected' : ''}>Delivered</option>
-              </select>
-            </div>
-            <div class="mt-2 flex items-center justify-between">
-              <a class="text-xs font-semibold text-emerald-700 underline" href="${o.trackingLink || buildTrackingLink(o.tracking)}" target="_blank" rel="noopener">Tracking Link</a>
-              <button data-order="${o.orderId}" class="update-order rounded-lg bg-[#065f46] px-3 py-1.5 text-xs font-semibold text-white">Update Status</button>
-            </div>
-          </article>`).join('')
-        : '<p class="text-slate-500">No paid orders yet.</p>';
+        <div class="ck-field full">
+          <label class="ck-label">Full Delivery Address <span class="req">*</span></label>
+          <input id="ck-addr" class="ck-input" type="text" placeholder="Shop No. 12, Main Market, Sector 5" autocomplete="street-address"/>
+          <span class="ck-err-msg" id="err-addr">Please enter your full address</span>
+        </div>
 
-      document.querySelectorAll('.update-order').forEach((button) => {
-        button.addEventListener('click', async () => {
-          const orderId = button.dataset.order;
-          const status = document.getElementById(`status-${orderId}`)?.value || 'Order Placed';
-          const awb = document.getElementById(`awb-${orderId}`)?.value.trim();
-          const carrier = document.getElementById(`carrier-${orderId}`)?.value || 'delhivery';
-          const trackingLink = awb ? await resolveTrackingLink({ orderId }, carrier, awb) : './live-tracking.html';
-          const db = getDb();
-          if(db){
-            await db.collection('orders').doc(orderId).set({
-              status,
-              tracking: { awb, carrier },
-              trackingLink,
-              updatedAt: window.firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
-          }
-          const history = readJson('vmpOrderHistory', []);
-          const index = history.findIndex((item) => item.orderId === orderId);
-          if(index !== -1){
-            history[index] = { ...history[index], status, tracking: { awb, carrier }, trackingLink };
-            writeJson('vmpOrderHistory', history);
-            if(status === 'Dispatched' || status === 'Delivered') await sendAiSensyUpdate(history[index], status);
-          }
-          loadDashboardData();
-        });
-      });
-    }
+        <div class="ck-field">
+          <label class="ck-label">City <span class="req">*</span></label>
+          <input id="ck-city" class="ck-input" type="text" placeholder="Surat" autocomplete="address-level2"/>
+          <span class="ck-err-msg" id="err-city">Please enter your city</span>
+        </div>
 
-    function renderInventory(products, inventoryMap = {}, priceMap = {}){
-      const list = document.getElementById('inventoryList');
-      if(!products.length){
-        list.innerHTML = '<p class="text-slate-500">Products loading... Storefront sync ho jaate hi yahan stock/rate update options aa jayenge.</p>';
-        return;
-      }
-      list.innerHTML = products.map((p) => {
-        const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
-        const rate = Number(priceMap[p.id]?.price100 ?? p.price100 ?? p.tiers?.[0]?.price ?? 0);
-        const alert = stock < LOW_STOCK_THRESHOLD;
-        return `<div class="rounded-xl border ${alert ? 'border-rose-300 bg-rose-50' : 'border-slate-100'} p-3"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="font-semibold text-slate-900">${p.name}</p><p class="text-xs text-slate-500">${p.category}</p></div><div class="flex flex-wrap items-center gap-2"><input id="stock-${p.id}" type="number" min="0" value="${stock}" class="w-20 rounded-lg border px-2 py-1.5 text-sm" title="Stock" /><input id="price-${p.id}" type="number" min="0" step="0.01" value="${rate.toFixed(2)}" class="w-24 rounded-lg border px-2 py-1.5 text-sm" title="Rate" /><button data-id="${p.id}" class="save-stock rounded-lg bg-[#065f46] px-3 py-1.5 text-xs font-semibold text-white">Update</button></div></div>${alert ? '<p class="mt-2 text-xs font-bold text-rose-700">RED ALERT: Low stock</p>' : ''}</div>`;
-      }).join('');
+        <div class="ck-field">
+          <label class="ck-label">PIN Code <span class="req">*</span></label>
+          <input id="ck-pin" class="ck-input" type="text" placeholder="395001" maxlength="6" inputmode="numeric"/>
+          <span class="ck-err-msg" id="err-pin">Please enter a valid 6-digit PIN</span>
+        </div>
 
-      document.querySelectorAll('.save-stock').forEach((button) => {
-        button.addEventListener('click', async () => {
-          const id = button.dataset.id;
-          const value = Number(document.getElementById(`stock-${id}`).value);
-          const rate = Number(document.getElementById(`price-${id}`).value);
-          if(!Number.isFinite(value) || value < 0 || !Number.isFinite(rate) || rate < 0) return;
-          const db = getDb();
-          if(db){
-            await Promise.all([
-              db.collection('inventory').doc(id).set({ stock: value }, { merge: true }),
-              db.collection('pricing').doc(id).set({ price100: Number(rate.toFixed(2)) }, { merge: true })
-            ]);
-          }
-          const localMap = readJson('vmpInventoryOverrides', {});
-          localMap[id] = { stock: value };
-          writeJson('vmpInventoryOverrides', localMap);
-          const localPrices = readJson('vmpPriceOverrides', {});
-          localPrices[id] = Number(rate.toFixed(2));
-          writeJson('vmpPriceOverrides', localPrices);
-          queueDashboardReload(50);
-        });
-      });
-    }
+        <div class="ck-field">
+          <label class="ck-label">State <span class="req">*</span></label>
+          <select id="ck-state" class="ck-input" autocomplete="address-level1">
+            <option value="">Select State</option>
+            <option>Gujarat</option><option>Maharashtra</option><option>Rajasthan</option>
+            <option>Madhya Pradesh</option><option>Delhi</option><option>Uttar Pradesh</option>
+            <option>Karnataka</option><option>Tamil Nadu</option><option>Telangana</option>
+            <option>West Bengal</option><option>Punjab</option><option>Haryana</option>
+            <option>Kerala</option><option>Bihar</option><option>Other</option>
+          </select>
+          <span class="ck-err-msg" id="err-state">Please select your state</span>
+        </div>
 
-    function renderPos(products, inventoryMap = {}){
-      latestProducts = products;
-      latestInventoryMap = inventoryMap;
-      const grid = document.getElementById('posGrid');
-      if(!grid) return;
-      grid.innerHTML = products.slice(0, 12).map((p) => `
-        <button data-pos-id="${p.id}" class="rounded-xl border border-emerald-100 bg-white p-3 text-left shadow-sm hover:border-emerald-300">
-          <p class="text-xs text-slate-500">${p.category}</p>
-          <p class="mt-1 text-sm font-bold text-slate-900">${p.name}</p>
-        </button>
-      `).join('');
+        <div class="ck-field">
+          <label class="ck-label">GST Number (optional)</label>
+          <input id="ck-gst" class="ck-input" type="text" placeholder="24BLLPL0402N1Z6" style="text-transform:uppercase"/>
+        </div>
 
-      document.querySelectorAll('[data-pos-id]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const id = btn.dataset.posId;
-          posCart[id] = (posCart[id] || 0) + 1;
-          updatePosCart();
-        });
-      });
-      updatePosCart();
-    }
+        <div class="ck-field full">
+          <label class="ck-label">Order Notes (optional)</label>
+          <textarea id="ck-notes" class="ck-input" rows="2" placeholder="Special packing, preferred delivery time, etc."></textarea>
+        </div>
 
-    function updatePosCart(){
-      const list = document.getElementById('posCart');
-      if(!list) return;
-      const rows = Object.entries(posCart);
-      if(!rows.length){
-        list.innerHTML = '<p class="text-slate-500">No items added.</p>';
-        document.getElementById('posSubtotal').textContent = '0.00';
-        document.getElementById('posGst').textContent = '0.00';
-        document.getElementById('posTotal').textContent = '0.00';
-        return;
-      }
-      let subtotal = 0;
-      list.innerHTML = rows.map(([id, qty]) => {
-        const p = latestProducts.find((item) => item.id === id);
-        const unit = Number(p?.tiers?.[0]?.price || 0);
-        const line = qty * unit;
-        subtotal += line;
-        return `<p class="flex items-center justify-between"><span>${p?.name || id} × ${qty}</span><span>₹${line.toFixed(2)}</span></p>`;
-      }).join('');
-      const gst = subtotal * 0.05;
-      const total = subtotal + gst;
-      document.getElementById('posSubtotal').textContent = subtotal.toFixed(2);
-      document.getElementById('posGst').textContent = gst.toFixed(2);
-      document.getElementById('posTotal').textContent = total.toFixed(2);
-    }
+      </div>
+      <button class="btn-next" onclick="goStep2()" style="width:100%;margin-top:.5rem">
+        Continue to Payment <svg style="width:14px;height:14px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </button>
+    </div>
 
-    function renderBusinessHealth(orders){
-      latestOrders = orders;
-      const today = new Date().toISOString().slice(0, 10);
-      const todaySales = orders
-        .filter((o) => String(o.date || o.createdAt || '').slice(0, 10) === today || !o.date)
-        .reduce((sum, o) => sum + Number(o.total || 0), 0);
-      const pl = todaySales - DAILY_EXPENSE;
-      document.getElementById('todaySales').textContent = `₹${todaySales.toFixed(2)}`;
-      document.getElementById('todayExpense').textContent = `₹${DAILY_EXPENSE.toFixed(2)}`;
-      const plEl = document.getElementById('todayPL');
-      plEl.textContent = `₹${pl.toFixed(2)}`;
-      plEl.className = `text-2xl font-black ${pl >= 0 ? 'text-emerald-800' : 'text-rose-700'}`;
-      const alertEl = document.getElementById('targetAlert');
-      if(todaySales < WARNING_THRESHOLD){
-        alertEl.className = 'mt-3 text-sm font-semibold text-rose-700';
-        alertEl.textContent = 'Warning: Not meeting daily expense targets.';
-      } else {
-        alertEl.className = 'mt-3 text-sm font-semibold text-emerald-700';
-        alertEl.textContent = 'Healthy: daily sales are above warning threshold.';
-      }
-      renderPlChart(orders);
-    }
+    <!-- ── STEP 2: PAYMENT ─────────────────────────── -->
+    <div class="ck-step" id="ck-step-2">
+      <div class="ck-section-title">💳 Step 2 — Payment Method</div>
 
-    function renderPlChart(orders){
-      const chart = document.getElementById('plChart');
-      if(!chart) return;
-      const recent = [...orders].slice(0, 7).reverse();
-      const sales = recent.map((o) => Number(o.total || 0));
-      const max = Math.max(DAILY_EXPENSE, ...sales, 1);
-      const toY = (v) => 150 - (v / max) * 110;
-      const step = recent.length > 1 ? 320 / (recent.length - 1) : 320;
-      const salesPoints = sales.map((v, i) => `${50 + i * step},${toY(v)}`).join(' ');
-      const expensePoints = sales.map((_, i) => `${50 + i * step},${toY(DAILY_EXPENSE)}`).join(' ');
-      chart.innerHTML = `
-        <line x1="40" y1="20" x2="40" y2="155" stroke="#94a3b8" stroke-width="1"/>
-        <line x1="40" y1="155" x2="390" y2="155" stroke="#94a3b8" stroke-width="1"/>
-        <polyline points="${expensePoints}" fill="none" stroke="#dc2626" stroke-width="3"/>
-        <polyline points="${salesPoints}" fill="none" stroke="#059669" stroke-width="3"/>
-      `;
-    }
+      <!-- Mini order summary -->
+      <div class="ck-summary">
+        <div class="ck-summary-title">Order Summary</div>
+        <div id="ck-sum-items"></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:3px 0"><span>Subtotal</span><span id="ck-sum-sub"></span></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:3px 0"><span>GST (18% est.)</span><span id="ck-sum-gst"></span></div>
+        <div class="ck-sum-grand"><span>Grand Total</span><span id="ck-sum-grand"></span></div>
+      </div>
 
-    function answerAi(question){
-      const q = String(question || '').toLowerCase();
-      if(!q) return 'Please ask a question.';
-      if(q.includes('today') && q.includes('sale')){
-        const value = latestOrders.reduce((sum, item) => sum + Number(item.total || 0), 0);
-        return `Today's tracked total sale is around ₹${value.toFixed(2)}.`;
-      }
-      if(q.includes('low') && q.includes('stock')){
-        const low = latestProducts.filter((p) => Number(latestInventoryMap[p.id]?.stock ?? p.stock ?? 0) < LOW_STOCK_THRESHOLD);
-        return low.length ? `Low stock items: ${low.slice(0, 5).map((item) => item.name).join(', ')}.` : 'No low stock items right now.';
-      }
-      return 'I can answer sales, low stock, profit/loss, and order trend related questions.';
-    }
+      <!-- Payment options -->
+      <div class="pay-opts" id="pay-opts">
+        <div class="pay-opt selected" data-method="upi" onclick="selectPayMethod(this,'upi')">
+          <div class="pay-opt-radio"></div>
+          <span class="pay-opt-icon">📱</span>
+          <div><div class="pay-opt-label">UPI / QR Code Pay</div><div class="pay-opt-sub">GPay, PhonePe, Paytm, BHIM — scan &amp; pay</div></div>
+          <span class="pay-badge" style="background:var(--green-pale);color:var(--green2)">✓ Instant</span>
+        </div>
+        <div class="pay-opt" data-method="bank" onclick="selectPayMethod(this,'bank')">
+          <div class="pay-opt-radio"></div>
+          <span class="pay-opt-icon">🏦</span>
+          <div><div class="pay-opt-label">Bank Transfer / NEFT / RTGS</div><div class="pay-opt-sub">Transfer directly to VMP bank account</div></div>
+        </div>
+        <div class="pay-opt" data-method="cod" onclick="selectPayMethod(this,'cod')">
+          <div class="pay-opt-radio"></div>
+          <span class="pay-opt-icon">💵</span>
+          <div><div class="pay-opt-label">Cash on Delivery (COD)</div><div class="pay-opt-sub">Available for Gujarat orders · MOQ 5,000 pcs</div></div>
+        </div>
+        <div class="pay-opt" data-method="credit" onclick="selectPayMethod(this,'credit')">
+          <div class="pay-opt-radio"></div>
+          <span class="pay-opt-icon">🤝</span>
+          <div><div class="pay-opt-label">B2B Credit / Net-30</div><div class="pay-opt-sub">Pre-approved wholesale buyers only</div></div>
+        </div>
+      </div>
 
-    function renderCustomPrintRequests(){
-      const list = document.getElementById('customPrintRequestList');
-      if(!list) return;
-      const rows = readJson('vmpCustomPrintRequests', []);
-      list.innerHTML = rows.length ? rows.slice(0, 30).map((item, idx) => `
-        <article class="rounded-xl border border-slate-200 p-3">
-          <p class="font-semibold text-slate-900">${item.productName}</p>
-          <p class="text-xs text-slate-500">${item.companyName} • GST: ${item.gstNumber} • ${item.whatsapp}</p>
-          <p class="mt-1 text-xs text-slate-600">Logo: ${item.logoFileName || 'Not uploaded'} | Notes: ${item.notes || '-'}</p>
-          <div class="mt-2 flex items-center gap-2">
-            <select data-cp-index="${idx}" class="cp-status rounded-lg border px-2 py-1 text-xs">
-              <option ${item.status === 'Pending Quote' ? 'selected' : ''}>Pending Quote</option>
-              <option ${item.status === 'Quoted' ? 'selected' : ''}>Quoted</option>
-              <option ${item.status === 'Closed' ? 'selected' : ''}>Closed</option>
-            </select>
-            <span class="text-xs text-slate-500">${item.createdAt || ''}</span>
+      <div class="ck-nav">
+        <button class="btn-back" onclick="goStep1()">← Back</button>
+        <button class="btn-next" onclick="goStep3()">Review & Pay <svg style="width:14px;height:14px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: PAY + CONFIRM ───────────────────── -->
+    <div class="ck-step" id="ck-step-3">
+      <div class="ck-section-title">✅ Step 3 — Pay &amp; Confirm</div>
+
+      <!-- Address recap -->
+      <div class="recap-box" id="addr-recap"></div>
+
+      <!-- UPI QR Block -->
+      <div id="upi-qr-block" style="display:none">
+        <div class="qr-block">
+          <div class="qr-amount-badge">Pay ₹<span id="qr-amount">0</span></div>
+          <div class="qr-frame">
+            <div class="qr-pulse"></div>
+            <img id="qr-img" src="" alt="UPI QR Code" width="180" height="180"/>
           </div>
-        </article>
-      `).join('') : '<p class="text-slate-500">No custom printing requests yet.</p>';
+          <div class="qr-instruction">
+            Scan using <strong>GPay · PhonePe · Paytm · BHIM</strong><br/>
+            to pay <strong>₹<span id="qr-inst-amount">0</span></strong> to Veer Mahadev Plastic
+          </div>
+          <div class="upi-id-row">
+            <span>UPI ID: <strong>8050389261@upi</strong></span>
+            <button class="copy-upi-btn" onclick="copyUPI()">Copy</button>
+          </div>
+        </div>
+        <div class="info-box green">
+          📌 <strong>After payment:</strong> Click "Confirm Payment & Send Order" below. Your order details will be auto-sent to VMP WhatsApp for dispatch confirmation.
+        </div>
+      </div>
 
-      document.querySelectorAll('.cp-status').forEach((select) => {
-        select.addEventListener('change', () => {
-          const index = Number(select.dataset.cpIndex);
-          const all = readJson('vmpCustomPrintRequests', []);
-          if(!all[index]) return;
-          all[index].status = select.value;
-          writeJson('vmpCustomPrintRequests', all);
-        });
-      });
-    }
+      <!-- Bank Transfer Block -->
+      <div id="bank-block" style="display:none">
+        <div class="bank-info">
+          <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:.65rem;letter-spacing:.5px">Bank Transfer Details</div>
+          <div class="bank-row"><span>Bank Name</span><span>HDFC Bank Ltd.</span></div>
+          <div class="bank-row"><span>Account No.</span><span>50200XXXXXXXXX</span></div>
+          <div class="bank-row"><span>IFSC Code</span><span>HDFC0001234</span></div>
+          <div class="bank-row"><span>Account Type</span><span>Current Account</span></div>
+          <div class="bank-row"><span>Amount to Pay</span><span id="bank-amt" style="color:var(--amber);font-weight:800">₹0</span></div>
+        </div>
+        <div class="info-box green">📸 Transfer payment and click confirm — our team will verify &amp; dispatch within 24 hours.</div>
+      </div>
 
-    async function loadDashboardData(){
-      const db = getDb();
-      const products = readJson('vmpProductSnapshot', []);
-      let orders = readJson('vmpOrderHistory', []);
-      let inventoryMap = readJson('vmpInventoryOverrides', {});
-      let priceMap = Object.entries(readJson('vmpPriceOverrides', {})).reduce((acc, [id, price]) => {
-        acc[id] = { price100: Number(price) };
-        return acc;
-      }, {});
+      <!-- COD Block -->
+      <div id="cod-block" style="display:none">
+        <div class="info-box green">🚚 <strong>Cash on Delivery:</strong> Pay when your order arrives. Available for Gujarat orders above 5,000 pcs. Our dispatch team will call to confirm before shipping.</div>
+      </div>
 
-      renderCustomers();
-      renderOrders(orders);
-      renderInventory(products, inventoryMap, priceMap);
-      renderPos(products, inventoryMap);
-      renderBusinessHealth(orders);
-      renderCustomPrintRequests();
+      <!-- Credit Block -->
+      <div id="credit-block" style="display:none">
+        <div class="info-box blue">🤝 <strong>B2B Credit / Net-30:</strong> Your account will be reviewed within 2 hours. Credit orders are processed after approval from our accounts team.</div>
+      </div>
 
-      if(db){
-        try {
-          const [ordersSnap, inventorySnap, pricingSnap] = await Promise.all([
-            db.collection('orders').orderBy('createdAt', 'desc').limit(100).get(),
-            db.collection('inventory').get(),
-            db.collection('pricing').get()
-          ]);
-          orders = ordersSnap.docs.map((doc) => ({ ...doc.data(), orderId: doc.id, total: doc.data().total || doc.data().totals?.total || 0 }));
-          inventoryMap = {};
-          inventorySnap.forEach((doc) => { inventoryMap[doc.id] = doc.data(); });
-          priceMap = {};
-          pricingSnap.forEach((doc) => { priceMap[doc.id] = doc.data(); });
-        } catch (error) {
-          console.warn('Firestore dashboard fetch failed, using local cache.', error);
-        }
-      }
+      <div class="ck-nav">
+        <button class="btn-back" onclick="goStep2()">← Back</button>
+        <button class="btn-confirm" onclick="confirmOrder()" id="confirm-btn">
+          <svg style="width:15px;height:15px" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Confirm Payment &amp; Send Order 🚀
+        </button>
+      </div>
+    </div>
 
-      renderCustomers();
-      renderOrders(orders);
-      renderInventory(products, inventoryMap, priceMap);
-      renderPos(products, inventoryMap);
-      renderBusinessHealth(orders);
-      renderCustomPrintRequests();
-      const inventoryValue = products.reduce((sum, p) => {
-        const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
-        const unit = Number(priceMap[p.id]?.price100 ?? p.price100 ?? p.tiers?.[0]?.price ?? 0);
-        return sum + (stock * unit);
-      }, 0);
-      document.getElementById('metricInventoryValue').textContent = `₹${inventoryValue.toFixed(2)}`;
+    <!-- ── SUCCESS PANEL ────────────────────────────── -->
+    <div class="success-panel" id="success-panel">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Order Confirmed! 🎉</div>
+      <p class="success-sub">
+        Your order has been sent to VMP WhatsApp.<br/>
+        Our team will call you within <strong>30 minutes</strong> to confirm dispatch.<br/><br/>
+        <span style="color:var(--green2)">📦 Expected dispatch: Same day before 5 PM</span>
+      </p>
+      <div style="background:var(--green-pale);border:1px solid rgba(6,95,70,.15);border-radius:10px;padding:.85rem;font-size:12px;color:var(--green);margin-bottom:1.5rem;text-align:left;line-height:1.7" id="success-recap"></div>
+      <button class="btn-done" onclick="closeAll();resetCheckout()">Continue Shopping →</button>
+    </div>
 
-      const lowStockItems = products.filter((p) => Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200) < LOW_STOCK_THRESHOLD);
-      document.getElementById('metricLowStock').textContent = String(lowStockItems.length);
-      document.getElementById('lowStockList').innerHTML = lowStockItems.length
-        ? lowStockItems.map((p) => `<p>• ${p.name}</p>`).join('')
-        : '<p>No low-stock alerts.</p>';
-      safeNotifyLowStock(lowStockItems.map((i) => i.name));
-    }
+  </div>
+</div>
 
-    document.getElementById('adminLoginForm').addEventListener('submit', (event) => {
-      event.preventDefault();
-      const username = document.getElementById('adminUsername').value.trim();
-      const password = document.getElementById('adminPassword').value.trim();
-      const msg = document.getElementById('adminLoginMsg');
-      if(username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD){
-        msg.className = 'mt-4 text-sm font-semibold text-rose-600';
-        msg.textContent = 'Unauthorized Access. This is for owner only.';
-        return;
-      }
-      document.getElementById('adminLoginView').classList.add('hidden');
-      document.getElementById('adminDashboard').classList.remove('hidden');
-      loadDashboardData();
+<!-- Toast -->
+<div class="toast" id="toast-el" role="alert" aria-live="polite"></div>
 
-      const db = getDb();
-      if(db){
-        db.collection('orders').onSnapshot(() => queueDashboardReload());
-        db.collection('inventory').onSnapshot(() => queueDashboardReload());
-        db.collection('pricing').onSnapshot(() => queueDashboardReload());
-      }
-    });
+<script>
+/* ══════════════════════════════════════════════════
+   CONFIGURATION
+══════════════════════════════════════════════════ */
+const VMP_WA_NUMBER = '918050389261';   // WhatsApp admin number
+const VMP_UPI_ID    = '8050389261@upi'; // UPI ID
+const VMP_UPI_NAME  = 'VeerMahadevPlastic';
+const GST_RATE      = 0.18;             // 18% GST
 
-    document.getElementById('reloadInventory').addEventListener('click', loadDashboardData);
-    document.getElementById('clearPos').addEventListener('click', () => {
-      posCart = {};
-      updatePosCart();
-    });
-    document.getElementById('savePosSale').addEventListener('click', async () => {
-      const updates = Object.entries(posCart);
-      if(!updates.length) return;
-      const db = getDb();
-      updates.forEach(([id, qty]) => {
-        const current = Number(latestInventoryMap[id]?.stock ?? 0);
-        latestInventoryMap[id] = { stock: Math.max(0, current - qty) };
-      });
-      writeJson('vmpInventoryOverrides', latestInventoryMap);
-      if(db){
-        await Promise.all(updates.map(([id]) => db.collection('inventory').doc(id).set({ stock: latestInventoryMap[id].stock }, { merge: true })));
-      }
-      posCart = {};
-      updatePosCart();
-      queueDashboardReload(100);
-    });
-    document.getElementById('askAi').addEventListener('click', () => {
-      const question = document.getElementById('aiQuestion').value;
-      document.getElementById('aiReply').textContent = answerAi(question);
-    });
-    document.getElementById('reloadPrintRequests').addEventListener('click', renderCustomPrintRequests);
-  </script>
+/* ══════════════════════════════════════════════════
+   DEMO PRODUCTS
+══════════════════════════════════════════════════ */
+const DEMO_PRODS = [
+  {id:'7041',name:'3CP Meal Tray with Lid',sku:'VMP-7041',packing:400,pcs:12.5,img:'https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg'},
+  {id:'7045',name:'5CP Meal Tray with Lid',sku:'VMP-7045',packing:300,pcs:17.85,img:'https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg'},
+  {id:'7018',name:'9" Round Plate',sku:'VMP-7018',packing:800,pcs:5.55,img:'https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg'},
+  {id:'7202',name:'200ml Biodeg. Glass Milky',sku:'VMP-7202',packing:5000,pcs:1.66,img:'https://i.postimg.cc/nhT88Mbd/BIODEGRADABLE-ICECUP-MILKY.jpg'},
+  {id:'1402',name:'Burger Box',sku:'VMP-1402',packing:1500,pcs:4.5,img:'https://i.postimg.cc/Rh5Bhxcj/SANDWICH-BOX.jpg'},
+  {id:'1423',name:'Hinged Box 500ml',sku:'VMP-1423',packing:1500,pcs:4.75,img:'https://i.postimg.cc/fyDvCkBs/transperent-box.png'},
+];
+
+// Render demo product cards
+document.getElementById('demo-prods').innerHTML = DEMO_PRODS.map(p => `
+  <div class="dp-card">
+    <img src="${p.img}" alt="${p.name}" onerror="this.style.background='#FEF3C7';this.style.display='none'"/>
+    <div class="dp-card-body">
+      <div class="dp-name">${p.name}</div>
+      <div class="dp-price">₹${p.pcs}/pc</div>
+      <div class="dp-moq">MOQ: ${p.packing.toLocaleString('en-IN')} pcs</div>
+      <button class="dp-add" onclick="addToCart('${p.id}','${p.name.replace(/'/g,'`')}','${p.sku}',${p.pcs},${p.packing},'${p.img}')">+ Add to Cart</button>
+    </div>
+  </div>`).join('');
+
+/* ══════════════════════════════════════════════════
+   CART STATE
+══════════════════════════════════════════════════ */
+let cart = [];
+
+function cartSubtotal(){ return cart.reduce((s,i) => s + i.qty * i.unit, 0) }
+function cartGST(){ return cartSubtotal() * GST_RATE }
+function cartGrand(){ return cartSubtotal() + cartGST() }
+function cartQty(){ return cart.reduce((s,i) => s + i.qty, 0) }
+
+function fmt(n){ return '₹' + n.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2}) }
+function fmtRound(n){ return '₹' + Math.round(n).toLocaleString('en-IN') }
+
+function addToCart(id, name, sku, pcs, packing, img){
+  const ex = cart.find(i => i.id === id);
+  if(ex){ ex.qty += packing; }
+  else { cart.push({id, name, sku, unit: pcs, qty: packing, img: img || ''}); }
+  updateCartUI();
+  openCart();
+  showToast(`${name.slice(0,28)}… added! (${packing.toLocaleString('en-IN')} pcs)`);
+}
+
+function removeFromCart(id){
+  cart = cart.filter(i => i.id !== id);
+  updateCartUI();
+}
+
+function changeQty(id, delta){
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+  const p = DEMO_PRODS.find(p => p.id === id);
+  const step = p ? p.packing : 1;
+  item.qty = Math.max(step, item.qty + delta * step);
+  updateCartUI();
+}
+
+function updateCartUI(){
+  const qty   = cartQty();
+  const sub   = cartSubtotal();
+  const gst   = cartGST();
+  const grand = cartGrand();
+
+  // Badges
+  document.getElementById('top-badge').textContent = qty;
+  document.getElementById('cd-count').textContent = cart.length;
+  document.getElementById('cd-sub').textContent   = fmt(sub);
+  document.getElementById('cd-gst').textContent   = fmt(gst);
+  document.getElementById('cd-grand').textContent = fmt(grand);
+
+  // Cart body
+  const body = document.getElementById('cd-body');
+  if(!cart.length){
+    body.innerHTML = '<div class="cd-empty">Your cart is empty.<br/>Add products to continue.</div>';
+    return;
+  }
+  body.innerHTML = cart.map(item => `
+    <div class="cd-item">
+      <img class="cd-item-img" src="${item.img}" alt="" onerror="this.style.display='none'"/>
+      <div class="cd-item-body">
+        <div class="cd-item-name">${item.name}</div>
+        <div class="cd-item-sku">${item.sku}</div>
+        <div class="cd-item-price">${fmt(item.qty * item.unit)}</div>
+        <div class="cd-qty-row">
+          <button class="qty-btn" onclick="changeQty('${item.id}',-1)">−</button>
+          <span class="qty-val">${item.qty.toLocaleString('en-IN')}</span>
+          <button class="qty-btn" onclick="changeQty('${item.id}',1)">+</button>
+          <span style="font-size:10px;color:var(--muted2);margin-left:4px">pcs · ₹${item.unit}/pc</span>
+        </div>
+      </div>
+      <button class="cd-rm" onclick="removeFromCart('${item.id}')" title="Remove">🗑️</button>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   CART DRAWER
+══════════════════════════════════════════════════ */
+function openCart(){
+  document.getElementById('cart-drawer').classList.add('open');
+  document.getElementById('main-overlay').classList.add('show');
+}
+function closeCart(){
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('main-overlay').classList.remove('show');
+}
+function closeAll(){
+  closeCart();
+  closeCheckout();
+}
+
+// Quick WA order (no checkout form)
+function quickWAOrder(e){
+  e.preventDefault();
+  if(!cart.length){ showToast('Cart is empty!'); return; }
+  const lines = cart.map((i,n) => `${n+1}. ${i.name} (${i.sku}) - ${i.qty.toLocaleString('en-IN')} pcs @ ₹${i.unit}/pc = ${fmt(i.qty*i.unit)}`).join('%0A');
+  const msg = `🛍️ *QUICK ORDER - VEER MAHADEV PLASTIC*%0A` +
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+    `📦 *Order Items:*%0A${lines}%0A%0A` +
+    `💵 *Subtotal:* ${fmtRound(cartSubtotal())}%0A` +
+    `🧾 *GST (18%):* ${fmtRound(cartGST())}%0A` +
+    `💰 *Grand Total:* ${fmtRound(cartGrand())}%0A%0A` +
+    `_(Please reply with delivery address)_`;
+  window.open(`https://wa.me/${VMP_WA_NUMBER}?text=${msg}`, '_blank');
+}
+
+/* ══════════════════════════════════════════════════
+   CHECKOUT MODAL STATE
+══════════════════════════════════════════════════ */
+let currentStep   = 1;
+let selectedPayMethod = 'upi';
+
+function openCheckout(){
+  if(!cart.length){ showToast('Your cart is empty!'); return; }
+  closeCart();
+  currentStep = 1;
+  selectedPayMethod = 'upi';
+  showStep(1);
+  document.getElementById('checkout-modal').classList.add('open');
+  document.getElementById('success-panel').classList.remove('show');
+  document.querySelectorAll('.ck-step').forEach(s => s.style.display = '');
+}
+
+function closeCheckout(){
+  document.getElementById('checkout-modal').classList.remove('open');
+}
+
+function showStep(n){
+  currentStep = n;
+  [1,2,3].forEach(i => {
+    const el = document.getElementById(`ck-step-${i}`);
+    const dot = document.getElementById(`sd${i}`);
+    el.classList.toggle('active', i === n);
+    dot.classList.remove('active','done');
+    if(i === n) dot.classList.add('active');
+    else if(i < n) dot.classList.add('done');
+  });
+}
+
+/* ── STEP 1 → 2: Validate address ─── */
+function goStep2(){
+  if(!validateAddress()) return;
+  // Populate summary
+  populateSummary();
+  showStep(2);
+}
+
+function goStep1(){ showStep(1) }
+
+/* ── STEP 2 → 3: Setup payment UI ── */
+function goStep3(){
+  populateSummary(); // refresh
+  setupStep3();
+  showStep(3);
+}
+
+function goStep2Again(){ showStep(2) }
+// Alias for back button in step 3
+const goStep2_from3 = () => showStep(2);
+document.getElementById('ck-step-3').querySelector('.btn-back').onclick = () => showStep(2);
+
+/* ══════════════════════════════════════════════════
+   FORM VALIDATION
+══════════════════════════════════════════════════ */
+function getField(id){ return document.getElementById(id) }
+function showErr(id, show){ 
+  const inp = document.getElementById(id);
+  const msg = document.getElementById('err-' + id.replace('ck-',''));
+  if(!inp || !msg) return;
+  inp.classList.toggle('err', show);
+  msg.classList.toggle('show', show);
+}
+function clearErr(id){ showErr(id, false) }
+
+function validateAddress(){
+  let valid = true;
+  const checks = [
+    { id:'ck-name',  fn: v => v.trim().length >= 2 },
+    { id:'ck-biz',   fn: v => v.trim().length >= 2 },
+    { id:'ck-phone', fn: v => /^[+\d\s\-]{10,15}$/.test(v.trim()) },
+    { id:'ck-addr',  fn: v => v.trim().length >= 5 },
+    { id:'ck-city',  fn: v => v.trim().length >= 2 },
+    { id:'ck-pin',   fn: v => /^\d{6}$/.test(v.trim()) },
+    { id:'ck-state', fn: v => v !== '' },
+  ];
+  checks.forEach(c => {
+    const val = getField(c.id).value;
+    const ok  = c.fn(val);
+    showErr(c.id, !ok);
+    if(!ok) valid = false;
+  });
+  if(!valid){ showToast('Please fill all required fields correctly.'); }
+  return valid;
+}
+
+// Live clear on input
+['ck-name','ck-biz','ck-phone','ck-addr','ck-city','ck-pin','ck-state'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('input', () => clearErr(id));
+  if(el && el.tagName === 'SELECT') el.addEventListener('change', () => clearErr(id));
+});
+
+/* ══════════════════════════════════════════════════
+   SUMMARY POPULATION
+══════════════════════════════════════════════════ */
+function populateSummary(){
+  const sub   = cartSubtotal();
+  const gst   = cartGST();
+  const grand = cartGrand();
+
+  // Step-2 summary
+  document.getElementById('ck-sum-items').innerHTML = cart.map(i =>
+    `<div class="ck-sum-item"><span>${i.name.slice(0,30)}… × ${i.qty.toLocaleString('en-IN')}</span><span>${fmt(i.qty*i.unit)}</span></div>`
+  ).join('');
+  document.getElementById('ck-sum-sub').textContent   = fmt(sub);
+  document.getElementById('ck-sum-gst').textContent   = fmt(gst);
+  document.getElementById('ck-sum-grand').textContent = fmt(grand);
+}
+
+/* ══════════════════════════════════════════════════
+   PAYMENT METHOD SELECTION
+══════════════════════════════════════════════════ */
+function selectPayMethod(el, method){
+  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPayMethod = method;
+}
+
+/* ══════════════════════════════════════════════════
+   STEP 3 SETUP — QR + Payment UI
+══════════════════════════════════════════════════ */
+function setupStep3(){
+  const grand = Math.round(cartGrand());
+
+  // Address recap
+  const name  = getField('ck-name').value.trim();
+  const biz   = getField('ck-biz').value.trim();
+  const phone = getField('ck-phone').value.trim();
+  const addr  = getField('ck-addr').value.trim();
+  const city  = getField('ck-city').value.trim();
+  const pin   = getField('ck-pin').value.trim();
+  const state = getField('ck-state').value;
+  const email = getField('ck-email').value.trim();
+  const gst   = getField('ck-gst').value.trim().toUpperCase();
+
+  document.getElementById('addr-recap').innerHTML =
+    `<strong>📍 Delivering to:</strong><br/>` +
+    `${name} · ${biz}<br/>` +
+    `📞 ${phone}${email ? ' · ✉️ ' + email : ''}<br/>` +
+    `${addr}, ${city}, ${state} — ${pin}` +
+    (gst ? `<br/>🧾 GST: ${gst}` : '');
+
+  // Show/hide payment blocks
+  const blocks = ['upi-qr-block','bank-block','cod-block','credit-block'];
+  blocks.forEach(b => document.getElementById(b).style.display = 'none');
+
+  if(selectedPayMethod === 'upi'){
+    document.getElementById('upi-qr-block').style.display = 'block';
+    generateQR(grand);
+  } else if(selectedPayMethod === 'bank'){
+    document.getElementById('bank-block').style.display = 'block';
+    document.getElementById('bank-amt').textContent = fmtRound(grand);
+  } else if(selectedPayMethod === 'cod'){
+    document.getElementById('cod-block').style.display = 'block';
+  } else if(selectedPayMethod === 'credit'){
+    document.getElementById('credit-block').style.display = 'block';
+  }
+
+  // Update confirm button text
+  const confirmPayLabels = {
+    upi:    '✅ Payment Done — Send Order on WhatsApp 🚀',
+    bank:   '✅ Transfer Done — Confirm & Send Order 🚀',
+    cod:    '📦 Confirm COD Order on WhatsApp 🚀',
+    credit: '🤝 Submit B2B Credit Order 🚀',
+  };
+  document.getElementById('confirm-btn').innerHTML = `
+    <svg style="width:15px;height:15px" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    ${confirmPayLabels[selectedPayMethod]}`;
+}
+
+/* ══════════════════════════════════════════════════
+   DYNAMIC UPI QR CODE GENERATION
+   Uses api.qrserver.com (free, no CORS, no auth)
+══════════════════════════════════════════════════ */
+function generateQR(amount){
+  // Standard UPI deep-link format
+  const upiString = `upi://pay?pa=${VMP_UPI_ID}&pn=${encodeURIComponent(VMP_UPI_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent('VMP Order Payment')}`;
+
+  // QR API — generates crisp QR PNG
+  const qrAPI = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(upiString)}&size=180x180&ecc=M&color=111827&bgcolor=ffffff&margin=4`;
+
+  const img = document.getElementById('qr-img');
+
+  // Show loading state
+  img.style.opacity = '0.4';
+  img.src = qrAPI;
+  img.onload = () => { img.style.opacity = '1'; };
+  img.onerror = () => {
+    // Fallback: show UPI ID prominently if QR fails to load
+    img.style.display = 'none';
+    document.querySelector('.qr-frame').innerHTML +=
+      `<div style="width:180px;height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:var(--muted);padding:1rem;text-align:center"><div style="font-size:1.5rem;margin-bottom:.5rem">📱</div><div>UPI ID:</div><div style="font-weight:800;color:var(--ink);margin-top:4px">${VMP_UPI_ID}</div></div>`;
+  };
+
+  // Update amount displays
+  document.getElementById('qr-amount').textContent = amount.toLocaleString('en-IN');
+  document.getElementById('qr-inst-amount').textContent = amount.toLocaleString('en-IN');
+}
+
+/* ── Copy UPI ID ── */
+function copyUPI(){
+  navigator.clipboard.writeText(VMP_UPI_ID)
+    .then(() => showToast('✅ UPI ID copied: ' + VMP_UPI_ID))
+    .catch(() => showToast('UPI ID: ' + VMP_UPI_ID));
+}
+
+/* ══════════════════════════════════════════════════
+   CONFIRM ORDER → WHATSAPP DISPATCH
+══════════════════════════════════════════════════ */
+function confirmOrder(){
+  // Collect customer details
+  const name  = getField('ck-name').value.trim();
+  const biz   = getField('ck-biz').value.trim();
+  const phone = getField('ck-phone').value.trim();
+  const email = getField('ck-email').value.trim();
+  const addr  = getField('ck-addr').value.trim();
+  const city  = getField('ck-city').value.trim();
+  const pin   = getField('ck-pin').value.trim();
+  const state = getField('ck-state').value;
+  const gst   = getField('ck-gst').value.trim().toUpperCase();
+  const notes = getField('ck-notes').value.trim();
+
+  const sub   = Math.round(cartSubtotal());
+  const gstAmt = Math.round(cartGST());
+  const grand  = sub + gstAmt;
+
+  const orderID = 'VMP' + Date.now().toString().slice(-8);
+  const now = new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata', hour12:true});
+
+  // Build item lines
+  const itemLines = cart.map((item, i) =>
+    `  ${i+1}. *${item.name}*%0A     SKU: ${item.sku} · ${item.qty.toLocaleString('en-IN')} pcs @ ₹${item.unit}/pc = *₹${Math.round(item.qty * item.unit).toLocaleString('en-IN')}*`
+  ).join('%0A');
+
+  // Payment method label
+  const payLabel = {
+    upi:    '✅ UPI / QR Code — Payment Done',
+    bank:   '🏦 Bank Transfer — Confirmation Pending',
+    cod:    '💵 Cash on Delivery',
+    credit: '🤝 B2B Credit / Net-30',
+  }[selectedPayMethod] || 'UPI';
+
+  // Build professional WhatsApp message
+  const waMsg =
+    `🛍️ *NEW ORDER — VEER MAHADEV PLASTIC*%0A` +
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
+    `🔖 *Order ID:* ${orderID}%0A` +
+    `🕐 *Time:* ${now}%0A%0A` +
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+    `👤 *CUSTOMER DETAILS*%0A` +
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+    `• *Name:* ${name}%0A` +
+    `• *Business:* ${biz}%0A` +
+    `• *Phone / WA:* ${phone}%0A` +
+    (email ? `• *Email:* ${email}%0A` : '') +
+    `• *Address:* ${addr}%0A` +
+    `• *City:* ${city}, ${state} — ${pin}%0A` +
+    (gst ? `• *GST No:* ${gst}%0A` : '') +
+    `%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+    `📦 *ORDER ITEMS*%0A` +
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+    `${itemLines}%0A%0A` +
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+    `💵 *BILLING SUMMARY*%0A` +
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+    `• Subtotal: ₹${sub.toLocaleString('en-IN')}%0A` +
+    `• GST (18%): ₹${gstAmt.toLocaleString('en-IN')}%0A` +
+    `• Shipping: FREE%0A` +
+    `• *GRAND TOTAL: ₹${grand.toLocaleString('en-IN')}*%0A%0A` +
+    `💳 *Payment Method:* ${payLabel}%0A` +
+    `💳 *UPI ID:* ${VMP_UPI_ID}%0A%0A` +
+    (notes ? `📝 *Order Notes:* ${notes}%0A%0A` : '') +
+    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
+    `_Sent via VMP Global Solutions Storefront_`;
+
+  const waURL = `https://wa.me/${VMP_WA_NUMBER}?text=${waMsg}`;
+
+  // Show spinner briefly, then open WA
+  const btn = document.getElementById('confirm-btn');
+  btn.innerHTML = `<div class="spinner"></div> Opening WhatsApp…`;
+  btn.disabled = true;
+
+  setTimeout(() => {
+    window.open(waURL, '_blank');
+    showSuccessPanel(name, biz, phone, addr, city, state, pin, grand, orderID, payLabel);
+    cart = []; // Clear cart
+    updateCartUI();
+    btn.disabled = false;
+  }, 900);
+}
+
+/* ══════════════════════════════════════════════════
+   SUCCESS PANEL
+══════════════════════════════════════════════════ */
+function showSuccessPanel(name, biz, phone, addr, city, state, pin, grand, orderID, payLabel){
+  // Hide all steps
+  document.querySelectorAll('.ck-step').forEach(s => s.classList.remove('active'));
+
+  // Build recap
+  document.getElementById('success-recap').innerHTML =
+    `<strong>🔖 Order ID:</strong> ${orderID}<br/>` +
+    `<strong>👤 Customer:</strong> ${name} · ${biz}<br/>` +
+    `<strong>📞 Phone:</strong> ${phone}<br/>` +
+    `<strong>📍 Address:</strong> ${addr}, ${city}, ${state} — ${pin}<br/>` +
+    `<strong>💰 Total Paid:</strong> ₹${grand.toLocaleString('en-IN')}<br/>` +
+    `<strong>💳 Payment:</strong> ${payLabel}`;
+
+  document.getElementById('success-panel').classList.add('show');
+  showToast('🎉 Order sent to VMP WhatsApp!');
+}
+
+function resetCheckout(){
+  // Clear form fields
+  ['ck-name','ck-biz','ck-phone','ck-email','ck-addr','ck-city','ck-pin','ck-gst','ck-notes'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  document.getElementById('ck-state').value = '';
+  selectedPayMethod = 'upi';
+  document.querySelectorAll('.pay-opt').forEach((o,i) => o.classList.toggle('selected', i===0));
+  document.getElementById('success-panel').classList.remove('show');
+  currentStep = 1;
+}
+
+/* ══════════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg){
+  const el = document.getElementById('toast-el');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+/* ══════════════════════════════════════════════════
+   KEYBOARD ESC CLOSE
+══════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ closeAll(); }
+});
+</script>
 </body>
 </html>
