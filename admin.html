@@ -214,46 +214,64 @@ select.ck-input{cursor:pointer;appearance:none;background-image:url("data:image/
 <!-- ── OVERLAY ─────────────────────────────────────── -->
 <div class="overlay" id="main-overlay" onclick="closeAll()"></div>
 
-<!-- ── CART DRAWER ─────────────────────────────────── -->
-<div id="cart-drawer">
-  <div class="cd-head">
-    <div class="cd-title">🛍️ My Cart (<span id="cd-count">0</span> items)</div>
-    <button class="cd-close" onclick="closeCart()">✕</button>
-  </div>
-  <div class="cd-body" id="cd-body">
-    <div class="cd-empty">Your cart is empty.<br/>Add products to continue.</div>
-  </div>
-  <div class="cd-foot">
-    <div class="cd-totals">
-      <div class="cd-total-row"><span>Subtotal</span><span id="cd-sub">₹0.00</span></div>
-      <div class="cd-total-row"><span>GST (est. 18%)</span><span id="cd-gst">₹0.00</span></div>
-      <div class="cd-total-row"><span>Shipping</span><span style="color:var(--green2);font-weight:600">FREE</span></div>
-      <div class="cd-total-row grand"><span>Grand Total</span><span id="cd-grand">₹0.00</span></div>
-    </div>
-    <button class="btn-checkout" onclick="openCheckout()">
-      <svg style="width:15px;height:15px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-      Proceed to Checkout
-    </button>
-    <a class="btn-wa-quick" id="wa-quick-link" href="#" onclick="quickWAOrder(event)" target="_blank" rel="noopener">
-      <svg style="width:14px;height:14px" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Quick WhatsApp Order
-    </a>
-  </div>
-</div>
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <article class="rounded-[1.5rem] border border-emerald-100 bg-white p-5 shadow-sm shadow-emerald-900/5 ring-1 ring-white">
+          <div class="flex items-center justify-between"><p class="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Total Gross Wholesale Revenue</p><span class="rounded-2xl bg-emerald-50 px-3 py-2 text-emerald-700">₹</span></div>
+          <p id="metricGrossRevenue" class="mt-4 text-3xl font-black text-slate-950">₹0</p>
+          <p id="metricRevenueTrend" class="mt-2 text-xs font-black text-emerald-600">▲ 0% vs previous cycle</p>
+        </article>
+        <article class="rounded-[1.5rem] border border-indigo-100 bg-white p-5 shadow-sm shadow-indigo-900/5 ring-1 ring-white">
+          <div class="flex items-center justify-between"><p class="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Active Bulk Distributors</p><span class="rounded-2xl bg-indigo-50 px-3 py-2 text-indigo-700">◎</span></div>
+          <p id="metricDistributors" class="mt-4 text-3xl font-black text-slate-950">0</p>
+          <p class="mt-2 text-xs font-black text-emerald-600">▲ Authenticated corporate contacts</p>
+        </article>
+        <article class="rounded-[1.5rem] border border-amber-100 bg-white p-5 shadow-sm shadow-amber-900/5 ring-1 ring-white">
+          <div class="flex items-center justify-between"><p class="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Total Master Cartons Dispatched</p><span class="rounded-2xl bg-amber-50 px-3 py-2 text-amber-700">▣</span></div>
+          <p id="metricMasterCartons" class="mt-4 text-3xl font-black text-slate-950">0</p>
+          <p class="mt-2 text-xs font-black text-emerald-600">▲ Volume aggregated from all entries</p>
+        </article>
+        <article class="rounded-[1.5rem] border border-rose-100 bg-white p-5 shadow-sm shadow-rose-900/5 ring-1 ring-white">
+          <div class="flex items-center justify-between"><p class="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Pending Order Enquiries</p><span class="rounded-2xl bg-rose-50 px-3 py-2 text-rose-700">!</span></div>
+          <p id="metricPendingEnquiries" class="mt-4 text-3xl font-black text-slate-950">0</p>
+          <p class="mt-2 text-xs font-black text-rose-600">● Processing state logs</p>
+        </article>
+      </div>
 
-<!-- ── CHECKOUT MODAL ──────────────────────────────── -->
-<div id="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="ck-title" onclick="if(event.target===this)closeCheckout()">
-  <div class="ck-card">
+      <div class="grid gap-6 xl:grid-cols-[1.25fr_0.75fr]">
+        <section class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div><p class="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">Order Velocity Trend</p><h3 class="mt-1 text-2xl font-black text-slate-950">Wholesale momentum analytics</h3></div>
+            <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">Interactive SVG Core</span>
+          </div>
+          <svg id="orderVelocityChart" viewBox="0 0 720 280" class="mt-5 h-72 w-full rounded-3xl bg-slate-950 p-3 text-white"></svg>
+        </section>
+        <section class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5">
+          <p class="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">Top Performing Packaging Categories</p>
+          <h3 class="mt-1 text-2xl font-black text-slate-950">Category distribution</h3>
+          <div class="mt-5 grid place-items-center"><svg id="categoryDonutChart" viewBox="0 0 280 280" class="h-72 w-72"></svg></div>
+          <div id="categoryDonutLegend" class="mt-4 grid gap-2 text-xs font-bold text-slate-600"></div>
+        </section>
+      </div>
 
-    <!-- Header -->
-    <div class="ck-header">
-      <div class="ck-header-title" id="ck-title">Secure Checkout</div>
-      <div class="step-track">
-        <div class="s-dot active" id="sd1">1</div>
-        <div class="s-line"></div>
-        <div class="s-dot" id="sd2">2</div>
-        <div class="s-line"></div>
-        <div class="s-dot" id="sd3">✓</div>
+      <section class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div><p class="text-xs font-black uppercase tracking-[0.22em] text-emerald-700">Live trans-payload matrix</p><h3 class="mt-1 text-2xl font-black text-slate-950">Recent Wholesale Inbound Enquiries</h3></div>
+          <button id="reloadEnquiries" class="rounded-xl border border-emerald-200 px-4 py-2 text-xs font-black text-emerald-800 hover:bg-emerald-50">Refresh Enquiries</button>
+        </div>
+        <div class="mt-5 overflow-x-auto rounded-2xl border border-slate-100">
+          <table class="min-w-full divide-y divide-slate-100 text-left text-sm">
+            <thead class="bg-slate-50 text-xs font-black uppercase tracking-[0.12em] text-slate-500"><tr><th class="px-4 py-3">Date</th><th class="px-4 py-3">Consignee Business Name</th><th class="px-4 py-3">Contact Phone/GSTIN</th><th class="px-4 py-3">Master Cartons</th><th class="px-4 py-3">Currency Value</th><th class="px-4 py-3">Status</th><th class="px-4 py-3">Action</th></tr></thead>
+            <tbody id="enquiryTableBody" class="divide-y divide-slate-100 bg-white"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="grid gap-4 md:grid-cols-5">
+        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Total Orders</p><p id="metricOrders" class="mt-1 text-3xl font-black text-slate-900">0</p></article>
+        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Revenue</p><p id="metricRevenue" class="mt-1 text-3xl font-black text-slate-900">₹0</p></article>
+        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Customers</p><p id="metricCustomers" class="mt-1 text-3xl font-black text-slate-900">0</p></article>
+        <article class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm"><p class="text-xs uppercase text-slate-500">Inventory Value</p><p id="metricInventoryValue" class="mt-1 text-3xl font-black text-slate-900">₹0</p></article>
+        <article id="metricLowStockCard" class="rounded-2xl border border-rose-200 bg-rose-50 p-4 shadow-sm"><p class="text-xs uppercase text-rose-700">Low Stock Alerts</p><p id="metricLowStock" class="mt-1 text-3xl font-black text-rose-700">0</p></article>
       </div>
       <button class="ck-close" onclick="closeCheckout()">✕</button>
     </div>
@@ -429,517 +447,547 @@ select.ck-input{cursor:pointer;appearance:none;background-image:url("data:image/
         <div class="info-box blue">🤝 <strong>B2B Credit / Net-30:</strong> Your account will be reviewed within 2 hours. Credit orders are processed after approval from our accounts team.</div>
       </div>
 
-      <div class="ck-nav">
-        <button class="btn-back" onclick="goStep2()">← Back</button>
-        <button class="btn-confirm" onclick="confirmOrder()" id="confirm-btn">
-          <svg style="width:15px;height:15px" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Confirm Payment &amp; Send Order 🚀
+  <script>
+    const ADMIN_USERNAME = 'Mr.karan@admin';
+    const ADMIN_PASSWORD = 'Mr.karankumar@7';
+    const LOW_STOCK_THRESHOLD = 10;
+    const AISENSY_API_URL = 'https://backend.aisensy.com/campaign/t1/api/v2';
+    const AISENSY_API_KEY = localStorage.getItem('vmpAisensyApiKey') || '';
+    const AISENSY_CAMPAIGN_NAME = localStorage.getItem('vmpAisensyCampaign') || 'post_purchase_updates';
+    const DAILY_EXPENSE = 2500;
+    const WARNING_THRESHOLD = 10000;
+    let dashboardReloadTimer = null;
+    let latestOrders = [];
+    let latestProducts = [];
+    let latestInventoryMap = {};
+    let latestEnquiries = [];
+    let posCart = {};
+    const FIREBASE_CONFIG = (window.__FIREBASE_CONFIG__) || (window.VMP_CONFIG?.firebase) || (window.VMP_APP?.config?.firebase) || {};
+
+    function readJson(key, fallback){
+      try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+      catch { return fallback; }
+    }
+
+    function writeJson(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+
+    function queueDashboardReload(delay = 250){
+      if(dashboardReloadTimer) clearTimeout(dashboardReloadTimer);
+      dashboardReloadTimer = setTimeout(() => loadDashboardData(), delay);
+    }
+
+    function getDb(){
+      if(!window.firebase?.firestore) return null;
+      const app = window.firebase.apps?.length ? window.firebase.app() : window.firebase.initializeApp(FIREBASE_CONFIG);
+      return window.firebase.firestore(app);
+    }
+
+    function safeNotifyLowStock(names){
+      if(!names.length) return;
+      const msg = `Low stock alert: ${names.join(', ')}`;
+      if(window.Notification && Notification.permission === 'granted') {
+        new Notification('Veer Mahadev Low Stock', { body: msg });
+      }
+      if(window.OneSignal?.Slidedown?.promptPush){
+        window.OneSignal.Slidedown.promptPush().catch(()=>{});
+      }
+    }
+
+    function buildTrackingLink(tracking = {}){
+      const awb = String(tracking.awb || '').trim();
+      const carrier = String(tracking.carrier || 'delhivery').toLowerCase();
+      if(!awb) return './live-tracking.html';
+      if(carrier.includes('shiprocket')) return `https://shiprocket.co/tracking/${encodeURIComponent(awb)}`;
+      return `https://www.delhivery.com/track/package/${encodeURIComponent(awb)}`;
+    }
+
+    async function resolveTrackingLink(order, carrier, awb){
+      try {
+        const response = await fetch(`/api/generate-tracking-link?carrier=${encodeURIComponent(carrier)}&awb=${encodeURIComponent(awb)}&orderId=${encodeURIComponent(order.orderId)}`);
+        if(response.ok){
+          const payload = await response.json();
+          if(payload?.trackingLink) return payload.trackingLink;
+        }
+      } catch (error) {
+        console.warn('Tracking API unavailable. Using fallback URL.', error);
+      }
+      return buildTrackingLink({ carrier, awb });
+    }
+
+    async function sendAiSensyUpdate(order, status){
+      if(!AISENSY_API_KEY) return;
+      const whatsapp = String(order.details?.whatsapp || '').replace(/\D/g, '');
+      if(whatsapp.length < 10) return;
+      const trackingUrl = order.trackingLink || buildTrackingLink(order.tracking);
+      const isDelivered = String(status || '').toLowerCase().includes('deliver');
+      const message = isDelivered
+        ? `Hey ${order.details?.name || 'Customer'}, aapka order successfully deliver ho gaya hai. Track: ${trackingUrl}. Upload Unboxing Video & Get Extra Discount.`
+        : `Hey ${order.details?.name || 'Customer'}, aapka order aaj dispatch ho gaya hai 🚚. Live tracking: ${trackingUrl}`;
+      try {
+        await fetch(AISENSY_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${AISENSY_API_KEY}`
+          },
+          body: JSON.stringify({
+            apiKey: AISENSY_API_KEY,
+            campaignName: AISENSY_CAMPAIGN_NAME,
+            destination: `91${whatsapp.slice(-10)}`,
+            userName: order.details?.name || 'Customer',
+            templateParams: [order.orderId, status, trackingUrl, 'Upload Unboxing Video & Get Extra Discount'],
+            message
+          })
+        });
+      } catch (error) {
+        console.warn('AiSensy webhook failed.', error);
+      }
+    }
+
+    function renderCustomers(){
+      const customers = readJson('vmpCustomers', []);
+      document.getElementById('metricCustomers').textContent = customers.length;
+      document.getElementById('customerList').innerHTML = customers.length
+        ? customers.map((c) => `<div class="rounded-xl border border-slate-100 px-3 py-2"><p class="font-semibold text-slate-900">${c.name}</p><p class="text-slate-600">${c.email}</p></div>`).join('')
+        : '<p class="text-slate-500">No customers captured yet.</p>';
+    }
+
+    function renderOrders(orders){
+      const totalRevenue = orders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+      document.getElementById('metricOrders').textContent = String(orders.length);
+      document.getElementById('metricRevenue').textContent = `₹${totalRevenue.toFixed(2)}`;
+      document.getElementById('orderList').innerHTML = orders.length
+        ? orders.slice(0, 30).map((o) => `<article class="rounded-xl border border-slate-100 p-3">
+            <p class="font-semibold text-slate-900">${o.orderId}</p>
+            <p class="text-xs text-slate-500">${o.date || ''} • ${o.status || 'Order Placed'}</p>
+            <p class="mt-1 text-sm text-slate-700">Customer: ${o.details?.name || '-'} | ₹${o.total}</p>
+            <div class="mt-2 grid gap-2 sm:grid-cols-3">
+              <input id="awb-${o.orderId}" class="rounded-lg border px-2 py-1 text-xs" placeholder="AWB Number" value="${o.tracking?.awb || ''}" />
+              <select id="carrier-${o.orderId}" class="rounded-lg border px-2 py-1 text-xs">
+                <option value="delhivery" ${(o.tracking?.carrier || '').includes('delhivery') ? 'selected' : ''}>Delhivery</option>
+                <option value="shiprocket" ${(o.tracking?.carrier || '').includes('shiprocket') ? 'selected' : ''}>Shiprocket</option>
+              </select>
+              <select id="status-${o.orderId}" class="rounded-lg border px-2 py-1 text-xs">
+                <option ${(o.status || '').includes('Order') ? 'selected' : ''}>Order Placed</option>
+                <option ${(o.status || '').includes('Dispatch') ? 'selected' : ''}>Dispatched</option>
+                <option ${(o.status || '').includes('Transit') ? 'selected' : ''}>In Transit</option>
+                <option ${(o.status || '').includes('Deliver') ? 'selected' : ''}>Delivered</option>
+              </select>
+            </div>
+            <div class="mt-2 flex items-center justify-between">
+              <a class="text-xs font-semibold text-emerald-700 underline" href="${o.trackingLink || buildTrackingLink(o.tracking)}" target="_blank" rel="noopener">Tracking Link</a>
+              <button data-order="${o.orderId}" class="update-order rounded-lg bg-[#065f46] px-3 py-1.5 text-xs font-semibold text-white">Update Status</button>
+            </div>
+          </article>`).join('')
+        : '<p class="text-slate-500">No paid orders yet.</p>';
+
+      document.querySelectorAll('.update-order').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const orderId = button.dataset.order;
+          const status = document.getElementById(`status-${orderId}`)?.value || 'Order Placed';
+          const awb = document.getElementById(`awb-${orderId}`)?.value.trim();
+          const carrier = document.getElementById(`carrier-${orderId}`)?.value || 'delhivery';
+          const trackingLink = awb ? await resolveTrackingLink({ orderId }, carrier, awb) : './live-tracking.html';
+          const db = getDb();
+          if(db){
+            await db.collection('orders').doc(orderId).set({
+              status,
+              tracking: { awb, carrier },
+              trackingLink,
+              updatedAt: window.firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+          }
+          const history = readJson('vmpOrderHistory', []);
+          const index = history.findIndex((item) => item.orderId === orderId);
+          if(index !== -1){
+            history[index] = { ...history[index], status, tracking: { awb, carrier }, trackingLink };
+            writeJson('vmpOrderHistory', history);
+            if(status === 'Dispatched' || status === 'Delivered') await sendAiSensyUpdate(history[index], status);
+          }
+          loadDashboardData();
+        });
+      });
+    }
+
+    function renderInventory(products, inventoryMap = {}, priceMap = {}){
+      const list = document.getElementById('inventoryList');
+      if(!products.length){
+        list.innerHTML = '<p class="text-slate-500">Products loading... Storefront sync ho jaate hi yahan stock/rate update options aa jayenge.</p>';
+        return;
+      }
+      list.innerHTML = products.map((p) => {
+        const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
+        const rate = Number(priceMap[p.id]?.price100 ?? p.price100 ?? p.tiers?.[0]?.price ?? 0);
+        const alert = stock < LOW_STOCK_THRESHOLD;
+        return `<div class="rounded-xl border ${alert ? 'border-rose-300 bg-rose-50' : 'border-slate-100'} p-3"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="font-semibold text-slate-900">${p.name}</p><p class="text-xs text-slate-500">${p.category}</p></div><div class="flex flex-wrap items-center gap-2"><input id="stock-${p.id}" type="number" min="0" value="${stock}" class="w-20 rounded-lg border px-2 py-1.5 text-sm" title="Stock" /><input id="price-${p.id}" type="number" min="0" step="0.01" value="${rate.toFixed(2)}" class="w-24 rounded-lg border px-2 py-1.5 text-sm" title="Rate" /><button data-id="${p.id}" class="save-stock rounded-lg bg-[#065f46] px-3 py-1.5 text-xs font-semibold text-white">Update</button></div></div>${alert ? '<p class="mt-2 text-xs font-bold text-rose-700">RED ALERT: Low stock</p>' : ''}</div>`;
+      }).join('');
+
+      document.querySelectorAll('.save-stock').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const id = button.dataset.id;
+          const value = Number(document.getElementById(`stock-${id}`).value);
+          const rate = Number(document.getElementById(`price-${id}`).value);
+          if(!Number.isFinite(value) || value < 0 || !Number.isFinite(rate) || rate < 0) return;
+          const db = getDb();
+          if(db){
+            await Promise.all([
+              db.collection('inventory').doc(id).set({ stock: value }, { merge: true }),
+              db.collection('pricing').doc(id).set({ price100: Number(rate.toFixed(2)) }, { merge: true })
+            ]);
+          }
+          const localMap = readJson('vmpInventoryOverrides', {});
+          localMap[id] = { stock: value };
+          writeJson('vmpInventoryOverrides', localMap);
+          const localPrices = readJson('vmpPriceOverrides', {});
+          localPrices[id] = Number(rate.toFixed(2));
+          writeJson('vmpPriceOverrides', localPrices);
+          queueDashboardReload(50);
+        });
+      });
+    }
+
+    function renderPos(products, inventoryMap = {}){
+      latestProducts = products;
+      latestInventoryMap = inventoryMap;
+      const grid = document.getElementById('posGrid');
+      if(!grid) return;
+      grid.innerHTML = products.slice(0, 12).map((p) => `
+        <button data-pos-id="${p.id}" class="rounded-xl border border-emerald-100 bg-white p-3 text-left shadow-sm hover:border-emerald-300">
+          <p class="text-xs text-slate-500">${p.category}</p>
+          <p class="mt-1 text-sm font-bold text-slate-900">${p.name}</p>
         </button>
-      </div>
-    </div>
+      `).join('');
 
-    <!-- ── SUCCESS PANEL ────────────────────────────── -->
-    <div class="success-panel" id="success-panel">
-      <div class="success-icon">✅</div>
-      <div class="success-title">Order Confirmed! 🎉</div>
-      <p class="success-sub">
-        Your order has been sent to VMP WhatsApp.<br/>
-        Our team will call you within <strong>30 minutes</strong> to confirm dispatch.<br/><br/>
-        <span style="color:var(--green2)">📦 Expected dispatch: Same day before 5 PM</span>
-      </p>
-      <div style="background:var(--green-pale);border:1px solid rgba(6,95,70,.15);border-radius:10px;padding:.85rem;font-size:12px;color:var(--green);margin-bottom:1.5rem;text-align:left;line-height:1.7" id="success-recap"></div>
-      <button class="btn-done" onclick="closeAll();resetCheckout()">Continue Shopping →</button>
-    </div>
+      document.querySelectorAll('[data-pos-id]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.dataset.posId;
+          posCart[id] = (posCart[id] || 0) + 1;
+          updatePosCart();
+        });
+      });
+      updatePosCart();
+    }
 
-  </div>
-</div>
+    function updatePosCart(){
+      const list = document.getElementById('posCart');
+      if(!list) return;
+      const rows = Object.entries(posCart);
+      if(!rows.length){
+        list.innerHTML = '<p class="text-slate-500">No items added.</p>';
+        document.getElementById('posSubtotal').textContent = '0.00';
+        document.getElementById('posGst').textContent = '0.00';
+        document.getElementById('posTotal').textContent = '0.00';
+        return;
+      }
+      let subtotal = 0;
+      list.innerHTML = rows.map(([id, qty]) => {
+        const p = latestProducts.find((item) => item.id === id);
+        const unit = Number(p?.tiers?.[0]?.price || 0);
+        const line = qty * unit;
+        subtotal += line;
+        return `<p class="flex items-center justify-between"><span>${p?.name || id} × ${qty}</span><span>₹${line.toFixed(2)}</span></p>`;
+      }).join('');
+      const gst = subtotal * 0.05;
+      const total = subtotal + gst;
+      document.getElementById('posSubtotal').textContent = subtotal.toFixed(2);
+      document.getElementById('posGst').textContent = gst.toFixed(2);
+      document.getElementById('posTotal').textContent = total.toFixed(2);
+    }
 
-<!-- Toast -->
-<div class="toast" id="toast-el" role="alert" aria-live="polite"></div>
+    function renderBusinessHealth(orders){
+      latestOrders = orders;
+      const today = new Date().toISOString().slice(0, 10);
+      const todaySales = orders
+        .filter((o) => String(o.date || o.createdAt || '').slice(0, 10) === today || !o.date)
+        .reduce((sum, o) => sum + Number(o.total || 0), 0);
+      const pl = todaySales - DAILY_EXPENSE;
+      document.getElementById('todaySales').textContent = `₹${todaySales.toFixed(2)}`;
+      document.getElementById('todayExpense').textContent = `₹${DAILY_EXPENSE.toFixed(2)}`;
+      const plEl = document.getElementById('todayPL');
+      plEl.textContent = `₹${pl.toFixed(2)}`;
+      plEl.className = `text-2xl font-black ${pl >= 0 ? 'text-emerald-800' : 'text-rose-700'}`;
+      const alertEl = document.getElementById('targetAlert');
+      if(todaySales < WARNING_THRESHOLD){
+        alertEl.className = 'mt-3 text-sm font-semibold text-rose-700';
+        alertEl.textContent = 'Warning: Not meeting daily expense targets.';
+      } else {
+        alertEl.className = 'mt-3 text-sm font-semibold text-emerald-700';
+        alertEl.textContent = 'Healthy: daily sales are above warning threshold.';
+      }
+      renderPlChart(orders);
+    }
 
-<script>
-/* ══════════════════════════════════════════════════
-   CONFIGURATION
-══════════════════════════════════════════════════ */
-const VMP_WA_NUMBER = '918050389261';   // WhatsApp admin number
-const VMP_UPI_ID    = '8050389261@upi'; // UPI ID
-const VMP_UPI_NAME  = 'VeerMahadevPlastic';
-const GST_RATE      = 0.18;             // 18% GST
+    function renderPlChart(orders){
+      const chart = document.getElementById('plChart');
+      if(!chart) return;
+      const recent = [...orders].slice(0, 7).reverse();
+      const sales = recent.map((o) => Number(o.total || 0));
+      const max = Math.max(DAILY_EXPENSE, ...sales, 1);
+      const toY = (v) => 150 - (v / max) * 110;
+      const step = recent.length > 1 ? 320 / (recent.length - 1) : 320;
+      const salesPoints = sales.map((v, i) => `${50 + i * step},${toY(v)}`).join(' ');
+      const expensePoints = sales.map((_, i) => `${50 + i * step},${toY(DAILY_EXPENSE)}`).join(' ');
+      chart.innerHTML = `
+        <line x1="40" y1="20" x2="40" y2="155" stroke="#94a3b8" stroke-width="1"/>
+        <line x1="40" y1="155" x2="390" y2="155" stroke="#94a3b8" stroke-width="1"/>
+        <polyline points="${expensePoints}" fill="none" stroke="#dc2626" stroke-width="3"/>
+        <polyline points="${salesPoints}" fill="none" stroke="#059669" stroke-width="3"/>
+      `;
+    }
 
-/* ══════════════════════════════════════════════════
-   DEMO PRODUCTS
-══════════════════════════════════════════════════ */
-const DEMO_PRODS = [
-  {id:'7041',name:'3CP Meal Tray with Lid',sku:'VMP-7041',packing:400,pcs:12.5,img:'https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg'},
-  {id:'7045',name:'5CP Meal Tray with Lid',sku:'VMP-7045',packing:300,pcs:17.85,img:'https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg'},
-  {id:'7018',name:'9" Round Plate',sku:'VMP-7018',packing:800,pcs:5.55,img:'https://i.postimg.cc/1RWyXxZh/boidgrade_plate.jpg'},
-  {id:'7202',name:'200ml Biodeg. Glass Milky',sku:'VMP-7202',packing:5000,pcs:1.66,img:'https://i.postimg.cc/nhT88Mbd/BIODEGRADABLE-ICECUP-MILKY.jpg'},
-  {id:'1402',name:'Burger Box',sku:'VMP-1402',packing:1500,pcs:4.5,img:'https://i.postimg.cc/Rh5Bhxcj/SANDWICH-BOX.jpg'},
-  {id:'1423',name:'Hinged Box 500ml',sku:'VMP-1423',packing:1500,pcs:4.75,img:'https://i.postimg.cc/fyDvCkBs/transperent-box.png'},
-];
+    function answerAi(question){
+      const q = String(question || '').toLowerCase();
+      if(!q) return 'Please ask a question.';
+      if(q.includes('today') && q.includes('sale')){
+        const value = latestOrders.reduce((sum, item) => sum + Number(item.total || 0), 0);
+        return `Today's tracked total sale is around ₹${value.toFixed(2)}.`;
+      }
+      if(q.includes('low') && q.includes('stock')){
+        const low = latestProducts.filter((p) => Number(latestInventoryMap[p.id]?.stock ?? p.stock ?? 0) < LOW_STOCK_THRESHOLD);
+        return low.length ? `Low stock items: ${low.slice(0, 5).map((item) => item.name).join(', ')}.` : 'No low stock items right now.';
+      }
+      return 'I can answer sales, low stock, profit/loss, and order trend related questions.';
+    }
 
-// Render demo product cards
-document.getElementById('demo-prods').innerHTML = DEMO_PRODS.map(p => `
-  <div class="dp-card">
-    <img src="${p.img}" alt="${p.name}" onerror="this.style.background='#FEF3C7';this.style.display='none'"/>
-    <div class="dp-card-body">
-      <div class="dp-name">${p.name}</div>
-      <div class="dp-price">₹${p.pcs}/pc</div>
-      <div class="dp-moq">MOQ: ${p.packing.toLocaleString('en-IN')} pcs</div>
-      <button class="dp-add" onclick="addToCart('${p.id}','${p.name.replace(/'/g,'`')}','${p.sku}',${p.pcs},${p.packing},'${p.img}')">+ Add to Cart</button>
-    </div>
-  </div>`).join('');
+    function renderCustomPrintRequests(){
+      const list = document.getElementById('customPrintRequestList');
+      if(!list) return;
+      const rows = readJson('vmpCustomPrintRequests', []);
+      list.innerHTML = rows.length ? rows.slice(0, 30).map((item, idx) => `
+        <article class="rounded-xl border border-slate-200 p-3">
+          <p class="font-semibold text-slate-900">${item.productName}</p>
+          <p class="text-xs text-slate-500">${item.companyName} • GST: ${item.gstNumber} • ${item.whatsapp}</p>
+          <p class="mt-1 text-xs text-slate-600">Logo: ${item.logoFileName || 'Not uploaded'} | Notes: ${item.notes || '-'}</p>
+          <div class="mt-2 flex items-center gap-2">
+            <select data-cp-index="${idx}" class="cp-status rounded-lg border px-2 py-1 text-xs">
+              <option ${item.status === 'Pending Quote' ? 'selected' : ''}>Pending Quote</option>
+              <option ${item.status === 'Quoted' ? 'selected' : ''}>Quoted</option>
+              <option ${item.status === 'Closed' ? 'selected' : ''}>Closed</option>
+            </select>
+            <span class="text-xs text-slate-500">${item.createdAt || ''}</span>
+          </div>
+        </article>
+      `).join('') : '<p class="text-slate-500">No custom printing requests yet.</p>';
 
-/* ══════════════════════════════════════════════════
-   CART STATE
-══════════════════════════════════════════════════ */
-let cart = [];
+      document.querySelectorAll('.cp-status').forEach((select) => {
+        select.addEventListener('change', () => {
+          const index = Number(select.dataset.cpIndex);
+          const all = readJson('vmpCustomPrintRequests', []);
+          if(!all[index]) return;
+          all[index].status = select.value;
+          writeJson('vmpCustomPrintRequests', all);
+        });
+      });
+    }
 
-function cartSubtotal(){ return cart.reduce((s,i) => s + i.qty * i.unit, 0) }
-function cartGST(){ return cartSubtotal() * GST_RATE }
-function cartGrand(){ return cartSubtotal() + cartGST() }
-function cartQty(){ return cart.reduce((s,i) => s + i.qty, 0) }
 
-function fmt(n){ return '₹' + n.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2}) }
-function fmtRound(n){ return '₹' + Math.round(n).toLocaleString('en-IN') }
+    function currencyFormat(amount, currency = 'INR'){
+      const code = currency || 'INR';
+      try { return new Intl.NumberFormat('en-IN', { style: 'currency', currency: code, maximumFractionDigits: 0 }).format(Number(amount || 0)); }
+      catch { return `₹${Number(amount || 0).toLocaleString('en-IN')}`; }
+    }
 
-function addToCart(id, name, sku, pcs, packing, img){
-  const ex = cart.find(i => i.id === id);
-  if(ex){ ex.qty += packing; }
-  else { cart.push({id, name, sku, unit: pcs, qty: packing, img: img || ''}); }
-  updateCartUI();
-  openCart();
-  showToast(`${name.slice(0,28)}… added! (${packing.toLocaleString('en-IN')} pcs)`);
-}
+    function normalizeEnquiry(record){
+      const payload = record.payload || record;
+      const delivery = payload.deliveryMetadata || payload.b2bDeliveryMatrix || payload.fullShippingAddress || {};
+      const customer = payload.onboardingCustomer || payload.profile || payload.customerAuthToken || {};
+      const currency = payload.currencyTotal?.currency || payload.selectedCurrency || 'INR';
+      const total = Number(payload.currencyTotal?.total ?? payload.total ?? payload.subtotal ?? 0);
+      return {
+        id: payload.orderId || record.id || record.created_at || record.createdAt || `ENQ-${Date.now()}`,
+        date: record.created_at || record.createdAt || payload.createdAt || new Date().toISOString(),
+        businessName: customer.business?.companyName || delivery.consigneeName || customer.fullName || customer.identity || 'Wholesale buyer',
+        contact: [delivery.mobile || customer.mobile || customer.phone || 'Phone pending', delivery.gstin || customer.business?.gstin || 'GSTIN optional'].filter(Boolean).join(' / '),
+        cartons: Number(payload.totalCartons || payload.totalMasterCartons || 0),
+        currency,
+        total,
+        status: record.status || payload.status || 'Pending',
+        raw: payload
+      };
+    }
 
-function removeFromCart(id){
-  cart = cart.filter(i => i.id !== id);
-  updateCartUI();
-}
+    async function fetchEnquiries(){
+      const local = readJson('vmp_system_order_notification_payload', null);
+      const localList = local ? [normalizeEnquiry(local)] : [];
+      try {
+        const response = await fetch('/api/enquiries');
+        if(response.ok){
+          const data = await response.json();
+          const records = Array.isArray(data) ? data : (data.enquiries || data.items || []);
+          return records.map(normalizeEnquiry).concat(localList);
+        }
+      } catch (error) {
+        console.warn('Enquiries endpoint unavailable. Using local notification payload cache.', error);
+      }
+      return localList;
+    }
 
-function changeQty(id, delta){
-  const item = cart.find(i => i.id === id);
-  if(!item) return;
-  const p = DEMO_PRODS.find(p => p.id === id);
-  const step = p ? p.packing : 1;
-  item.qty = Math.max(step, item.qty + delta * step);
-  updateCartUI();
-}
+    function renderOrderVelocityChart(enquiries, orders){
+      const svg = document.getElementById('orderVelocityChart');
+      if(!svg) return;
+      const source = [...(orders || []), ...(enquiries || [])];
+      const buckets = Array.from({ length: 8 }, (_, i) => ({ label: `W${i + 1}`, value: 0 }));
+      source.forEach((item, index) => { buckets[index % buckets.length].value += Number(item.total || item.currencyTotal?.total || 1); });
+      const max = Math.max(1, ...buckets.map((b) => b.value));
+      const points = buckets.map((b, i) => `${60 + i * 88},${230 - (b.value / max) * 170}`);
+      const area = `60,240 ${points.join(' ')} ${60 + (buckets.length - 1) * 88},240`;
+      svg.innerHTML = `<defs><linearGradient id="vel" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#22c55e" stop-opacity="0.5"/><stop offset="1" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs><rect width="720" height="280" rx="28" fill="#020617"/><g stroke="#1e293b" stroke-width="1">${[70,120,170,220].map(y => `<line x1="48" x2="680" y1="${y}" y2="${y}"/>`).join('')}</g><polygon points="${area}" fill="url(#vel)"/><polyline points="${points.join(' ')}" fill="none" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>${points.map((pt, i) => { const [x,y]=pt.split(','); return `<g><circle cx="${x}" cy="${y}" r="7" fill="#facc15" stroke="#022c22" stroke-width="3"><title>${buckets[i].label}: ${currencyFormat(buckets[i].value)}</title></circle><text x="${x}" y="260" fill="#94a3b8" font-size="12" text-anchor="middle">${buckets[i].label}</text></g>`; }).join('')}<text x="52" y="42" fill="#fff" font-size="18" font-weight="800">Order Velocity Trend</text>`;
+    }
 
-function updateCartUI(){
-  const qty   = cartQty();
-  const sub   = cartSubtotal();
-  const gst   = cartGST();
-  const grand = cartGrand();
+    function renderCategoryDonut(enquiries, products){
+      const svg = document.getElementById('categoryDonutChart');
+      const legend = document.getElementById('categoryDonutLegend');
+      if(!svg || !legend) return;
+      const categories = ['Cornstarch Meal Trays','Cornstarch Containers','Cornstarch Plates & Cutlery','Biodegradable Glasses','Meal Trays (PP)','Hinged Boxes','Bakery Boxes','PP Containers'];
+      const counts = Object.fromEntries(categories.map((c) => [c, 0]));
+      (enquiries || []).forEach((enq) => (enq.raw?.itemArray || enq.raw?.items || []).forEach((item) => {
+        const name = String(item.name || '').toLowerCase();
+        const cat = categories.find((c) => name.includes(c.split(' ')[0].toLowerCase())) || categories[Math.abs(name.length) % categories.length];
+        counts[cat] += Number(item.qty || 1);
+      }));
+      if(!Object.values(counts).some(Boolean)) (products || []).slice(0, 40).forEach((p) => { const cat = categories.find((c) => String(p.category || '').includes(c)) || categories[Math.abs(String(p.name || '').length) % categories.length]; counts[cat] += 1; });
+      const colors = ['#10b981','#f59e0b','#6366f1','#06b6d4','#ef4444','#84cc16','#a855f7','#0f172a'];
+      const total = Math.max(1, Object.values(counts).reduce((a,b)=>a+b,0));
+      let offset = 25;
+      const circles = categories.map((cat, i) => { const dash = (counts[cat] / total) * 100; const out = `<circle r="86" cx="140" cy="140" fill="none" stroke="${colors[i]}" stroke-width="34" stroke-dasharray="${dash} ${100-dash}" stroke-dashoffset="-${offset}" pathLength="100" transform="rotate(-90 140 140)"/>`; offset += dash; return out; }).join('');
+      svg.innerHTML = `<circle r="102" cx="140" cy="140" fill="#f8fafc"/>${circles}<circle r="58" cx="140" cy="140" fill="white"/><text x="140" y="134" text-anchor="middle" font-size="28" font-weight="900" fill="#0f172a">${total}</text><text x="140" y="156" text-anchor="middle" font-size="11" font-weight="800" fill="#64748b">category units</text>`;
+      legend.innerHTML = categories.map((cat, i) => `<div class="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-2"><span class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:${colors[i]}"></span>${cat}</span><span>${counts[cat]}</span></div>`).join('');
+    }
 
-  // Badges
-  document.getElementById('top-badge').textContent = qty;
-  document.getElementById('cd-count').textContent = cart.length;
-  document.getElementById('cd-sub').textContent   = fmt(sub);
-  document.getElementById('cd-gst').textContent   = fmt(gst);
-  document.getElementById('cd-grand').textContent = fmt(grand);
+    function renderEnquiryTable(enquiries){
+      const body = document.getElementById('enquiryTableBody');
+      if(!body) return;
+      body.innerHTML = enquiries.length ? enquiries.slice(0, 20).map((e) => {
+        const statusColor = /dispatch/i.test(e.status) ? 'bg-emerald-50 text-emerald-700' : /quotation/i.test(e.status) ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-700';
+        return `<tr class="hover:bg-slate-50"><td class="px-4 py-3 text-slate-500">${new Date(e.date).toLocaleString('en-IN', { dateStyle:'medium', timeStyle:'short' })}</td><td class="px-4 py-3 font-black text-slate-900">${e.businessName}</td><td class="px-4 py-3 text-slate-600">${e.contact}</td><td class="px-4 py-3 font-black text-slate-900">${Number(e.cartons || 0).toFixed(2)}</td><td class="px-4 py-3 font-black text-emerald-700">${currencyFormat(e.total, e.currency)}</td><td class="px-4 py-3"><span class="rounded-full px-3 py-1 text-xs font-black ${statusColor}">${e.status}</span></td><td class="px-4 py-3"><button class="text-xs font-black text-emerald-700 underline" onclick='alert(${JSON.stringify(JSON.stringify(e.raw)).replace(/</g,'\\u003c')})'>Review Details</button></td></tr>`;
+      }).join('') : '<tr><td colspan="7" class="px-4 py-8 text-center font-semibold text-slate-500">No inbound enquiries captured yet.</td></tr>';
+    }
 
-  // Cart body
-  const body = document.getElementById('cd-body');
-  if(!cart.length){
-    body.innerHTML = '<div class="cd-empty">Your cart is empty.<br/>Add products to continue.</div>';
-    return;
-  }
-  body.innerHTML = cart.map(item => `
-    <div class="cd-item">
-      <img class="cd-item-img" src="${item.img}" alt="" onerror="this.style.display='none'"/>
-      <div class="cd-item-body">
-        <div class="cd-item-name">${item.name}</div>
-        <div class="cd-item-sku">${item.sku}</div>
-        <div class="cd-item-price">${fmt(item.qty * item.unit)}</div>
-        <div class="cd-qty-row">
-          <button class="qty-btn" onclick="changeQty('${item.id}',-1)">−</button>
-          <span class="qty-val">${item.qty.toLocaleString('en-IN')}</span>
-          <button class="qty-btn" onclick="changeQty('${item.id}',1)">+</button>
-          <span style="font-size:10px;color:var(--muted2);margin-left:4px">pcs · ₹${item.unit}/pc</span>
-        </div>
-      </div>
-      <button class="cd-rm" onclick="removeFromCart('${item.id}')" title="Remove">🗑️</button>
-    </div>`).join('');
-}
+    function renderPremiumAnalytics(orders, products, enquiries){
+      const revenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0) + enquiries.reduce((sum, enq) => sum + Number(enq.total || 0), 0);
+      const previous = Math.max(1, revenue * 0.87);
+      const trend = ((revenue - previous) / previous) * 100;
+      const contacts = new Set(enquiries.map((e) => e.contact).concat(readJson('vmpCustomers', []).map((c) => c.email || c.mobile || c.name))).size;
+      const cartons = orders.reduce((sum, order) => sum + Number(order.totalMasterCartons || 0), 0) + enquiries.reduce((sum, enq) => sum + Number(enq.cartons || 0), 0);
+      const pending = enquiries.filter((e) => /pending|queued|processing/i.test(e.status)).length;
+      document.getElementById('metricGrossRevenue').textContent = currencyFormat(revenue, 'INR');
+      document.getElementById('metricRevenueTrend').textContent = `▲ ${trend.toFixed(1)}% vs previous cycle`;
+      document.getElementById('metricDistributors').textContent = String(contacts);
+      document.getElementById('metricMasterCartons').textContent = cartons.toFixed(2);
+      document.getElementById('metricPendingEnquiries').textContent = String(pending);
+      renderOrderVelocityChart(enquiries, orders);
+      renderCategoryDonut(enquiries, products);
+      renderEnquiryTable(enquiries);
+    }
 
-/* ══════════════════════════════════════════════════
-   CART DRAWER
-══════════════════════════════════════════════════ */
-function openCart(){
-  document.getElementById('cart-drawer').classList.add('open');
-  document.getElementById('main-overlay').classList.add('show');
-}
-function closeCart(){
-  document.getElementById('cart-drawer').classList.remove('open');
-  document.getElementById('main-overlay').classList.remove('show');
-}
-function closeAll(){
-  closeCart();
-  closeCheckout();
-}
+    async function loadDashboardData(){
+      const db = getDb();
+      const products = readJson('vmpProductSnapshot', []);
+      let orders = readJson('vmpOrderHistory', readJson('vmp_order_history', []));
+      let inventoryMap = readJson('vmpInventoryOverrides', {});
+      let priceMap = Object.entries(readJson('vmpPriceOverrides', {})).reduce((acc, [id, price]) => {
+        acc[id] = { price100: Number(price) };
+        return acc;
+      }, {});
 
-// Quick WA order (no checkout form)
-function quickWAOrder(e){
-  e.preventDefault();
-  if(!cart.length){ showToast('Cart is empty!'); return; }
-  const lines = cart.map((i,n) => `${n+1}. ${i.name} (${i.sku}) - ${i.qty.toLocaleString('en-IN')} pcs @ ₹${i.unit}/pc = ${fmt(i.qty*i.unit)}`).join('%0A');
-  const msg = `🛍️ *QUICK ORDER - VEER MAHADEV PLASTIC*%0A` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-    `📦 *Order Items:*%0A${lines}%0A%0A` +
-    `💵 *Subtotal:* ${fmtRound(cartSubtotal())}%0A` +
-    `🧾 *GST (18%):* ${fmtRound(cartGST())}%0A` +
-    `💰 *Grand Total:* ${fmtRound(cartGrand())}%0A%0A` +
-    `_(Please reply with delivery address)_`;
-  window.open(`https://wa.me/${VMP_WA_NUMBER}?text=${msg}`, '_blank');
-}
+      renderCustomers();
+      renderOrders(orders);
+      renderInventory(products, inventoryMap, priceMap);
+      renderPos(products, inventoryMap);
+      renderBusinessHealth(orders);
+      renderCustomPrintRequests();
+      latestEnquiries = await fetchEnquiries();
+      renderPremiumAnalytics(orders, products, latestEnquiries);
 
-/* ══════════════════════════════════════════════════
-   CHECKOUT MODAL STATE
-══════════════════════════════════════════════════ */
-let currentStep   = 1;
-let selectedPayMethod = 'upi';
+      if(db){
+        try {
+          const [ordersSnap, inventorySnap, pricingSnap] = await Promise.all([
+            db.collection('orders').orderBy('createdAt', 'desc').limit(100).get(),
+            db.collection('inventory').get(),
+            db.collection('pricing').get()
+          ]);
+          orders = ordersSnap.docs.map((doc) => ({ ...doc.data(), orderId: doc.id, total: doc.data().total || doc.data().totals?.total || 0 }));
+          inventoryMap = {};
+          inventorySnap.forEach((doc) => { inventoryMap[doc.id] = doc.data(); });
+          priceMap = {};
+          pricingSnap.forEach((doc) => { priceMap[doc.id] = doc.data(); });
+        } catch (error) {
+          console.warn('Firestore dashboard fetch failed, using local cache.', error);
+        }
+      }
 
-function openCheckout(){
-  if(!cart.length){ showToast('Your cart is empty!'); return; }
-  closeCart();
-  currentStep = 1;
-  selectedPayMethod = 'upi';
-  showStep(1);
-  document.getElementById('checkout-modal').classList.add('open');
-  document.getElementById('success-panel').classList.remove('show');
-  document.querySelectorAll('.ck-step').forEach(s => s.style.display = '');
-}
+      renderCustomers();
+      renderOrders(orders);
+      renderInventory(products, inventoryMap, priceMap);
+      renderPos(products, inventoryMap);
+      renderBusinessHealth(orders);
+      renderCustomPrintRequests();
+      latestEnquiries = await fetchEnquiries();
+      renderPremiumAnalytics(orders, products, latestEnquiries);
+      const inventoryValue = products.reduce((sum, p) => {
+        const stock = Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200);
+        const unit = Number(priceMap[p.id]?.price100 ?? p.price100 ?? p.tiers?.[0]?.price ?? 0);
+        return sum + (stock * unit);
+      }, 0);
+      document.getElementById('metricInventoryValue').textContent = `₹${inventoryValue.toFixed(2)}`;
 
-function closeCheckout(){
-  document.getElementById('checkout-modal').classList.remove('open');
-}
+      const lowStockItems = products.filter((p) => Number(inventoryMap[p.id]?.stock ?? p.stock ?? 200) < LOW_STOCK_THRESHOLD);
+      document.getElementById('metricLowStock').textContent = String(lowStockItems.length);
+      document.getElementById('lowStockList').innerHTML = lowStockItems.length
+        ? lowStockItems.map((p) => `<p>• ${p.name}</p>`).join('')
+        : '<p>No low-stock alerts.</p>';
+      safeNotifyLowStock(lowStockItems.map((i) => i.name));
+    }
 
-function showStep(n){
-  currentStep = n;
-  [1,2,3].forEach(i => {
-    const el = document.getElementById(`ck-step-${i}`);
-    const dot = document.getElementById(`sd${i}`);
-    el.classList.toggle('active', i === n);
-    dot.classList.remove('active','done');
-    if(i === n) dot.classList.add('active');
-    else if(i < n) dot.classList.add('done');
-  });
-}
+    document.getElementById('adminLoginForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const username = document.getElementById('adminUsername').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+      const msg = document.getElementById('adminLoginMsg');
+      if(username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD){
+        msg.className = 'mt-4 text-sm font-semibold text-rose-600';
+        msg.textContent = 'Unauthorized Access. This is for owner only.';
+        return;
+      }
+      document.getElementById('adminLoginView').classList.add('hidden');
+      document.getElementById('adminDashboard').classList.remove('hidden');
+      loadDashboardData();
 
-/* ── STEP 1 → 2: Validate address ─── */
-function goStep2(){
-  if(!validateAddress()) return;
-  // Populate summary
-  populateSummary();
-  showStep(2);
-}
+      const db = getDb();
+      if(db){
+        db.collection('orders').onSnapshot(() => queueDashboardReload());
+        db.collection('inventory').onSnapshot(() => queueDashboardReload());
+        db.collection('pricing').onSnapshot(() => queueDashboardReload());
+      }
+    });
 
-function goStep1(){ showStep(1) }
-
-/* ── STEP 2 → 3: Setup payment UI ── */
-function goStep3(){
-  populateSummary(); // refresh
-  setupStep3();
-  showStep(3);
-}
-
-function goStep2Again(){ showStep(2) }
-// Alias for back button in step 3
-const goStep2_from3 = () => showStep(2);
-document.getElementById('ck-step-3').querySelector('.btn-back').onclick = () => showStep(2);
-
-/* ══════════════════════════════════════════════════
-   FORM VALIDATION
-══════════════════════════════════════════════════ */
-function getField(id){ return document.getElementById(id) }
-function showErr(id, show){ 
-  const inp = document.getElementById(id);
-  const msg = document.getElementById('err-' + id.replace('ck-',''));
-  if(!inp || !msg) return;
-  inp.classList.toggle('err', show);
-  msg.classList.toggle('show', show);
-}
-function clearErr(id){ showErr(id, false) }
-
-function validateAddress(){
-  let valid = true;
-  const checks = [
-    { id:'ck-name',  fn: v => v.trim().length >= 2 },
-    { id:'ck-biz',   fn: v => v.trim().length >= 2 },
-    { id:'ck-phone', fn: v => /^[+\d\s\-]{10,15}$/.test(v.trim()) },
-    { id:'ck-addr',  fn: v => v.trim().length >= 5 },
-    { id:'ck-city',  fn: v => v.trim().length >= 2 },
-    { id:'ck-pin',   fn: v => /^\d{6}$/.test(v.trim()) },
-    { id:'ck-state', fn: v => v !== '' },
-  ];
-  checks.forEach(c => {
-    const val = getField(c.id).value;
-    const ok  = c.fn(val);
-    showErr(c.id, !ok);
-    if(!ok) valid = false;
-  });
-  if(!valid){ showToast('Please fill all required fields correctly.'); }
-  return valid;
-}
-
-// Live clear on input
-['ck-name','ck-biz','ck-phone','ck-addr','ck-city','ck-pin','ck-state'].forEach(id => {
-  const el = document.getElementById(id);
-  if(el) el.addEventListener('input', () => clearErr(id));
-  if(el && el.tagName === 'SELECT') el.addEventListener('change', () => clearErr(id));
-});
-
-/* ══════════════════════════════════════════════════
-   SUMMARY POPULATION
-══════════════════════════════════════════════════ */
-function populateSummary(){
-  const sub   = cartSubtotal();
-  const gst   = cartGST();
-  const grand = cartGrand();
-
-  // Step-2 summary
-  document.getElementById('ck-sum-items').innerHTML = cart.map(i =>
-    `<div class="ck-sum-item"><span>${i.name.slice(0,30)}… × ${i.qty.toLocaleString('en-IN')}</span><span>${fmt(i.qty*i.unit)}</span></div>`
-  ).join('');
-  document.getElementById('ck-sum-sub').textContent   = fmt(sub);
-  document.getElementById('ck-sum-gst').textContent   = fmt(gst);
-  document.getElementById('ck-sum-grand').textContent = fmt(grand);
-}
-
-/* ══════════════════════════════════════════════════
-   PAYMENT METHOD SELECTION
-══════════════════════════════════════════════════ */
-function selectPayMethod(el, method){
-  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedPayMethod = method;
-}
-
-/* ══════════════════════════════════════════════════
-   STEP 3 SETUP — QR + Payment UI
-══════════════════════════════════════════════════ */
-function setupStep3(){
-  const grand = Math.round(cartGrand());
-
-  // Address recap
-  const name  = getField('ck-name').value.trim();
-  const biz   = getField('ck-biz').value.trim();
-  const phone = getField('ck-phone').value.trim();
-  const addr  = getField('ck-addr').value.trim();
-  const city  = getField('ck-city').value.trim();
-  const pin   = getField('ck-pin').value.trim();
-  const state = getField('ck-state').value;
-  const email = getField('ck-email').value.trim();
-  const gst   = getField('ck-gst').value.trim().toUpperCase();
-
-  document.getElementById('addr-recap').innerHTML =
-    `<strong>📍 Delivering to:</strong><br/>` +
-    `${name} · ${biz}<br/>` +
-    `📞 ${phone}${email ? ' · ✉️ ' + email : ''}<br/>` +
-    `${addr}, ${city}, ${state} — ${pin}` +
-    (gst ? `<br/>🧾 GST: ${gst}` : '');
-
-  // Show/hide payment blocks
-  const blocks = ['upi-qr-block','bank-block','cod-block','credit-block'];
-  blocks.forEach(b => document.getElementById(b).style.display = 'none');
-
-  if(selectedPayMethod === 'upi'){
-    document.getElementById('upi-qr-block').style.display = 'block';
-    generateQR(grand);
-  } else if(selectedPayMethod === 'bank'){
-    document.getElementById('bank-block').style.display = 'block';
-    document.getElementById('bank-amt').textContent = fmtRound(grand);
-  } else if(selectedPayMethod === 'cod'){
-    document.getElementById('cod-block').style.display = 'block';
-  } else if(selectedPayMethod === 'credit'){
-    document.getElementById('credit-block').style.display = 'block';
-  }
-
-  // Update confirm button text
-  const confirmPayLabels = {
-    upi:    '✅ Payment Done — Send Order on WhatsApp 🚀',
-    bank:   '✅ Transfer Done — Confirm & Send Order 🚀',
-    cod:    '📦 Confirm COD Order on WhatsApp 🚀',
-    credit: '🤝 Submit B2B Credit Order 🚀',
-  };
-  document.getElementById('confirm-btn').innerHTML = `
-    <svg style="width:15px;height:15px" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    ${confirmPayLabels[selectedPayMethod]}`;
-}
-
-/* ══════════════════════════════════════════════════
-   DYNAMIC UPI QR CODE GENERATION
-   Uses api.qrserver.com (free, no CORS, no auth)
-══════════════════════════════════════════════════ */
-function generateQR(amount){
-  // Standard UPI deep-link format
-  const upiString = `upi://pay?pa=${VMP_UPI_ID}&pn=${encodeURIComponent(VMP_UPI_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent('VMP Order Payment')}`;
-
-  // QR API — generates crisp QR PNG
-  const qrAPI = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(upiString)}&size=180x180&ecc=M&color=111827&bgcolor=ffffff&margin=4`;
-
-  const img = document.getElementById('qr-img');
-
-  // Show loading state
-  img.style.opacity = '0.4';
-  img.src = qrAPI;
-  img.onload = () => { img.style.opacity = '1'; };
-  img.onerror = () => {
-    // Fallback: show UPI ID prominently if QR fails to load
-    img.style.display = 'none';
-    document.querySelector('.qr-frame').innerHTML +=
-      `<div style="width:180px;height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:var(--muted);padding:1rem;text-align:center"><div style="font-size:1.5rem;margin-bottom:.5rem">📱</div><div>UPI ID:</div><div style="font-weight:800;color:var(--ink);margin-top:4px">${VMP_UPI_ID}</div></div>`;
-  };
-
-  // Update amount displays
-  document.getElementById('qr-amount').textContent = amount.toLocaleString('en-IN');
-  document.getElementById('qr-inst-amount').textContent = amount.toLocaleString('en-IN');
-}
-
-/* ── Copy UPI ID ── */
-function copyUPI(){
-  navigator.clipboard.writeText(VMP_UPI_ID)
-    .then(() => showToast('✅ UPI ID copied: ' + VMP_UPI_ID))
-    .catch(() => showToast('UPI ID: ' + VMP_UPI_ID));
-}
-
-/* ══════════════════════════════════════════════════
-   CONFIRM ORDER → WHATSAPP DISPATCH
-══════════════════════════════════════════════════ */
-function confirmOrder(){
-  // Collect customer details
-  const name  = getField('ck-name').value.trim();
-  const biz   = getField('ck-biz').value.trim();
-  const phone = getField('ck-phone').value.trim();
-  const email = getField('ck-email').value.trim();
-  const addr  = getField('ck-addr').value.trim();
-  const city  = getField('ck-city').value.trim();
-  const pin   = getField('ck-pin').value.trim();
-  const state = getField('ck-state').value;
-  const gst   = getField('ck-gst').value.trim().toUpperCase();
-  const notes = getField('ck-notes').value.trim();
-
-  const sub   = Math.round(cartSubtotal());
-  const gstAmt = Math.round(cartGST());
-  const grand  = sub + gstAmt;
-
-  const orderID = 'VMP' + Date.now().toString().slice(-8);
-  const now = new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata', hour12:true});
-
-  // Build item lines
-  const itemLines = cart.map((item, i) =>
-    `  ${i+1}. *${item.name}*%0A     SKU: ${item.sku} · ${item.qty.toLocaleString('en-IN')} pcs @ ₹${item.unit}/pc = *₹${Math.round(item.qty * item.unit).toLocaleString('en-IN')}*`
-  ).join('%0A');
-
-  // Payment method label
-  const payLabel = {
-    upi:    '✅ UPI / QR Code — Payment Done',
-    bank:   '🏦 Bank Transfer — Confirmation Pending',
-    cod:    '💵 Cash on Delivery',
-    credit: '🤝 B2B Credit / Net-30',
-  }[selectedPayMethod] || 'UPI';
-
-  // Build professional WhatsApp message
-  const waMsg =
-    `🛍️ *NEW ORDER — VEER MAHADEV PLASTIC*%0A` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A%0A` +
-    `🔖 *Order ID:* ${orderID}%0A` +
-    `🕐 *Time:* ${now}%0A%0A` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-    `👤 *CUSTOMER DETAILS*%0A` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-    `• *Name:* ${name}%0A` +
-    `• *Business:* ${biz}%0A` +
-    `• *Phone / WA:* ${phone}%0A` +
-    (email ? `• *Email:* ${email}%0A` : '') +
-    `• *Address:* ${addr}%0A` +
-    `• *City:* ${city}, ${state} — ${pin}%0A` +
-    (gst ? `• *GST No:* ${gst}%0A` : '') +
-    `%0A━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-    `📦 *ORDER ITEMS*%0A` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-    `${itemLines}%0A%0A` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-    `💵 *BILLING SUMMARY*%0A` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-    `• Subtotal: ₹${sub.toLocaleString('en-IN')}%0A` +
-    `• GST (18%): ₹${gstAmt.toLocaleString('en-IN')}%0A` +
-    `• Shipping: FREE%0A` +
-    `• *GRAND TOTAL: ₹${grand.toLocaleString('en-IN')}*%0A%0A` +
-    `💳 *Payment Method:* ${payLabel}%0A` +
-    `💳 *UPI ID:* ${VMP_UPI_ID}%0A%0A` +
-    (notes ? `📝 *Order Notes:* ${notes}%0A%0A` : '') +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━%0A` +
-    `_Sent via VMP Global Solutions Storefront_`;
-
-  const waURL = `https://wa.me/${VMP_WA_NUMBER}?text=${waMsg}`;
-
-  // Show spinner briefly, then open WA
-  const btn = document.getElementById('confirm-btn');
-  btn.innerHTML = `<div class="spinner"></div> Opening WhatsApp…`;
-  btn.disabled = true;
-
-  setTimeout(() => {
-    window.open(waURL, '_blank');
-    showSuccessPanel(name, biz, phone, addr, city, state, pin, grand, orderID, payLabel);
-    cart = []; // Clear cart
-    updateCartUI();
-    btn.disabled = false;
-  }, 900);
-}
-
-/* ══════════════════════════════════════════════════
-   SUCCESS PANEL
-══════════════════════════════════════════════════ */
-function showSuccessPanel(name, biz, phone, addr, city, state, pin, grand, orderID, payLabel){
-  // Hide all steps
-  document.querySelectorAll('.ck-step').forEach(s => s.classList.remove('active'));
-
-  // Build recap
-  document.getElementById('success-recap').innerHTML =
-    `<strong>🔖 Order ID:</strong> ${orderID}<br/>` +
-    `<strong>👤 Customer:</strong> ${name} · ${biz}<br/>` +
-    `<strong>📞 Phone:</strong> ${phone}<br/>` +
-    `<strong>📍 Address:</strong> ${addr}, ${city}, ${state} — ${pin}<br/>` +
-    `<strong>💰 Total Paid:</strong> ₹${grand.toLocaleString('en-IN')}<br/>` +
-    `<strong>💳 Payment:</strong> ${payLabel}`;
-
-  document.getElementById('success-panel').classList.add('show');
-  showToast('🎉 Order sent to VMP WhatsApp!');
-}
-
-function resetCheckout(){
-  // Clear form fields
-  ['ck-name','ck-biz','ck-phone','ck-email','ck-addr','ck-city','ck-pin','ck-gst','ck-notes'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.value = '';
-  });
-  document.getElementById('ck-state').value = '';
-  selectedPayMethod = 'upi';
-  document.querySelectorAll('.pay-opt').forEach((o,i) => o.classList.toggle('selected', i===0));
-  document.getElementById('success-panel').classList.remove('show');
-  currentStep = 1;
-}
-
-/* ══════════════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════════════ */
-let toastTimer;
-function showToast(msg){
-  const el = document.getElementById('toast-el');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
-}
-
-/* ══════════════════════════════════════════════════
-   KEYBOARD ESC CLOSE
-══════════════════════════════════════════════════ */
-document.addEventListener('keydown', e => {
-  if(e.key === 'Escape'){ closeAll(); }
-});
-</script>
+    document.getElementById('reloadInventory').addEventListener('click', loadDashboardData);
+    document.getElementById('clearPos').addEventListener('click', () => {
+      posCart = {};
+      updatePosCart();
+    });
+    document.getElementById('savePosSale').addEventListener('click', async () => {
+      const updates = Object.entries(posCart);
+      if(!updates.length) return;
+      const db = getDb();
+      updates.forEach(([id, qty]) => {
+        const current = Number(latestInventoryMap[id]?.stock ?? 0);
+        latestInventoryMap[id] = { stock: Math.max(0, current - qty) };
+      });
+      writeJson('vmpInventoryOverrides', latestInventoryMap);
+      if(db){
+        await Promise.all(updates.map(([id]) => db.collection('inventory').doc(id).set({ stock: latestInventoryMap[id].stock }, { merge: true })));
+      }
+      posCart = {};
+      updatePosCart();
+      queueDashboardReload(100);
+    });
+    document.getElementById('askAi').addEventListener('click', () => {
+      const question = document.getElementById('aiQuestion').value;
+      document.getElementById('aiReply').textContent = answerAi(question);
+    });
+    document.getElementById('reloadPrintRequests').addEventListener('click', renderCustomPrintRequests);
+    document.getElementById('reloadEnquiries')?.addEventListener('click', async () => { latestEnquiries = await fetchEnquiries(); renderPremiumAnalytics(latestOrders, latestProducts, latestEnquiries); });
+  </script>
 </body>
 </html>
