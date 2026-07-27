@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "drizzle-orm": "^0.38.4",
+    "drizzle-orm": "^0.45.2",
     "express": "^5.0.1",
     "helmet": "^8.0.0",
     "pg": "^8.13.1",
