@@ -196,6 +196,108 @@
     .vmp-auth-card { animation: authSlideUp 0.32s ease-out both; }
     @keyframes authSlideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 
+    .vmp-header-shell, #stickyCategorySidebar, .product-card-premium { transform: translateZ(0); will-change: transform; }
+    .vmp-mobile-search, #globalSearchSuggestions, #sidebarCategoryList { -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+    #stickyCategorySidebar { backdrop-filter: blur(18px); }
+    #sidebarCategoryList .jump-cat { min-height: 3.5rem; }
+    .product-card-premium { contain: layout paint; }
+    .product-card-premium input { touch-action: manipulation; }
+    .product-card-premium button { min-height: 44px; }
+    @media (max-width: 1023px){
+      #shop > .mt-5 { display: block; }
+      #stickyCategorySidebar { position: sticky; top: 76px; z-index: 35; margin-bottom: 1rem; border-radius: 1.25rem; background: rgba(15, 23, 42, 0.92); }
+      #stickyCategorySidebar p { display: none; }
+      #sidebarCategoryList { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0.35rem; scroll-snap-type: x proximity; }
+      #sidebarCategoryList .jump-cat { min-width: max-content; scroll-snap-align: start; white-space: nowrap; }
+      #b2bAdvancedFilters { border-radius: 1.25rem; }
+    }
+
+    :root { --vmp-glass-light: rgba(255,255,255,0.75); --vmp-glass-deep: rgba(6,78,59,0.72); --vmp-hairline: rgba(0,0,0,0.06); --vmp-brand-soft: rgba(6,95,70,0.10); }
+    .vmp-glass-surface,
+    #globalSearchSuggestions,
+    #cartDrawer,
+    #loginModal > div,
+    #authHubModal > div,
+    #checkoutModal > div,
+    #b2bAdvancedFilters,
+    .product-card-premium {
+      background-color: var(--vmp-glass-light) !important;
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border: 1px solid var(--vmp-hairline) !important;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.10), 0 2px 8px rgba(15, 23, 42, 0.05);
+    }
+    #stickyCategorySidebar {
+      background: linear-gradient(145deg, rgba(6,78,59,0.82), rgba(15,23,42,0.88)) !important;
+      border: 1px solid rgba(255,255,255,0.10) !important;
+      box-shadow: 0 20px 54px rgba(2,6,23,0.22);
+    }
+    #globalSearchSuggestions { color: #0f172a; }
+    #cartDrawer { color: #0f172a; }
+    .vmp-header-shell button,
+    .vmp-header-shell a,
+    #sidebarCategoryList .jump-cat,
+    .product-card-premium,
+    .product-card-premium button,
+    .product-card-premium input,
+    #cartDrawer button,
+    #loginModal button,
+    #authHubModal button,
+    #globalSearchSuggestions button {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateZ(0);
+      will-change: transform, box-shadow, background-color;
+    }
+    .vmp-header-shell button:hover,
+    .vmp-header-shell a:hover,
+    #sidebarCategoryList .jump-cat:hover,
+    #sidebarCategoryList .jump-cat:focus-visible,
+    .product-card-premium button:hover,
+    .product-card-premium button:focus-visible,
+    #globalSearchSuggestions button:hover,
+    #cartDrawer button:hover,
+    #loginModal button:hover,
+    #authHubModal button:hover {
+      transform: translateZ(0) scale(1.02);
+      box-shadow: 0 12px 28px rgba(6, 95, 70, 0.14);
+    }
+    .product-card-premium input:focus { box-shadow: 0 0 0 3px rgba(212,175,55,0.20); }
+    .product-card-premium [id^="carton-badge-"] { min-height: 2.25rem; display: flex; align-items: center; line-height: 1.25; }
+    #cartItems > div, #checkoutItemBreakdown > div, #b2bDeliveryMatrix input, #b2bDeliveryMatrix textarea { border-color: var(--vmp-hairline) !important; }
+
+    @keyframes cinematicReveal { from { opacity: 0; transform: translateY(22px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes reelDrift { from { transform: translateX(0); } to { transform: translateX(-24px); } }
+    .cinematic-reveal { animation: cinematicReveal 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+    .cinematic-reel { -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; mask-image: linear-gradient(90deg, transparent 0, black 4%, black 96%, transparent 100%); }
+    .cinematic-reel-card { scroll-snap-align: start; transform: translateZ(0); will-change: transform; transition: all 0.32s cubic-bezier(0.4,0,0.2,1); }
+    .cinematic-reel-card:hover, .cinematic-reel-card:focus-within { transform: translateZ(0) translateY(-6px) scale(1.015); box-shadow: 0 24px 60px rgba(6,78,59,0.18); }
+    .cinematic-product-card .cinematic-card-details { transform: translateY(54%); transition: all 0.32s cubic-bezier(0.4,0,0.2,1); }
+    .cinematic-product-card:hover .cinematic-card-details,
+    .cinematic-product-card:focus-within .cinematic-card-details,
+    .cinematic-product-card.vmp-touch-glow .cinematic-card-details { transform: translateY(0); }
+    .cinematic-product-card img { min-height: 68%; will-change: transform; transform: translateZ(0); }
+    @media (max-width: 767px){ .cinematic-product-card .cinematic-card-details { transform: translateY(38%); } }
+
+    @media (prefers-reduced-motion: reduce){
+      .vmp-header-shell button,
+      .vmp-header-shell a,
+      #sidebarCategoryList .jump-cat,
+      .product-card-premium,
+      .product-card-premium button,
+      #cartDrawer button,
+      #loginModal button,
+      #authHubModal button,
+      #globalSearchSuggestions button { transition: none; will-change: auto; }
+    }
+
+    @media (max-width: 640px){
+      .vmp-header-shell { grid-template-columns: auto minmax(0,1fr); }
+      .vmp-header-shell > .vmp-mobile-search { grid-column: 1 / -1; grid-row: 2; }
+      .vmp-header-shell > div:last-child { grid-column: 2; grid-row: 1; }
+      #searchBtn { display: none; }
+    }
+
+
 
     @keyframes bulkProofSlide { from { opacity: 0; transform: translateX(-18px) translateY(12px); } to { opacity: 1; transform: translateX(0) translateY(0); } }
     .bulk-proof-toast { animation: bulkProofSlide 0.42s ease-out both; }
@@ -261,93 +363,52 @@
     </div>
   </div>
   <div class="app-shell">
-  <header class="sticky top-0 z-50 border-b border-[#d4af37]/30 bg-[#064e3b] text-white shadow-2xl">
-    <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
-      <div class="vmp-mobile-command grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 xl:grid-cols-[260px_minmax(320px,1fr)_auto] xl:gap-3">
-        <a href="#home" class="flex min-w-0 shrink-0 items-center gap-2 rounded-xl border border-[#d4af37]/30 bg-emerald-950/50 px-2.5 py-2 shadow-inner xl:gap-3 xl:px-3">
-          <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" loading="eager" decoding="async" class="h-9 w-9 shrink-0 rounded-lg border border-[#d4af37]/40 bg-white object-contain p-1 xl:h-10 xl:w-10" />
-          <span class="min-w-0 leading-tight">
-            <span class="block truncate text-sm font-black text-[#d4af37] xl:text-base">Veer Mahadev</span>
-            <span class="block truncate text-[9px] font-semibold uppercase tracking-[0.16em] text-emerald-100 xl:text-[10px] xl:tracking-[0.2em]">Plastic B2B Suite</span>
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/95 text-white shadow-2xl backdrop-blur-xl">
+    <div class="mx-auto max-w-7xl px-3 py-3 sm:px-4">
+      <div class="vmp-header-shell grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 lg:gap-4">
+        <a href="#home" class="flex min-w-0 shrink-0 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-2 py-2 shadow-inner transition hover:bg-white/10 sm:px-3" aria-label="Veer Mahadev home">
+          <img src="./icons/logo.svg" alt="Veer Mahadev Plastic Logo" loading="eager" decoding="async" class="h-9 w-9 shrink-0 rounded-xl border border-[#d4af37]/40 bg-white object-contain p-1" />
+          <span class="hidden min-w-0 leading-tight sm:block">
+            <span class="block truncate text-sm font-black text-white lg:text-base">Veer Mahadev</span>
+            <span class="block truncate text-[9px] font-bold uppercase tracking-[0.18em] text-[#d4af37]">B2B Store</span>
           </span>
         </a>
 
-        <div class="vmp-mobile-search col-span-2 row-start-2 flex min-w-0 items-center justify-center xl:col-span-1 xl:col-start-2 xl:row-start-1">
-          <div class="flex w-full items-center gap-2 rounded-xl border border-[#d4af37]/30 bg-emerald-950/60 px-3 py-2 shadow-lg xl:max-w-2xl">
-            <span class="shrink-0 text-base text-[#d4af37] xl:text-lg">🔎</span>
-            <input id="productSearch" class="min-w-0 flex-1 bg-transparent text-sm font-semibold text-white placeholder:text-emerald-100/75 outline-none" placeholder="Search for Products, Categories and More" />
-            <button id="searchBtn" class="shrink-0 rounded-lg bg-[#d4af37] px-3 py-1.5 text-xs font-black uppercase tracking-wide text-[#064e3b] transition hover:bg-amber-300">Search</button>
+        <div class="vmp-mobile-search relative min-w-0">
+          <div class="flex w-full items-center gap-2 rounded-2xl border border-white/10 bg-white px-3 py-2.5 text-slate-900 shadow-xl shadow-black/10 ring-1 ring-white/40">
+            <span class="shrink-0 text-base text-emerald-700">⌕</span>
+            <input id="productSearch" class="min-w-0 flex-1 bg-transparent text-sm font-semibold text-slate-900 placeholder:text-slate-400 outline-none" placeholder="Search products, categories, item codes..." autocomplete="off" aria-autocomplete="list" aria-controls="globalSearchSuggestions" />
+            <div id="globalSearchSuggestions" class="invisible absolute left-0 right-0 top-[calc(100%+0.6rem)] z-[95] max-h-[24rem] overflow-y-auto rounded-2xl border border-emerald-100 bg-white text-slate-900 opacity-0 shadow-2xl transition"></div>
+            <button id="searchBtn" class="shrink-0 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-black uppercase tracking-wide text-white transition hover:bg-emerald-700 sm:px-4">Search</button>
           </div>
         </div>
 
-        <div class="vmp-mobile-actions col-start-2 row-start-1 flex shrink-0 items-center justify-end gap-1.5 xl:col-start-3 xl:gap-2">
-          <div class="hidden items-center gap-2 rounded-xl border border-emerald-600/70 bg-emerald-950/50 px-3 py-2 md:flex">
-            <span class="text-sm">📍</span>
-            <span class="max-w-[210px] text-[11px] font-semibold leading-tight text-white">Delivering to: Caterer Street, Ahmedabad, Gujarat</span>
-          </div>
-          <div class="hidden whitespace-nowrap rounded-xl border border-[#d4af37]/50 bg-[#d4af37] px-3 py-2 text-center text-[11px] font-black text-[#064e3b] shadow-lg md:block">24-48 hours Dispatch</div>
-
-          <button id="openAuthHubMobile" class="rounded-xl border border-[#d4af37]/40 px-2.5 py-2 text-xs font-bold text-[#d4af37] lg:hidden">Login</button>
-
-          <div class="group relative hidden lg:block">
-            <button id="openAuthHubTop" class="rounded-xl border border-[#d4af37]/40 bg-emerald-950/60 px-3 py-2 text-xs font-bold text-amber-100 transition hover:bg-emerald-900">Login / Sign Up ▾</button>
-            <div class="pointer-events-auto invisible absolute right-0 top-full z-[90] mt-2 w-72 translate-y-2 rounded-2xl border border-[#d4af37]/40 bg-white p-3 text-slate-800 opacity-0 shadow-2xl transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-              <button id="openAuthHubNav" class="w-full rounded-xl bg-[#d4af37] px-4 py-2 text-sm font-black text-[#064e3b]">Sign Up / Verify Buyer</button>
-              <div class="mt-3 grid grid-cols-2 gap-2 text-xs font-semibold">
-                <button id="dropdownMyProfile" class="rounded-lg bg-emerald-50 px-3 py-2 text-left text-emerald-900">My Profile</button>
-                <button id="dropdownOrderHistory" class="rounded-lg bg-emerald-50 px-3 py-2 text-left text-emerald-900">Order History</button>
-                <button id="dropdownWishlist" class="rounded-lg bg-emerald-50 px-3 py-2 text-left text-emerald-900">Wishlist</button>
-                <button id="openLogin" class="rounded-lg bg-emerald-50 px-3 py-2 text-left text-emerald-900">Bulk Accounts</button>
-                <button id="dropdownNotifications" class="rounded-lg bg-emerald-50 px-3 py-2 text-left text-emerald-900">Notifications</button>
-                <button id="dropdownCare" class="rounded-lg bg-emerald-50 px-3 py-2 text-left text-emerald-900">24x7 Caterer Care</button>
-                <button id="dropdownDownloadApp" class="col-span-2 rounded-lg bg-slate-100 px-3 py-2 text-left text-slate-800">Download Factory App</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="group relative hidden lg:block">
-            <button class="rounded-xl border border-white/15 bg-emerald-950/60 px-3 py-2 text-xs font-bold text-emerald-100 transition hover:bg-emerald-900">More ▾</button>
-            <div class="pointer-events-auto invisible absolute right-0 top-full z-[90] mt-2 w-64 translate-y-2 rounded-2xl border border-[#d4af37]/40 bg-white p-3 text-sm font-semibold text-slate-800 opacity-0 shadow-2xl transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-              <button id="dropdownBulkInquiry" class="block w-full rounded-lg px-3 py-2 text-left hover:bg-emerald-50">Bulk Inquiry Form</button>
-              <button id="dropdownNotificationSettings" class="block w-full rounded-lg px-3 py-2 text-left hover:bg-emerald-50">Notification Settings</button>
-              <button id="dropdownFactoryDesk" class="block w-full rounded-lg px-3 py-2 text-left hover:bg-emerald-50">24x7 Factory Desk</button>
-              <button id="dropdownPartnerProgram" class="block w-full rounded-lg px-3 py-2 text-left hover:bg-emerald-50">Partner Program</button>
-            </div>
-          </div>
-
-
-          <label class="hidden items-center gap-2 rounded-xl border border-[#d4af37]/50 bg-emerald-950/60 px-2.5 py-2 text-[11px] font-black text-[#d4af37] md:flex">
-            <span>🌍 Currency</span>
-            <select id="currencySwitcher" class="rounded-lg border border-[#d4af37]/40 bg-[#064e3b] px-2 py-1 text-xs font-black text-white outline-none">
-              <option value="INR">INR (₹)</option>
-              <option value="USD">USD ($)</option>
-              <option value="GBP">GBP (£)</option>
-              <option value="TRY">TRY (₺)</option>
-              <option value="RUB">RUB (₽)</option>
+        <div class="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2">
+          <label class="flex items-center gap-1.5 rounded-2xl border border-white/10 bg-white/5 px-2 py-2 text-[11px] font-black text-[#d4af37] sm:px-3">
+            <span class="hidden sm:inline">Currency</span>
+            <select id="currencySwitcher" class="rounded-xl border border-white/10 bg-slate-900 px-1.5 py-1 text-xs font-black text-white outline-none sm:px-2">
+              <option value="INR">INR ₹</option>
+              <option value="USD">USD $</option>
+              <option value="GBP">GBP £</option>
+              <option value="TRY">TRY ₺</option>
+              <option value="RUB">RUB ₽</option>
             </select>
           </label>
-          <button id="openCartTop" class="whitespace-nowrap rounded-xl border border-[#d4af37]/50 bg-white px-2.5 py-2 text-xs font-black text-[#064e3b] shadow-lg transition hover:bg-amber-50 sm:px-3 sm:text-sm">🛒 Cart (<span id="cartCount">0</span>)</button>
+
+          <button id="openCartTop" class="relative rounded-2xl border border-white/10 bg-white px-3 py-2 text-xs font-black text-slate-950 shadow-lg transition hover:-translate-y-0.5 hover:bg-amber-50" aria-label="Open cart">🛒 <span class="hidden sm:inline">Cart</span><span id="cartCount" class="ml-1 inline-flex min-w-5 justify-center rounded-full bg-[#d4af37] px-1.5 text-slate-950">0</span></button>
+
+          <button id="openAuthHubTop" class="vmp-auth-login rounded-2xl border border-[#d4af37]/50 bg-[#d4af37] px-3 py-2 text-xs font-black text-slate-950 shadow-lg transition hover:-translate-y-0.5 hover:bg-amber-300 sm:px-4">Sign In / Register</button>
+          <button id="openAuthHubMobile" class="vmp-auth-login hidden rounded-2xl border border-[#d4af37]/50 bg-[#d4af37] px-3 py-2 text-xs font-black text-slate-950">Sign In</button>
+
+          <div id="businessAvatarMenu" class="group relative hidden">
+            <button id="businessAvatarButton" class="grid h-10 w-10 place-items-center rounded-2xl border border-emerald-300/40 bg-emerald-500 text-sm font-black text-white shadow-lg">B</button>
+            <div class="invisible absolute right-0 top-full z-[90] mt-2 w-48 translate-y-2 rounded-2xl border border-slate-200 bg-white p-2 text-sm font-bold text-slate-800 opacity-0 shadow-2xl transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+              <button id="dropdownMyProfile" class="block w-full rounded-xl px-3 py-2 text-left hover:bg-emerald-50">My Account</button>
+              <button id="businessProfileBtn" class="block w-full rounded-xl px-3 py-2 text-left hover:bg-emerald-50">Business Profile</button>
+              <button id="businessLogoutBtn" class="block w-full rounded-xl px-3 py-2 text-left text-rose-600 hover:bg-rose-50">Logout</button>
+            </div>
+          </div>
         </div>
-
-        <div class="vmp-mobile-metrics col-span-2 row-start-3 flex items-center justify-between gap-2 overflow-hidden rounded-lg border border-[#d4af37]/30 bg-emerald-950/60 px-2 py-1 text-[11px] font-bold text-[#d4af37] md:hidden">
-          <span class="min-w-0 truncate">📍 Delivering to: Caterer Street, Ahmedabad</span>
-          <span class="shrink-0">24-48 hours Dispatch</span>
-        </div>
-      </div>
-
-      <div class="vmp-quick-capsules scrollbar-none flex gap-2 overflow-x-auto whitespace-nowrap pb-1 text-xs font-black">
-        <a href="#shop" class="min-w-max flex-shrink-0 rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Plates</a>
-        <a href="#shop" class="min-w-max flex-shrink-0 rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Cups &amp; Spoons</a>
-        <a href="#shop" class="min-w-max flex-shrink-0 rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Trays</a>
-        <a href="#shop" class="min-w-max flex-shrink-0 rounded-full bg-white px-4 py-2 text-[#064e3b] shadow-sm">Packaging</a>
-        <a href="#vipSampleKit" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37]/60 bg-emerald-950/50 px-4 py-2 text-[#d4af37]">VIP Sample Kit</a>
-        <button id="downloadCatalogBtn" onclick="window.downloadCatalog()" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37] bg-[#d4af37] px-4 py-2 text-[#064e3b] shadow-sm">📄 Download Factory Price Catalog</button>
-        <button id="openAiPackagingAdvisor" onclick="window.openAiPackagingAdvisorModal()" class="min-w-max flex-shrink-0 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-white shadow-sm">🤖 AI Packaging Advisor</button>
-        <button id="openExpressCheckoutTop" onclick="window.toggleExpressCheckout()" class="min-w-max flex-shrink-0 rounded-full border border-[#d4af37] bg-emerald-950/70 px-4 py-2 text-[#d4af37] shadow-sm">⚡ Express Checkout</button>
-      </div>
-
-      <div class="overflow-hidden rounded-xl border border-[#d4af37]/30 bg-emerald-950/60">
-        <p class="whitespace-nowrap px-3 py-1.5 text-xs font-bold text-[#d4af37] animate-[marquee_18s_linear_infinite]">Veer Mahadev Plastic: Custom Manufacturer for Gujarat's Elite Catering Businesses • Ahmedabad Catering Emergency? Order before 12 PM for Same-Day Delivery • Factory-direct pricing for bulk buyers</p>
       </div>
     </div>
   </header>
@@ -381,8 +442,8 @@
           <div class="inline-flex rounded-full border border-[#d4af37]/40 bg-emerald-950/60 px-4 py-2 text-xs font-black uppercase tracking-[0.25em] text-[#d4af37]">CATERING CHALLENGE MODE ON</div>
 
           <div class="mt-3 inline-flex rounded-full border border-emerald-100/25 bg-[#d4af37]/15 px-4 py-2 text-[11px] font-black uppercase tracking-[0.18em] text-amber-100">VEER MAHADEV PLASTIC WORLDWIDE • GLOBAL EXPORT QUALITY STANDARDS • ESTD. SINCE 2024</div>
-          <h1 class="mt-5 max-w-3xl text-3xl font-black leading-tight text-white sm:text-4xl lg:text-6xl">Match Quality and Factory Prices with <span class="text-[#d4af37]">Veer Mahadev.</span></h1>
-          <p class="mt-4 max-w-2xl text-lg font-medium text-emerald-50">Ahmedabad's direct bulk manufacturer for elite caterers, sweet shops, event planners, and institutional procurement teams.</p>
+          <h1 class="mt-5 max-w-4xl text-3xl font-black leading-tight text-white sm:text-4xl lg:text-6xl">VEER MAHADEV PLASTIC <span class="text-[#d4af37]">WORLDWIDE</span></h1>
+          <p class="mt-4 max-w-2xl text-lg font-medium text-emerald-50">Premium eco-friendly bulk manufacturing standards for food-grade biodegradable packaging, direct factory dispatch, and corporate procurement teams.</p>
           <div class="mt-6 flex flex-wrap gap-3">
             <a href="#shop" class="rounded-2xl bg-[#d4af37] px-6 py-3 text-sm font-black uppercase tracking-wide text-[#064e3b] shadow-xl transition hover:-translate-y-0.5 hover:bg-amber-300">Start Factory Order</a>
             <a href="#wholesale" class="rounded-2xl border border-[#d4af37]/70 bg-emerald-950/50 px-6 py-3 text-sm font-black uppercase tracking-wide text-[#d4af37] transition hover:bg-emerald-900">Corporate Bulk Quote</a>
@@ -431,6 +492,36 @@
             <div class="rounded-2xl border border-[#d4af37]/40 bg-amber-50 p-3">🏭 Factory-direct stock</div>
           </div>
         </aside>
+      </div>
+    </section>
+
+    <section id="cinematicReel" class="relative overflow-hidden bg-[#f5f8f5] py-10 sm:py-14">
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(6,95,70,0.12),transparent_28%),radial-gradient(circle_at_88%_12%,rgba(212,175,55,0.16),transparent_22%)]"></div>
+      <div class="cinematic-reveal relative mx-auto max-w-7xl px-4">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-black uppercase tracking-[0.36em] text-[#064e3b]">VEER MAHADEV PLASTIC WORLDWIDE</p>
+            <h2 class="mt-3 max-w-3xl text-4xl font-black tracking-tight text-slate-950 md:text-6xl">Cinematic wholesale product reels.</h2>
+          </div>
+          <p class="max-w-md text-sm font-semibold leading-6 text-slate-500">Swipe through eco-forward packaging categories and milestone carton incentives with distraction-free product-first visuals.</p>
+        </div>
+        <div class="cinematic-reel mt-8 flex gap-5 overflow-x-auto pb-5">
+          <button data-cat="Cornstarch Meal Trays" class="jump-cat cinematic-reel-card group relative min-h-[420px] min-w-[78vw] overflow-hidden rounded-[2rem] border border-white/50 bg-slate-950 text-left text-white shadow-2xl sm:min-w-[420px]">
+            <img src="https://i.postimg.cc/HnYSDKKj/3CP-MEAL-TRAY-WITH-LID.jpg" alt="Cornstarch Meal Trays" class="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/25 to-transparent"></div>
+            <div class="absolute bottom-0 p-6"><p class="text-[11px] font-black uppercase tracking-[0.32em] text-[#d4af37]">3% OFF · 10+ cartons</p><h3 class="mt-2 text-3xl font-black">Cornstarch Meal Trays</h3><p class="mt-2 text-sm font-semibold text-slate-200">High-volume biodegradable catering trays.</p></div>
+          </button>
+          <button data-cat="Biodegradable Glasses" class="jump-cat cinematic-reel-card group relative min-h-[420px] min-w-[78vw] overflow-hidden rounded-[2rem] border border-white/50 bg-emerald-950 text-left text-white shadow-2xl sm:min-w-[420px]">
+            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=900&q=80" alt="Biodegradable Glasses" class="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/20 to-transparent"></div>
+            <div class="absolute bottom-0 p-6"><p class="text-[11px] font-black uppercase tracking-[0.32em] text-[#d4af37]">5% OFF · 25+ cartons</p><h3 class="mt-2 text-3xl font-black">Biodegradable Glasses</h3><p class="mt-2 text-sm font-semibold text-emerald-50">Premium event and beverage service packs.</p></div>
+          </button>
+          <button data-cat="Bakery Boxes" class="jump-cat cinematic-reel-card group relative min-h-[420px] min-w-[78vw] overflow-hidden rounded-[2rem] border border-white/50 bg-amber-950 text-left text-white shadow-2xl sm:min-w-[420px]">
+            <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=900&q=80" alt="Bakery Boxes" class="absolute inset-0 h-full w-full object-cover opacity-80 transition duration-500 group-hover:scale-105" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+            <div class="absolute bottom-0 p-6"><p class="text-[11px] font-black uppercase tracking-[0.32em] text-[#d4af37]">Factory quote ready</p><h3 class="mt-2 text-3xl font-black">Bakery Boxes</h3><p class="mt-2 text-sm font-semibold text-amber-50">Clean presentation for premium food brands.</p></div>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -529,34 +620,39 @@
       </div>
     </section>
 
-    <section id="shop" class="max-w-7xl mx-auto px-4 pb-10">
-      <div class="flex items-center justify-between flex-wrap gap-3">
-        <h3 class="text-2xl font-extrabold">Products</h3>
+    <section id="shop" class="mx-auto max-w-7xl px-4 pb-10">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.24em] text-[#d4af37]">Direct Factory Product Dashboard</p>
+          <h3 class="text-3xl font-black text-slate-950">Wholesale Product Catalog</h3>
+          <p class="mt-1 text-sm font-semibold text-slate-500">Live API-backed entries with master-carton conversions and tier discounts.</p>
+        </div>
         <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-sm text-slate-600">Filter:</span>
-          <select id="categoryFilter" class="border rounded-lg px-3 py-2 text-sm"></select>
+          <span class="text-sm font-bold text-slate-600">Filter:</span>
+          <select id="categoryFilter" class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold shadow-sm"></select>
         </div>
       </div>
-      <div id="b2bAdvancedFilters" class="mt-4 grid gap-3 rounded-3xl border border-emerald-100 bg-white/90 p-3 shadow-sm md:grid-cols-2">
-        <label class="text-xs font-black uppercase tracking-wide text-emerald-900">Material Type
-          <select id="material-type-select" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
-            <option value="all" selected>All Materials</option>
-            <option value="fiber">Premium Rigid Fiber</option>
-            <option value="metallic">Heavy-Duty Metallic Finish</option>
-            <option value="bagasse">Eco-Friendly Sugarcane Bagasse</option>
-          </select>
-        </label>
-        <label class="text-xs font-black uppercase tracking-wide text-emerald-900">Event / Utility Use Case
-          <select id="use-case-select" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
-            <option value="all" selected>All Use Cases</option>
-            <option value="buffet">Buffet Catering Trays</option>
-            <option value="wedding">Luxury Wedding Plates</option>
-            <option value="bakery">Bulk Bakery Boxes</option>
-            <option value="soup-dessert">Soup &amp; Dessert Counters</option>
-          </select>
-        </label>
+      <div class="mt-5 grid gap-5 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <aside id="stickyCategorySidebar" class="lg:sticky lg:top-36 lg:self-start rounded-[1.75rem] border border-slate-200 bg-slate-950 p-3 text-white shadow-2xl">
+          <p class="px-3 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-[#d4af37]">8 Core Categories</p>
+          <div id="sidebarCategoryList" class="grid gap-2"></div>
+        </aside>
+        <div>
+          <div id="b2bAdvancedFilters" class="grid gap-3 rounded-3xl border border-emerald-100 bg-white/90 p-3 shadow-sm md:grid-cols-2">
+            <label class="text-xs font-black uppercase tracking-wide text-emerald-900">Material Type
+              <select id="material-type-select" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
+                <option value="all" selected>All Materials</option><option value="fiber">Premium Rigid Fiber</option><option value="metallic">Heavy-Duty Metallic Finish</option><option value="bagasse">Eco-Friendly Sugarcane Bagasse</option>
+              </select>
+            </label>
+            <label class="text-xs font-black uppercase tracking-wide text-emerald-900">Event / Utility Use Case
+              <select id="use-case-select" class="mt-1 w-full rounded-xl border border-emerald-100 px-3 py-2 text-sm font-semibold normal-case text-slate-700 outline-none transition focus:border-[#d4af37]">
+                <option value="all" selected>All Use Cases</option><option value="buffet">Buffet Catering Trays</option><option value="wedding">Luxury Wedding Plates</option><option value="bakery">Bulk Bakery Boxes</option><option value="soup-dessert">Soup &amp; Dessert Counters</option>
+              </select>
+            </label>
+          </div>
+          <div class="mt-6 grid grid-cols-1 gap-4 transition-all duration-200 md:grid-cols-3 lg:grid-cols-4" id="product-grid-container"></div>
+        </div>
       </div>
-      <div class="mt-6 grid grid-cols-2 gap-4 transition-all duration-200 md:grid-cols-3 lg:grid-cols-4" id="product-grid-container"></div>
     </section>
 
     <section id="eco" class="max-w-7xl mx-auto px-4 pb-10">
@@ -999,7 +1095,7 @@
             </div>
             <button id="officialFactoryQuoteBtn" class="mt-3 w-full rounded-lg bg-emerald-700 py-2.5 text-sm font-black text-white shadow-lg hover:bg-emerald-800">📄 Get Official Factory Quotation via WhatsApp</button>
             <button id="shareCartQuoteBtn" class="mt-3 w-full rounded-lg border border-emerald-300 bg-white py-2 text-sm font-semibold text-emerald-800 hover:bg-emerald-50">🔗 Share Cart / Quote via WhatsApp</button>
-            <a href="https://wa.me/918050389261?text=Need%20Help%20with%20Payment%3F%20Please%20connect%20me%20with%20Factory%20Billing%20Desk." target="_blank" rel="noopener" class="mt-3 block rounded-lg border border-amber-300 bg-amber-50 py-2 text-center text-xs font-bold text-amber-900 hover:bg-amber-100">Need Help with Payment? Connect directly with Factory Billing Desk</a>
+            <button id="billingDeskNotifyBtn" class="mt-3 block w-full rounded-lg border border-amber-300 bg-amber-50 py-2 text-center text-xs font-bold text-amber-900 hover:bg-amber-100">Need Help with Payment? Notify Factory Billing Desk</button>
             <button id="confirmPayBtn" class="mt-4 w-full rounded-lg bg-[#5f259f] py-2 font-semibold text-white hover:bg-[#4c1d95]">Verify UTR & Confirm PhonePe Payment</button>
           </div>
         </div>
@@ -1151,11 +1247,11 @@
         <button id="closeAuthHub" class="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600">✕</button>
       </div>
       <div class="mt-6 grid gap-4 md:grid-cols-2">
-        <a href="customer.html" class="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5 transition hover:-translate-y-1 hover:shadow-lg">
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Customer</p>
-          <h5 class="mt-2 text-xl font-black text-emerald-900">Login / Sign Up</h5>
-          <p class="mt-2 text-sm text-slate-600">Customers add their name and email to join the wholesale member list.</p>
-        </a>
+        <button id="openB2BAuthFromHub" type="button" class="rounded-[1.5rem] border border-emerald-100 bg-emerald-50 p-5 text-left transition hover:-translate-y-1 hover:shadow-lg">
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">Enterprise Buyer</p>
+          <h5 class="mt-2 text-xl font-black text-emerald-900">Verify Business with OTP</h5>
+          <p class="mt-2 text-sm text-slate-600">Mobile/corporate email verification creates a persistent B2B route session for checkout.</p>
+        </button>
         <a href="admin.html" class="rounded-[1.5rem] border border-[#D4AF37]/40 bg-[#065f46] p-5 text-white transition hover:-translate-y-1 hover:shadow-lg">
           <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">Admin</p>
           <h5 class="mt-2 text-xl font-black">Owner Dashboard</h5>
@@ -1191,20 +1287,28 @@
       </div>
       <form id="loginForm" class="grid gap-4 p-5">
         <div id="authStepOne" class="grid gap-3 transition-all duration-300">
-          <label class="text-xs font-black uppercase tracking-wide text-slate-600">Mobile Number or Corporate Email
-            <input id="loginIdentity" required placeholder="buyer@company.com or 9876543210" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none focus:border-[#064e3b]"/>
+          <label class="text-xs font-black uppercase tracking-wide text-slate-600">Mobile Number / Corporate Email
+            <input id="loginIdentity" required placeholder="buyer@company.com or 9876543210" class="mt-1 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold outline-none transition focus:border-[#064e3b] focus:bg-white"/>
           </label>
-          <button type="button" id="requestOtpBtn" class="rounded-xl bg-emerald-700 py-3 text-sm font-black text-white shadow-lg hover:bg-emerald-800">Continue / Request OTP</button>
+          <button type="button" id="requestOtpBtn" class="rounded-2xl bg-emerald-700 py-3 text-sm font-black text-white shadow-lg hover:bg-emerald-800">Verify Business</button>
         </div>
-        <div id="authStepTwo" class="hidden translate-y-2 rounded-2xl border border-[#d4af37]/50 bg-amber-50 p-3 opacity-0 transition-all duration-300">
-          <label class="text-xs font-black uppercase tracking-wide text-slate-600">Secure Verification Code
-            <input id="loginOtp" inputmode="numeric" maxlength="6" placeholder="Enter 4 or 6 digit OTP" class="mt-1 w-full rounded-xl border border-amber-200 px-3 py-2 text-center text-lg font-black tracking-[0.35em] outline-none focus:border-[#d4af37]"/>
-          </label>
-          <div class="mt-2 flex items-center justify-between text-xs font-bold text-slate-600">
+        <div id="authStepTwo" class="hidden translate-x-8 rounded-3xl border border-[#d4af37]/50 bg-gradient-to-br from-amber-50 to-white p-4 opacity-0 transition-all duration-300">
+          <p class="text-xs font-black uppercase tracking-[0.2em] text-[#064e3b]">Enter secure OTP</p>
+          <p class="mt-1 text-xs font-semibold text-slate-500">Use the 6-digit business verification code sent to your mobile/email.</p>
+          <input id="loginOtp" type="hidden" />
+          <div id="otpGrid" class="mt-4 grid grid-cols-6 gap-2">
+            <input class="otp-digit h-12 rounded-2xl border border-amber-200 bg-white text-center text-xl font-black outline-none focus:border-[#d4af37]" inputmode="numeric" maxlength="1" />
+            <input class="otp-digit h-12 rounded-2xl border border-amber-200 bg-white text-center text-xl font-black outline-none focus:border-[#d4af37]" inputmode="numeric" maxlength="1" />
+            <input class="otp-digit h-12 rounded-2xl border border-amber-200 bg-white text-center text-xl font-black outline-none focus:border-[#d4af37]" inputmode="numeric" maxlength="1" />
+            <input class="otp-digit h-12 rounded-2xl border border-amber-200 bg-white text-center text-xl font-black outline-none focus:border-[#d4af37]" inputmode="numeric" maxlength="1" />
+            <input class="otp-digit h-12 rounded-2xl border border-amber-200 bg-white text-center text-xl font-black outline-none focus:border-[#d4af37]" inputmode="numeric" maxlength="1" />
+            <input class="otp-digit h-12 rounded-2xl border border-amber-200 bg-white text-center text-xl font-black outline-none focus:border-[#d4af37]" inputmode="numeric" maxlength="1" />
+          </div>
+          <div class="mt-3 flex items-center justify-between text-xs font-bold text-slate-600">
             <span id="otpTimer">OTP valid for 60s</span>
             <button type="button" id="resendOtpBtn" class="text-emerald-700 underline disabled:text-slate-400" disabled>Resend OTP</button>
           </div>
-          <button type="submit" class="mt-3 w-full rounded-xl bg-[#064e3b] py-3 text-sm font-black text-white hover:bg-emerald-900">Verify & Continue</button>
+          <button type="submit" class="mt-3 w-full rounded-2xl bg-[#064e3b] py-3 text-sm font-black text-white hover:bg-emerald-900">Verify OTP & Continue</button>
         </div>
         <button type="button" id="closeLogin" class="rounded-xl border border-slate-200 py-2 text-sm font-bold text-slate-700">Close</button>
       </form>
@@ -1692,6 +1796,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       localStorage.setItem('vmpActiveCurrency', activeCurrency);
       persistActiveSessionCart();
       updateCurrencySwitcherUi();
+    updateHeaderAuthState();
       if(typeof renderProducts === 'function') renderProducts(activeCategory || 'all');
       const modalPrice = document.getElementById('productModalPricing');
       if(modalPrice?.dataset.productId){
@@ -1754,6 +1859,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
 
     const productGrid = document.getElementById('productGrid') || document.getElementById('product-grid-container');
     const categoryGrid = document.getElementById('categoryGrid');
+    const sidebarCategoryList = document.getElementById('sidebarCategoryList');
     const categoryFilter = document.getElementById('categoryFilter');
     const materialFilter = document.getElementById('material-type-select') || document.getElementById('materialFilter');
     const useCaseFilter = document.getElementById('use-case-select') || document.getElementById('useCaseFilter');
@@ -2131,6 +2237,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     bindById('dropdownPartnerProgram', 'click', () => { scrollToSection('wholesale'); notifyVmp('Partner Program inquiry starts from the Bulk Order form.', 'Partner Program'); });
     bindById('refreshOrderHistory', 'click', renderOrderHistory);
     bindById('closeAuthHub', 'click', closeAuthHub);
+    bindById('openB2BAuthFromHub', 'click', () => { closeAuthHub(); document.getElementById('loginModal')?.classList.remove('hidden'); });
     bindById('authHubModal', 'click', (event)=>{
       if(event.target.id === 'authHubModal') closeAuthHub();
     });
@@ -2337,6 +2444,9 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         </button>
       `).join('');
       categoryFilter.innerHTML = categories.map(cat => `<option>${cat}</option>`).join('');
+      if(sidebarCategoryList){
+        sidebarCategoryList.innerHTML = categories.slice(1, 9).map((cat, index) => `<button data-cat="${cat}" class="jump-cat group flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left text-sm font-black text-slate-100 transition hover:-translate-y-0.5 hover:border-[#d4af37]/70 hover:bg-[#d4af37]/15"><span class="flex items-center gap-2"><span class="grid h-9 w-9 place-items-center rounded-xl bg-white/10 text-lg">${categoryIcon(cat)}</span>${cat}</span><span class="text-[#d4af37] opacity-40 transition group-hover:translate-x-1 group-hover:opacity-100">→</span></button>`).join('');
+      }
       categoryFilter.value = activeCategory;
     }
 
@@ -2381,6 +2491,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
             category: p.category || 'Catering Essentials',
             image: p.image || './images/plate.jpg',
             stock: Number.isFinite(Number(p.stock)) ? Number(p.stock) : 200,
+            cartonUnits: Number(p.cartonUnits || cartonUnitsFor({ name: p.name, category: p.category })),
             tiers: Array.isArray(p.tiers) && p.tiers.length >= 3 ? p.tiers : [
               { min: 100, price: Number(p.price || 0) },
               { min: 200, price: Number(p.price || 0) },
@@ -2388,38 +2499,32 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
             ],
           };
           const tiers = safeProduct.tiers;
+          const itemCode = String(safeProduct.id).replace(/[^0-9]/g, '').slice(-4) || String(7000 + (stockSeed(safeProduct.id) % 899));
+          const boxPcs = Math.max(100, Number(tiers[0]?.min || 100));
+          const boxRate = Number(tiers[0]?.price || 0) * boxPcs;
+          const discount10 = Number((boxRate * 0.97).toFixed(0));
+          const discount25 = Number((boxRate * 0.95).toFixed(0));
           return `
-        <article onclick="openProductDetails('${safeProduct.id}')" class="product-card-premium cursor-pointer overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-300 hover:shadow-lg" tabindex="0">
-          <div class="relative">
-            <img src="${safeProduct.image}" alt="${safeProduct.name}" loading="lazy" decoding="async" class="h-40 w-full object-cover" onerror="this.onerror=null;this.src=&quot;./images/plate.jpg&quot;;"/>
-            <button onclick="event.stopPropagation();shareProduct('${safeProduct.id}')" class="pulse-soft absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-emerald-700 shadow-lg transition hover:scale-105" aria-label="Share ${safeProduct.name}">
-              <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="18" cy="5" r="3"></circle>
-                <circle cx="6" cy="12" r="3"></circle>
-                <circle cx="18" cy="19" r="3"></circle>
-                <path d="M8.59 13.51 15.42 17.49"></path>
-                <path d="M15.41 6.51 8.59 10.49"></path>
-              </svg>
-            </button>
+        <article onclick="openProductDetails('${safeProduct.id}')" class="group cinematic-product-card product-card-premium relative min-h-[520px] cursor-pointer overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm ring-1 ring-transparent transition duration-300 hover:-translate-y-1 hover:border-[#d4af37] hover:shadow-2xl hover:shadow-slate-900/10" tabindex="0">
+          <div class="relative h-[72%] min-h-[340px] bg-gradient-to-br from-slate-50 to-white p-4">
+            <span class="absolute left-4 top-4 z-10 rounded-full bg-emerald-500 px-3 py-1 text-[11px] font-black text-white shadow-lg">● In Stock</span>
+            <span class="absolute right-4 top-4 z-10 rounded-lg border border-slate-200 bg-white/95 px-2 py-1 text-[11px] font-black text-slate-500">${itemCode}</span>
+            <img src="${safeProduct.image}" alt="${safeProduct.name}" loading="lazy" decoding="async" class="h-full w-full rounded-2xl object-contain transition duration-700 group-hover:scale-110" onerror="this.onerror=null;this.src=&quot;./images/plate.jpg&quot;;"/>
           </div>
-          ${stockScarcityMarkup(safeProduct)}
-          <div class="space-y-3 p-3">
-            <div class="flex justify-between gap-2 items-start"><h4 class="line-clamp-2 text-sm font-extrabold text-slate-800">${safeProduct.name}</h4>${stockBadge(safeProduct.stock)}</div>
-            <p class="text-[11px] text-slate-500">${safeProduct.category}</p>
-            <div class="tier-breakdown rounded-2xl border border-amber-100 bg-amber-50/60 p-2" tabindex="0">
-              <p class="text-sm font-bold text-emerald-800">${formatCurrencyFromInr(tiers[0].price)} <span class="text-[11px] font-medium text-slate-500">for ${tiers[0].min}+ pcs</span></p>
-              <p class="text-[11px] text-slate-500">${tiers[1].min}+ @ ${formatCurrencyFromInr(tiers[1].price)} • ${tiers[2].min}+ @ ${formatCurrencyFromInr(tiers[2].price)}</p>
-              <div class="tier-tooltip absolute left-2 right-2 top-full z-20 mt-2 rounded-2xl border border-[#d4af37]/60 bg-white p-3 text-[11px] font-bold text-emerald-900 shadow-2xl">
-                Wholesale savings: ${formatCurrencyFromInr(Math.max(0, Math.round((tiers[0].price - tiers[2].price) * tiers[2].min)))} on ${tiers[2].min}+ pcs batch volume.
-              </div>
+          <div class="cinematic-card-details absolute inset-x-0 bottom-0 space-y-3 rounded-t-[1.75rem] border border-white/60 bg-white/85 p-4 shadow-2xl backdrop-blur-xl">
+            <div><p class="text-[10px] font-black uppercase tracking-[0.28em] text-[#064e3b]">Item ${itemCode} • ${safeProduct.category}</p><h4 class="mt-1 line-clamp-2 min-h-[2.5rem] text-base font-black uppercase leading-tight text-slate-900">${safeProduct.name}</h4><p class="mt-1 text-sm font-semibold text-slate-400">▣ ${boxPcs.toLocaleString('en-IN')} pcs/box</p></div>
+            <div class="rounded-2xl border border-slate-100 bg-slate-50 p-3 text-sm">
+              <div class="flex items-center justify-between"><span class="text-slate-500">Retail / pc</span><strong class="text-slate-900">${formatCurrencyFromInr(tiers[0].price)}</strong></div>
+              <div class="mt-2 flex items-center justify-between rounded-xl bg-amber-50 px-2 py-1.5"><span class="font-black text-amber-800">Box (1+)</span><strong class="text-amber-700">${formatCurrencyFromInr(boxRate)} /box</strong></div>
+              <div class="mt-2 grid gap-1 text-[11px] font-black sm:grid-cols-2"><span class="rounded-full bg-emerald-50 px-2 py-1 text-emerald-700">3% OFF on 10+ Cartons</span><span class="rounded-full bg-[#064e3b] px-2 py-1 text-[#d4af37]">5% OFF on 25+ Cartons</span></div>
+              <p class="mt-2 text-[11px] font-bold text-slate-500">Milestone rates: ${formatCurrencyFromInr(discount10)} /box • ${formatCurrencyFromInr(discount25)} /box</p>
             </div>
             ${brandingControlsMarkup(safeProduct)}
             <div class="flex items-center gap-2">
-              <input onclick="event.stopPropagation()" oninput="window.updateProductCartonBadge && window.updateProductCartonBadge('${safeProduct.id}')" id="qty-${safeProduct.id}" type="number" min="100" step="50" value="100" class="w-16 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-semibold"/>
-              <button onclick="event.stopPropagation();addToCart('${safeProduct.id}')" class="flex-1 rounded-xl bg-emerald-800 py-2 text-sm font-bold text-white disabled:opacity-40" ${safeProduct.stock===0?'disabled':''}>ADD</button>
+              <input onclick="event.stopPropagation()" oninput="window.updateProductCartonBadge && window.updateProductCartonBadge('${safeProduct.id}')" id="qty-${safeProduct.id}" type="number" min="100" step="50" value="100" class="w-24 rounded-xl border border-slate-200 px-2 py-2 text-center text-xs font-black outline-none focus:border-[#d4af37]"/>
+              <button onclick="event.stopPropagation();addToCart('${safeProduct.id}')" class="flex-1 rounded-xl bg-[#ff9900] py-3 text-sm font-black text-white shadow-lg shadow-amber-500/20 transition hover:-translate-y-0.5 disabled:opacity-40" ${safeProduct.stock===0?'disabled':''}>🛒 Quick Add</button>
             </div>
-            <p id="carton-badge-${safeProduct.id}" class="rounded-lg bg-emerald-50 px-2 py-1 text-[11px] font-black text-emerald-800">📦 equivalent to ${masterCartonsForProductQty(safeProduct, 100).toFixed(2)} Master Cartons</p>
-            <button onclick="event.stopPropagation();buyNow('${safeProduct.id}'); window.toggleExpressCheckout && window.toggleExpressCheckout();" class="w-full rounded-xl border border-[#d4af37] bg-[#064e3b] py-2 text-xs font-semibold text-white disabled:opacity-40" ${safeProduct.stock===0?'disabled':''}>⚡ Express Checkout</button>
+            <p id="carton-badge-${safeProduct.id}" class="rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2 text-[11px] font-black text-emerald-800">Qty to Master Cartons: ${masterCartonsForProductQty(safeProduct, 100).toFixed(2)} cartons • ${boxPcs.toLocaleString('en-IN')} pcs base box</p>
           </div>
         </article>
       `;
@@ -2660,7 +2765,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       if(!product || !input || !badge) return;
       const cartons = masterCartonsForProductQty(product, Number(input.value || 0));
       const rate = bulkCartonDiscountRate(cartons);
-      badge.textContent = `📦 equivalent to ${cartons.toFixed(2)} Master Cartons${rate ? ` • ${Math.round(rate * 100)}% bulk discount eligible` : ''}`;
+      badge.textContent = `Qty to Master Cartons: ${cartons.toFixed(2)} cartons${rate ? ` • ${Math.round(rate * 100)}% OFF active` : ` • 3% OFF on 10+ Cartons • 5% OFF on 25+ Cartons`}`;
       persistActiveSessionCart();
     }
     window.updateProductCartonBadge = updateProductCartonBadge;
@@ -2670,7 +2775,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       if(!stepTwo) return;
       stepTwo.classList.remove('hidden');
       requestAnimationFrame(() => {
-        stepTwo.classList.remove('translate-y-2', 'opacity-0');
+        stepTwo.classList.remove('translate-x-8', 'opacity-0');
       });
     }
 
@@ -2711,6 +2816,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       sessionStorage.setItem('vmp_auth_challenge', JSON.stringify(simulatedOtpToken));
       revealOtpStep();
       startOtpTimer(60);
+      document.querySelector('.otp-digit')?.focus();
       if(loginMsg){ loginMsg.className = 'px-5 pb-4 text-sm font-semibold text-emerald-700'; loginMsg.textContent = 'Secure OTP simulated. Use 246810 for this local verification flow.'; }
     }
 
@@ -2737,6 +2843,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       b2bLoggedIn = true;
       const portalStatus = document.getElementById('portalStatus');
       if(portalStatus) portalStatus.textContent = `Authenticated as ${authSession.identity}`;
+      updateHeaderAuthState();
       if(loginMsg){ loginMsg.className = 'px-5 pb-4 text-sm font-semibold text-emerald-700'; loginMsg.textContent = 'Authenticated. B2B portal unlocked.'; }
       setTimeout(() => document.getElementById('loginModal')?.classList.add('hidden'), 500);
       return true;
@@ -2811,22 +2918,40 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     }
 
     async function triggerSystemOrderNotification(orderPayload){
-      console.log('VMP System Engine: Dispatching server-side automated B2B WhatsApp payload...', orderPayload);
+      console.log('VMP System Engine: Dispatching server-side automated B2B notification payload...', orderPayload);
       const systemPayload = {
+        onboardingCustomer: orderPayload?.profile || getBuyerProfile(),
         customerAuthToken: readJsonStorage('vmp_auth_session', JSON.parse(sessionStorage.getItem('vmp_auth_session') || 'null')),
-        fullShippingAddress: orderPayload?.b2bDeliveryMatrix || collectB2BDeliveryMatrix(),
-        itemArray: orderPayload?.items || [],
-        totalCartons: totalMasterCartons(),
+        deliveryMetadata: orderPayload?.b2bDeliveryMatrix || collectB2BDeliveryMatrix(),
+        itemArray: (orderPayload?.items || []).map((item) => ({
+          id: item.id,
+          code: item.id || item.name,
+          name: item.name,
+          qty: Number(item.qty || 0),
+          unit: Number(item.unit || item.unit_price || 0),
+          masterCartons: Number(item.masterCartons || masterCartonsForCartItem(item) || 0),
+          lineTotal: Number((Number(item.qty || 0) * Number(item.unit || item.unit_price || 0)).toFixed(2))
+        })),
+        totalCartons: Number(orderPayload?.totalMasterCartons || totalMasterCartons()),
         currencyTotal: { currency: selectedCurrencyCode(), total: orderPayload?.total || cartTotalAmount() },
+        orderId: orderPayload?.orderId || `VMP-NOTIFY-${Date.now()}`,
         createdAt: new Date().toISOString()
       };
-      try {
-        localStorage.setItem('vmp_system_order_notification_payload', JSON.stringify(systemPayload));
-        // Placeholder for production controller: await fetch('/api/orders/notify-whatsapp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(systemPayload) });
-      } catch (error) {
-        console.warn('VMP notification payload persisted locally due to storage/API limitation.', error);
+      localStorage.setItem('vmp_system_order_notification_payload', JSON.stringify(systemPayload));
+      const endpoints = ['/api/enquiries/dispatch-whatsapp', '/api/orders/notify-whatsapp'];
+      for(const endpoint of endpoints){
+        try {
+          const response = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(systemPayload) });
+          if(response.ok){
+            const result = await response.json().catch(() => ({}));
+            console.log('VMP Automation: Admin notification accepted by server.', result);
+            return { ...systemPayload, server: result };
+          }
+        } catch (error) {
+          console.warn(`VMP notification endpoint unavailable: ${endpoint}`, error);
+        }
       }
-      console.log('VMP Automation: System-to-Admin direct notifications initialized successfully.');
+      console.log('VMP Automation: Notification payload queued locally for retry.');
       return systemPayload;
     }
     window.triggerSystemOrderNotification = triggerSystemOrderNotification;
@@ -3194,7 +3319,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
             <button onclick="removeCartItem(${idx})" class="text-rose-600 text-sm">Remove</button>
           </div>
           <p class="text-xs text-slate-600">Qty: ${item.qty} × ₹${item.unit.toFixed(2)} = ₹${(item.qty*item.unit).toFixed(2)}</p>
-          <p class="mt-1 inline-flex rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-black text-emerald-800">📦 equivalent to ${masterCartonsForCartItem(item).toFixed(2)} Master Cartons${bulkCartonDiscountRate(masterCartonsForCartItem(item)) ? ` • ${Math.round(bulkCartonDiscountRate(masterCartonsForCartItem(item)) * 100)}% factory discount` : ''}</p>
+          <p class="mt-1 inline-flex rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-black text-emerald-800">Qty to Master Cartons: ${masterCartonsForCartItem(item).toFixed(2)} cartons${bulkCartonDiscountRate(masterCartonsForCartItem(item)) ? ` • ${Math.round(bulkCartonDiscountRate(masterCartonsForCartItem(item)) * 100)}% OFF active` : ` • 3% OFF on 10+ Cartons • 5% OFF on 25+ Cartons`}</p>
           ${item.customBranding?.requested ? `<p class="mt-1 rounded-lg bg-amber-50 px-2 py-1 text-[11px] font-bold text-amber-800">✨ Custom logo printing added${item.customBranding?.artwork?.fileName ? ` • ${item.customBranding.artwork.fileName}` : ''}</p>` : ''}
         </div>
       `).join('');
@@ -3890,6 +4015,35 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       e.target.reset();
     });
 
+    document.querySelectorAll('.otp-digit').forEach((input, index, inputs) => {
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '').slice(0, 1);
+        document.getElementById('loginOtp').value = Array.from(inputs).map((box) => box.value).join('');
+        if(input.value && inputs[index + 1]) inputs[index + 1].focus();
+      });
+      input.addEventListener('keydown', (event) => {
+        if(event.key === 'Backspace' && !input.value && inputs[index - 1]) inputs[index - 1].focus();
+      });
+    });
+
+
+    function updateHeaderAuthState(){
+      const session = readJsonStorage('vmp_auth_session', null) || (() => { try { return JSON.parse(sessionStorage.getItem('vmp_auth_session') || 'null'); } catch { return null; } })();
+      const isAuthed = Boolean(session?.state === 'Authenticated' || session?.accessToken || session?.identity);
+      document.querySelectorAll('.vmp-auth-login').forEach((el) => el.classList.toggle('hidden', isAuthed));
+      const avatar = document.getElementById('businessAvatarMenu');
+      if(avatar) avatar.classList.toggle('hidden', !isAuthed);
+      const button = document.getElementById('businessAvatarButton');
+      if(button){
+        const label = String(session?.identity || getBuyerProfile()?.fullName || 'B').trim();
+        button.textContent = (label.match(/[A-Za-z0-9]/)?.[0] || 'B').toUpperCase();
+        button.title = label || 'Business Account';
+      }
+    }
+    window.updateHeaderAuthState = updateHeaderAuthState;
+    bindById('businessProfileBtn', 'click', () => { openProfileGate(() => {}); notifyVmp('Business profile panel opened.', 'My Account'); });
+    bindById('businessLogoutBtn', 'click', () => { sessionStorage.removeItem('vmp_auth_session'); localStorage.removeItem('vmp_auth_session'); b2bLoggedIn = false; updateHeaderAuthState(); notifyVmp('Business session logged out.', 'Logged out'); });
+
     // B2B login
     bindById('openLogin', 'click', ()=> document.getElementById('loginModal')?.classList.remove('hidden'));
     bindById('closeLogin', 'click', ()=> document.getElementById('loginModal')?.classList.add('hidden'));
@@ -3951,11 +4105,31 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       applyProductFilters();
     });
 
+    function renderGlobalSearchSuggestions(){
+      const panel = document.getElementById('globalSearchSuggestions');
+      if(!panel || !productSearch) return;
+      const q = productSearch.value.trim().toLowerCase();
+      if(!q){ panel.classList.add('invisible','opacity-0'); panel.innerHTML = ''; return; }
+      const matches = products.filter((item) => `${item.name} ${item.category}`.toLowerCase().includes(q)).slice(0, 6);
+      panel.innerHTML = matches.length ? matches.map((item) => `<button type="button" data-search-pick="${item.id}" class="flex w-full items-center gap-3 border-b border-slate-100 px-4 py-3 text-left transition hover:bg-emerald-50"><img src="${item.image || './images/plate.jpg'}" class="h-12 w-12 rounded-xl object-cover" alt=""/><span class="min-w-0 flex-1"><span class="block truncate text-sm font-black text-slate-900">${item.name}</span><span class="block truncate text-xs font-semibold text-slate-500">${item.category} · ${Number(item.tiers?.[0]?.min || 100).toLocaleString('en-IN')} pcs/box</span></span><span class="text-emerald-700">⌕</span></button>`).join('') + `<button type="button" data-search-all="true" class="w-full px-4 py-3 text-center text-sm font-black text-emerald-700">See all results for "${productSearch.value.trim()}"</button>` : `<p class="px-4 py-3 text-sm font-bold text-slate-500">No instant matches. Press Enter to search all products.</p>`;
+      panel.classList.remove('invisible','opacity-0');
+    }
+    if(productSearch) productSearch.addEventListener('input', renderGlobalSearchSuggestions);
+    document.addEventListener('click', (event) => {
+      const pick = event.target.closest('[data-search-pick]');
+      const all = event.target.closest('[data-search-all]');
+      const panel = document.getElementById('globalSearchSuggestions');
+      if(pick){ const item = products.find((p) => p.id === pick.dataset.searchPick); if(item){ productSearch.value = item.name; searchTerm = item.name; activeCategory = 'All'; applyProductFilters(); document.getElementById('shop')?.scrollIntoView({behavior:'smooth'}); } }
+      if(all){ searchTerm = productSearch.value.trim(); applyProductFilters(); document.getElementById('shop')?.scrollIntoView({behavior:'smooth'}); }
+      if((pick || all || (!event.target.closest('#productSearch') && !event.target.closest('#globalSearchSuggestions'))) && panel){ panel.classList.add('invisible','opacity-0'); }
+    });
+
     if(productSearch) productSearch.addEventListener('keydown', (e)=>{
       if(e.key === 'Enter'){
         e.preventDefault();
         searchTerm = productSearch.value.trim();
         applyProductFilters();
+        document.getElementById('globalSearchSuggestions')?.classList.add('invisible','opacity-0');
       }
     });
 
@@ -4108,7 +4282,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       const msg = 'Hi Karan bhai, I am interested in some products from Veer Mahadev Plastic. Please guide me.';
       window.open(`https://wa.me/918050389261?text=${encodeURIComponent(msg)}`,'_blank');
     });
-    bindById('waCart', 'click', ()=>{
+    bindById('waCart', 'click', async ()=>{
       if(!requireBuyerProfile(() => document.getElementById('waCart')?.click())) return;
       const details = getCustomerDetails();
       if(!details) { openCart(); return; }
@@ -4117,10 +4291,15 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
         updateWhatsappButton();
         return;
       }
-      const whatsappMsg = cartWhatsappText(details.name, details.address);
-      const emailBody = cartEmailText(details.name, details.address);
-      window.open(`https://wa.me/918050389261?text=${whatsappMsg}`,'_blank');
-      window.location.href = `mailto:veermahadevplastic@gmail.com?subject=${encodeURIComponent(`New order enquiry from ${details.name}`)}&body=${emailBody}`;
+      await triggerSystemOrderNotification({
+        orderId: `ENQ-${Date.now()}`,
+        profile: getBuyerProfile(),
+        b2bDeliveryMatrix: collectB2BDeliveryMatrix() || { consigneeName: details.name, streetAddress: details.address },
+        items: cart,
+        totalMasterCartons: totalMasterCartons(),
+        total: cartTotalAmount()
+      });
+      notifyVmp('Order enquiry sent to the factory desk in the background. No personal WhatsApp app opened.', 'Enquiry dispatched');
     });
 
     bindById('buyNowCart', 'click', ()=>{
@@ -4132,6 +4311,7 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
     });
     bindById('closeCheckoutModal', 'click', closeCheckoutModal);
     bindById('checkoutModal', 'click', (e)=>{ if(e.target.id === 'checkoutModal') closeCheckoutModal(); });
+    bindById('billingDeskNotifyBtn', 'click', () => triggerSystemOrderNotification({ orderId: `HELP-${Date.now()}`, profile: getBuyerProfile(), items: cart, total: cartTotalAmount(), b2bDeliveryMatrix: collectB2BDeliveryMatrix() }).then(() => notifyVmp('Factory billing desk notified in background.', 'Notification sent')));
     bindById('confirmPayBtn', 'click', ()=>{
       if(!requireBuyerProfile(openCheckoutModal)) return;
       const profile = getBuyerProfile();
