@@ -20,31 +20,7 @@ MEMORY = {
     "inventory": {},
     "live_rates_catalog": {},
     "custom_print_requests": [],
-    "enquiry_notifications": [],
 }
-
-
-
-def _format_admin_notification(payload: dict) -> str:
-    customer = payload.get("onboardingCustomer") or payload.get("customerAuthToken") or {}
-    delivery = payload.get("deliveryMetadata") or payload.get("fullShippingAddress") or {}
-    items = payload.get("itemArray") or []
-    currency_total = payload.get("currencyTotal") or {}
-    lines = [
-        "VMP SYSTEM ADMIN NOTIFICATION",
-        f"Order: {payload.get('orderId', 'UNASSIGNED')}",
-        f"Customer: {customer.get('fullName') or customer.get('identity') or customer.get('name') or 'Unknown'}",
-        f"Mobile: {customer.get('mobile') or delivery.get('mobile') or 'Not provided'}",
-        f"Delivery: {delivery.get('streetAddress', '')}, {delivery.get('districtState', '')} {delivery.get('pinCode', '')}",
-        f"Total master cartons: {payload.get('totalCartons', 0)}",
-        f"Total: {currency_total.get('currency', 'INR')} {currency_total.get('total', 0)}",
-        "Items:",
-    ]
-    for item in items:
-        lines.append(f"- {item.get('code') or item.get('id')}: {item.get('name')} | qty {item.get('qty')} | cartons {item.get('masterCartons', 0)}")
-    if not items:
-        lines.append("- No items provided")
-    return "\n".join(lines)
 
 
 def get_db():
@@ -281,31 +257,6 @@ def confirm_b2b_order():
 @app.get('/live_rates_catalog')
 def live_rates_catalog():
     return jsonify({"ok": True, "catalog": list(MEMORY["live_rates_catalog"].values())})
-
-
-@app.get('/api/enquiries')
-def list_enquiries():
-    return jsonify({"ok": True, "enquiries": MEMORY["enquiry_notifications"]})
-
-
-@app.post('/api/enquiries/dispatch-whatsapp')
-def dispatch_enquiry_whatsapp():
-    payload = request.get_json(force=True) or {}
-    record = {
-        "type": "admin_whatsapp_notification",
-        "status": "queued",
-        "payload": payload,
-        "formattedMessage": _format_admin_notification(payload),
-        "createdAt": datetime.utcnow().isoformat(),
-    }
-    MEMORY["enquiry_notifications"].append(record)
-    print(record["formattedMessage"])
-    return jsonify({"ok": True, "channel": "admin_notification", "status": "queued", "message": record["formattedMessage"]})
-
-
-@app.post('/api/orders/notify-whatsapp')
-def notify_order_whatsapp():
-    return dispatch_enquiry_whatsapp()
 
 
 @app.post('/stock_adjust')

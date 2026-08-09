@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, BackgroundTasks, Request
 from fastapi.responses import Response
-from datetime import date, datetime
+from datetime import date
 
 from app.schemas import (
     OrderCreate,
@@ -19,32 +19,6 @@ from app.config import settings
 router = APIRouter()
 repo = FirebaseRepository()
 
-
-
-
-def format_admin_notification(payload: dict) -> str:
-    customer = payload.get("onboardingCustomer") or payload.get("customerAuthToken") or {}
-    delivery = payload.get("deliveryMetadata") or payload.get("fullShippingAddress") or {}
-    items = payload.get("itemArray") or []
-    currency = (payload.get("currencyTotal") or {}).get("currency", "INR")
-    total = (payload.get("currencyTotal") or {}).get("total", 0)
-    item_lines = []
-    for item in items:
-        item_lines.append(
-            f"- {item.get('code') or item.get('id')}: {item.get('name')} | "
-            f"qty {item.get('qty')} | cartons {item.get('masterCartons', 0)}"
-        )
-    return "\n".join([
-        "VMP SYSTEM ADMIN NOTIFICATION",
-        f"Order: {payload.get('orderId', 'UNASSIGNED')}",
-        f"Customer: {customer.get('fullName') or customer.get('identity') or customer.get('name') or 'Unknown'}",
-        f"Mobile: {customer.get('mobile') or delivery.get('mobile') or 'Not provided'}",
-        f"Delivery: {delivery.get('streetAddress', '')}, {delivery.get('districtState', '')} {delivery.get('pinCode', '')}",
-        f"Total master cartons: {payload.get('totalCartons', 0)}",
-        f"Total: {currency} {total}",
-        "Items:",
-        *(item_lines or ["- No items provided"]),
-    ])
 
 def run_background_reconcile() -> None:
     """Lightweight background compute hook so UI calls return instantly."""
@@ -162,37 +136,6 @@ async def create_purchase_bill(
     payload = PurchaseBillEntry(material=material, supplier=supplier, amount=amount, ocr_text=text).model_dump()
     repo.add("purchase_bills", payload)
     return {"ok": True, "ocr_text": text, "message": "Purchase bill recorded"}
-
-
-@router.get("/enquiries")
-def list_enquiries():
-    records = repo.list("enquiry_notifications")
-    return {"ok": True, "enquiries": records}
-
-
-@router.post("/enquiries/dispatch-whatsapp")
-def dispatch_enquiry_notification(payload: dict):
-    """Accept checkout JSON and format a server-managed admin notification.
-
-    This replaces browser `wa.me` checkout redirection with a background
-    dispatch contract. Production can swap the repo/log append for a WhatsApp
-    Business provider without changing storefront payload shape.
-    """
-    record = {
-        "type": "admin_whatsapp_notification",
-        "status": "queued",
-        "payload": payload,
-        "formatted_message": format_admin_notification(payload),
-        "created_at": datetime.utcnow().isoformat(),
-    }
-    repo.add("enquiry_notifications", record)
-    print(record["formatted_message"])
-    return {"ok": True, "channel": "admin_notification", "status": "queued", "message": record["formatted_message"]}
-
-
-@router.post("/orders/notify-whatsapp")
-def notify_order_whatsapp(payload: dict):
-    return dispatch_enquiry_notification(payload)
 
 
 @router.post("/compute/reconcile")
