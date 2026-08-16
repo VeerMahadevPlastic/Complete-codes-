@@ -4108,13 +4108,22 @@ SR BAKERY HINGED PACKING RATE BOX RATE PCS
       applyProductFilters();
     });
 
+    function escapeHtml(value){
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     function renderGlobalSearchSuggestions(){
       const panel = document.getElementById('globalSearchSuggestions');
       if(!panel || !productSearch) return;
       const q = productSearch.value.trim().toLowerCase();
       if(!q){ panel.classList.add('invisible','opacity-0'); panel.innerHTML = ''; return; }
       const matches = products.filter((item) => `${item.name} ${item.category}`.toLowerCase().includes(q)).slice(0, 6);
-      panel.innerHTML = matches.length ? matches.map((item) => `<button type="button" data-search-pick="${item.id}" class="flex w-full items-center gap-3 border-b border-slate-100 px-4 py-3 text-left transition hover:bg-emerald-50"><img src="${item.image || './images/plate.jpg'}" class="h-12 w-12 rounded-xl object-cover" alt=""/><span class="min-w-0 flex-1"><span class="block truncate text-sm font-black text-slate-900">${item.name}</span><span class="block truncate text-xs font-semibold text-slate-500">${item.category} · ${Number(item.tiers?.[0]?.min || 100).toLocaleString('en-IN')} pcs/box</span></span><span class="text-emerald-700">⌕</span></button>`).join('') + `<button type="button" data-search-all="true" class="w-full px-4 py-3 text-center text-sm font-black text-emerald-700">See all results for "${productSearch.value.trim()}"</button>` : `<p class="px-4 py-3 text-sm font-bold text-slate-500">No instant matches. Press Enter to search all products.</p>`;
+      panel.innerHTML = matches.length ? matches.map((item) => `<button type="button" data-search-pick="${escapeHtml(item.id)}" class="flex w-full items-center gap-3 border-b border-slate-100 px-4 py-3 text-left transition hover:bg-emerald-50"><img src="${escapeHtml(item.image || './images/plate.jpg')}" class="h-12 w-12 rounded-xl object-cover" alt=""/><span class="min-w-0 flex-1"><span class="block truncate text-sm font-black text-slate-900">${escapeHtml(item.name)}</span><span class="block truncate text-xs font-semibold text-slate-500">${escapeHtml(item.category)} · ${Number(item.tiers?.[0]?.min || 100).toLocaleString('en-IN')} pcs/box</span></span><span class="text-emerald-700">⌕</span></button>`).join('') + `<button type="button" data-search-all="true" class="w-full px-4 py-3 text-center text-sm font-black text-emerald-700">See all results for "${escapeHtml(productSearch.value.trim())}"</button>` : `<p class="px-4 py-3 text-sm font-bold text-slate-500">No instant matches. Press Enter to search all products.</p>`;
       panel.classList.remove('invisible','opacity-0');
     }
     if(productSearch) productSearch.addEventListener('input', renderGlobalSearchSuggestions);
