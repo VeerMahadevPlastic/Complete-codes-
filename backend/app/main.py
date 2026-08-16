@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from app.api.routes import router
+from app.api.v1_mobile import router as mobile_v1_router
 from app.api.config_routes import router as config_router
 from app.config import settings
 
 app = FastAPI(title=settings.app_name, version="1.0.0")
 app.include_router(router, prefix="/api")
 app.include_router(config_router)
+app.include_router(mobile_v1_router)
 
 
 @app.get("/")

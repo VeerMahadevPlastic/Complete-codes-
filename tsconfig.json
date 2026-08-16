@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@vmp/db": ["lib/db/index.ts"],
+      "@vmp/db/*": ["lib/db/*"],
+      "@store/*": ["artifacts/vmp-store/src/*"],
+      "@api/*": ["artifacts/api-server/src/*"]
+    }
+  }
+}
