@@ -7,8 +7,13 @@ import { enquiriesRouter, queueAdminNotification } from './routes/enquiries';
 
 export const app = express();
 
+const allowedOrigins = (process.env.CORS_ORIGIN ?? '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter((origin) => origin.length > 0);
+
 app.use(helmet());
-app.use(cors({ origin: process.env.CORS_ORIGIN?.split(',') ?? true, credentials: true }));
+app.use(cors({ origin: allowedOrigins.length > 0 ? allowedOrigins : false, credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 
 app.get('/health', (_req, res) => res.json({ ok: true, service: 'vmp-api-server' }));
