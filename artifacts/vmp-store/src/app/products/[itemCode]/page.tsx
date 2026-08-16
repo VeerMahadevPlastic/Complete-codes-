@@ -1,5 +1,8 @@
-import { ProductDetail } from '../../components/product/ProductDetail';
-
-export default function ProductDetailPage({ params }: { params: { itemCode: string } }) {
-  return <ProductDetail itemCode={decodeURIComponent(params.itemCode)} />;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ itemCode: string }>;
+}) {
+  const { itemCode } = await params;
+  // ...
 }
